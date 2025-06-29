@@ -1,0 +1,21 @@
+"use client";
+
+import { config } from "@/services/config";
+import { PropsWithChildren } from "react";
+import { ModalCenterProvider, ModalCenter } from "@/packages/modals";
+import { LoginModal } from "@/features/auth/components/login/login-modal";
+import { SignupModal } from "@/features/auth/components/login/signup-modal";
+
+const modalsConfig = {
+  LoginModal,
+  SignupModal,
+};
+
+export type ModalType = keyof typeof modalsConfig;
+
+export const ModalsProvider = ({ children }: PropsWithChildren<object>) => (
+  <ModalCenterProvider config={modalsConfig}>
+    {children}
+    <ModalCenter ignoreIds={[config.misc.notificationCenterId]} />
+  </ModalCenterProvider>
+);

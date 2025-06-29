@@ -1,9 +1,13 @@
 import Image from "next/image";
+import {Button} from "@/components/ui/button";
+import {SiteHeader} from "@/components/site-header";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+    <div className="grid grid-rows-[20px_1fr_20px] bg-black items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+      <SiteHeader />
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+        <Button>Press me</Button>
         <Image
           className="dark:invert"
           src="/next.svg"

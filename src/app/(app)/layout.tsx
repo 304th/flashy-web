@@ -2,12 +2,12 @@ import "@/app/globals.css";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { Toaster } from 'sonner';
+import { Toaster } from "sonner";
 import { Layout } from "@/components/ui/layout";
 import { ApiProvider } from "@/providers/api-provider";
 import { ModalsProvider } from "@/providers/modals-provider";
-import {config} from "@/services/config";
-import {NotificationsProvider} from "@/providers/notifications-provider";
+import { config } from "@/services/config";
+import { NotificationsProvider } from "@/providers/notifications-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,9 +36,7 @@ export default function RootLayout({
       >
         <ApiProvider>
           <ModalsProvider>
-            <Layout>
-              {children}
-            </Layout>
+            <Layout>{children}</Layout>
           </ModalsProvider>
         </ApiProvider>
         <NotificationsProvider />

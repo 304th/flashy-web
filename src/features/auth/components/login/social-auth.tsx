@@ -13,7 +13,7 @@ export const SocialAuth = () => {
     >
       <Separator>Or continue with</Separator>
       <div className="flex w-full justify-center">
-        <Button variant="secondary" className="w-[120px]" size="lg">
+        <Button variant="secondary" className="w-[120px]" size="xl">
           <GoogleIcon />
         </Button>
       </div>

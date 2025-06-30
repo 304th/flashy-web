@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { Header } from "@/components/ui/header";
-import {Sidebar} from "@/components/ui/sidebar";
+import { Sidebar } from "@/components/ui/sidebar";
 
 export const Layout = ({ children }: { children: ReactNode }) => {
   return (
@@ -8,9 +8,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
       <Header />
       <div className="relative">
         <Sidebar />
-        <div className="ml-[60px]">
-          {children}
-        </div>
+        <div className="flex flex-col p-4 ml-[60px]">{children}</div>
       </div>
     </>
   );

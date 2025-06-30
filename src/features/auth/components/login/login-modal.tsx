@@ -38,8 +38,10 @@ export const LoginModal = ({ onClose, ...props }: LoginModalProps) => {
             Login to your Flashy account
           </motion.p>
         </div>
-        <LoginForm onSuccess={onClose} />
-        <SocialAuth />
+        <div className="flex flex-col gap-4 w-full">
+          <LoginForm onSuccess={onClose} />
+          <SocialAuth />
+        </div>
       </motion.div>
     </Modal>
   );

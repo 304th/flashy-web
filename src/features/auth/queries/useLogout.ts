@@ -14,8 +14,8 @@ export const useLogout = () => {
     {
       onError: handleMutationError,
       onSuccess: () => {
-        void queryClient.resetQueries({ queryKey: ['me'] });
+        void queryClient.resetQueries({ queryKey: ["me"] });
       },
-    }
+    },
   );
 };

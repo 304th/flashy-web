@@ -1,7 +1,7 @@
 declare global {
   interface Token {
     accessToken: string;
-    refreshToken: string
+    refreshToken: string;
   }
 
   interface Me {

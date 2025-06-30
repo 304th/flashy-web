@@ -22,7 +22,7 @@ const formSchema = z.object({
   password: z.string().min(8, "Must be at least 8 characters"),
 });
 
-export const LoginForm = ({ onSuccess }: { onSuccess: () => void; }) => {
+export const LoginForm = ({ onSuccess }: { onSuccess: () => void }) => {
   const { openModal } = useModals();
   const loginWithEmail = useLoginWithEmail();
   const form = useForm<z.infer<typeof formSchema>>({

@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useModals } from "@/hooks/use-modals";
 
@@ -5,7 +6,11 @@ export const NotLoggedIn = () => {
   const { openModal } = useModals();
 
   return (
-    <div className="flex gap-3 items-center">
+    <motion.div
+      className="flex gap-3 items-center"
+      initial={{ opacity: 0, y: -4 }}
+      animate={{ opacity: 1, y: 0 }}
+    >
       <Button
         className="min-w-[120px]"
         onClick={() => {
@@ -23,6 +28,6 @@ export const NotLoggedIn = () => {
       >
         Login
       </Button>
-    </div>
+    </motion.div>
   );
 };

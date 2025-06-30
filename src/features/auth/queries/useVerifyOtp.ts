@@ -1,23 +1,23 @@
-import { useQueryClient } from "@tanstack/react-query";
 import { api } from "@/services/api";
 import { getMutation, handleMutationError } from "@/lib/query";
 import { token } from "@/services/token";
 import { transformLegacyMe } from "@/features/auth/queries/useMe";
+import { useQueryClient } from "@tanstack/react-query";
 
-interface LoginWithEmailParams {
+interface VerifyOtpParams {
+  otp: string;
   email: string;
-  password: string;
 }
 
-export const useLoginWithEmail = () => {
+export const useVerifyOtp = () => {
   const queryClient = useQueryClient();
 
-  return getMutation<LegacyMe, Error, LoginWithEmailParams>(
-    ["loginWithEmail"],
-    async ({ email, password }: LoginWithEmailParams) => {
+  return getMutation<LegacyMe, Error, VerifyOtpParams>(
+    ["signupWithEmail"],
+    async ({ otp, email }: VerifyOtpParams) => {
       return await api
-        .post("login", {
-          body: JSON.stringify({ email, password }),
+        .post("verifyEmailAndRegister", {
+          body: JSON.stringify({ otp, email }),
         })
         .json<any>();
     },

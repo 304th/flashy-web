@@ -7,12 +7,12 @@ export const config = {
         queries: {
           refetchOnMount: false,
           refetchOnWindowFocus: false,
-          retry: 1,
+          retry: 0,
         },
       },
     },
   },
   misc: {
-    notificationCenterId: 'notification-center'
-  }
+    notificationCenterId: "notification-center",
+  },
 } as const;

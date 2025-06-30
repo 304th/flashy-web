@@ -4,7 +4,7 @@ import {
   MutationFunction,
   UseMutationOptions,
 } from "@tanstack/react-query";
-import {toast} from "sonner";
+import { toast } from "sonner";
 
 export const getQuery = <T>(
   queryKey: string[],
@@ -40,8 +40,12 @@ export const getMutation = <
 export const handleMutationError = async (error: any) => {
   try {
     const errorBody = await error?.response?.json();
-    toast.error(errorBody.error || errorBody.message || "Unknown error. Please try again later.");
+    toast.error(
+      errorBody.error ||
+        errorBody.message ||
+        "Unknown error. Please try again later.",
+    );
   } catch {
     toast.error("Unknown error. Please try again later.");
   }
-}
+};

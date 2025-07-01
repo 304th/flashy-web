@@ -6,7 +6,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
   return (
     <>
       <Header />
-      <div className="relative">
+      <div className="relative max-w-content">
         <Sidebar />
         <div className="flex flex-col p-4 ml-[60px]">{children}</div>
       </div>

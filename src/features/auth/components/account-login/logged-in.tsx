@@ -7,17 +7,18 @@ import { defaultVariants } from "@/lib/framer";
 export const LoggedIn = () => {
   return (
     <div className="flex items-center gap-4">
-      <motion.div className="relative top-[1px] flex items-center gap-2" initial="hidden" animate="show" variants={defaultVariants.container}>
-        <motion.div
-          variants={defaultVariants.child}
-        >
+      <motion.div
+        className="relative top-[1px] flex items-center gap-2"
+        initial="hidden"
+        animate="show"
+        variants={defaultVariants.container}
+      >
+        <motion.div variants={defaultVariants.child}>
           <Button className="!w-fit p-0 aspect-square" size="sm">
             <PlusIcon />
           </Button>
         </motion.div>
-        <motion.div
-          variants={defaultVariants.child}
-        >
+        <motion.div variants={defaultVariants.child}>
           <Button
             className="!w-fit p-0 aspect-square"
             size="sm"
@@ -26,9 +27,7 @@ export const LoggedIn = () => {
             <MessageCircle />
           </Button>
         </motion.div>
-        <motion.div
-          variants={defaultVariants.child}
-        >
+        <motion.div variants={defaultVariants.child}>
           <Button
             className="!w-fit p-0 aspect-square"
             size="sm"
@@ -38,9 +37,7 @@ export const LoggedIn = () => {
           </Button>
         </motion.div>
       </motion.div>
-      <motion.div
-        variants={defaultVariants.child}
-      >
+      <motion.div variants={defaultVariants.child}>
         <AccountDropdown />
       </motion.div>
     </div>

@@ -1,4 +1,4 @@
-import { StreamingBillboard } from "@/features/streaming/components/streaming-billboard/streaming-billboard";
+import { StreamingBillboard } from "@/features/streams/components/streaming-billboard/streaming-billboard";
 
 export default function Home() {
   return (

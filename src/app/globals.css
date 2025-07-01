@@ -54,6 +54,7 @@
   --color-brand-100-alpha: var(--brand-100-alpha);
   --color-brand-200-alpha: var(--brand-200-alpha);
   --color-base-100: var(--base-color-100);
+  --color-base-150: var(--base-color-150);
   --color-base-200: var(--base-color-200);
   --color-base-300: var(--base-color-300);
   --color-base-400: var(--base-color-400);
@@ -85,7 +86,7 @@
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
+  --border: #1d1d1d;
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
   --chart-1: oklch(0.646 0.222 41.116);
@@ -112,6 +113,7 @@
     rgba(140, 255, 213, 0.15) 100%
   );
   --base-color-100: #111111;
+  --base-color-150: #121212;
   --base-color-200: #151515;
   --base-color-300: #1d1d1d;
   --base-color-400: #2b2b2b;
@@ -225,6 +227,13 @@
     #393939 50%,
     #2b2b2b 100%
   );
+}
+
+@utility max-w-content {
+  padding: 0 16px;
+  margin: 0 auto;
+  max-width: 1512px;
+  width: 100%;
 }
 
 @keyframes skeletonWave {

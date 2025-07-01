@@ -15,8 +15,8 @@ export const Sidebar = () => {
 
   return (
     <div
-      className={`fixed flex justify-center py-6 transition w-[60px] h-screen
-        bg-base-200 z-1`}
+      className={`fixed flex justify-center py-4 transition w-[60px] h-screen
+        z-1`}
       onMouseEnter={() => setExpanded(true)}
       onMouseLeave={() => setExpanded(false)}
     >

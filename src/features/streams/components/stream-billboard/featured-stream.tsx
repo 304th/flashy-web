@@ -1,4 +1,5 @@
 import {UserProfile} from "@/components/ui/user-profile";
+import {StreamPlayer} from "@/features/streams/components/stream-player/stream-player";
 
 const MOCK_USER = {
   id: '123123123',
@@ -7,7 +8,7 @@ const MOCK_USER = {
   verified: true,
 }
 
-export const BillboardStream = ({ stream }: { stream: Stream }) => {
+export const FeaturedStream = ({ stream }: { stream: Stream }) => {
   return (
     <div className="flex items-center w-full">
       <div className="relative flex w-1/2 h-full bg-green-500 p-4">
@@ -31,7 +32,9 @@ export const BillboardStream = ({ stream }: { stream: Stream }) => {
           }}
         />
       </div>
-      <div className="flex w-1/2 h-full bg-pink-500"></div>
+      <div className="flex w-1/2 h-full bg-pink-500">
+        <StreamPlayer />
+      </div>
     </div>
   );
 };

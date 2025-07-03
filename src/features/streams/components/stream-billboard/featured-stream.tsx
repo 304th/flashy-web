@@ -11,7 +11,7 @@ const MOCK_USER = {
 export const FeaturedStream = ({ stream }: { stream: Stream }) => {
   return (
     <div className="flex items-center w-full">
-      <div className="relative flex w-1/2 h-full bg-green-500 p-4">
+      <div className="relative flex w-1/2 h-full bg-base-400 p-4">
         <div className="flex w-full h-full z-1 items-end">
           <div className="flex flex-col gap-[2px]">
             <UserProfile user={MOCK_USER} />

@@ -12,31 +12,27 @@ interface Query<T> {
 interface LoadableProps<TData extends any[]> {
   queries: { [K in keyof TData]: Query<TData[K]> };
   fallback?: ReactNode | null;
-  fallbackFull?: boolean;
   error?: ReactNode;
+  fullScreenForDefaults?: boolean;
   children: ((data: TData) => ReactNode) | (() => ReactNode);
 }
 
 export const Loadable = <TData extends any[]>({
   queries,
   fallback,
-  fallbackFull = false,
-  error = "An error occurred",
+  fullScreenForDefaults = false,
+  error = "Network Error",
   children,
 }: LoadableProps<TData>) => {
   const isLoading = queries.some((query) => query.isLoading);
-  const hasError = queries.some((query) => query.error);
+  const queryError = queries.some((query) => query.error);
   const data = queries.map((query) => query.data) as TData;
   const empty = queries.some(
     (query) => typeof query.data === "undefined" && query.isSuccess,
   );
 
-  if (hasError) {
-    if (typeof error === "string") {
-      return <p className="text-red-500">{error}</p>;
-    }
-
-    return <>{error}</>;
+  if (queryError) {
+    return <LoadableError error={error} fullScreen={fullScreenForDefaults} />;
   }
 
   if (isLoading || empty) {
@@ -44,14 +40,50 @@ export const Loadable = <TData extends any[]>({
       return fallback;
     }
 
-    if (fallbackFull) {
-      return <div className="flex w-full h-full justify-center items-center">
-        <Spinner />
-      </div>
+    if (fullScreenForDefaults) {
+      return (
+        <div className="flex w-full h-full justify-center items-center">
+          <Spinner />
+        </div>
+      );
     }
 
     return <Spinner />;
   }
 
   return <>{children(data)}</>;
+};
+
+const LoadableError = ({
+  error,
+  fullScreen,
+}: {
+  error: LoadableProps<any>["error"];
+  fullScreen: LoadableProps<any>["fullScreenForDefaults"];
+}) => {
+  if (typeof error === "string") {
+    if (fullScreen) {
+      return (
+        <div className="flex w-full h-full justify-center items-center">
+          <div className="flex justify-center items-center p-2 rounded bg-[#ff000010]">
+            <p className="text-red-500">{error}</p>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="flex justify-center items-center p-2 rounded bg-[#ff000010]">
+        <p className="text-red-500">{error}</p>
+      </div>
+    );
+  }
+
+  return fullScreen ? (
+    <div className="flex w-full h-full justify-center items-center">
+      {error}
+    </div>
+  ) : (
+    <>{error}</>
+  );
 };

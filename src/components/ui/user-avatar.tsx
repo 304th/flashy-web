@@ -12,7 +12,10 @@ export const UserAvatar = ({
   ...props
 }: UserAvatarProps & HTMLAttributes<HTMLDivElement>) => {
   return (
-    <Avatar className={`cursor-pointer user-select-none ${className}`} {...props}>
+    <Avatar
+      className={`cursor-pointer user-select-none ${className}`}
+      {...props}
+    >
       <AvatarImage src={avatar || "/images/avatar.svg"} alt="avatar" />
       <AvatarFallback>
         <AvatarImage src="/images/avatar.svg" alt="defaultAvatar" />

@@ -46,7 +46,7 @@ const NavItem = ({
     <Link href={route} className="w-full aspect-square">
       <div
         className={`flex w-full flex-col items-center justify-center gap-1
-          cursor aspect-square transition
+          cursor aspect-square transition rounded
           ${pathname === route ? "bg-base-300 text-white" : "hover:bg-base-300"}`}
       >
         {icon}

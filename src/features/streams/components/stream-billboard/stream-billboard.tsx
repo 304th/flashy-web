@@ -14,7 +14,7 @@ export const StreamBillboard = () => {
         inset-shadow-[0_0_8px_0_rgba(0,0,0,0.1)] inset-shadow-base-300 h-[390px]
         rounded-md border overflow-hidden"
     >
-      <Loadable queries={[query]} fallbackFull>
+      <Loadable queries={[query]} fullScreenForDefaults>
         {() =>
           featuredStream ? (
             <FeaturedStream stream={featuredStream} />

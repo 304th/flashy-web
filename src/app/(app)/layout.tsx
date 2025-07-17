@@ -2,11 +2,10 @@ import "@/app/globals.css";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { Toaster } from "sonner";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Layout } from "@/components/ui/layout";
 import { ApiProvider } from "@/providers/api-provider";
 import { ModalsProvider } from "@/providers/modals-provider";
-import { config } from "@/services/config";
 import { NotificationsProvider } from "@/providers/notifications-provider";
 
 const geistSans = Geist({
@@ -34,11 +33,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ApiProvider>
-          <ModalsProvider>
-            <Layout>{children}</Layout>
-          </ModalsProvider>
-        </ApiProvider>
+        <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}>
+          <ApiProvider>
+            <ModalsProvider>
+              <Layout>{children}</Layout>
+            </ModalsProvider>
+          </ApiProvider>
+        </GoogleOAuthProvider>
         <NotificationsProvider />
       </body>
     </html>

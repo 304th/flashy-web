@@ -1,8 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
-import { GoogleIcon } from "@/components/ui/icons/google";
+import { GoogleSignIn } from "@/features/auth/components/login/google-signin";
 import { defaultVariants } from "@/lib/framer";
 
 export const SocialAuth = () => {
@@ -13,9 +12,7 @@ export const SocialAuth = () => {
     >
       <Separator>Or continue with</Separator>
       <div className="flex w-full justify-center">
-        <Button variant="secondary" className="w-[120px]" size="xl">
-          <GoogleIcon />
-        </Button>
+        <GoogleSignIn />
       </div>
     </motion.div>
   );

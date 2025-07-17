@@ -1,12 +1,5 @@
-import {UserProfile} from "@/components/ui/user-profile";
-import {StreamPlayer} from "@/features/streams/components/stream-player/stream-player";
-
-const MOCK_USER = {
-  id: '123123123',
-  name: 'root',
-  avatar: '',
-  verified: true,
-}
+import { UserProfile } from "@/components/ui/user-profile";
+import { StreamPlayer } from "@/features/streams/components/stream-player/stream-player";
 
 export const FeaturedStream = ({ stream }: { stream: Stream }) => {
   return (
@@ -14,13 +7,11 @@ export const FeaturedStream = ({ stream }: { stream: Stream }) => {
       <div className="relative flex w-1/2 h-full bg-base-400 p-4">
         <div className="flex w-full h-full z-1 items-end">
           <div className="flex flex-col gap-[2px]">
-            <UserProfile user={MOCK_USER} />
+            <UserProfile user={stream.author} />
             <h2 className="text-white text-2xl font-extrabold">
               {stream.title}
             </h2>
-            <p className="text-base">
-              {stream.description}
-            </p>
+            <p className="text-base">{stream.description}</p>
           </div>
         </div>
         <div
@@ -33,7 +24,7 @@ export const FeaturedStream = ({ stream }: { stream: Stream }) => {
         />
       </div>
       <div className="flex w-1/2 h-full bg-pink-500">
-        <StreamPlayer />
+        <StreamPlayer playbackId={stream.externalStreamId} />
       </div>
     </div>
   );

@@ -18,6 +18,12 @@ declare global {
     token: Token;
   }
 
+  interface LegacyAuthor {
+    fbId: string;
+    username: string;
+    userimage: string;
+  }
+
   interface User {
     id: string;
     name: string;
@@ -33,9 +39,12 @@ declare global {
     thumbnail: string;
     externalStreamId: string;
     userId: string;
+    author: User;
     createdAt: string;
     updatedAt: string;
   }
+
+  type JwtToken = `ey${string}.${string}.${string}`;
 }
 
 export {};

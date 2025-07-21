@@ -10,14 +10,13 @@ export const transformLegacyAuthor = (serverAuthor: LegacyAuthor): User => {
 };
 
 export const useFeaturedStream = () =>
-  getQuery<any>(
-    ["streams", "live"],
-    async () => {
-      const stream = (await api.get("stream/live").json<any>())?.[0];
+  getQuery<any>(["streams", "live"], async () => {
+    const stream = (await api.get("stream/live").json<any>())?.[0];
 
-      return stream ? {
-        ...stream,
-        author: transformLegacyAuthor(stream.author),
-      } : null;
-    }
-  );
+    return stream
+      ? {
+          ...stream,
+          author: transformLegacyAuthor(stream.author),
+        }
+      : null;
+  });

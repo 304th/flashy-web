@@ -1,5 +1,9 @@
 import { api } from "@/services/api";
-import { getMutation, handleMutationError, handleAuthSuccess } from "@/lib/query";
+import {
+  getMutation,
+  handleMutationError,
+  handleAuthSuccess,
+} from "@/lib/query";
 import { useQueryClient } from "@tanstack/react-query";
 
 interface VerifyOtpParams {
@@ -10,7 +14,7 @@ interface VerifyOtpParams {
 export const useVerifyOtp = () => {
   const queryClient = useQueryClient();
 
-  return getMutation<LegacyMe, Error, VerifyOtpParams>(
+  return getMutation<User, Error, VerifyOtpParams>(
     ["signupWithEmail"],
     async ({ otp, email }: VerifyOtpParams) => {
       return await api
@@ -22,6 +26,6 @@ export const useVerifyOtp = () => {
     {
       onError: handleMutationError,
       onSuccess: handleAuthSuccess(queryClient),
-    }
+    },
   );
 };

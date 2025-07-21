@@ -2,20 +2,30 @@ import {
   useQuery,
   useMutation,
   MutationFunction,
-  UseMutationOptions, type QueryClient,
+  UseMutationOptions,
+  type QueryClient,
 } from "@tanstack/react-query";
 import { toast } from "sonner";
-import {token} from "@/services/token";
-import { transformLegacyMe } from "@/features/auth/queries/useMe";
 
 export const getQuery = <T>(
   queryKey: string[],
-  queryFn: () => Promise<T>,
+  queryFn: () => Promise<ApiResponse<T>>,
   enabled: boolean = true,
 ) => {
-  const query = useQuery({
+  const query = useQuery<T | undefined>({
     queryKey,
-    queryFn,
+    queryFn: async () => {
+      const response = await queryFn();
+
+      if (isSuccessResponse(response)) {
+        return response.data;
+      }
+
+      throw new Error(
+        (response as ErrorResponse).error ||
+          "Unknown error. Please try again later.",
+      );
+    },
     enabled,
   });
 
@@ -29,12 +39,23 @@ export const getMutation = <
   TContext = unknown,
 >(
   mutationKey: string[],
-  mutationFn: MutationFunction<TData, TVariables>,
+  mutationFn: MutationFunction<ApiResponse<TData>, TVariables>,
   options: UseMutationOptions<TData, TError, TVariables, TContext> = {},
 ) => {
   return useMutation<TData, TError, TVariables, TContext>({
     mutationKey,
-    mutationFn,
+    mutationFn: async (...args) => {
+      const response = await mutationFn(...args);
+
+      if (isSuccessResponse(response)) {
+        return response.data;
+      }
+
+      throw new Error(
+        (response as ErrorResponse).error ||
+          "Unknown error. Please try again later.",
+      );
+    },
     ...options,
   });
 };
@@ -52,15 +73,11 @@ export const handleMutationError = async (error: any) => {
   }
 };
 
-export const handleAuthSuccess = (queryClient: QueryClient) => (user: LegacyMe) => {
-  if (user.token.accessToken) {
-    token.setAccessToken(user?.token?.accessToken);
-  }
-
-  if (user.token.refreshToken) {
-    token.setRefreshToken(user?.token?.refreshToken);
-  }
-
-  void queryClient.setQueryData(["me"], () => transformLegacyMe(user));
+export const handleAuthSuccess = (queryClient: QueryClient) => (user: User) => {
+  void queryClient.setQueryData(["me"], user);
   void queryClient.invalidateQueries({ queryKey: ["me"] });
-}
+};
+
+const isSuccessResponse = <T>(
+  response: ApiResponse<T>,
+): response is SuccessResponse<T> => response.success;

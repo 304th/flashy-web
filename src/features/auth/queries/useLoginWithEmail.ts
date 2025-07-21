@@ -1,8 +1,11 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { api } from "@/services/api";
-import { getMutation, handleMutationError } from "@/lib/query";
-import { token } from "@/services/token";
-import { transformLegacyMe } from "@/features/auth/queries/useMe";
+import {
+  getMutation,
+  handleAuthSuccess,
+  handleMutationError,
+} from "@/lib/query";
+import { signInWithEmail } from "@/services/firebase";
 
 interface LoginWithEmailParams {
   email: string;
@@ -12,29 +15,24 @@ interface LoginWithEmailParams {
 export const useLoginWithEmail = () => {
   const queryClient = useQueryClient();
 
-  return getMutation<LegacyMe, Error, LoginWithEmailParams>(
+  return getMutation<User, Error, LoginWithEmailParams>(
     ["loginWithEmail"],
     async ({ email, password }: LoginWithEmailParams) => {
+      const tokenId = await signInWithEmail(email, password);
+
+      if (!tokenId) {
+        throw new Error("Error signing in");
+      }
+
       return await api
-        .post("login", {
-          body: JSON.stringify({ email, password }),
+        .post("auth/login", {
+          body: JSON.stringify({ tokenId }),
         })
         .json<any>();
     },
     {
       onError: handleMutationError,
-      onSuccess: (user) => {
-        if (user.token.accessToken) {
-          token.setAccessToken(user?.token?.accessToken);
-        }
-
-        if (user.token.refreshToken) {
-          token.setRefreshToken(user?.token?.refreshToken);
-        }
-
-        void queryClient.setQueryData(["me"], () => transformLegacyMe(user));
-        void queryClient.invalidateQueries({ queryKey: ["me"] });
-      },
+      onSuccess: handleAuthSuccess(queryClient),
     },
   );
 };

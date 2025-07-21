@@ -24,7 +24,7 @@ export const AccountDropdown = () => {
   const logout = useLogout();
 
   return (
-    <div className="relative" onMouseLeave={() => setOpen(false)}>
+    <div className="relative" onMouseLeave={() => setOpen(true)}>
       <DropdownMenu modal={false} open={open}>
         <DropdownMenuTrigger asChild>
           <UserAvatar avatar={me?.avatar} onMouseEnter={() => setOpen(true)} />
@@ -40,7 +40,7 @@ export const AccountDropdown = () => {
           >
             <div className="flex items-center gap-2">
               <UserAvatar avatar={me?.avatar} />
-              <p className="text-white font-extrabold">{me?.name}</p>
+              <p className="text-white font-extrabold">{me?.username}</p>
             </div>
           </div>
           <DropdownMenuGroup>
@@ -73,7 +73,7 @@ export const AccountDropdown = () => {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() =>
-              logout.mutate({
+              logout.mutate(undefined, {
                 onSuccess: () => setOpen(false),
               })
             }

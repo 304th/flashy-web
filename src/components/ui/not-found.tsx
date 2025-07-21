@@ -13,6 +13,6 @@ export const NotFound = ({
       ${fullWidth ? "w-full h-full justify-center" : ""}`}
   >
     <img src="/images/not-found.svg" alt="Not found" width={48} height={48} />
-    <p className="text-base-600">{children}</p>
+    <p className="text-base-700">{children}</p>
   </div>
 );

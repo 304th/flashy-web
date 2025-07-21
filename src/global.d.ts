@@ -1,35 +1,31 @@
 declare global {
-  interface Token {
-    accessToken: string;
-    refreshToken: string;
+  interface SuccessResponse<T> {
+    success: true;
+    data: T;
   }
 
-  interface Me {
-    id: string;
-    name: string;
-    avatar: string;
+  interface ErrorResponse {
+    success: false;
+    error: string;
   }
 
-  interface LegacyMe {
-    fbId: string;
-    username: string;
-    superAdmin: string;
-    userimage: string;
-    token: Token;
-  }
+  type ApiResponse<T> = SuccessResponse<T> | ErrorResponse;
 
-  interface LegacyAuthor {
-    fbId: string;
-    username: string;
-    userimage: string;
+  interface ApiResponse {
+    data: any;
+    success: boolean;
+    error?: string;
   }
 
   interface User {
     id: string;
-    name: string;
+    email?: string;
+    username: string;
     avatar: string;
     verified?: boolean;
     moderator?: boolean;
+    representative?: boolean;
+    superAdmin?: boolean;
   }
 
   interface Stream {

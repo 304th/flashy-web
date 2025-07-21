@@ -1,4 +1,4 @@
-import MuxPlayer from "@mux/mux-player-react";
+import MuxPlayer from "@mux/mux-player-react/lazy";
 
 export const StreamPlayer = ({ playbackId }: { playbackId: string }) => {
   return (

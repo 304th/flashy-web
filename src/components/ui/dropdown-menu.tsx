@@ -83,8 +83,8 @@ function DropdownMenuItem({
       data-inset={inset}
       data-variant={variant}
       className={cn(
-        `text-foreground focus:bg-base-400 focus:text-white
-        data-[variant=destructive]:text-destructive
+        `text-foreground focus:bg-base-400 focus:text-white hover:bg-base-400
+        hover:text-white data-[variant=destructive]:text-destructive
         data-[variant=destructive]:focus:bg-destructive/10
         dark:data-[variant=destructive]:focus:bg-destructive/20
         data-[variant=destructive]:focus:text-destructive

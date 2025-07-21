@@ -1,6 +1,11 @@
 import { api } from "@/services/api";
-import { getMutation, handleAuthSuccess, handleMutationError } from "@/lib/query";
+import {
+  getMutation,
+  handleAuthSuccess,
+  handleMutationError,
+} from "@/lib/query";
 import { useQueryClient } from "@tanstack/react-query";
+import { signInWithGoogle } from "@/services/firebase";
 
 interface GoogleSignInParams {
   credential: JwtToken;
@@ -9,14 +14,26 @@ interface GoogleSignInParams {
 export const useGoogleSignIn = () => {
   const queryClient = useQueryClient();
 
-  return getMutation<LegacyMe, Error, GoogleSignInParams>(['googleSignIn'], async ({ credential }) => {
-    return await api.post('googleAuth', {
-      body: JSON.stringify({
-        credential: credential,
-      })
-    }).json<any>()
-  }, {
-    onError: handleMutationError,
-    onSuccess: handleAuthSuccess(queryClient),
-  })
-}
+  return getMutation<User, Error, GoogleSignInParams>(
+    ["googleSignIn"],
+    async ({ credential }) => {
+      const tokenId = await signInWithGoogle(credential);
+
+      if (!tokenId) {
+        throw new Error("Error signing in");
+      }
+
+      return await api
+        .post("auth/login", {
+          body: JSON.stringify({
+            tokenId,
+          }),
+        })
+        .json();
+    },
+    {
+      onError: handleMutationError,
+      onSuccess: handleAuthSuccess(queryClient),
+    },
+  );
+};

@@ -4,6 +4,7 @@ import {
   GoogleAuthProvider,
   signInWithCredential,
   signInWithEmailAndPassword,
+  sendSignInLinkToEmail,
 } from "firebase/auth";
 
 export const firebase = initializeApp({
@@ -33,3 +34,17 @@ export const onAuthStateChanged = async () =>
   new Promise((resolve) => {
     firebaseAuth.onAuthStateChanged(resolve);
   });
+
+export const sendSignInLink = async (email: string) => sendSignInLinkToEmail(firebaseAuth, email, {
+  url: `${window.location.origin}/verify-email`,
+  handleCodeInApp: true,
+  iOS: {
+    bundleId: 'com.example.ios'
+  },
+  android: {
+    packageName: 'com.example.android',
+    installApp: true,
+    minimumVersion: '12'
+  },
+  // linkDomain: 'new.flashytest1.com'
+})

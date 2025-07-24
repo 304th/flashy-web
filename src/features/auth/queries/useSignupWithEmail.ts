@@ -1,5 +1,6 @@
 import { api } from "@/services/api";
 import { getMutation, handleMutationError } from "@/lib/query";
+import { sendSignInLink } from "@/services/firebase";
 
 interface SignupWithEmailParams {
   username: string;
@@ -8,12 +9,15 @@ interface SignupWithEmailParams {
 }
 
 export const useSignupWithEmail = () => {
-  return getMutation<LegacyMe, Error, SignupWithEmailParams>(
+  return getMutation<User, Error, SignupWithEmailParams>(
     ["signupWithEmail"],
-    async ({ username, email, password }: SignupWithEmailParams) => {
+    async ({ email, password, username }: SignupWithEmailParams) => {
+      // console.log({ username, email, password })
+      // return await sendSignInLink(email);
+
       return await api
-        .post("preRegister?isDigits=true", {
-          body: JSON.stringify({ username, email, password }),
+        .post("auth/register", {
+          body: JSON.stringify({ email, password, username }),
         })
         .json<any>();
     },

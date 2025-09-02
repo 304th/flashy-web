@@ -7,7 +7,7 @@ export const FeaturedStream = ({ stream }: { stream: Stream }) => {
       <div className="relative flex w-1/2 h-full bg-base-400 p-4">
         <div className="flex w-full h-full z-1 items-end">
           <div className="flex flex-col gap-[2px]">
-            <UserProfile user={stream.author} />
+            {/*<UserProfile user={stream.author} />*/}
             <h2 className="text-white text-2xl font-extrabold">
               {stream.title}
             </h2>

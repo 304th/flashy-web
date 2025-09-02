@@ -46,5 +46,4 @@ export const sendSignInLink = async (email: string) => sendSignInLinkToEmail(fir
     installApp: true,
     minimumVersion: '12'
   },
-  // linkDomain: 'new.flashytest1.com'
 })

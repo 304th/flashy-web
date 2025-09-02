@@ -24,7 +24,7 @@ export const AccountDropdown = () => {
   const logout = useLogout();
 
   return (
-    <div className="relative" onMouseLeave={() => setOpen(true)}>
+    <div className="relative" onMouseLeave={() => setOpen(false)}>
       <DropdownMenu modal={false} open={open}>
         <DropdownMenuTrigger asChild>
           <UserAvatar avatar={me?.avatar} onMouseEnter={() => setOpen(true)} />

@@ -9,22 +9,13 @@ import { toast } from "sonner";
 
 export const getQuery = <T>(
   queryKey: string[],
-  queryFn: () => Promise<ApiResponse<T>>,
+  queryFn: () => Promise<T>,
   enabled: boolean = true,
 ) => {
   const query = useQuery<T | undefined>({
     queryKey,
     queryFn: async () => {
-      const response = await queryFn();
-
-      if (isSuccessResponse(response)) {
-        return response.data;
-      }
-
-      throw new Error(
-        (response as ErrorResponse).error ||
-          "Unknown error. Please try again later.",
-      );
+      return await queryFn();
     },
     enabled,
   });
@@ -39,22 +30,13 @@ export const getMutation = <
   TContext = unknown,
 >(
   mutationKey: string[],
-  mutationFn: MutationFunction<ApiResponse<TData>, TVariables>,
+  mutationFn: MutationFunction<TData, TVariables>,
   options: UseMutationOptions<TData, TError, TVariables, TContext> = {},
 ) => {
   return useMutation<TData, TError, TVariables, TContext>({
     mutationKey,
     mutationFn: async (...args) => {
-      const response = await mutationFn(...args);
-
-      if (isSuccessResponse(response)) {
-        return response.data;
-      }
-
-      throw new Error(
-        (response as ErrorResponse).error ||
-          "Unknown error. Please try again later.",
-      );
+      return await mutationFn(...args);
     },
     ...options,
   });
@@ -77,7 +59,3 @@ export const handleAuthSuccess = (queryClient: QueryClient) => (user: User) => {
   void queryClient.setQueryData(["me"], user);
   void queryClient.invalidateQueries({ queryKey: ["me"] });
 };
-
-const isSuccessResponse = <T>(
-  response: ApiResponse<T>,
-): response is SuccessResponse<T> => response.success;

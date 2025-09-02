@@ -20,23 +20,21 @@ export const LoginModal = ({ onClose, ...props }: LoginModalProps) => {
         className="relative flex flex-col gap-8 p-8
           bg-[url(/images/login-bg.jpg)] bg-cover rounded-xl overflow-hidden"
       >
-        <motion.div
+        <div
           className="absolute right-4 top-4"
-          variants={defaultVariants.child}
           onClick={onClose}
         >
           <CloseButton />
-        </motion.div>
+        </div>
         <div className="flex flex-col w-full justify-center">
-          <motion.p
+          <p
             className="text-3xl font-extrabold text-white"
-            variants={defaultVariants.child}
           >
             Welcome back
-          </motion.p>
-          <motion.p variants={defaultVariants.child}>
+          </p>
+          <p>
             Login to your Flashy account
-          </motion.p>
+          </p>
         </div>
         <div className="flex flex-col gap-4 w-full">
           <LoginForm onSuccess={onClose} />

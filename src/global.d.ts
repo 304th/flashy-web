@@ -1,4 +1,6 @@
 declare global {
+  type JwtToken = `ey${string}.${string}.${string}`;
+
   interface SuccessResponse<T> {
     success: true;
     data: T;
@@ -21,11 +23,17 @@ declare global {
     id: string;
     email?: string;
     username: string;
-    avatar: string;
+    userimage: string;
     verified?: boolean;
     moderator?: boolean;
     representative?: boolean;
     superAdmin?: boolean;
+  }
+
+  interface Author {
+    id: string;
+    username: string;
+    userimage: string;
   }
 
   interface Stream {
@@ -40,7 +48,22 @@ declare global {
     updatedAt: string;
   }
 
-  type JwtToken = `ey${string}.${string}.${string}`;
+  interface SocialPost {
+    id: string;
+    description: string;
+    image: string;
+    poll: any[];
+    likesCount: number;
+    commentsCount: number;
+    relitsCount: number;
+    mentionedUsers: any[];
+    pinned: boolean;
+    userId: string;
+    username: string;
+    userimage: string;
+    createdAt: string;
+    updatedAt: string;
+  }
 }
 
 export {};

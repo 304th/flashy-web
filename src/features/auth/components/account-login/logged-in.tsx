@@ -3,7 +3,7 @@ import { PlusIcon, MessageCircle, BellIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AccountDropdown } from "@/features/auth/components/account-login/account-dropdown";
 import { defaultVariants } from "@/lib/framer";
-import {CreateDropdown} from "@/features/auth/components/account-login/create-dropdown";
+import { CreateDropdown } from "@/features/auth/components/account-login/create-dropdown";
 
 export const LoggedIn = () => {
   return (

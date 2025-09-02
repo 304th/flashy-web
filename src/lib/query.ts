@@ -1,5 +1,6 @@
 import {
   useQuery,
+  useInfiniteQuery,
   useMutation,
   MutationFunction,
   UseMutationOptions,
@@ -40,6 +41,33 @@ export const getMutation = <
     },
     ...options,
   });
+};
+
+export const getInfiniteQuery = <T>(
+  queryKey: string[],
+  queryFn: ({ pageParam }: { pageParam: number }) => Promise<T>,
+  enabled: boolean = true,
+) => {
+  const query = useInfiniteQuery<T, unknown, T, string[], number>({
+    queryKey,
+    queryFn: async ({ pageParam }) => {
+      return await queryFn({ pageParam });
+    },
+    select: (data) => {
+      return data.pages.flat() as any;
+    },
+    getNextPageParam: (lastPage, allPages) => {
+      if (Array.isArray(lastPage) && lastPage.length > 0) {
+        return allPages.length + 1;
+      }
+
+      return undefined;
+    },
+    initialPageParam: 1,
+    enabled,
+  });
+
+  return [query.data, query] as const;
 };
 
 export const handleMutationError = async (error: any) => {

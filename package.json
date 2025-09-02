@@ -25,6 +25,7 @@
     "@tanstack/react-query": "^5.81.5",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
     "firebase": "^12.0.0",
     "framer-motion": "^11.18.2",
     "ky": "^1.8.1",

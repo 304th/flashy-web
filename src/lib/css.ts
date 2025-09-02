@@ -11,7 +11,8 @@ export const brightenColor = (hex: string, percent: number) => {
   const max = Math.max(r, g, b);
   const min = Math.min(r, g, b);
   let h = 0;
-  let s, l = (max + min) / 2;
+  let s,
+    l = (max + min) / 2;
 
   if (max === min) {
     h = s = 0; // achromatic

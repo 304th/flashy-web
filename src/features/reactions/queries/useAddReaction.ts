@@ -1,4 +1,4 @@
-import {useQueryClient} from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { api } from "@/services/api";
 import { getMutation, handleMutationError } from "@/lib/query";
 
@@ -9,7 +9,9 @@ export interface AddReactionParams {
   count?: number;
 }
 
-export const useAddReaction = (options?: { onMutate?: (variables: AddReactionParams) => unknown }) => {
+export const useAddReaction = (options?: {
+  onMutate?: (variables: AddReactionParams) => unknown;
+}) => {
   const queryClient = useQueryClient();
 
   return getMutation(
@@ -29,12 +31,15 @@ export const useAddReaction = (options?: { onMutate?: (variables: AddReactionPar
     {
       onError: (error: any, _, context: any) => {
         if (context.optimisticQueryKey && context.previous) {
-          queryClient.setQueryData(context.optimisticQueryKey, context.previous)
+          queryClient.setQueryData(
+            context.optimisticQueryKey,
+            context.previous,
+          );
         }
 
         return handleMutationError(error);
       },
       onMutate: options?.onMutate,
-    }
+    },
   );
 };

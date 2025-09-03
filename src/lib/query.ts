@@ -75,12 +75,12 @@ export const handleMutationError = async (error: any) => {
     if (error instanceof Error) {
       toast.error(error.message);
     } else {
-      const errorBody = (await error?.response?.json() || error.message);
+      const errorBody = (await error?.response?.json()) || error.message;
 
       toast.error(
         errorBody.error ||
-        errorBody.message ||
-        "Unknown error. Please try again later.",
+          errorBody.message ||
+          "Unknown error. Please try again later.",
       );
     }
   } catch {
@@ -88,13 +88,22 @@ export const handleMutationError = async (error: any) => {
   }
 };
 
-export const handleOptimisticUpdate = <S, T>(queryClient: QueryClient) => ({ queryKey, mutate }: { queryKey: unknown[], mutate: (state: S, variables: T) => S; }) => async (variables: T): Promise<unknown> => {
-  await queryClient.cancelQueries({ queryKey });
-  const previous = queryClient.getQueryData(queryKey) as S;
-  queryClient.setQueryData(queryKey, (state: S) => mutate(state, variables));
+export const handleOptimisticUpdate =
+  <S, T>(queryClient: QueryClient) =>
+  ({
+    queryKey,
+    mutate,
+  }: {
+    queryKey: unknown[];
+    mutate: (state: S, variables: T) => S;
+  }) =>
+  async (variables: T): Promise<unknown> => {
+    await queryClient.cancelQueries({ queryKey });
+    const previous = queryClient.getQueryData(queryKey) as S;
+    queryClient.setQueryData(queryKey, (state: S) => mutate(state, variables));
 
-  return { previous, optimisticQueryKey: queryKey } as unknown;
-}
+    return { previous, optimisticQueryKey: queryKey } as unknown;
+  };
 
 export const handleAuthSuccess = (queryClient: QueryClient) => (user: User) => {
   void queryClient.setQueryData(["me"], user);

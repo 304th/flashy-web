@@ -1,6 +1,6 @@
-import {useQueryClient} from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { api } from "@/services/api";
-import {getMutation, handleMutationError} from "@/lib/query";
+import { getMutation, handleMutationError } from "@/lib/query";
 
 interface RemoveReactionParams {
   id: string;
@@ -8,7 +8,9 @@ interface RemoveReactionParams {
   reactionType: string;
 }
 
-export const useRemoveReaction = (options?: { onMutate?: (variables: RemoveReactionParams) => unknown }) => {
+export const useRemoveReaction = (options?: {
+  onMutate?: (variables: RemoveReactionParams) => unknown;
+}) => {
   const queryClient = useQueryClient();
 
   return getMutation(
@@ -27,12 +29,15 @@ export const useRemoveReaction = (options?: { onMutate?: (variables: RemoveReact
     {
       onError: (error: any, _, context: any) => {
         if (context.optimisticQueryKey && context.previous) {
-          queryClient.setQueryData(context.optimisticQueryKey, context.previous)
+          queryClient.setQueryData(
+            context.optimisticQueryKey,
+            context.previous,
+          );
         }
 
         return handleMutationError(error);
       },
       onMutate: options?.onMutate,
-    }
+    },
   );
 };

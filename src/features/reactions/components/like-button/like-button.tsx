@@ -5,9 +5,17 @@ import { useReactionsCount } from "@/features/reactions/hooks/useReactionsCount"
 import { useHasReacted } from "@/features/reactions/hooks/useHasReacted";
 import { useAddReaction } from "@/features/reactions/queries/useAddReaction";
 import { useRemoveReaction } from "@/features/reactions/queries/useRemoveReaction";
-import likeAnimation from '@/features/reactions/assets/like-animation.json';
+import likeAnimation from "@/features/reactions/assets/like-animation.json";
 
-export const LikeButton = ({ post, onAdd, onRemove }: { post: Reactable, onAdd?: (variables: any) => unknown, onRemove?: (variables: any) => unknown }) => {
+export const LikeButton = ({
+  post,
+  onAdd,
+  onRemove,
+}: {
+  post: Reactable;
+  onAdd?: (variables: any) => unknown;
+  onRemove?: (variables: any) => unknown;
+}) => {
   const addReaction = useAddReaction({
     onMutate: onAdd,
   });
@@ -16,7 +24,7 @@ export const LikeButton = ({ post, onAdd, onRemove }: { post: Reactable, onAdd?:
   });
   const hasReacted = useHasReacted(post);
   const reactionsCount = useReactionsCount(post);
-  const previousHasReacted = usePrevious(hasReacted);//FIXME: Fix this logic
+  const previousHasReacted = usePrevious(hasReacted); //FIXME: Fix this logic
 
   return (
     <div
@@ -27,38 +35,34 @@ export const LikeButton = ({ post, onAdd, onRemove }: { post: Reactable, onAdd?:
         if (hasReacted) {
           removeReaction.mutate({
             id: post._id,
-            postType: 'social',
-            reactionType: 'like',
-          })
+            postType: "social",
+            reactionType: "like",
+          });
         } else {
           addReaction.mutate({
             id: post._id,
-            postType: 'social',
-            reactionType: 'like',
-          })
+            postType: "social",
+            reactionType: "like",
+          });
         }
       }}
     >
-      {
-        hasReacted ? (
-          <Lottie
-            animationData={likeAnimation}
-            loop={false}
-            autoplay={!previousHasReacted && hasReacted}
-            style={{
-              width: '30px',
-              height: '30px',
-            }}
-          />
-        ) : (
-          <div className="relative flex rounded-full">
-            <HeartIcon />
-          </div>
-        )
-      }
+      {hasReacted ? (
+        <Lottie
+          animationData={likeAnimation}
+          loop={false}
+          autoplay={!previousHasReacted && hasReacted}
+          style={{
+            width: "30px",
+            height: "30px",
+          }}
+        />
+      ) : (
+        <div className="relative flex rounded-full">
+          <HeartIcon />
+        </div>
+      )}
       <p className="transition">{reactionsCount}</p>
     </div>
   );
 };
-
-

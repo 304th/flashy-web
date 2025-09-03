@@ -1,4 +1,4 @@
-import { useMemo } from "react"
+import { useMemo } from "react";
 import { useMe } from "@/features/auth/queries/useMe";
 
 export const useHasReacted = (post: Reactable) => {
@@ -6,9 +6,13 @@ export const useHasReacted = (post: Reactable) => {
 
   return useMemo(() => {
     if (!me || !post.reactions) {
-      return false
+      return false;
     }
 
-    return Boolean(Object.keys(post.reactions)?.find?.(key => Boolean(post.reactions?.[key]?.[me.fbId])))
-  }, [post, me])
-}
+    return Boolean(
+      Object.keys(post.reactions)?.find?.((key) =>
+        Boolean(post.reactions?.[key]?.[me.fbId]),
+      ),
+    );
+  }, [post, me]);
+};

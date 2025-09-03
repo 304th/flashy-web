@@ -27,13 +27,19 @@ export const SocialPost = ({ socialPost }: { socialPost: SocialPost }) => {
             userimage: socialPost.userimage,
           }}
         />
-        <div className="flex items-center"><p>{timeAgo(socialPost.createdAt)}</p></div>
+        <div className="flex items-center">
+          <p>{timeAgo(socialPost.createdAt)}</p>
+        </div>
       </div>
       <p className="text-lg">{socialPost.description}</p>
       <div className="flex items-center justify-between">
         <div className="flex gap-2">
           <CommentButton commentsCount={socialPost.commentsCount} />
-          <LikeButton post={socialPost} onAdd={handleAddMutate} onRemove={handleRemoveMutate} />
+          <LikeButton
+            post={socialPost}
+            onAdd={handleAddMutate}
+            onRemove={handleRemoveMutate}
+          />
         </div>
         <div className="flex gap-2">
           <IconButton>

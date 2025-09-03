@@ -3,11 +3,7 @@ import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Form,
-  FormField,
-  FormItem,
-} from "@/components/ui/form";
+import { Form, FormField, FormItem } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { MessageProgress } from "@/features/social/components/post-create/message-progress";
@@ -20,7 +16,7 @@ const formSchema = z.object({
 });
 
 export const PostForm = () => {
-  const createSocialPost = useCreateSocialPost()
+  const createSocialPost = useCreateSocialPost();
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -36,13 +32,16 @@ export const PostForm = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit((params) => {
-          createSocialPost.mutate({
-            description: params.description,
-          }, {
-            onSuccess: () => {
-              form.reset();
-            }
-          })
+          createSocialPost.mutate(
+            {
+              description: params.description,
+            },
+            {
+              onSuccess: () => {
+                form.reset();
+              },
+            },
+          );
         })}
         className="flex flex-col w-full gap-3"
       >
@@ -64,7 +63,12 @@ export const PostForm = () => {
           <PostOptions />
           <div className="flex items-center gap-2">
             <MessageProgress value={description.length} max={500} showDigits />
-            <Button type="submit" className="w-[120px]" disabled={!form.formState.isValid} pending={createSocialPost.isPending}>
+            <Button
+              type="submit"
+              className="w-[120px]"
+              disabled={!form.formState.isValid}
+              pending={createSocialPost.isPending}
+            >
               Post
             </Button>
           </div>

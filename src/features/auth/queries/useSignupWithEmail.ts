@@ -17,7 +17,7 @@ export const useSignupWithEmail = () => {
 
       return await api
         .post("auth/register", {
-          body: JSON.stringify({ email, password, username }),
+          json: { email, password, username },
         })
         .json<any>();
     },

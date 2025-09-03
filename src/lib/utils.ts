@@ -1,4 +1,4 @@
-import { formatDistanceToNow } from 'date-fns';
+import { formatDistanceToNow } from "date-fns";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -13,4 +13,5 @@ export const notEmpty = <T>(obj: T | undefined): obj is T =>
       ? Object.keys(obj).length > 0 || (Array.isArray(obj) && obj.length > 0)
       : false;
 
-export const timeAgo = (timestamp: string) => formatDistanceToNow(new Date(timestamp), { addSuffix: true });
+export const timeAgo = (timestamp: string) =>
+  formatDistanceToNow(new Date(timestamp), { addSuffix: true });

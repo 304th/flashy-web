@@ -5,12 +5,16 @@ interface CreateSocialPostParams {
   description: string;
 }
 
-export const useCreateSocialPost = () => getMutation(['createSocialPost'], async ({ description }: CreateSocialPostParams) => {
-  const formData = new FormData();
+export const useCreateSocialPost = () =>
+  getMutation(
+    ["createSocialPost"],
+    async ({ description }: CreateSocialPostParams) => {
+      const formData = new FormData();
 
-  formData.append("description", description);
+      formData.append("description", description);
 
-  await api.post('create-social-post', {
-    body: formData,
-  })
-})
+      await api.post("create-social-post", {
+        body: formData,
+      });
+    },
+  );

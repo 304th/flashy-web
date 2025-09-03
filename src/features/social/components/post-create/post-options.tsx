@@ -53,5 +53,5 @@ export const PostOptions = () => {
       {/*  </svg>*/}
       {/*</IconButton>*/}
     </div>
-  )
-}
+  );
+};

@@ -19,7 +19,7 @@ export const useVerifyOtp = () => {
     async ({ otp, email }: VerifyOtpParams) => {
       return await api
         .post("verifyEmailAndRegister", {
-          body: JSON.stringify({ otp, email }),
+          json: { otp, email },
         })
         .json<any>();
     },

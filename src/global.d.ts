@@ -11,7 +11,16 @@ declare global {
     error: string;
   }
 
+  type Paginated<T> = { pages: T[], pageParams: number[] };
   type ApiResponse<T> = SuccessResponse<T> | ErrorResponse;
+  type PostType =
+    | "social"
+    | "written"
+    | "video"
+    | "spark"
+    | "comment"
+    | "reply";
+  type ReactionType = 'like';
 
   interface ApiResponse {
     data: any;
@@ -20,7 +29,7 @@ declare global {
   }
 
   interface User {
-    id: string;
+    fbId: string;
     email?: string;
     username: string;
     userimage: string;
@@ -49,10 +58,11 @@ declare global {
   }
 
   interface SocialPost {
-    id: string;
+    _id: string;
     description: string;
     image: string;
     poll: any[];
+    reactions: Record<string, Record<string, Reaction>>;
     likesCount: number;
     commentsCount: number;
     relitsCount: number;
@@ -63,6 +73,19 @@ declare global {
     userimage: string;
     createdAt: string;
     updatedAt: string;
+  }
+
+  interface Reaction {
+    _id?: string;
+    username: string;
+    userimage: string;
+    fbId: string;
+    count?: number;
+  }
+
+  interface Reactable {
+    _id: string;
+    reactions: Record<string, Record<string, Reaction>>;
   }
 }
 

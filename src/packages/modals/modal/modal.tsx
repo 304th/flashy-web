@@ -50,7 +50,7 @@ export const Modal = ({
       {...props}
       ref={ref}
       className={`relative flex min-w-[400px] sm:min-w-full sm:w-full flex-col
-        rounded-xl bg-background border border-base-300 p-4 ${className}`}
+        rounded-xl bg-background border border-base-400 p-4 ${className}`}
     >
       {header}
       <div className="flex-1">{children}</div>

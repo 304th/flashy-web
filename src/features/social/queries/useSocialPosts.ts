@@ -8,11 +8,11 @@ export const useSocialPosts = () => {
   });
 };
 
-export const updateQueryData = <S, T>(
+export const updateQueryData = <T>(
   queryClient: QueryClient,
-  mutate: (state: S, variables: T) => S,
+  mutate: (state: Paginated<SocialPost[]>, variables: T) => Paginated<SocialPost[]>,
 ) =>
-  handleOptimisticUpdate<S, T>(queryClient)({
+  handleOptimisticUpdate<Paginated<SocialPost[]>, T>(queryClient)({
     queryKey: ["social"],
     mutate,
   });

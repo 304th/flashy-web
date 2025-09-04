@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 interface IconButtonProps {
   variant?: "default" | "destructive" | "secondary" | "ghost" | "link";
   size?: "sm" | "lg" | "xl";
+  disabled?: boolean;
+  type?: "button" | "submit" | "reset";
   className?: string;
 }
 
@@ -11,6 +13,7 @@ export const IconButton = ({
   className,
   variant = "ghost",
   size = "sm",
+  disabled,
   children,
   ...props
 }: PropsWithChildren<IconButtonProps>) => (
@@ -19,6 +22,7 @@ export const IconButton = ({
     size={size}
     className={`!w-fit p-0 aspect-square ${className} hover:text-white
       [&_svg:not([class*='size-'])]:size-7 !px-0`}
+    disabled={disabled}
     {...props}
   >
     {children}

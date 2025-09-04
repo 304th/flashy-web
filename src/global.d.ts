@@ -40,7 +40,7 @@ declare global {
   }
 
   interface Author {
-    id: string;
+    fbId: string;
     username: string;
     userimage: string;
   }
@@ -86,8 +86,8 @@ declare global {
   interface CommentReply {
     _id?: string;
     text: string;
-    repliesCount: 0;
-    likesCount: 0;
+    repliesCount: number;
+    likesCount: number;
     item_key: string;
     item_type: string;
     created_by: {

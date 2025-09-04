@@ -1,5 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { getMutation, handleMutationError } from "@/lib/query";
+import {getMutation, handleMutationError, handleOptimisticUpdateError} from "@/lib/query";
 import { api } from "@/services/api";
 
 export interface CreateCommentParams {
@@ -31,17 +31,8 @@ export const useCreateComment = (options?: {
         .json();
     },
     {
-      onError: (error: any, _, context: any) => {
-        if (context.optimisticQueryKey && context.previous) {
-          queryClient.setQueryData(
-            context.optimisticQueryKey,
-            context.previous,
-          );
-        }
-
-        return handleMutationError(error);
-      },
       onMutate: options?.onMutate,
+      onError: handleOptimisticUpdateError(queryClient),
     },
   );
 };

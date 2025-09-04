@@ -8,7 +8,7 @@ export const useRemoveReactionMutate = () => {
   const [me] = useMe();
   const queryClient = useQueryClient();
 
-  return updateQueryData<Paginated<SocialPost[]>, AddReactionParams>(
+  return updateQueryData<AddReactionParams>(
     queryClient,
     (paginatedSocialPosts, params) => {
       return produce(paginatedSocialPosts, (draft) => {

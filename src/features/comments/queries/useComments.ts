@@ -16,12 +16,12 @@ export const useComments = (id: string) =>
     return data?.comment || [];
   });
 
-export const updateQueryData = <S, T>(
+export const updateQueryData = <T>(
   queryClient: QueryClient,
-  mutate: (state: S, variables: T) => S,
-  ...args: any[]
+  mutate: (state: Paginated<CommentReply[]>, variables: T) => Paginated<CommentReply[]>,
+  id: string
 ) =>
-  handleOptimisticUpdate<S, T>(queryClient)({
-    queryKey: ["comments", ...args],
+  handleOptimisticUpdate<Paginated<CommentReply[]>, T>(queryClient)({
+    queryKey: ["comments", id],
     mutate,
   });

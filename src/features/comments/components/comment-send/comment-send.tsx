@@ -10,7 +10,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { SendIcon } from "@/components/ui/icons/send";
 import { MessageProgress } from "@/features/social/components/post-create/message-progress";
 import { useCreateComment } from "@/features/comments/queries/useCreateComment";
+import { useCreateCommentMutate } from "@/features/comments/hooks/useCreateCommentMutate";
 import { defaultVariants } from "@/lib/framer";
+import { OptimisticUpdater } from "@/lib/query";
 
 const formSchema = z.object({
   message: z.string().max(500),
@@ -19,11 +21,13 @@ const formSchema = z.object({
 export interface CommentSendProps {
   post: Reactable;
   className?: string;
+  optimisticUpdates?: OptimisticUpdater[];
 }
 
-export const CommentSend = ({ post }: CommentSendProps) => {
+export const CommentSend = ({ post, optimisticUpdates }: CommentSendProps) => {
+  const createCommentMutate = useCreateCommentMutate(post._id, optimisticUpdates);
   const sendComment = useCreateComment({
-    onMutate: () => {},
+    onMutate: createCommentMutate,
   });
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -35,24 +39,26 @@ export const CommentSend = ({ post }: CommentSendProps) => {
 
   const message = form.watch("message");
 
+  const onSubmit = (params: { message: string }) => {
+    sendComment.mutate(
+      {
+        postId: post._id,
+        postType: "post",
+        message: params.message,
+      },
+      {
+        onSuccess: () => {
+          form.reset();
+        },
+      },
+    );
+  }
+
   return (
     <Form {...form}>
       <form
         className="flex items-center w-full border-t"
-        onSubmit={form.handleSubmit((params) => {
-          sendComment.mutate(
-            {
-              postId: post._id,
-              postType: "post",
-              message: params.message,
-            },
-            {
-              onSuccess: () => {
-                form.reset();
-              },
-            },
-          );
-        })}
+        onSubmit={form.handleSubmit(onSubmit)}
       >
         <FormField
           name="message"
@@ -67,6 +73,12 @@ export const CommentSend = ({ post }: CommentSendProps) => {
                   placeholder="What do you think about this?"
                   className="border-none rounded-tl-none rounded-tr-none
                     rounded-br-none w-full focus-visible:ring-0"
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" && !event.shiftKey) {
+                      event.preventDefault();
+                      form.handleSubmit(onSubmit)();
+                    }
+                  }}
                   {...props.field}
                 />
               </FormItem>
@@ -79,7 +91,7 @@ export const CommentSend = ({ post }: CommentSendProps) => {
             max={config.content.comments.maxLength}
             showDigits
           />
-          <IconButton variant="ghost" size="lg">
+          <IconButton type="submit" variant="default" size="lg" disabled={!form.formState.isDirty}>
             <SendIcon />
           </IconButton>
         </div>

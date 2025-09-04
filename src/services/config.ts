@@ -15,4 +15,12 @@ export const config = {
   misc: {
     notificationCenterId: "notification-center",
   },
+  content: {
+    social: {
+      maxLength: 500,
+    },
+    comments: {
+      maxLength: 500,
+    },
+  },
 } as const;

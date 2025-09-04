@@ -13,9 +13,9 @@ export const MessageProgress = ({
   const percentage = useMemo(() => value / max, [value, max]);
 
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex items-center gap-2">
       {showDigits && (
-        <div className="flex justify-end w-15">
+        <div className="flex justify-end w-14">
           <p className="text-sm">
             {value}/{max}
           </p>

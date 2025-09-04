@@ -30,7 +30,6 @@ export const Loadable = <TData extends any[]>({
   const empty = queries.some(
     (query) => typeof query.data === "undefined" && query.isSuccess,
   );
-
   if (queryError) {
     return <LoadableError error={error} fullScreen={fullScreenForDefaults} />;
   }

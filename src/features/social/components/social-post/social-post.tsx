@@ -1,19 +1,27 @@
 import { UserProfile } from "@/components/ui/user-profile";
 import { IconButton } from "@/components/ui/icon-button";
 import { ShareIcon } from "@/components/ui/icons/share";
-import { timeAgo } from "@/lib/utils";
+import { useModals } from "@/hooks/use-modals";
 import { LikeButton } from "@/features/reactions/components/like-button/like-button";
 import { CommentButton } from "@/features/comments/components/comment-button/comment-button";
 import { useAddReactionMutate } from "@/features/social/hooks/useAddReactionMutate";
 import { useRemoveReactionMutate } from "@/features/social/hooks/useRemoveReactionMutate";
+import { timeAgo } from "@/lib/utils";
 
-export const SocialPost = ({ socialPost }: { socialPost: SocialPost }) => {
+export const SocialPost = ({
+  socialPost,
+  className,
+}: {
+  socialPost: SocialPost;
+  className?: string;
+}) => {
+  const { openModal } = useModals();
   const handleAddMutate = useAddReactionMutate();
   const handleRemoveMutate = useRemoveReactionMutate();
 
   return (
     <div
-      className="flex flex-col p-4 gap-3 h-fit w-[600px] rounded"
+      className={`flex flex-col p-4 gap-3 h-fit w-[600px] rounded ${className}`}
       style={{
         background:
           "linear-gradient(180deg, #151515 0%, #151515 0.01%, #191919 100%)",
@@ -34,7 +42,14 @@ export const SocialPost = ({ socialPost }: { socialPost: SocialPost }) => {
       <p className="text-lg">{socialPost.description}</p>
       <div className="flex items-center justify-between">
         <div className="flex gap-2">
-          <CommentButton commentsCount={socialPost.commentsCount} />
+          <CommentButton
+            commentsCount={socialPost.commentsCount}
+            onComment={() =>
+              openModal("PostCommentsModal", {
+                post: socialPost,
+              })
+            }
+          />
           <LikeButton
             post={socialPost}
             onAdd={handleAddMutate}

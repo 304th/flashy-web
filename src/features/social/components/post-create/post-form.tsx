@@ -1,3 +1,4 @@
+import { config } from "@/services/config";
 import React from "react";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
@@ -12,7 +13,7 @@ import { useCreateSocialPost } from "@/features/social/queries/useCreateSocialPo
 import { defaultVariants } from "@/lib/framer";
 
 const formSchema = z.object({
-  description: z.string().max(500),
+  description: z.string().max(config.content.social.maxLength),
 });
 
 export const PostForm = () => {
@@ -51,7 +52,7 @@ export const PostForm = () => {
             <motion.div variants={defaultVariants.child}>
               <FormItem>
                 <Textarea
-                  maxLength={500}
+                  maxLength={config.content.social.maxLength}
                   placeholder="What ya thinking..."
                   {...props.field}
                 />
@@ -62,7 +63,11 @@ export const PostForm = () => {
         <div className="flex items-center justify-between">
           <PostOptions />
           <div className="flex items-center gap-2">
-            <MessageProgress value={description.length} max={500} showDigits />
+            <MessageProgress
+              value={description.length}
+              max={config.content.social.maxLength}
+              showDigits
+            />
             <Button
               type="submit"
               className="w-[120px]"

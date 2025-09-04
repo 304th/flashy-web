@@ -5,10 +5,12 @@ import { PropsWithChildren } from "react";
 import { ModalCenterProvider, ModalCenter } from "@/packages/modals";
 import { LoginModal } from "@/features/auth/components/login/login-modal";
 import { SignupModal } from "@/features/auth/components/login/signup-modal";
+import { PostCommentsModal } from "@/features/social/components/post-comments-modal/post-comments-modal";
 
 const modalsConfig = {
   LoginModal,
   SignupModal,
+  PostCommentsModal,
 };
 
 export type ModalType = keyof typeof modalsConfig;

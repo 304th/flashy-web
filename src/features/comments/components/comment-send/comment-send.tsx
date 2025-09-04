@@ -1,5 +1,5 @@
 import { config } from "@/services/config";
-import React from "react";
+import {useEffect} from "react";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -8,11 +8,13 @@ import { Form, FormField, FormItem } from "@/components/ui/form";
 import { IconButton } from "@/components/ui/icon-button";
 import { Textarea } from "@/components/ui/textarea";
 import { SendIcon } from "@/components/ui/icons/send";
+import { ReplyToComment } from "@/features/comments/components/comment-send/reply-to-comment";
 import { MessageProgress } from "@/features/social/components/post-create/message-progress";
 import { useCreateComment } from "@/features/comments/queries/useCreateComment";
+import {useCreateReply} from "@/features/comments/queries/useCreateReply";
 import { useCreateCommentMutate } from "@/features/comments/hooks/useCreateCommentMutate";
+import type { OptimisticUpdater } from "@/lib/query";
 import { defaultVariants } from "@/lib/framer";
-import { OptimisticUpdater } from "@/lib/query";
 
 const formSchema = z.object({
   message: z.string().max(500),
@@ -20,15 +22,27 @@ const formSchema = z.object({
 
 export interface CommentSendProps {
   post: Reactable;
+  replyComment: CommentPost | null;
   className?: string;
   optimisticUpdates?: OptimisticUpdater[];
+  onCloseReply?: () => void;
 }
 
-export const CommentSend = ({ post, optimisticUpdates }: CommentSendProps) => {
-  const createCommentMutate = useCreateCommentMutate(post._id, optimisticUpdates);
+export const CommentSend = ({
+  post,
+  replyComment,
+  optimisticUpdates,
+  onCloseReply,
+}: CommentSendProps) => {
+  const createCommentMutate = useCreateCommentMutate(
+    post._id,
+    optimisticUpdates,
+  );
   const sendComment = useCreateComment({
     onMutate: createCommentMutate,
   });
+  const sendReply = useCreateReply();
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -37,24 +51,43 @@ export const CommentSend = ({ post, optimisticUpdates }: CommentSendProps) => {
     mode: "all",
   });
 
+  useEffect(() => {
+    if (replyComment) {
+      form.setFocus('message');
+    }
+  }, [replyComment])
+
   const message = form.watch("message");
 
   const onSubmit = (params: { message: string }) => {
-    sendComment.mutate(
-      {
-        postId: post._id,
-        postType: "post",
+    if (replyComment) {
+      sendReply.mutate({
+        commentId: replyComment._id,
         message: params.message,
-      },
-      {
+        mentionedUsers: [],
+      }, {
         onSuccess: () => {
           form.reset();
+        }
+      })
+    } else {
+      sendComment.mutate(
+        {
+          postId: post._id,
+          postType: "post",
+          message: params.message,
         },
-      },
-    );
-  }
+        {
+          onSuccess: () => {
+            form.reset();
+          },
+        },
+      );
+    }
+  };
 
-  return (
+  return <div className="flex flex-col w-full">
+    {replyComment && <ReplyToComment comment={replyComment} onClose={onCloseReply} />}
     <Form {...form}>
       <form
         className="flex items-center w-full border-t"
@@ -72,7 +105,7 @@ export const CommentSend = ({ post, optimisticUpdates }: CommentSendProps) => {
                   maxLength={500}
                   placeholder="What do you think about this?"
                   className="border-none rounded-tl-none rounded-tr-none
-                    rounded-br-none w-full focus-visible:ring-0"
+                    rounded-br-none w-full focus-visible:ring-0 min-h-[50px]"
                   onKeyDown={(event) => {
                     if (event.key === "Enter" && !event.shiftKey) {
                       event.preventDefault();
@@ -85,17 +118,22 @@ export const CommentSend = ({ post, optimisticUpdates }: CommentSendProps) => {
             </motion.div>
           )}
         />
-        <div className="flex items-center gap-2 p-4">
+        <div className="flex items-center gap-2 py-3 pr-3">
           <MessageProgress
             value={message.length}
             max={config.content.comments.maxLength}
             showDigits
           />
-          <IconButton type="submit" variant="default" size="lg" disabled={!form.formState.isDirty}>
+          <IconButton
+            type="submit"
+            variant="default"
+            size="lg"
+            disabled={!form.formState.isDirty}
+          >
             <SendIcon />
           </IconButton>
         </div>
       </form>
     </Form>
-  );
+  </div>
 };

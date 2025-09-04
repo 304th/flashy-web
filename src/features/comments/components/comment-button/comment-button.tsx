@@ -5,7 +5,7 @@ export const CommentButton = ({
   onComment,
 }: {
   commentsCount: number;
-  onComment: () => void;
+  onComment?: () => void;
 }) => {
   return (
     <div

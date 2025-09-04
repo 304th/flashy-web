@@ -83,10 +83,25 @@ declare global {
     count?: number;
   }
 
-  interface CommentReply {
-    _id?: string;
+  interface CommentPost {
+    _id: string;
     text: string;
     repliesCount: number;
+    likesCount: number;
+    item_key: string;
+    item_type: string;
+    created_by: {
+      _id: string;
+      username: string;
+      userimage: string;
+    };
+    created_at: string;
+    isLiked: boolean;
+  }
+
+  interface Reply {
+    _id: string;
+    text: string;
     likesCount: number;
     item_key: string;
     item_type: string;

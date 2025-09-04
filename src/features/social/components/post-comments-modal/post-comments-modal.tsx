@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Modal as ModalComponent } from "@/packages/modals";
 import { CloseButton } from "@/components/ui/close-button";
@@ -19,6 +19,7 @@ export const PostCommentsModal = ({
   onClose,
   ...props
 }: PostCommentsModalProps) => {
+  const [replyComment, setReplyComment] = useState<CommentPost | null>(null);
   const [socialPost] = useSocialPostById(post._id);
   const handleCommentCountUpdate = useUpdateCountOnCommentCreate(post._id);
 
@@ -36,10 +37,21 @@ export const PostCommentsModal = ({
         <div className="flex flex-col w-full justify-center"></div>
       </motion.div>
       <div className="flex flex-col gap-4 w-full bg-base-200 border-b">
-        <SocialPost socialPost={socialPost || post} className="rounded-b-none" />
+        <SocialPost
+          socialPost={socialPost || post}
+          className="rounded-b-none"
+        />
       </div>
-      <CommentsFeed post={post} />
-      <CommentSend post={post} optimisticUpdates={handleCommentCountUpdate} />
+      <CommentsFeed
+        post={post}
+        onCommentReply={(comment) => setReplyComment(comment)}
+      />
+      <CommentSend
+        post={post}
+        replyComment={replyComment}
+        optimisticUpdates={handleCommentCountUpdate}
+        onCloseReply={() => setReplyComment(null)}
+      />
     </Modal>
   );
 };

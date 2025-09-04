@@ -3,12 +3,12 @@ import { api } from "@/services/api";
 import type { QueryClient } from "@tanstack/react-query";
 
 export interface CommentResponse {
-  comment: CommentReply[];
+  comment: CommentPost[];
   commentCount: number;
 }
 
 export const useComments = (id: string) =>
-  getInfiniteQuery<CommentReply[]>(["comments", id], async ({ pageParam }) => {
+  getInfiniteQuery<CommentPost[]>(["comments", id], async ({ pageParam }) => {
     const data = await api
       .get(`comments/${id}?skip=${pageParam - 1}`)
       .json<CommentResponse>();
@@ -18,10 +18,13 @@ export const useComments = (id: string) =>
 
 export const updateQueryData = <T>(
   queryClient: QueryClient,
-  mutate: (state: Paginated<CommentReply[]>, variables: T) => Paginated<CommentReply[]>,
-  id: string
+  mutate: (
+    state: Paginated<CommentPost[]>,
+    variables: T,
+  ) => Paginated<CommentPost[]>,
+  id: string,
 ) =>
-  handleOptimisticUpdate<Paginated<CommentReply[]>, T>(queryClient)({
+  handleOptimisticUpdate<Paginated<CommentPost[]>, T>(queryClient)({
     queryKey: ["comments", id],
     mutate,
   });

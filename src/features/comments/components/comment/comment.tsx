@@ -1,26 +1,46 @@
+import { useState } from "react";
 import { UserProfile } from "@/components/ui/user-profile";
-import { timeAgo } from "@/lib/utils";
 import { CommentButton } from "@/features/comments/components/comment-button/comment-button";
+import { ReplyFeed } from "@/features/comments/components/reply-feed/reply-feed";
+import { LikeButton } from "@/features/reactions/components/like-button/like-button";
+import { ReplyIcon } from "@/components/ui/icons/reply";
+import { timeAgo } from "@/lib/utils";
 
 export interface CommentProps {
-  comment: CommentReply;
+  comment: CommentPost | Reply;
+  isReply?: boolean;
   className?: string;
+  onReply?: () => void;
 }
 
-export const Comment = ({ comment, className }: CommentProps) => {
+export const isComment = (post: CommentPost | Reply): post is CommentPost => 'repliesCount' in post
+
+export const Comment = ({
+  comment,
+  isReply,
+  className,
+  onReply,
+}: CommentProps) => {
+  const [showReplies, setShowReplies] = useState(false);
+
   return (
     <div
-      className={`flex flex-col p-4 gap-3 h-fit w-[600px] bg-base-100 rounded
+      className={`flex flex-col p-4 gap-3 h-fit w-full bg-base-100 rounded
         ${className}`}
+      style={showReplies ? { paddingBottom: 0 } : {}}
     >
       <div className="flex items-center justify-between">
-        <UserProfile
-          user={{
-            fbId: comment.created_by._id,
-            username: comment.created_by.username,
-            userimage: comment.created_by.userimage,
-          }}
-        />
+        <div className="flex items-center gap-2">
+          {isReply && <ReplyIcon />}
+          <UserProfile
+            user={{
+              fbId: comment.created_by._id,
+              username: comment.created_by.username,
+              userimage: comment.created_by.userimage,
+            }}
+          />
+        </div>
+
         <div className="flex items-center">
           <p>{timeAgo(comment.created_at)}</p>
         </div>
@@ -28,17 +48,28 @@ export const Comment = ({ comment, className }: CommentProps) => {
       <p className="text-lg">{comment.text}</p>
       <div className="flex items-center justify-between">
         <div className="flex gap-2">
-          <CommentButton
-            commentsCount={comment.repliesCount}
-            onComment={() => {}}
+          {!isReply && isComment(comment) && (
+            <CommentButton
+              commentsCount={comment.repliesCount}
+              onComment={() => {
+                setShowReplies(state => !state);
+
+                if (!showReplies) {
+                  onReply && onReply();
+                }
+              }}
+            />
+          )}
+          <LikeButton
+            post={comment}
           />
-          {/*<LikeButton*/}
-          {/*  post={comment}*/}
-          {/*  onAdd={handleAddMutate}*/}
-          {/*  onRemove={handleRemoveMutate}*/}
-          {/*/>*/}
         </div>
       </div>
+      {
+        showReplies && isComment(comment) && <div className="flex flex-col w-full px-4 border-t">
+          <ReplyFeed comment={comment} />
+        </div>
+      }
     </div>
   );
 };

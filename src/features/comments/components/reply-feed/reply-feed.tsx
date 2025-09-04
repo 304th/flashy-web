@@ -1,59 +1,42 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { Separator } from "@/components/ui/separator";
 import { Loadable } from "@/components/ui/loadable";
 import { Spinner } from "@/components/ui/spinner/spinner";
 import { Comment } from "@/features/comments/components/comment/comment";
 import { CommentFeedEmpty } from "@/features/comments/components/comments-feed/comment-feed-empty";
-import { useComments } from "@/features/comments/queries/useComments";
-import { useCommentsCount } from "@/features/comments/queries/useCommentsCount";
+import { useReplies } from "@/features/comments/queries/useReplies";
 
-export interface CommentsFeedProps {
-  post: Reactable;
-  onCommentReply: (comment: CommentPost) => void;
-}
-
-export const CommentsFeed = ({ post, onCommentReply }: CommentsFeedProps) => {
-  const [commentCount, commentsCountQuery] = useCommentsCount(post._id);
-  const [comments, commentsQuery] = useComments(post._id);
+export const ReplyFeed = ({ comment }: { comment: CommentPost }) => {
+  const [replies, repliesQuery] = useReplies(comment._id);
 
   return (
     <div className="flex flex-col bg-base-100">
       <Loadable
-        queries={[commentsQuery as any, commentsCountQuery]}
+        queries={[repliesQuery]}
         fallback={
           <div className="flex justify-center w-full p-6">
-            <Separator>
-              <Spinner className="!h-5" />
-            </Separator>
+            <Spinner className="!h-5" />
           </div>
         }
       >
         {() => {
-          if (comments?.length === 0) {
+          if (replies?.length === 0) {
             return <CommentFeedEmpty />;
           }
 
           return (
             <div className="relative flex flex-col">
-              <div className="flex w-full px-6 pt-6">
-                <Separator>{commentCount} replies</Separator>
-              </div>
               <div
                 className="flex flex-col w-fullalign-center min-h-[60px]
                   max-h-[350px] overflow-scroll divide-y"
               >
                 <AnimatePresence initial={false}>
-                  {comments?.map((comment) => (
+                  {replies?.map((reply) => (
                     <motion.div
-                      key={comment._id}
+                      key={reply._id}
                       initial={{ opacity: 0, y: 1 }}
                       animate={{ opacity: 1, y: 0 }}
                     >
-                      <Comment
-                        key={comment._id}
-                        comment={comment}
-                        onReply={() => onCommentReply(comment)}
-                      />
+                      <Comment key={reply._id} comment={reply} isReply />
                     </motion.div>
                   ))}
                 </AnimatePresence>

@@ -1,8 +1,8 @@
 import { produce } from "immer";
-import {useQueryClient} from "@tanstack/react-query";
-import {updateQueryData as updateSocialPostsQuery} from "@/features/social/queries/useSocialPosts";
+import { useQueryClient } from "@tanstack/react-query";
+import { updateQueryData as updateSocialPostsQuery } from "@/features/social/queries/useSocialPosts";
 import { updateQueryData as updateSocialPostByIdQuery } from "@/features/social/queries/useSocialPostById";
-import type {CreateCommentParams} from "@/features/comments/queries/useCreateComment";
+import type { CreateCommentParams } from "@/features/comments/queries/useCreateComment";
 
 export const useUpdateCountOnCommentCreate = (id: string) => {
   const queryClient = useQueryClient();
@@ -19,10 +19,14 @@ export const useUpdateCountOnCommentCreate = (id: string) => {
         });
       });
     }),
-    updateSocialPostByIdQuery<CreateCommentParams>(queryClient, (state) => {
-      return produce(state, (draft) => {
-        draft.commentsCount += 1;
-      })
-    }, id)
-  ]
-}
+    updateSocialPostByIdQuery<CreateCommentParams>(
+      queryClient,
+      (state) => {
+        return produce(state, (draft) => {
+          draft.commentsCount += 1;
+        });
+      },
+      id,
+    ),
+  ];
+};

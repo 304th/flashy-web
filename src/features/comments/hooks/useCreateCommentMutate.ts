@@ -7,7 +7,10 @@ import type { CreateCommentParams } from "@/features/comments/queries/useCreateC
 import { createOptimisticComment } from "@/features/comments/utils/createOptimisticComment";
 import { combineOptimisticUpdates, OptimisticUpdater } from "@/lib/query";
 
-export const useCreateCommentMutate = (id: string, mutates?: OptimisticUpdater[]) => {
+export const useCreateCommentMutate = (
+  id: string,
+  mutates?: OptimisticUpdater[],
+) => {
   const [me] = useMe();
   const queryClient = useQueryClient();
   const updates = [
@@ -27,11 +30,11 @@ export const useCreateCommentMutate = (id: string, mutates?: OptimisticUpdater[]
       },
       id,
     ),
-  ]
+  ];
 
   if (mutates) {
     updates.push(...(mutates.filter(Boolean) as OptimisticUpdater[]));
   }
 
-  return combineOptimisticUpdates<CreateCommentParams>(updates)
+  return combineOptimisticUpdates<CreateCommentParams>(updates);
 };

@@ -1,7 +1,10 @@
 import { nanoid } from "nanoid";
 import { CreateCommentParams } from "@/features/comments/queries/useCreateComment";
 
-export const createOptimisticComment = (params: CreateCommentParams, author: Author) => ({
+export const createOptimisticComment = (
+  params: CreateCommentParams,
+  author: Author,
+) => ({
   _id: nanoid(),
   text: params.message,
   repliesCount: 0,

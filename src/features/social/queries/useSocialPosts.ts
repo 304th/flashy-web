@@ -10,7 +10,10 @@ export const useSocialPosts = () => {
 
 export const updateQueryData = <T>(
   queryClient: QueryClient,
-  mutate: (state: Paginated<SocialPost[]>, variables: T) => Paginated<SocialPost[]>,
+  mutate: (
+    state: Paginated<SocialPost[]>,
+    variables: T,
+  ) => Paginated<SocialPost[]>,
 ) =>
   handleOptimisticUpdate<Paginated<SocialPost[]>, T>(queryClient)({
     queryKey: ["social"],

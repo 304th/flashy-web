@@ -1,5 +1,9 @@
 import { useQueryClient } from "@tanstack/react-query";
-import {getMutation, handleMutationError, handleOptimisticUpdateError} from "@/lib/query";
+import {
+  getMutation,
+  handleMutationError,
+  handleOptimisticUpdateError,
+} from "@/lib/query";
 import { api } from "@/services/api";
 
 export interface CreateCommentParams {
@@ -17,7 +21,7 @@ export const useCreateComment = (options?: {
   return getMutation(
     ["createComment"],
     async (params: CreateCommentParams) => {
-      return
+      return;
       return api
         .post("comment", {
           json: {

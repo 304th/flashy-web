@@ -8,7 +8,9 @@ import {
 } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-export type OptimisticUpdater = (variables: any) => Promise<{ optimisticUpdates: any[] }>;
+export type OptimisticUpdater = (
+  variables: any,
+) => Promise<{ optimisticUpdates: any[] }>;
 
 export const getQuery = <T>(
   queryKey: string[],
@@ -107,34 +109,41 @@ export const handleOptimisticUpdate =
     return { optimisticUpdates: [[queryKey, previous]] };
   };
 
-export const handleOptimisticUpdateError = (queryClient: QueryClient) => (error: any, _: any, context: any) => {
-  if (Array.isArray(context.optimisticUpdates)) {
-    context.optimisticUpdates.map(([queryKey, previousData]: any) => {
-      queryClient.setQueryData(
-        queryKey,
-        previousData,
-      );
-    })
-  }
+export const handleOptimisticUpdateError =
+  (queryClient: QueryClient) => (error: any, _: any, context: any) => {
+    if (Array.isArray(context.optimisticUpdates)) {
+      context.optimisticUpdates.map(([queryKey, previousData]: any) => {
+        queryClient.setQueryData(queryKey, previousData);
+      });
+    }
 
-  return handleMutationError(error);
-}
+    return handleMutationError(error);
+  };
 
 export const handleAuthSuccess = (queryClient: QueryClient) => (user: User) => {
   void queryClient.setQueryData(["me"], user);
   void queryClient.invalidateQueries({ queryKey: ["me"] });
 };
 
-export const combineOptimisticUpdates = <T>(updates: Array<OptimisticUpdater>) => async (variables: T): Promise<{
-  optimisticUpdates: any[];
-}> => {
-  const results = await Promise.all(updates.map(update => update(variables)));
-
-  return results.reduce((acc, result) => {
-    acc.optimisticUpdates.push(result.optimisticUpdates[0])
-
-    return acc;
-  }, { optimisticUpdates: [] } as {
+export const combineOptimisticUpdates =
+  <T>(updates: Array<OptimisticUpdater>) =>
+  async (
+    variables: T,
+  ): Promise<{
     optimisticUpdates: any[];
-  })
-}
+  }> => {
+    const results = await Promise.all(
+      updates.map((update) => update(variables)),
+    );
+
+    return results.reduce(
+      (acc, result) => {
+        acc.optimisticUpdates.push(result.optimisticUpdates[0]);
+
+        return acc;
+      },
+      { optimisticUpdates: [] } as {
+        optimisticUpdates: any[];
+      },
+    );
+  };

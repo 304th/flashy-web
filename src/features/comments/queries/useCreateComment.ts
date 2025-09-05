@@ -10,6 +10,7 @@ export interface CreateCommentParams {
   postId: string;
   postType: string;
   message: string;
+  mentionedUsers: string[];
 }
 
 //FIXME: refactor on backend
@@ -27,7 +28,7 @@ export const useCreateComment = (options?: {
           json: {
             itemMongoKey: params.postId,
             itemType: params.postType,
-            mentionedUsers: [],
+            mentionedUsers: params.mentionedUsers,
             commentFormKey: `reply_first_${params.postId}`,
             comment: { text: params.message },
           },

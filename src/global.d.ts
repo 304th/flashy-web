@@ -95,6 +95,7 @@ declare global {
       username: string;
       userimage: string;
     };
+    mentionedUsers: any[];
     created_at: string;
     isLiked: boolean;
   }
@@ -110,6 +111,7 @@ declare global {
       username: string;
       userimage: string;
     };
+    mentionedUsers: any[];
     created_at: string;
     isLiked: boolean;
   }
@@ -117,6 +119,12 @@ declare global {
   interface Reactable {
     _id: string;
     reactions: Record<string, Record<string, Reaction>>;
+  }
+
+  interface Likeable {
+    _id: string;
+    likesCount: number;
+    isLiked: boolean;
   }
 }
 

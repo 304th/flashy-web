@@ -4,9 +4,11 @@ import { Spinner } from "@/components/ui/spinner/spinner";
 import { Comment } from "@/features/comments/components/comment/comment";
 import { CommentFeedEmpty } from "@/features/comments/components/comments-feed/comment-feed-empty";
 import { useReplies } from "@/features/comments/queries/useReplies";
+import {useLikeReplyMutate} from "@/features/comments/hooks/useLikeReplyMutate";
 
 export const ReplyFeed = ({ comment }: { comment: CommentPost }) => {
   const [replies, repliesQuery] = useReplies(comment._id);
+  const handleLikeReply = useLikeReplyMutate(comment._id)
 
   return (
     <div className="flex flex-col bg-base-100">
@@ -26,8 +28,7 @@ export const ReplyFeed = ({ comment }: { comment: CommentPost }) => {
           return (
             <div className="relative flex flex-col">
               <div
-                className="flex flex-col w-fullalign-center min-h-[60px]
-                  max-h-[350px] overflow-scroll divide-y"
+                className="flex flex-col w-fullalign-center min-h-[60px] divide-y"
               >
                 <AnimatePresence initial={false}>
                   {replies?.map((reply) => (
@@ -36,7 +37,7 @@ export const ReplyFeed = ({ comment }: { comment: CommentPost }) => {
                       initial={{ opacity: 0, y: 1 }}
                       animate={{ opacity: 1, y: 0 }}
                     >
-                      <Comment key={reply._id} comment={reply} isReply />
+                      <Comment key={reply._id} comment={reply} isReply onLike={handleLikeReply} />
                     </motion.div>
                   ))}
                 </AnimatePresence>

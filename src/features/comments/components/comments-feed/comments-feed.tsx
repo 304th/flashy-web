@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Separator } from "@/components/ui/separator";
 import { Loadable } from "@/components/ui/loadable";
@@ -6,6 +7,7 @@ import { Comment } from "@/features/comments/components/comment/comment";
 import { CommentFeedEmpty } from "@/features/comments/components/comments-feed/comment-feed-empty";
 import { useComments } from "@/features/comments/queries/useComments";
 import { useCommentsCount } from "@/features/comments/queries/useCommentsCount";
+import { useLikeCommentMutate } from "@/features/comments/hooks/useLikeCommentMutate";
 
 export interface CommentsFeedProps {
   post: Reactable;
@@ -13,11 +15,19 @@ export interface CommentsFeedProps {
 }
 
 export const CommentsFeed = ({ post, onCommentReply }: CommentsFeedProps) => {
+  const listRef = useRef<HTMLDivElement>(null);
   const [commentCount, commentsCountQuery] = useCommentsCount(post._id);
   const [comments, commentsQuery] = useComments(post._id);
+  const handleCommentLike = useLikeCommentMutate(post._id);
+
+  useEffect(() => {
+    if (commentCount) {
+      listRef.current?.scrollTo?.({ top: 0, behavior: "smooth" });
+    }
+  }, [commentCount]);
 
   return (
-    <div className="flex flex-col bg-base-100">
+    <div className="flex flex-col bg-base-150">
       <Loadable
         queries={[commentsQuery as any, commentsCountQuery]}
         fallback={
@@ -39,6 +49,7 @@ export const CommentsFeed = ({ post, onCommentReply }: CommentsFeedProps) => {
                 <Separator>{commentCount} replies</Separator>
               </div>
               <div
+                ref={listRef}
                 className="flex flex-col w-fullalign-center min-h-[60px]
                   max-h-[350px] overflow-scroll divide-y"
               >
@@ -53,6 +64,7 @@ export const CommentsFeed = ({ post, onCommentReply }: CommentsFeedProps) => {
                         key={comment._id}
                         comment={comment}
                         onReply={() => onCommentReply(comment)}
+                        onLike={handleCommentLike}
                       />
                     </motion.div>
                   ))}

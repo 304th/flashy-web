@@ -49,7 +49,7 @@ export const PostCommentsModal = ({
       <CommentSend
         post={post}
         replyComment={replyComment}
-        optimisticUpdates={handleCommentCountUpdate}
+        onCommentSend={() => handleCommentCountUpdate}
         onCloseReply={() => setReplyComment(null)}
       />
     </Modal>

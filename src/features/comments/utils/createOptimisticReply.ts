@@ -1,16 +1,15 @@
 import { nanoid } from "nanoid";
-import { CreateCommentParams } from "@/features/comments/queries/useCreateComment";
+import { CreateReplyParams } from "@/features/comments/queries/useCreateReply";
 
-export const createOptimisticComment = (
-  params: CreateCommentParams,
+export const createOptimisticReply = (
+  params: CreateReplyParams,
   author: Author,
-): CommentPost => ({
+): Reply => ({
   _id: nanoid(),
   text: params.message,
-  repliesCount: 0,
   likesCount: 0,
   item_key: params.message,
-  item_type: params.postType,
+  item_type: 'post',
   created_by: {
     _id: author.fbId,
     username: author.username,

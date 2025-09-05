@@ -1,7 +1,21 @@
 import { api } from "@/services/api";
-import { getQuery } from "@/lib/query";
+import {getQuery, handleOptimisticUpdate} from "@/lib/query";
+import type {QueryClient} from "@tanstack/react-query";
 
-export const useReplies = (id: string) =>
-  getQuery(["replies", id], async () => {
-    return await api.get(`commentReplies/${id}`).json<Reply[]>();
+export const useReplies = (commentId: string) =>
+  getQuery(["replies", commentId], async () => {
+    return await api.get(`commentReplies/${commentId}`).json<Reply[]>();
+  });
+
+export const updateQueryData = <T>(
+  queryClient: QueryClient,
+  mutate: (
+    state: Reply[],
+    variables: T,
+  ) => Reply[],
+  id: string,
+) =>
+  handleOptimisticUpdate<Reply[], T>(queryClient)({
+    queryKey: ["replies", id],
+    mutate,
   });

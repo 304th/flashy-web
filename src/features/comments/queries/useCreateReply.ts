@@ -1,14 +1,20 @@
-import { getMutation } from "@/lib/query";
+import {useQueryClient} from "@tanstack/react-query";
 import { api } from "@/services/api";
+import {getMutation, handleOptimisticUpdateError} from "@/lib/query";
 
-interface CreateReplyParams {
+export interface CreateReplyParams {
   commentId: string;
   mentionedUsers: string[];
   message: string;
 }
 
-export const useCreateReply = () =>
-  getMutation(["createReply"], async (params: CreateReplyParams) => {
+export const useCreateReply = (options?: {
+  onMutate?: (variables: CreateReplyParams) => unknown;
+}) => {
+  const queryClient = useQueryClient();
+
+  return getMutation(["createReply"], async (params: CreateReplyParams) => {
+    return;
     return api
       .post("reply", {
         json: {
@@ -20,4 +26,8 @@ export const useCreateReply = () =>
         },
       })
       .json();
+  }, {
+    onMutate: options?.onMutate,
+    onError: handleOptimisticUpdateError(queryClient),
   });
+}

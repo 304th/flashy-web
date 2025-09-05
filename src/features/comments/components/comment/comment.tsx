@@ -11,15 +11,18 @@ export interface CommentProps {
   isReply?: boolean;
   className?: string;
   onReply?: () => void;
+  onLike?: any; //FIXME: correct type
 }
 
-export const isComment = (post: CommentPost | Reply): post is CommentPost => 'repliesCount' in post
+export const isComment = (post: CommentPost | Reply): post is CommentPost =>
+  "repliesCount" in post;
 
 export const Comment = ({
   comment,
   isReply,
   className,
   onReply,
+  onLike,
 }: CommentProps) => {
   const [showReplies, setShowReplies] = useState(false);
 
@@ -52,7 +55,7 @@ export const Comment = ({
             <CommentButton
               commentsCount={comment.repliesCount}
               onComment={() => {
-                setShowReplies(state => !state);
+                setShowReplies((state) => !state);
 
                 if (!showReplies) {
                   onReply && onReply();
@@ -60,16 +63,14 @@ export const Comment = ({
               }}
             />
           )}
-          <LikeButton
-            post={comment}
-          />
+          <LikeButton post={comment} onAdd={onLike} onRemove={onLike} />
         </div>
       </div>
-      {
-        showReplies && isComment(comment) && <div className="flex flex-col w-full px-4 border-t">
+      {showReplies && isComment(comment) && (
+        <div className="flex flex-col w-full px-4 border-t">
           <ReplyFeed comment={comment} />
         </div>
-      }
+      )}
     </div>
   );
 };

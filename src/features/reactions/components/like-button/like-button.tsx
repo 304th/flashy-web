@@ -1,68 +1,34 @@
-import Lottie from "lottie-react";
-import { usePrevious } from "react-use";
-import { HeartIcon } from "@/components/ui/icons/heart";
-import { useReactionsCount } from "@/features/reactions/hooks/useReactionsCount";
-import { useHasReacted } from "@/features/reactions/hooks/useHasReacted";
-import { useAddReaction } from "@/features/reactions/queries/useAddReaction";
-import { useRemoveReaction } from "@/features/reactions/queries/useRemoveReaction";
-import likeAnimation from "@/features/reactions/assets/like-animation.json";
+import type {ReactNode} from "react";
+import {ReactableLikeButton} from "@/features/reactions/components/like-button/reactable-like-button";
+import {LikeButtonCore, LikeButtonCoreProps} from "@/features/reactions/components/like-button/like-button-core";
+import {LikeableLikeButton} from "@/features/reactions/components/like-button/likeable-like-button";
+
+export const isReactable = (post: any): post is Reactable => {
+  return post.reactions;
+};
+
+export type LikeButtonButtonRender = ((data: LikeButtonCoreProps) => ReactNode) | (() => ReactNode);
 
 export const LikeButton = ({
   post,
   onAdd,
   onRemove,
 }: {
-  post: Reactable;
+  post: Reactable | Likeable;
   onAdd?: (variables: any) => unknown;
   onRemove?: (variables: any) => unknown;
 }) => {
-  const addReaction = useAddReaction({
-    onMutate: onAdd,
-  });
-  const removeReaction = useRemoveReaction({
-    onMutate: onRemove,
-  });
-  const hasReacted = useHasReacted(post);
-  const reactionsCount = useReactionsCount(post);
-  const previousHasReacted = usePrevious(hasReacted); //FIXME: Fix this logic
-
-  return (
-    <div
-      className="group flex items-center gap-1 px-1 py-[2px] rounded-md
-        cursor-pointer transition hover:text-[#E03336] hover:bg-[#E0333610]"
-      role="button"
-      onClick={() => {
-        if (hasReacted) {
-          removeReaction.mutate({
-            id: post._id,
-            postType: "social",
-            reactionType: "like",
-          });
-        } else {
-          addReaction.mutate({
-            id: post._id,
-            postType: "social",
-            reactionType: "like",
-          });
-        }
-      }}
-    >
-      {hasReacted ? (
-        <Lottie
-          animationData={likeAnimation}
-          loop={false}
-          autoplay={!previousHasReacted && hasReacted}
-          style={{
-            width: "30px",
-            height: "30px",
-          }}
-        />
-      ) : (
-        <div className="relative flex rounded-full">
-          <HeartIcon />
-        </div>
+  if (isReactable(post)) {
+    return <ReactableLikeButton post={post} onAdd={onAdd} onRemove={onRemove}>
+      {({ isLiked, likesCount, onLike, onUnlike }) => (
+        <LikeButtonCore isLiked={isLiked} likesCount={likesCount} onLike={onLike} onUnlike={onUnlike} />
       )}
-      <p className="transition">{reactionsCount}</p>
-    </div>
-  );
+    </ReactableLikeButton>
+  }
+
+  return <LikeableLikeButton post={post} onAdd={onAdd} onRemove={onRemove}>
+    {({ isLiked, likesCount, onLike, onUnlike }) => (
+      <LikeButtonCore isLiked={isLiked} likesCount={likesCount} onLike={onLike} onUnlike={onUnlike} />
+    )}
+  </LikeableLikeButton>
 };

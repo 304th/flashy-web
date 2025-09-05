@@ -15,7 +15,7 @@ import { useCreateReply } from "@/features/comments/queries/useCreateReply";
 import { useCreateCommentMutate } from "@/features/comments/hooks/useCreateCommentMutate";
 import type { OptimisticUpdater } from "@/lib/query";
 import { defaultVariants } from "@/lib/framer";
-import {useCreateReplyMutate} from "@/features/comments/hooks/useCreateReplyMutate";
+import { useCreateReplyMutate } from "@/features/comments/hooks/useCreateReplyMutate";
 
 const formSchema = z.object({
   message: z.string().max(500),
@@ -45,7 +45,7 @@ export const CommentSend = ({
     post._id,
     replyComment?._id,
     onReplySend?.(),
-  )
+  );
   const sendComment = useCreateComment({
     onMutate: createCommentMutate,
   });
@@ -121,7 +121,8 @@ export const CommentSend = ({
                   <Textarea
                     maxLength={500}
                     placeholder="What do you think about this?"
-                    className="border-none rounded w-full focus-visible:ring-0 min-h-[50px]"
+                    className="border-none rounded w-full focus-visible:ring-0
+                      min-h-[50px]"
                     onKeyDown={(event) => {
                       if (event.key === "Enter" && !event.shiftKey) {
                         event.preventDefault();

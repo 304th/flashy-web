@@ -1,6 +1,6 @@
-import {useQueryClient} from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { api } from "@/services/api";
-import {getMutation, handleOptimisticUpdateError} from "@/lib/query";
+import { getMutation, handleOptimisticUpdateError } from "@/lib/query";
 
 export interface CreateReplyParams {
   commentId: string;
@@ -13,21 +13,25 @@ export const useCreateReply = (options?: {
 }) => {
   const queryClient = useQueryClient();
 
-  return getMutation(["createReply"], async (params: CreateReplyParams) => {
-    return;
-    return api
-      .post("reply", {
-        json: {
-          mentionedUsers: params.mentionedUsers,
-          reply: {
-            parentCommentId: params.commentId,
-            text: params.message,
+  return getMutation(
+    ["createReply"],
+    async (params: CreateReplyParams) => {
+      return;
+      return api
+        .post("reply", {
+          json: {
+            mentionedUsers: params.mentionedUsers,
+            reply: {
+              parentCommentId: params.commentId,
+              text: params.message,
+            },
           },
-        },
-      })
-      .json();
-  }, {
-    onMutate: options?.onMutate,
-    onError: handleOptimisticUpdateError(queryClient),
-  });
-}
+        })
+        .json();
+    },
+    {
+      onMutate: options?.onMutate,
+      onError: handleOptimisticUpdateError(queryClient),
+    },
+  );
+};

@@ -9,7 +9,7 @@ export const createOptimisticReply = (
   text: params.message,
   likesCount: 0,
   item_key: params.message,
-  item_type: 'post',
+  item_type: "post",
   created_by: {
     _id: author.fbId,
     username: author.username,

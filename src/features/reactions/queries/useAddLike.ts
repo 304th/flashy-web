@@ -1,6 +1,6 @@
-import {useQueryClient} from "@tanstack/react-query";
-import {api} from "@/services/api";
-import {getMutation, handleOptimisticUpdateError} from "@/lib/query";
+import { useQueryClient } from "@tanstack/react-query";
+import { api } from "@/services/api";
+import { getMutation, handleOptimisticUpdateError } from "@/lib/query";
 
 export interface AddLikeParams {
   id: string;
@@ -12,16 +12,22 @@ export const useAddLike = (options?: {
 }) => {
   const queryClient = useQueryClient();
 
-  return getMutation(['like'], async (params: AddLikeParams) => {
-    return
-    return api.post('comment/like', {
-      json: {
-        _id: params.id,
-        isLiked: params.isLiked,
-      }
-    }).json();
-  },{
-    onMutate: options?.onMutate,
-    onError: handleOptimisticUpdateError(queryClient),
-  })
-}
+  return getMutation(
+    ["like"],
+    async (params: AddLikeParams) => {
+      return;
+      return api
+        .post("comment/like", {
+          json: {
+            _id: params.id,
+            isLiked: params.isLiked,
+          },
+        })
+        .json();
+    },
+    {
+      onMutate: options?.onMutate,
+      onError: handleOptimisticUpdateError(queryClient),
+    },
+  );
+};

@@ -3,9 +3,9 @@ import { produce } from "immer";
 import { useMe } from "@/features/auth/queries/useMe";
 import { updateQueryData as updateRepliesQuery } from "@/features/comments/queries/useReplies";
 import { updateQueryData as updateCommentsQuery } from "@/features/comments/queries/useComments";
-import type {CreateReplyParams} from "@/features/comments/queries/useCreateReply";
+import type { CreateReplyParams } from "@/features/comments/queries/useCreateReply";
 import { combineOptimisticUpdates, OptimisticUpdater } from "@/lib/query";
-import {createOptimisticReply} from "@/features/comments/utils/createOptimisticReply";
+import { createOptimisticReply } from "@/features/comments/utils/createOptimisticReply";
 
 export const useCreateReplyMutate = (
   postId: string,

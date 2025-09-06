@@ -61,6 +61,7 @@
   --color-base-400: var(--base-color-400);
   --color-base-500: var(--base-color-500);
   --color-base-600: var(--base-color-600);
+  --color-warning-color-100: var(--warning-color-100);
   --brand-backdrop: var(--brand-gradient);
   --color-accent-alpha: #ffffff40;
   --color-accent-alpha-lighter: #ffffff20;
@@ -122,6 +123,8 @@
   --base-color-400: #2b2b2b;
   --base-color-500: #393939;
   --base-color-600: #4f4f4f;
+
+  --warning-color-100: #200111;
 }
 
 .navy {

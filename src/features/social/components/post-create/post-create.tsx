@@ -3,9 +3,11 @@
 import { UserProfile } from "@/components/ui/user-profile";
 import { PostForm } from "@/features/social/components/post-create/post-form";
 import { useMe } from "@/features/auth/queries/useMe";
+import { useCreateSocialPostMutate } from "@/features/social/hooks/use-create-social-post-mutate";
 
 export const PostCreate = () => {
   const [me] = useMe();
+  const createSocialPostMutate = useCreateSocialPostMutate();
 
   if (!me) return null;
 
@@ -14,7 +16,7 @@ export const PostCreate = () => {
       <div className="flex items-center w-full">
         <UserProfile user={me} />
       </div>
-      <PostForm />
+      <PostForm onPostCreate={createSocialPostMutate} />
     </div>
   );
 };

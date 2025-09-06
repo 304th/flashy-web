@@ -10,7 +10,10 @@ import { Button } from "@/components/ui/button";
 import { MessageProgress } from "@/features/social/components/post-create/message-progress";
 import { PostLinkPreview } from "@/features/social/components/post-link-preview/post-link-preview";
 import { PostOptions } from "@/features/social/components/post-create/post-options";
-import { useCreateSocialPost } from "@/features/social/queries/useCreateSocialPost";
+import {
+  CreateSocialPostParams,
+  useCreateSocialPost,
+} from "@/features/social/queries/useCreateSocialPost";
 import { useParsedPostLinkPreviews } from "@/features/social/hooks/use-parsed-post-preview-links";
 import { defaultVariants } from "@/lib/framer";
 
@@ -18,8 +21,14 @@ const formSchema = z.object({
   description: z.string().max(config.content.social.maxLength),
 });
 
-export const PostForm = () => {
-  const createSocialPost = useCreateSocialPost();
+export const PostForm = ({
+  onPostCreate,
+}: {
+  onPostCreate: (variables: CreateSocialPostParams) => unknown;
+}) => {
+  const createSocialPost = useCreateSocialPost({
+    onMutate: onPostCreate,
+  });
 
   const form = useForm({
     resolver: zodResolver(formSchema),

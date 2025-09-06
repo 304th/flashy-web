@@ -8,6 +8,7 @@ import { CommentButton } from "@/features/comments/components/comment-button/com
 import { useAddReactionMutate } from "@/features/social/hooks/useAddReactionMutate";
 import { useRemoveReactionMutate } from "@/features/social/hooks/useRemoveReactionMutate";
 import { timeAgo } from "@/lib/utils";
+import { SocialPostMenu } from "@/features/social/components/social-post/social-post-menu";
 
 export const SocialPost = ({
   socialPost,
@@ -36,8 +37,9 @@ export const SocialPost = ({
             userimage: socialPost.userimage,
           }}
         />
-        <div className="flex items-center">
+        <div className="flex gap-2 items-center">
           <p>{timeAgo(socialPost.createdAt)}</p>
+          <SocialPostMenu socialPost={socialPost} />
         </div>
       </div>
       <SocialPostDescription socialPost={socialPost} />

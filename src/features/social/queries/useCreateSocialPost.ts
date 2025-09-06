@@ -1,12 +1,17 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { api } from "@/services/api";
-import { getMutation } from "@/lib/query";
+import { getMutation, handleOptimisticUpdateError } from "@/lib/query";
 
-interface CreateSocialPostParams {
+export interface CreateSocialPostParams {
   description: string;
 }
 
-export const useCreateSocialPost = () =>
-  getMutation(
+export const useCreateSocialPost = (options?: {
+  onMutate?: (variables: CreateSocialPostParams) => unknown;
+}) => {
+  const queryClient = useQueryClient();
+
+  return getMutation(
     ["createSocialPost"],
     async ({ description }: CreateSocialPostParams) => {
       const formData = new FormData();
@@ -17,4 +22,9 @@ export const useCreateSocialPost = () =>
         body: formData,
       });
     },
+    {
+      onError: handleOptimisticUpdateError(queryClient),
+      onMutate: options?.onMutate,
+    },
   );
+};

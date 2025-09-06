@@ -13,8 +13,16 @@ export const notEmpty = <T>(obj: T | undefined): obj is T =>
       ? Object.keys(obj).length > 0 || (Array.isArray(obj) && obj.length > 0)
       : false;
 
-export const timeAgo = (timestamp: string) =>
-  formatDistanceToNow(new Date(timestamp), { addSuffix: true });
+export const timeAgo = (timestamp: string) => {
+  const date = new Date(timestamp);
+  const secondsDiff = Math.floor((Date.now() - date.getTime()) / 1000);
+
+  if (secondsDiff < 60 * 3) {
+    return "Now";
+  }
+
+  return formatDistanceToNow(new Date(timestamp), { addSuffix: true });
+};
 
 export const parseDomainName = (link: `http${string}`) =>
   link.replace(/^https?:\/\//, "").replace(/\/$/, "");

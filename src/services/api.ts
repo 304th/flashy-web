@@ -11,7 +11,6 @@ export const api = ky.create({
         const idToken = await firebaseAuth.currentUser?.getIdToken();
 
         request.headers.set("Authorization", `Bearer ${idToken}`);
-        // request.headers.set("Content-Type", "application/json");
       },
     ],
   },

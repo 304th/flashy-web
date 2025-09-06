@@ -68,6 +68,7 @@ declare global {
     relitsCount: number;
     mentionedUsers: any[];
     pinned: boolean;
+    pinnedBy?: { userId: string; username: string };
     userId: string;
     username: string;
     userimage: string;

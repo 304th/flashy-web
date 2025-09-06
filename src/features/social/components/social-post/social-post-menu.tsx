@@ -3,14 +3,18 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuGroup,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { IconButton } from "@/components/ui/icon-button";
 import { MeatballIcon } from "@/components/ui/icons/meatball";
+import { Separator } from "@/components/ui/separator";
 import { useModals } from "@/hooks/use-modals";
 import { useDeleteSocialPost } from "@/features/social/queries/useDeleteSocialPost";
+import { usePinSocialPost } from "@/features/social/queries/use-pin-social-post";
 import { useDeleteSocialPostMutate } from "@/features/social/hooks/use-delete-social-post-mutate";
 import { useSocialPostOwned } from "@/features/social/hooks/use-social-post-owned";
+import { useIsSuperAdmin } from "@/features/auth/hooks/use-is-super-admin";
 
 export const SocialPostMenu = ({ socialPost }: { socialPost: SocialPost }) => {
   const [open, setOpen] = useState(false);
@@ -19,6 +23,8 @@ export const SocialPostMenu = ({ socialPost }: { socialPost: SocialPost }) => {
   const deleteSocialPost = useDeleteSocialPost({
     onMutate: deletePostMutate,
   });
+  const pinPost = usePinSocialPost();
+  const isSuperAdmin = useIsSuperAdmin();
   const isOwned = useSocialPostOwned(socialPost);
 
   return (
@@ -32,28 +38,52 @@ export const SocialPostMenu = ({ socialPost }: { socialPost: SocialPost }) => {
           </IconButton>
         </DropdownMenuTrigger>
         <DropdownMenuContent
-          className="bg-base-300 border-base-400 p-1"
+          className="flex flex-col bg-base-300 border-base-400 p-1 gap-1"
           align="end"
         >
-          {isOwned && <DropdownMenuItem>Edit</DropdownMenuItem>}
           {isOwned && (
-            <DropdownMenuItem
-              variant="destructive"
-              onClick={() => {
-                openModal("ConfirmModal", {
-                  title: "Delete post",
-                  description: "Are you sure you want to delete this post?",
-                  destructive: true,
-                  onConfirm: () => {
-                    deleteSocialPost.mutate({
-                      id: socialPost._id,
-                    });
-                  },
-                });
-              }}
-            >
-              Delete
-            </DropdownMenuItem>
+            <DropdownMenuGroup className="flex flex-col gap-1">
+              <DropdownMenuItem>Edit</DropdownMenuItem>
+              <DropdownMenuItem
+                variant="destructive"
+                onClick={() => {
+                  openModal("ConfirmModal", {
+                    title: "Delete post",
+                    description: "Are you sure you want to delete this post?",
+                    destructive: true,
+                    onConfirm: () => {
+                      deleteSocialPost.mutate({
+                        id: socialPost._id,
+                      });
+                    },
+                  });
+                }}
+              >
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+          )}
+          <Separator />
+          {isSuperAdmin && (
+            <DropdownMenuGroup>
+              <DropdownMenuItem
+                variant={socialPost.pinned ? "destructive" : "default"}
+                onClick={() => {
+                  openModal("ConfirmModal", {
+                    title: socialPost.pinned ? "Unpin post" : "Pin post",
+                    description: `Are you sure you want to ${socialPost.pinned ? "unpin" : "pin"} this post?`,
+                    onConfirm: () => {
+                      pinPost.mutate({
+                        id: socialPost._id,
+                        pinned: !socialPost?.pinned,
+                      });
+                    },
+                  });
+                }}
+              >
+                {socialPost.pinned ? "Unpin" : "Pin"}
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
           )}
         </DropdownMenuContent>
       </DropdownMenu>

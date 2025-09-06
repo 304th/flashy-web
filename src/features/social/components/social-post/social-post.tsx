@@ -9,6 +9,7 @@ import { useAddReactionMutate } from "@/features/social/hooks/useAddReactionMuta
 import { useRemoveReactionMutate } from "@/features/social/hooks/useRemoveReactionMutate";
 import { timeAgo } from "@/lib/utils";
 import { SocialPostMenu } from "@/features/social/components/social-post/social-post-menu";
+import { SocialPostTags } from "@/features/social/components/social-post/social-post-tags";
 
 export const SocialPost = ({
   socialPost,
@@ -65,6 +66,7 @@ export const SocialPost = ({
           </IconButton>
         </div>
       </div>
+      <SocialPostTags socialPost={socialPost} />
     </div>
   );
 };

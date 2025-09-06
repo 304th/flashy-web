@@ -15,7 +15,6 @@ export const useAddLike = (options?: {
   return getMutation(
     ["like"],
     async (params: AddLikeParams) => {
-      return;
       return api
         .post("comment/like", {
           json: {

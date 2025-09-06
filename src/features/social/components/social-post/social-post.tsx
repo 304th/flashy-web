@@ -1,6 +1,7 @@
 import { UserProfile } from "@/components/ui/user-profile";
 import { IconButton } from "@/components/ui/icon-button";
 import { ShareIcon } from "@/components/ui/icons/share";
+import { SocialPostDescription } from "@/features/social/components/social-post/social-post-description";
 import { useModals } from "@/hooks/use-modals";
 import { LikeButton } from "@/features/reactions/components/like-button/like-button";
 import { CommentButton } from "@/features/comments/components/comment-button/comment-button";
@@ -39,7 +40,7 @@ export const SocialPost = ({
           <p>{timeAgo(socialPost.createdAt)}</p>
         </div>
       </div>
-      <p className="text-lg">{socialPost.description}</p>
+      <SocialPostDescription socialPost={socialPost} />
       <div className="flex items-center justify-between">
         <div className="flex gap-2">
           <CommentButton

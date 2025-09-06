@@ -22,7 +22,6 @@ export const useCreateComment = (options?: {
   return getMutation(
     ["createComment"],
     async (params: CreateCommentParams) => {
-      return;
       return api
         .post("comment", {
           json: {

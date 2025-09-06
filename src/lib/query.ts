@@ -13,9 +13,10 @@ export type OptimisticUpdater = (
 ) => Promise<{ optimisticUpdates: any[] }>;
 
 export const getQuery = <T>(
-  queryKey: string[],
+  queryKey: unknown[],
   queryFn: () => Promise<T>,
   enabled: boolean = true,
+  options?: Record<string, any>,
 ) => {
   const query = useQuery<T | undefined>({
     queryKey,
@@ -23,6 +24,7 @@ export const getQuery = <T>(
       return await queryFn();
     },
     enabled,
+    ...options,
   });
 
   return [query.data, query] as const;

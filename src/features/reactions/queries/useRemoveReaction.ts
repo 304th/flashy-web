@@ -28,6 +28,7 @@ export const useRemoveReaction = (options?: {
     },
     {
       onError: (error: any, _, context: any) => {
+        //FIXME: refactor
         if (context.optimisticQueryKey && context.previous) {
           queryClient.setQueryData(
             context.optimisticQueryKey,

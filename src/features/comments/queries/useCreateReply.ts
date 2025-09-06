@@ -16,7 +16,6 @@ export const useCreateReply = (options?: {
   return getMutation(
     ["createReply"],
     async (params: CreateReplyParams) => {
-      return;
       return api
         .post("reply", {
           json: {

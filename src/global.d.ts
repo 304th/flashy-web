@@ -126,6 +126,18 @@ declare global {
     likesCount: number;
     isLiked: boolean;
   }
+
+  interface LinkPreview {
+    contentType: string;
+    description: string;
+    favicons: string[];
+    images: string[];
+    mediaType: "website" | "article";
+    siteName: string;
+    title: string;
+    url: string;
+    videos: string[];
+  }
 }
 
 export {};

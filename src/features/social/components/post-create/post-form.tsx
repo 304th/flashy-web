@@ -1,10 +1,9 @@
 import { config } from "@/services/config";
-import React, { useState } from "react";
+import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useDebouncedValue } from "@tanstack/react-pacer/debouncer";
 import { Form, FormField, FormItem } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -12,7 +11,7 @@ import { MessageProgress } from "@/features/social/components/post-create/messag
 import { PostLinkPreview } from "@/features/social/components/post-link-preview/post-link-preview";
 import { PostOptions } from "@/features/social/components/post-create/post-options";
 import { useCreateSocialPost } from "@/features/social/queries/useCreateSocialPost";
-import { useLinksPreview } from "@/features/social/queries/useLinksPreview";
+import { useParsedPostLinkPreviews } from "@/features/social/hooks/use-parsed-post-preview-links";
 import { defaultVariants } from "@/lib/framer";
 
 const formSchema = z.object({
@@ -20,10 +19,7 @@ const formSchema = z.object({
 });
 
 export const PostForm = () => {
-  const [previewUrls, setPreviewLinks] = useState<string[]>([]);
-  const [debouncedPreviewLinks] = useDebouncedValue(previewUrls, { wait: 500 });
   const createSocialPost = useCreateSocialPost();
-  const [linksPreview] = useLinksPreview(debouncedPreviewLinks);
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -34,6 +30,10 @@ export const PostForm = () => {
   });
 
   const description = form.watch("description");
+  const [parsedUrls, previewLinks] = useParsedPostLinkPreviews(
+    description,
+    500,
+  );
 
   return (
     <Form {...form}>
@@ -61,31 +61,23 @@ export const PostForm = () => {
                   maxLength={config.content.social.maxLength}
                   placeholder="What ya thinking..."
                   {...props.field}
-                  onChange={(e) => {
-                    props.field.onChange(e);
-
-                    const urls =
-                      e.target.value.match(/https?:\/\/[^\s\/$.?#].\S*/gi) ||
-                      [];
-                    setPreviewLinks(urls);
-                  }}
                 />
               </FormItem>
             </motion.div>
           )}
         />
         <AnimatePresence initial={false}>
-          {linksPreview && previewUrls.length > 0 && (
+          {previewLinks && parsedUrls.length > 0 && (
             <motion.div
               className="flex flex-col gap-2"
               initial="hidden"
               animate="show"
               variants={defaultVariants.container}
             >
-              {linksPreview.map((link) => (
+              {previewLinks.map((link) => (
                 <motion.div variants={defaultVariants.child}>
                   <PostLinkPreview
-                    key={`link-preview-${link.siteName}`}
+                    key={`link-preview-${link.url}`}
                     linkPreview={link}
                   />
                 </motion.div>

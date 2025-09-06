@@ -9,5 +9,5 @@ export const useLinksPreview = (links?: string[]) =>
     Boolean(links?.length),
     {
       placeholderData: keepPreviousData,
-    }
+    },
   );

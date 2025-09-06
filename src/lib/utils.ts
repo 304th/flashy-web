@@ -15,3 +15,6 @@ export const notEmpty = <T>(obj: T | undefined): obj is T =>
 
 export const timeAgo = (timestamp: string) =>
   formatDistanceToNow(new Date(timestamp), { addSuffix: true });
+
+export const parseDomainName = (link: `http${string}`) =>
+  link.replace(/^https?:\/\//, "").replace(/\/$/, "");

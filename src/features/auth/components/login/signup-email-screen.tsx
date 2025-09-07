@@ -11,9 +11,9 @@ export const SignupEmailScreen = ({
     <>
       <div className="flex flex-col w-full justify-center">
         <p className="text-3xl font-extrabold text-white">Welcome to Flashy</p>
-        <p>Register to create your account</p>
+        <p>Sign in to your account</p>
       </div>
-      <div className="flex flex-col gap-3 w-full min-h-[300px]">
+      <div className="flex flex-col justify-between gap-3 w-full min-h-[300px]">
         <SignupForm onEmailSent={onEmailSent} />
         <SocialAuth />
       </div>

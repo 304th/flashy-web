@@ -72,7 +72,7 @@ declare global {
     _id: string;
     description: string;
     image: string;
-    poll: { pollVotedId: number; results: PollOption[] };
+    poll: { pollVotedId: number | null; results: PollOption[] };
     reactions: Record<string, Record<string, Reaction>>;
     likesCount: number;
     commentsCount: number;

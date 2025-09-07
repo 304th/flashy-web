@@ -2,7 +2,7 @@
 
 import { UserProfile } from "@/components/ui/user-profile";
 import { PostForm } from "@/features/social/components/post-create/post-form";
-import { useMe } from "@/features/auth/queries/useMe";
+import { useMe } from "@/features/auth/queries/use-me";
 import { useCreateSocialPostMutate } from "@/features/social/hooks/use-create-social-post-mutate";
 
 export const PostCreate = () => {

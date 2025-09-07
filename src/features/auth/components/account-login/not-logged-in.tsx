@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useModals } from "@/hooks/use-modals";
+import { defaultVariants } from "@/lib/framer";
 
 export const NotLoggedIn = () => {
   const { openModal } = useModals();
@@ -8,26 +9,20 @@ export const NotLoggedIn = () => {
   return (
     <motion.div
       className="flex gap-3 items-center"
-      initial={{ opacity: 0, y: -4 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial="hidden"
+      animate="show"
+      variants={defaultVariants.container}
     >
-      <Button
-        className="min-w-[120px]"
-        onClick={() => {
-          openModal("SignupModal");
-        }}
-      >
-        Sign Up
-      </Button>
-      <Button
-        variant="secondary"
-        className="min-w-[120px]"
-        onClick={() => {
-          openModal("LoginModal");
-        }}
-      >
-        Login
-      </Button>
+      <motion.div variants={defaultVariants.child}>
+        <Button
+          className="min-w-[120px]"
+          onClick={() => {
+            openModal("SignupModal");
+          }}
+        >
+          Sign In
+        </Button>
+      </motion.div>
     </motion.div>
   );
 };

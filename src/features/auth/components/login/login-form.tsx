@@ -12,7 +12,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useLoginWithEmail } from "@/features/auth/queries/useLoginWithEmail";
+import { useLoginWithEmail } from "@/features/auth/queries/use-login-with-email";
 import { defaultVariants } from "@/lib/framer";
 import { Button } from "@/components/ui/button";
 import { useModals } from "@/hooks/use-modals";
@@ -54,7 +54,7 @@ export const LoginForm = ({ onSuccess }: { onSuccess: () => void }) => {
                   <FormControl>
                     <Input
                       {...field}
-                      onChange={(e) => {
+                      onChange={(e: Event) => {
                         field.onChange(e);
                       }}
                     />
@@ -74,7 +74,7 @@ export const LoginForm = ({ onSuccess }: { onSuccess: () => void }) => {
                     <Input
                       {...field}
                       type="password"
-                      onChange={(e) => {
+                      onChange={(e: Event) => {
                         field.onChange(e);
                       }}
                     />

@@ -3,7 +3,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { getMutation, handleOptimisticUpdateError } from "@/lib/query";
 import { updateQueryData } from "@/features/social/queries/useSocialPosts";
 import { api } from "@/services/api";
-import { useMe } from "@/features/auth/queries/useMe";
+import { useMe } from "@/features/auth/queries/use-me";
 
 export interface PinSocialPostParams {
   id: string;

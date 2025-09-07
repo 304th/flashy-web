@@ -122,8 +122,7 @@ export const handleOptimisticUpdateError =
     return handleMutationError(error);
   };
 
-export const handleAuthSuccess = (queryClient: QueryClient) => (user: User) => {
-  void queryClient.setQueryData(["me"], user);
+export const handleAuthSuccess = (queryClient: QueryClient) => () => {
   void queryClient.invalidateQueries({ queryKey: ["me"] });
 };
 

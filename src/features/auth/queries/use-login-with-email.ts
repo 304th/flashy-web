@@ -26,7 +26,7 @@ export const useLoginWithEmail = () => {
 
       return await api
         .post("auth/login", {
-          body: JSON.stringify({ tokenId }),
+          json: { tokenId },
         })
         .json<any>();
     },

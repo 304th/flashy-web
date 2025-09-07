@@ -1,6 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { produce } from "immer";
-import { useMe } from "@/features/auth/queries/useMe";
+import { useMe } from "@/features/auth/queries/use-me";
 import { updateQueryData as updateCommentsQuery } from "@/features/comments/queries/useComments";
 import { updateQueryData as updateCommentsCountQuery } from "@/features/comments/queries/useCommentsCount";
 import type { CreateCommentParams } from "@/features/comments/queries/useCreateComment";

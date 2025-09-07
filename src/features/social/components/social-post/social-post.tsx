@@ -8,12 +8,11 @@ import { CommentButton } from "@/features/comments/components/comment-button/com
 import { SocialPostMenu } from "@/features/social/components/social-post/social-post-menu";
 import { SocialPostTags } from "@/features/social/components/social-post/social-post-tags";
 import { SocialPostPoll } from "@/features/social/components/social-post/social-post-poll";
-import {RelightButton} from "@/features/social/components/relight-button/relight-button";
+import { RelightButton } from "@/features/social/components/relight-button/relight-button";
 import { useAddReactionMutate } from "@/features/social/hooks/useAddReactionMutate";
 import { useRemoveReactionMutate } from "@/features/social/hooks/useRemoveReactionMutate";
-import {useRelightSocialPostMutate} from "@/features/social/hooks/use-relight-social-post-mutate";
+import { useRelightSocialPostMutate } from "@/features/social/hooks/use-relight-social-post-mutate";
 import { timeAgo } from "@/lib/utils";
-
 
 export const SocialPost = ({
   socialPost,
@@ -65,10 +64,7 @@ export const SocialPost = ({
             onAdd={handleAddMutate}
             onRemove={handleRemoveMutate}
           />
-          <RelightButton
-            post={socialPost}
-            onRelight={handleRelightMutate}
-          />
+          <RelightButton post={socialPost} onRelight={handleRelightMutate} />
         </div>
         <div className="flex gap-2">
           <IconButton>

@@ -24,9 +24,9 @@ export const SocialPostPoll = ({ socialPost }: { socialPost: SocialPost }) => {
             key={`poll-option-${index}`}
             pollOption={pollOption}
             isVoted={isVoted}
-            selected={Boolean(socialPost.poll.pollVotedId === pollOption.id)}
+            selected={Boolean(socialPost.poll!.pollVotedId === pollOption.id)}
             totalVotes={
-              socialPost.poll.results.reduce(
+              socialPost.poll!.results.reduce(
                 (acc, curr) => acc + curr.votes,
                 0,
               ) || 0
@@ -90,7 +90,11 @@ const PollOption = ({
         />
       )}
       <p className="text-white">{pollOption.text}</p>
-      {isVoted && <p className={`${selected ? 'text-white' : ''}`}>{percentage.toFixed(0)}%</p>}
+      {isVoted && (
+        <p className={`${selected ? "text-white" : ""}`}>
+          {percentage.toFixed(0)}%
+        </p>
+      )}
     </div>
   );
 };

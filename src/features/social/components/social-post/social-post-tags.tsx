@@ -1,5 +1,5 @@
 import { MiniPinIcon } from "@/components/ui/icons/mini-pin";
-import {MiniRelightIcon} from "@/components/ui/icons/mini-relight";
+import { MiniRelightIcon } from "@/components/ui/icons/mini-relight";
 
 export const SocialPostTags = ({ socialPost }: { socialPost: SocialPost }) => {
   if (!socialPost.pinned && !socialPost.relightedPost) {
@@ -9,7 +9,9 @@ export const SocialPostTags = ({ socialPost }: { socialPost: SocialPost }) => {
   return (
     <div className="flex items-center gap-2 border-t">
       {socialPost.pinned && <PinnedTag socialPost={socialPost} />}
-      {socialPost.relightedPost && socialPost.relightedBy && <RelightedTag socialPost={socialPost} />}
+      {socialPost.relightedPost && socialPost.relightedBy && (
+        <RelightedTag socialPost={socialPost} />
+      )}
     </div>
   );
 };
@@ -44,4 +46,4 @@ const RelightedTag = ({ socialPost }: { socialPost: SocialPost }) => {
       </p>
     </div>
   );
-}
+};

@@ -8,7 +8,7 @@ export const GoogleIcon = () => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <g id="google-symbol-icon" cliPpath="url(#clip0_1278_13946)">
+    <g id="google-symbol-icon" clipPath="url(#clip0_1278_13946)">
       <path
         id="Shape"
         fill-rule="evenodd"

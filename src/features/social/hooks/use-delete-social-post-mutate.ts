@@ -1,7 +1,6 @@
 import { produce } from "immer";
 import { useQueryClient } from "@tanstack/react-query";
 import { updateQueryData } from "@/features/social/queries/useSocialPosts";
-import { useMe } from "@/features/auth/queries/useMe";
 import { DeleteSocialPostParams } from "@/features/social/queries/useDeleteSocialPost";
 
 export const useDeleteSocialPostMutate = () => {

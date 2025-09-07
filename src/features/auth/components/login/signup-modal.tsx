@@ -5,6 +5,7 @@ import { CloseButton } from "@/components/ui/close-button";
 import { SignupEmailScreen } from "@/features/auth/components/login/signup-email-screen";
 import { SignupOtpScreen } from "@/features/auth/components/login/signup-otp-screen";
 import { defaultVariants } from "@/lib/framer";
+import {MagicLinkSentScreen} from "@/features/auth/components/login/magic-link-sent-screen";
 
 export interface SignupModalProps {
   onClose(): void;
@@ -18,7 +19,7 @@ export const SignupModal = ({ onClose, ...props }: SignupModalProps) => {
       <motion.div
         initial="hidden"
         animate="show"
-        className="relative flex flex-col gap-8 p-8
+        className="relative flex flex-col gap-16 p-8
           bg-[url('/images/signup-bg.jpg')] bg-cover bg-bottom rounded-xl
           overflow-hidden"
         variants={defaultVariants.container}
@@ -31,7 +32,7 @@ export const SignupModal = ({ onClose, ...props }: SignupModalProps) => {
             <SignupEmailScreen onEmailSent={(email) => setEmailSent(email)} />
           )}
           {emailSent && (
-            <SignupOtpScreen email={emailSent} onVerify={onClose} />
+            <MagicLinkSentScreen email={emailSent} />
           )}
         </AnimatePresence>
       </motion.div>

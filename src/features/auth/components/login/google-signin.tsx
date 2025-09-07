@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { GoogleLogin } from "@react-oauth/google";
-import { useGoogleSignIn } from "@/features/auth/queries/useGoogleSignIn";
+import { useGoogleSignIn } from "@/features/auth/queries/use-google-sign-in";
 import { useModals } from "@/hooks/use-modals";
 
 export const GoogleSignIn = () => {

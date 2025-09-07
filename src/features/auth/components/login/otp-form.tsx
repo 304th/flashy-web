@@ -5,7 +5,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormField, FormItem, FormControl } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { useVerifyOtp } from "@/features/auth/queries/useVerifyOtp";
+import { useVerifyOtp } from "@/features/auth/queries/use-verify-otp";
 import { defaultVariants } from "@/lib/framer";
 import { OtpInput } from "@/features/auth/components/login/otp-input";
 

@@ -14,8 +14,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useMe } from "@/features/auth/queries/useMe";
-import { useLogout } from "@/features/auth/queries/useLogout";
+import { useMe } from "@/features/auth/queries/use-me";
+import { useLogout } from "@/features/auth/queries/use-logout";
 import { UserAvatar } from "@/components/ui/user-avatar";
 
 export const AccountDropdown = () => {
@@ -27,7 +27,10 @@ export const AccountDropdown = () => {
     <div className="relative" onMouseLeave={() => setOpen(false)}>
       <DropdownMenu modal={false} open={open}>
         <DropdownMenuTrigger asChild>
-          <UserAvatar avatar={me?.avatar} onMouseEnter={() => setOpen(true)} />
+          <UserAvatar
+            avatar={me?.userimage}
+            onMouseEnter={() => setOpen(true)}
+          />
         </DropdownMenuTrigger>
         <DropdownMenuContent
           className="w-[300px] bg-base-300 border-base-400"
@@ -39,7 +42,7 @@ export const AccountDropdown = () => {
               rounded mb-1"
           >
             <div className="flex items-center gap-2">
-              <UserAvatar avatar={me?.avatar} />
+              <UserAvatar avatar={me?.userimage} />
               <p className="text-white font-extrabold">{me?.username}</p>
             </div>
           </div>

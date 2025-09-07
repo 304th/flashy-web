@@ -5,6 +5,8 @@ import {
   signInWithCredential,
   signInWithEmailAndPassword,
   sendSignInLinkToEmail,
+  isSignInWithEmailLink,
+  signInWithEmailLink,
 } from "firebase/auth";
 
 export const firebase = initializeApp({
@@ -37,7 +39,7 @@ export const onAuthStateChanged = async () =>
 
 export const sendSignInLink = async (email: string) =>
   sendSignInLinkToEmail(firebaseAuth, email, {
-    url: `${window.location.origin}/verify-email`,
+    url: `${window.location.origin}?magicLink=true&email=${encodeURIComponent(email)}`,
     handleCodeInApp: true,
     iOS: {
       bundleId: "com.example.ios",
@@ -46,5 +48,12 @@ export const sendSignInLink = async (email: string) =>
       packageName: "com.example.android",
       installApp: true,
       minimumVersion: "12",
-    },
+    },  
   });
+
+export const isSignInWithLink = async () => isSignInWithEmailLink(firebaseAuth, window.location.href)
+export const signInWithLMagicLink = async (email: string, link: string) => {
+  await signInWithEmailLink(firebaseAuth, email, link);
+
+  return firebaseAuth.currentUser?.getIdToken();
+}

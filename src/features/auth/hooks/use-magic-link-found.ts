@@ -1,0 +1,19 @@
+'use client';
+
+import { useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import { useModals } from "@/hooks/use-modals";
+
+export const useMagicLinkFound = () => {
+  const searchParams = useSearchParams();
+  const magicLink = searchParams.get("magicLink");
+  const { openModal } = useModals();
+
+  useEffect(() => {
+    if (magicLink) {
+      setTimeout(() => {
+        openModal("MagicLinkVerificationModal");
+      }, 100)
+    }
+  }, [magicLink])
+}

@@ -57,11 +57,17 @@ declare global {
     updatedAt: string;
   }
 
+  interface PollOption {
+    id: number;
+    text: string;
+    votes: number;
+  }
+
   interface SocialPost {
     _id: string;
     description: string;
     image: string;
-    poll: any[];
+    poll: { pollVotedId: number; results: PollOption[] };
     reactions: Record<string, Record<string, Reaction>>;
     likesCount: number;
     commentsCount: number;

@@ -10,6 +10,7 @@ import { useRemoveReactionMutate } from "@/features/social/hooks/useRemoveReacti
 import { timeAgo } from "@/lib/utils";
 import { SocialPostMenu } from "@/features/social/components/social-post/social-post-menu";
 import { SocialPostTags } from "@/features/social/components/social-post/social-post-tags";
+import { SocialPostPoll } from "@/features/social/components/social-post/social-post-poll";
 
 export const SocialPost = ({
   socialPost,
@@ -44,6 +45,7 @@ export const SocialPost = ({
         </div>
       </div>
       <SocialPostDescription socialPost={socialPost} />
+      <SocialPostPoll socialPost={socialPost} />
       <div className="flex items-center justify-between">
         <div className="flex gap-2">
           <CommentButton

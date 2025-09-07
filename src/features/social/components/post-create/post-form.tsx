@@ -19,6 +19,7 @@ import { defaultVariants } from "@/lib/framer";
 
 const formSchema = z.object({
   description: z.string().max(config.content.social.maxLength),
+  poll: z.array(z.object({ value: z.string() })).optional(),
 });
 
 export const PostForm = ({
@@ -34,6 +35,7 @@ export const PostForm = ({
     resolver: zodResolver(formSchema),
     defaultValues: {
       description: "",
+      poll: [],
     },
     mode: "all",
   });
@@ -51,6 +53,7 @@ export const PostForm = ({
           createSocialPost.mutate(
             {
               description: params.description,
+              poll: params.poll?.map((poll) => poll.value), //FIXME: what?
             },
             {
               onSuccess: () => {
@@ -59,7 +62,7 @@ export const PostForm = ({
             },
           );
         })}
-        className="flex flex-col w-full gap-3"
+        className="flex flex-col w-full gap-2"
       >
         <FormField
           name="description"
@@ -94,9 +97,9 @@ export const PostForm = ({
             </motion.div>
           )}
         </AnimatePresence>
-        <div className="flex items-center justify-between">
+        <div className="relative flex w-full items-center justify-between py-2">
           <PostOptions />
-          <div className="flex items-center gap-2">
+          <div className="absolute right-0 bottom-0 flex items-center gap-2">
             <MessageProgress
               value={description.length}
               max={config.content.social.maxLength}

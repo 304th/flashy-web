@@ -3,7 +3,8 @@ import { api } from "@/services/api";
 import { getMutation, handleOptimisticUpdateError } from "@/lib/query";
 
 export interface CreateSocialPostParams {
-  description: string;
+  description?: string;
+  poll?: string[];
 }
 
 export const useCreateSocialPost = (options?: {
@@ -13,10 +14,25 @@ export const useCreateSocialPost = (options?: {
 
   return getMutation(
     ["createSocialPost"],
-    async ({ description }: CreateSocialPostParams) => {
+    async (params: CreateSocialPostParams) => {
       const formData = new FormData();
 
-      formData.append("description", description);
+      if (params.description) {
+        formData.append("description", params.description);
+      }
+
+      if (params.poll && params.poll.length > 0) {
+        formData.append(
+          "poll", //FIXME: WHAT???
+          JSON.stringify(
+            params.poll.map((item: any, index: number) => ({
+              id: index + 1,
+              text: item,
+              votes: [],
+            })),
+          ),
+        );
+      }
 
       await api.post("create-social-post", {
         body: formData,

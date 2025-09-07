@@ -1,57 +1,140 @@
-import React from "react";
+import { config } from "@/services/config";
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { PlusIcon, XIcon } from "lucide-react";
+import { useFieldArray, useFormContext } from "react-hook-form";
+import { PictureIcon } from "@/components/ui/icons/picture";
+import { PollIcon } from "@/components/ui/icons/poll";
 import { IconButton } from "@/components/ui/icon-button";
+import { FormField, FormItem } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { defaultVariants } from "@/lib/framer";
 
 export const PostOptions = () => {
+  const [showImages, setShowImages] = useState<boolean>(false);
+  const [showPoll, setShowPoll] = useState<boolean>(false);
+  const context = useFormContext();
+  const { fields, append, remove } = useFieldArray({
+    control: context.control,
+    name: "poll",
+  });
+
+  const handleShowPoll = () => {
+    if (fields.length === 0) {
+      append({ value: "" });
+    }
+
+    setShowPoll(true);
+  };
+
+  const handleClosePoll = () => {
+    remove();
+    setShowPoll(false);
+  };
+
   return (
-    <div className="flex items-center gap-2">
-      {/*<IconButton>*/}
-      {/*  <svg*/}
-      {/*    xmlns="http://www.w3.org/2000/svg"*/}
-      {/*    width="31"*/}
-      {/*    height="31"*/}
-      {/*    viewBox="0 0 31 31"*/}
-      {/*    fill="none"*/}
-      {/*  >*/}
-      {/*    <path*/}
-      {/*      d="M9.16016 25.214C8.26538 25.2129 7.40749 24.8571 6.77478 24.2244C6.14207 23.5917 5.78621 22.7338 5.78516 21.839V9.16199C5.78621 8.26721 6.14207 7.40945 6.77478 6.77674C7.40749 6.14404 8.26538 5.78805 9.16016 5.78699H21.8381C22.7329 5.78805 23.5908 6.14404 24.2235 6.77674C24.8562 7.40945 25.2121 8.26721 25.2131 9.16199V21.839C25.2138 22.7126 24.8746 23.5522 24.2672 24.1801C24.2391 24.2126 24.2087 24.2429 24.1761 24.271C23.5486 24.8766 22.7103 25.2147 21.8381 25.214H9.16016ZM7.53516 21.839C7.53569 22.2698 7.70709 22.6828 8.01172 22.9874C8.31635 23.2921 8.72934 23.4635 9.16016 23.464H21.8381C21.9134 23.4638 21.9886 23.4585 22.0631 23.448L12.0382 14.9721L7.53821 19.823L7.53516 21.839ZM12.5302 13.0971L23.4001 22.288C23.442 22.142 23.4632 21.9909 23.4631 21.839V9.16199C23.4626 8.73118 23.2912 8.31819 22.9866 8.01356C22.6819 7.70893 22.2689 7.53752 21.8381 7.53699H9.16016C8.72934 7.53752 8.31635 7.70893 8.01172 8.01356C7.70709 8.31819 7.53569 8.73118 7.53516 9.16199V17.252L11.3241 13.171C11.4058 13.0826 11.505 13.0121 11.6154 12.9639C11.7257 12.9157 11.8448 12.8908 11.9652 12.891C12.172 12.8906 12.3722 12.9636 12.5302 13.0971ZM17.2351 11.965C17.2351 11.4876 17.4248 11.0298 17.7623 10.6923C18.0999 10.3547 18.5578 10.165 19.0352 10.165C19.5125 10.165 19.9704 10.3547 20.308 10.6923C20.6455 11.0298 20.8352 11.4876 20.8352 11.965C20.8352 12.4424 20.6455 12.9002 20.308 13.2378C19.9704 13.5754 19.5125 13.765 19.0352 13.765C18.5578 13.765 18.0999 13.5754 17.7623 13.2378C17.4248 12.9002 17.2351 12.4424 17.2351 11.965Z"*/}
-      {/*      fill="currentColor"*/}
-      {/*    />*/}
-      {/*  </svg>*/}
-      {/*</IconButton>*/}
-      {/*<IconButton>*/}
-      {/*  <svg*/}
-      {/*    xmlns="http://www.w3.org/2000/svg"*/}
-      {/*    width="31"*/}
-      {/*    height="30"*/}
-      {/*    viewBox="0 0 31 30"*/}
-      {/*    fill="none"*/}
-      {/*  >*/}
-      {/*    <g clip-path="url(#clip0_1353_17839)">*/}
-      {/*      <path*/}
-      {/*        d="M8.03125 24.792C7.54825 24.792 7.15625 24.4 7.15625 23.917V12.1C7.15625 11.617 7.54825 11.225 8.03125 11.225C8.51425 11.225 8.90625 11.617 8.90625 12.1V23.917C8.90625 24.4 8.51425 24.792 8.03125 24.792Z"*/}
-      {/*        fill="currentColor"*/}
-      {/*      />*/}
-      {/*      <path*/}
-      {/*        d="M15.4993 24.792C15.0163 24.792 14.6243 24.4 14.6243 23.917V6.1C14.6243 5.617 15.0163 5.225 15.4993 5.225C15.9823 5.225 16.3743 5.617 16.3743 6.1V23.917C16.3743 24.4 15.9823 24.792 15.4993 24.792Z"*/}
-      {/*        fill="currentColor"*/}
-      {/*      />*/}
-      {/*      <path*/}
-      {/*        d="M22.9993 24.792C22.5163 24.792 22.1243 24.4 22.1243 23.917V17.623C22.1243 17.14 22.5163 16.748 22.9993 16.748C23.4823 16.748 23.8743 17.14 23.8743 17.623V23.917C23.8743 24.4 23.4823 24.792 22.9993 24.792Z"*/}
-      {/*        fill="currentColor"*/}
-      {/*      />*/}
-      {/*    </g>*/}
-      {/*    <defs>*/}
-      {/*      <clipPath id="clip0_1353_17839">*/}
-      {/*        <rect*/}
-      {/*          width="30"*/}
-      {/*          height="30"*/}
-      {/*          fill="white"*/}
-      {/*          transform="translate(0.5)"*/}
-      {/*        />*/}
-      {/*      </clipPath>*/}
-      {/*    </defs>*/}
-      {/*  </svg>*/}
-      {/*</IconButton>*/}
+    <div className="flex w-full flex-col justify-start gap-2">
+      {showImages && <ImageEditor />}
+      {showPoll && (
+        <PollEditor
+          fields={fields}
+          onAppend={(value) => append(value)}
+          onRemove={(index) => remove(index)}
+          onClose={handleClosePoll}
+        />
+      )}
+      <div className="flex justify-start items-center gap-2">
+        <IconButton
+          type="button"
+          className={`hover:bg-blue-700 ${showImages && "bg-blue-700"}`}
+          onClick={() => {
+            setShowImages((state) => !state);
+          }}
+        >
+          <PictureIcon />
+        </IconButton>
+        <IconButton
+          type="button"
+          className={`hover:bg-orange-700 ${showPoll && "bg-orange-700"}`}
+          onClick={() => {
+            if (showPoll) {
+              handleClosePoll();
+            } else {
+              handleShowPoll();
+            }
+          }}
+        >
+          <PollIcon />
+        </IconButton>
+      </div>
     </div>
   );
+};
+
+const PollEditor = ({
+  fields,
+  onAppend,
+  onRemove,
+  onClose,
+}: {
+  fields: any[];
+  onAppend: (value: any) => void;
+  onRemove: (index: number) => void;
+  onClose: () => void;
+}) => {
+  return (
+    <div className="flex flex-col w-full border-y py-2 gap-2">
+      <div className="flex w-full flex-col gap-1">
+        {fields.map((field, index) => (
+          <FormField
+            key={field.id}
+            name={`poll.${index}.value`}
+            render={(props) => (
+              <motion.div variants={defaultVariants.child}>
+                <FormItem>
+                  <Input
+                    maxLength={config.content.social.maxLength}
+                    placeholder="Choice..."
+                    className="h-[40px]"
+                    trailingIcon={
+                      <IconButton
+                        size="xs"
+                        type="button"
+                        onClick={() => {
+                          if (fields.length === 1) {
+                            onClose();
+                          }
+
+                          onRemove(index);
+                        }}
+                      >
+                        <XIcon />
+                      </IconButton>
+                    }
+                    {...props.field}
+                  />
+                </FormItem>
+              </motion.div>
+            )}
+          />
+        ))}
+      </div>
+      <Button
+        size="sm"
+        type="button"
+        variant="ghost"
+        onClick={() => onAppend({ value: "" })}
+        className="w-[120px]"
+        disabled={fields.length >= 4}
+      >
+        <PlusIcon />
+        Add choice
+      </Button>
+    </div>
+  );
+};
+
+const ImageEditor = () => {
+  return <div className="flex w-full border-y py-2"></div>;
 };

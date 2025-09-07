@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 
 interface IconButtonProps {
   variant?: "default" | "destructive" | "secondary" | "ghost" | "link";
-  size?: "sm" | "lg" | "xl";
+  size?: "xs" | "sm" | "lg" | "xl";
   disabled?: boolean;
   type?: "button" | "submit" | "reset";
   className?: string;
@@ -22,7 +22,8 @@ export const IconButton = ({
     variant={variant}
     size={size}
     className={`!w-fit p-0 aspect-square ${className} hover:text-white
-      [&_svg:not([class*='size-'])]:size-7 !px-0`}
+      ${size === "xs" ? "[&_svg:not([class*='size-'])]:size-5" : "[&_svg:not([class*='size-'])]:size-7"}
+      !px-0`}
     disabled={disabled}
     {...props}
   >

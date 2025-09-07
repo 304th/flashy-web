@@ -11,7 +11,7 @@ interface GoogleSignInParams {
   credential: JwtToken;
 }
 
-export const useGoogleSignIn = () => {
+export const useSignInWithGoogle = () => {
   const queryClient = useQueryClient();
 
   return getMutation<User, Error, GoogleSignInParams>(
@@ -24,7 +24,7 @@ export const useGoogleSignIn = () => {
       }
 
       return await api
-        .post("auth/login", {
+        .post("auth/login/token", {
           json: {
             tokenId,
           },

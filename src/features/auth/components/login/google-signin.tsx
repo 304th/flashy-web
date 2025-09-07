@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { GoogleLogin } from "@react-oauth/google";
-import { useGoogleSignIn } from "@/features/auth/queries/use-google-sign-in";
+import { useSignInWithGoogle } from "@/features/auth/queries/use-sign-in-with-google";
 import { useModals } from "@/hooks/use-modals";
 
 export const GoogleSignIn = () => {
   const [initiated, setInitiated] = useState(false);
-  const signInWithGoogle = useGoogleSignIn();
+  const signInWithGoogle = useSignInWithGoogle();
   const { closeModal } = useModals();
   const disabled = initiated || signInWithGoogle.isPending;
 

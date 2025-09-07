@@ -1,5 +1,5 @@
 import { useMemo, useEffect, useState } from "react";
-import { addHours, differenceInMilliseconds } from 'date-fns';
+import { addHours, differenceInMilliseconds } from "date-fns";
 import { useVotePoll } from "@/features/social/queries/use-vote-poll";
 
 export const SocialPostPoll = ({ socialPost }: { socialPost: SocialPost }) => {
@@ -25,7 +25,12 @@ export const SocialPostPoll = ({ socialPost }: { socialPost: SocialPost }) => {
             pollOption={pollOption}
             isVoted={isVoted}
             selected={Boolean(socialPost.poll.pollVotedId === pollOption.id)}
-            totalVotes={socialPost.poll.results.reduce((acc, curr) => acc + curr.votes, 0) || 0}
+            totalVotes={
+              socialPost.poll.results.reduce(
+                (acc, curr) => acc + curr.votes,
+                0,
+              ) || 0
+            }
             onVote={() =>
               votePoll.mutate({
                 postId: socialPost._id,
@@ -36,9 +41,11 @@ export const SocialPostPoll = ({ socialPost }: { socialPost: SocialPost }) => {
         ))}
       </div>
       <div className="flex items-center justify-between">
-        {
-          isVoted ? <p className="text-sm">{`\u2022 Answered`}</p> : <p className="text-sm">{`\u2022 This is a poll, select an option to see results`}</p>
-        }
+        {isVoted ? (
+          <p className="text-sm">{`\u2022 Answered`}</p>
+        ) : (
+          <p className="text-sm">{`\u2022 This is a poll, select an option to see results`}</p>
+        )}
         <PollTimer createdAt={socialPost.createdAt} />
       </div>
     </div>
@@ -58,22 +65,30 @@ const PollOption = ({
   totalVotes: number;
   onVote: () => void;
 }) => {
-  const percentage = useMemo(() => totalVotes > 0 ? (pollOption.votes / totalVotes) * 100 : 0, [pollOption.votes, totalVotes]);
+  const percentage = useMemo(
+    () => (totalVotes > 0 ? (pollOption.votes / totalVotes) * 100 : 0),
+    [pollOption.votes, totalVotes],
+  );
 
   return (
     <div
-      className={`relative flex w-full justify-between border rounded-md px-3 py-2 bg-base-300 transition
-        ${
+      className={`relative flex w-full justify-between border rounded-md px-3
+        py-2 bg-base-300 transition ${
           selected
             ? "border-brand-100 pointer-events-none"
-            : isVoted ? 'pointer-events-none'
-            : "hover:bg-base-400 hover:border-base-600"
+            : isVoted
+              ? "pointer-events-none"
+              : "hover:bg-base-400 hover:border-base-600"
         } cursor-pointer overflow-hidden`}
       onClick={onVote}
     >
-      {
-        isVoted && <div className={`absolute inset-0 flex ${selected ? 'bg-brand-200-alpha ' : 'bg-brand-100-alpha'}`} style={{ width: `${percentage.toFixed(0)}%` }} />
-      }
+      {isVoted && (
+        <div
+          className={`absolute inset-0 flex
+          ${selected ? "bg-brand-200-alpha " : "bg-brand-100-alpha"}`}
+          style={{ width: `${percentage.toFixed(0)}%` }}
+        />
+      )}
       <p className="text-white">{pollOption.text}</p>
       {isVoted && <p>{percentage.toFixed(0)}%</p>}
     </div>
@@ -81,7 +96,7 @@ const PollOption = ({
 };
 
 const PollTimer = ({ createdAt }: { createdAt: string }) => {
-  const [timeLeft, setTimeLeft] = useState('');
+  const [timeLeft, setTimeLeft] = useState("");
 
   useEffect(() => {
     const calculateTimeLeft = () => {
@@ -90,7 +105,7 @@ const PollTimer = ({ createdAt }: { createdAt: string }) => {
       const distance = differenceInMilliseconds(expiration, now);
 
       if (distance <= 0) {
-        setTimeLeft('Expired');
+        setTimeLeft("Expired");
         return;
       }
 
@@ -110,8 +125,8 @@ const PollTimer = ({ createdAt }: { createdAt: string }) => {
   return (
     <div className="flex w-[135px]">
       <p className="text-sm whitespace-nowrap">
-        {timeLeft ? `Ends in ${timeLeft}` : 'Poll has ended'}
+        {timeLeft ? `Ends in ${timeLeft}` : "Poll has ended"}
       </p>
     </div>
-  )
-}
+  );
+};

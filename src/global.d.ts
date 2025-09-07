@@ -63,6 +63,11 @@ declare global {
     votes: number;
   }
 
+  interface ResponsibleUser {
+    userId: string;
+    username: string;
+  }
+
   interface SocialPost {
     _id: string;
     description: string;
@@ -72,9 +77,12 @@ declare global {
     likesCount: number;
     commentsCount: number;
     relitsCount: number;
+    relits: Record<string, unknown>;
+    relightedBy?: ResponsibleUser;
+    relightedPost?: SocialPost;
     mentionedUsers: any[];
     pinned: boolean;
-    pinnedBy?: { userId: string; username: string };
+    pinnedBy?: ResponsibleUser;
     userId: string;
     username: string;
     userimage: string;
@@ -132,6 +140,12 @@ declare global {
     _id: string;
     likesCount: number;
     isLiked: boolean;
+  }
+
+  interface Relightable {
+    _id: string;
+    relitsCount: number;
+    relits: Record<string, unknown>;
   }
 
   interface LinkPreview {

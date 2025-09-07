@@ -5,12 +5,15 @@ import { SocialPostDescription } from "@/features/social/components/social-post/
 import { useModals } from "@/hooks/use-modals";
 import { LikeButton } from "@/features/reactions/components/like-button/like-button";
 import { CommentButton } from "@/features/comments/components/comment-button/comment-button";
-import { useAddReactionMutate } from "@/features/social/hooks/useAddReactionMutate";
-import { useRemoveReactionMutate } from "@/features/social/hooks/useRemoveReactionMutate";
-import { timeAgo } from "@/lib/utils";
 import { SocialPostMenu } from "@/features/social/components/social-post/social-post-menu";
 import { SocialPostTags } from "@/features/social/components/social-post/social-post-tags";
 import { SocialPostPoll } from "@/features/social/components/social-post/social-post-poll";
+import {RelightButton} from "@/features/social/components/relight-button/relight-button";
+import { useAddReactionMutate } from "@/features/social/hooks/useAddReactionMutate";
+import { useRemoveReactionMutate } from "@/features/social/hooks/useRemoveReactionMutate";
+import {useRelightSocialPostMutate} from "@/features/social/hooks/use-relight-social-post-mutate";
+import { timeAgo } from "@/lib/utils";
+
 
 export const SocialPost = ({
   socialPost,
@@ -22,6 +25,7 @@ export const SocialPost = ({
   const { openModal } = useModals();
   const handleAddMutate = useAddReactionMutate();
   const handleRemoveMutate = useRemoveReactionMutate();
+  const handleRelightMutate = useRelightSocialPostMutate();
 
   return (
     <div
@@ -60,6 +64,10 @@ export const SocialPost = ({
             post={socialPost}
             onAdd={handleAddMutate}
             onRemove={handleRemoveMutate}
+          />
+          <RelightButton
+            post={socialPost}
+            onRelight={handleRelightMutate}
           />
         </div>
         <div className="flex gap-2">

@@ -90,7 +90,7 @@ const PollOption = ({
         />
       )}
       <p className="text-white">{pollOption.text}</p>
-      {isVoted && <p>{percentage.toFixed(0)}%</p>}
+      {isVoted && <p className={`${selected ? 'text-white' : ''}`}>{percentage.toFixed(0)}%</p>}
     </div>
   );
 };

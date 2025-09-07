@@ -42,7 +42,7 @@ export const SocialPostMenu = ({ socialPost }: { socialPost: SocialPost }) => {
           align="end"
         >
           {isOwned && (
-            <DropdownMenuGroup className="flex flex-col gap-1">
+            <DropdownMenuGroup className="flex flex-col gap-[2px]">
               <DropdownMenuItem>Edit</DropdownMenuItem>
               <DropdownMenuItem
                 variant="destructive"

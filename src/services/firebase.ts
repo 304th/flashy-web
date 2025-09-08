@@ -7,6 +7,11 @@ import {
   sendSignInLinkToEmail,
   isSignInWithEmailLink,
   signInWithEmailLink,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  signInWithCustomToken,
+  type UserCredential,
+  type User,
 } from "firebase/auth";
 
 export const firebase = initializeApp({
@@ -32,10 +37,20 @@ export const signOut = async () => {
   await firebaseAuth.signOut();
 };
 
-export const onAuthStateChanged = async () =>
+export const onAuthStateChanged = async (): Promise<User | null> =>
   new Promise((resolve) => {
-    firebaseAuth.onAuthStateChanged(resolve);
+    firebaseAuth.onAuthStateChanged((user, ) => resolve(user));
   });
+
+export const signUpUserWithEmail = async (email: string, password: string) => {
+  return createUserWithEmailAndPassword(firebaseAuth, email, password);
+}
+
+export const sendVerificationEmail = async (userCredential: UserCredential, redirectUrl: string) => {
+  await sendEmailVerification(userCredential.user, {
+    url: redirectUrl,
+  });
+}
 
 export const sendSignInLink = async (email: string) =>
   sendSignInLinkToEmail(firebaseAuth, email, {
@@ -56,4 +71,8 @@ export const signInWithLMagicLink = async (email: string, link: string) => {
   await signInWithEmailLink(firebaseAuth, email, link);
 
   return firebaseAuth.currentUser?.getIdToken();
+}
+
+export const signInWithToken = async (token: string) => {
+  await signInWithCustomToken(firebaseAuth, token)
 }

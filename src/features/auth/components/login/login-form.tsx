@@ -1,8 +1,9 @@
-import React from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { EyeClosedIcon, EyeIcon } from "lucide-react";
 import {
   Form,
   FormField,
@@ -12,10 +13,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useLoginWithEmail } from "@/features/auth/queries/use-login-with-email";
-import { defaultVariants } from "@/lib/framer";
-import { Button } from "@/components/ui/button";
 import { useModals } from "@/hooks/use-modals";
+import { useSignInWithEmail } from "@/features/auth/queries/use-sign-in-with-email";
+import { IconButton } from "@/components/ui/icon-button";
+import { Button } from "@/components/ui/button";
+import { defaultVariants } from "@/lib/framer";
 
 const formSchema = z.object({
   email: z.string().email("Must be a valid email"),
@@ -23,8 +25,9 @@ const formSchema = z.object({
 });
 
 export const LoginForm = ({ onSuccess }: { onSuccess: () => void }) => {
+  const [showPassword, setShowPassword] = useState(false);
   const { openModal } = useModals();
-  const loginWithEmail = useLoginWithEmail();
+  const loginWithEmail = useSignInWithEmail();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -50,7 +53,7 @@ export const LoginForm = ({ onSuccess }: { onSuccess: () => void }) => {
             render={({ field }) => (
               <motion.div variants={defaultVariants.child}>
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -73,7 +76,19 @@ export const LoginForm = ({ onSuccess }: { onSuccess: () => void }) => {
                   <FormControl>
                     <Input
                       {...field}
-                      type="password"
+                      type={showPassword ? "" : "password"}
+                      trailingIcon={
+                        <IconButton
+                          size="xs"
+                          type="button"
+                          onClick={() => setShowPassword(state => !state)}
+                        >
+                          {
+                            showPassword ? <EyeIcon /> : <EyeClosedIcon />
+                          }
+
+                        </IconButton>
+                      }
                       onChange={(e: Event) => {
                         field.onChange(e);
                       }}

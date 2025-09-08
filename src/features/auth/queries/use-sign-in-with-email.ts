@@ -12,11 +12,11 @@ interface LoginWithEmailParams {
   password: string;
 }
 
-export const useLoginWithEmail = () => {
+export const useSignInWithEmail = () => {
   const queryClient = useQueryClient();
 
   return getMutation<User, Error, LoginWithEmailParams>(
-    ["loginWithEmail"],
+    ["signInWithEmail"],
     async ({ email, password }: LoginWithEmailParams) => {
       const tokenId = await signInWithEmail(email, password);
 
@@ -25,7 +25,7 @@ export const useLoginWithEmail = () => {
       }
 
       return await api
-        .post("auth/login", {
+        .post("auth/token/login", {
           json: { tokenId },
         })
         .json<any>();

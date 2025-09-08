@@ -13,16 +13,23 @@ export const NotLoggedIn = () => {
       animate="show"
       variants={defaultVariants.container}
     >
-      <motion.div variants={defaultVariants.child}>
-        <Button
-          className="min-w-[120px]"
-          onClick={() => {
-            openModal("SignupModal");
-          }}
-        >
-          Sign In
-        </Button>
-      </motion.div>
+      <Button
+        className="min-w-[120px]"
+        onClick={() => {
+          openModal("SignupModal");
+        }}
+      >
+        Sign Up
+      </Button>
+      <Button
+        variant="secondary"
+        className="min-w-[120px]"
+        onClick={() => {
+          openModal("LoginModal");
+        }}
+      >
+        Login
+      </Button>
     </motion.div>
   );
 };

@@ -5,9 +5,9 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormField, FormItem, FormControl } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { useVerifyOtp } from "@/features/auth/queries/use-verify-otp";
 import { defaultVariants } from "@/lib/framer";
 import { OtpInput } from "@/features/auth/components/login/otp-input";
+import { useSignupWithEmail } from "@/features/auth/queries/use-sign-up-with-email";
 
 const formSchema = z.object({
   otp: z.string().min(6, "Username must be at least 4 characters"),
@@ -21,7 +21,8 @@ export const OtpForm = ({
   email: string;
   onSuccess: () => void;
 }) => {
-  const verifyOtp = useVerifyOtp();
+  const signupWithEmail = useSignupWithEmail()
+  // const verifyOtp = useVerifyOtp();
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -34,8 +35,8 @@ export const OtpForm = ({
   const otp = form.watch("otp");
 
   useEffect(() => {
-    if (otp.length === 6 && !verifyOtp.isPending) {
-      verifyOtp.mutate({ otp, email: form.getValues("email") }, { onSuccess });
+    if (otp.length === 6 && !signupWithEmail.isPending) {
+      signupWithEmail.mutate({ otp, email: form.getValues("email") }, { onSuccess });
     }
   }, [otp]);
 
@@ -43,7 +44,7 @@ export const OtpForm = ({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit((params) => {
-          verifyOtp.mutate(params, { onSuccess });
+          signupWithEmail.mutate(params, { onSuccess });
         })}
       >
         <div className="flex flex-col gap-8 justify-between h-full">
@@ -66,7 +67,7 @@ export const OtpForm = ({
               size="xl"
               className="w-full"
               disabled={!form.formState.isValid}
-              pending={verifyOtp.isPending}
+              pending={signupWithEmail.isPending}
             >
               Verify
             </Button>

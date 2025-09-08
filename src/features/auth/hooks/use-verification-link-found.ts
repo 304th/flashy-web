@@ -4,9 +4,9 @@ import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useModals } from "@/hooks/use-modals";
 
-export const useMagicLinkFound = () => {
+export const useVerificationLinkFound = () => {
   const searchParams = useSearchParams();
-  const magicLink = searchParams.get("magicLink");
+  const magicLink = searchParams.get("verified-email");
   const { openModal } = useModals();
 
   useEffect(() => {

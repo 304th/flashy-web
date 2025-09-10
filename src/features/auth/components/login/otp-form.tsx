@@ -21,7 +21,7 @@ export const OtpForm = ({
   email: string;
   onSuccess: () => void;
 }) => {
-  const signupWithEmail = useSignupWithEmail()
+  const signupWithEmail = useSignupWithEmail();
   // const verifyOtp = useVerifyOtp();
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -36,7 +36,10 @@ export const OtpForm = ({
 
   useEffect(() => {
     if (otp.length === 6 && !signupWithEmail.isPending) {
-      signupWithEmail.mutate({ otp, email: form.getValues("email") }, { onSuccess });
+      signupWithEmail.mutate(
+        { otp, email: form.getValues("email") },
+        { onSuccess },
+      );
     }
   }, [otp]);
 

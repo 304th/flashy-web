@@ -1,5 +1,5 @@
 import { config } from "@/services/config";
-import React from "react";
+import React, { useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -13,22 +13,27 @@ import { PostOptions } from "@/features/social/components/post-create/post-optio
 import {
   CreateSocialPostParams,
   useCreateSocialPost,
-} from "@/features/social/queries/useCreateSocialPost";
+} from "@/features/social/queries/use-create-social-post";
 import { useParsedPostLinkPreviews } from "@/features/social/hooks/use-parsed-post-preview-links";
 import { defaultVariants } from "@/lib/framer";
 
 const formSchema = z.object({
   description: z.string().max(config.content.social.maxLength),
   poll: z.array(z.object({ value: z.string() })).optional(),
+  images: z.array(z.custom<File>()).optional(),
 });
 
 export const PostForm = ({
-  onPostCreate,
+  onPostCreateMutate,
+  onPostCreateSuccess,
 }: {
-  onPostCreate: (variables: CreateSocialPostParams) => unknown;
+  onPostCreateMutate: (variables: CreateSocialPostParams) => unknown;
+  onPostCreateSuccess: (newSocialPost: SocialPost) => unknown;
 }) => {
+  const optionsMenuRef = useRef<{ reset: () => void } | null>(null);
   const createSocialPost = useCreateSocialPost({
-    onMutate: onPostCreate,
+    onMutate: onPostCreateMutate,
+    onSuccess: onPostCreateSuccess,
   });
 
   const form = useForm({
@@ -36,6 +41,7 @@ export const PostForm = ({
     defaultValues: {
       description: "",
       poll: [],
+      images: [],
     },
     mode: "all",
   });
@@ -50,17 +56,13 @@ export const PostForm = ({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit((params) => {
-          createSocialPost.mutate(
-            {
-              description: params.description,
-              poll: params.poll?.map((poll) => poll.value), //FIXME: what?
-            },
-            {
-              onSuccess: () => {
-                form.reset();
-              },
-            },
-          );
+          createSocialPost.mutate({
+            description: params.description,
+            poll: params.poll?.map((poll) => poll.value) || [], //FIXME: what?
+            images: params.images || [],
+          });
+          form.reset();
+          optionsMenuRef.current?.reset();
         })}
         className="flex flex-col w-full gap-2"
       >
@@ -98,7 +100,7 @@ export const PostForm = ({
           )}
         </AnimatePresence>
         <div className="relative flex w-full items-center justify-between py-2">
-          <PostOptions />
+          <PostOptions ref={optionsMenuRef} />
           <div className="absolute right-0 bottom-0 flex items-center gap-2">
             <MessageProgress
               value={description.length}
@@ -108,8 +110,7 @@ export const PostForm = ({
             <Button
               type="submit"
               className="w-[120px]"
-              disabled={!form.formState.isValid}
-              pending={createSocialPost.isPending}
+              disabled={!form.formState.isDirty}
             >
               Post
             </Button>

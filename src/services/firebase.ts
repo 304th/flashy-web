@@ -39,18 +39,21 @@ export const signOut = async () => {
 
 export const onAuthStateChanged = async (): Promise<User | null> =>
   new Promise((resolve) => {
-    firebaseAuth.onAuthStateChanged((user, ) => resolve(user));
+    firebaseAuth.onAuthStateChanged((user) => resolve(user));
   });
 
 export const signUpUserWithEmail = async (email: string, password: string) => {
   return createUserWithEmailAndPassword(firebaseAuth, email, password);
-}
+};
 
-export const sendVerificationEmail = async (userCredential: UserCredential, redirectUrl: string) => {
+export const sendVerificationEmail = async (
+  userCredential: UserCredential,
+  redirectUrl: string,
+) => {
   await sendEmailVerification(userCredential.user, {
     url: redirectUrl,
   });
-}
+};
 
 export const sendSignInLink = async (email: string) =>
   sendSignInLinkToEmail(firebaseAuth, email, {
@@ -63,16 +66,17 @@ export const sendSignInLink = async (email: string) =>
       packageName: "com.example.android",
       installApp: true,
       minimumVersion: "12",
-    },  
+    },
   });
 
-export const isSignInWithLink = async () => isSignInWithEmailLink(firebaseAuth, window.location.href)
+export const isSignInWithLink = async () =>
+  isSignInWithEmailLink(firebaseAuth, window.location.href);
 export const signInWithLMagicLink = async (email: string, link: string) => {
   await signInWithEmailLink(firebaseAuth, email, link);
 
   return firebaseAuth.currentUser?.getIdToken();
-}
+};
 
 export const signInWithToken = async (token: string) => {
-  await signInWithCustomToken(firebaseAuth, token)
-}
+  await signInWithCustomToken(firebaseAuth, token);
+};

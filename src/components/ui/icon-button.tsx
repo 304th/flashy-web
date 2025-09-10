@@ -7,7 +7,7 @@ interface IconButtonProps {
   disabled?: boolean;
   type?: "button" | "submit" | "reset";
   className?: string;
-  onClick?: () => void;
+  onClick?: React.ComponentProps<"button">["onClick"];
 }
 
 export const IconButton = ({

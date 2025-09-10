@@ -21,6 +21,10 @@ declare global {
     | "comment"
     | "reply";
   type ReactionType = "like";
+  type Optimistic<T> = {
+    _optimisticStatus?: "success" | "pending" | "error";
+    _optimisticId?: string;
+  } & T;
 
   interface ApiResponse {
     data: any;
@@ -71,7 +75,7 @@ declare global {
   interface SocialPost {
     _id: string;
     description: string;
-    image: string;
+    images: string[];
     poll: { pollVotedId: number | null; results: PollOption[] };
     reactions: Record<string, Record<string, Reaction>>;
     likesCount: number;
@@ -140,6 +144,10 @@ declare global {
     _id: string;
     likesCount: number;
     isLiked: boolean;
+  }
+
+  interface Shareable {
+    _id: string;
   }
 
   interface Relightable {

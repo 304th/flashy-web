@@ -1,17 +1,19 @@
 import { config } from "@/services/config";
-import React, { useState } from "react";
+import { forwardRef, useState, useImperativeHandle } from "react";
 import { motion } from "framer-motion";
 import { PlusIcon, XIcon } from "lucide-react";
 import { useFieldArray, useFormContext } from "react-hook-form";
+import { toast } from "sonner";
 import { PictureIcon } from "@/components/ui/icons/picture";
 import { PollIcon } from "@/components/ui/icons/poll";
 import { IconButton } from "@/components/ui/icon-button";
 import { FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { ImageUpload } from "@/components/ui/image-upload";
 import { defaultVariants } from "@/lib/framer";
 
-export const PostOptions = () => {
+export const PostOptions = forwardRef((_, ref) => {
   const [showImages, setShowImages] = useState<boolean>(false);
   const [showPoll, setShowPoll] = useState<boolean>(false);
   const context = useFormContext();
@@ -19,6 +21,13 @@ export const PostOptions = () => {
     control: context.control,
     name: "poll",
   });
+
+  useImperativeHandle(ref, () => ({
+    reset: () => {
+      setShowImages(false);
+      setShowPoll(false);
+    },
+  }));
 
   const handleShowPoll = () => {
     if (fields.length === 0) {
@@ -70,7 +79,7 @@ export const PostOptions = () => {
       </div>
     </div>
   );
-};
+});
 
 const PollEditor = ({
   fields,
@@ -136,5 +145,19 @@ const PollEditor = ({
 };
 
 const ImageEditor = () => {
-  return <div className="flex w-full border-y py-2"></div>;
+  const context = useFormContext();
+
+  return (
+    <div className="flex w-full border-y py-2">
+      <ImageUpload
+        maxAllowedSize={config.content.uploads.maxSize}
+        onChange={async (file) => {
+          context.setValue("images", file ? [file] : []);
+        }}
+        onError={(error) => {
+          toast.error(error);
+        }}
+      />
+    </div>
+  );
 };

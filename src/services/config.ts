@@ -22,5 +22,8 @@ export const config = {
     comments: {
       maxLength: 500,
     },
+    uploads: {
+      maxSize: 3 * 1024 * 1024, // 3 MB
+    },
   },
 } as const;

@@ -33,6 +33,7 @@ export interface CommentSendProps {
 export const CommentSend = ({
   post,
   replyComment,
+  className,
   onCommentSend,
   onReplySend,
   onCloseReply,
@@ -60,6 +61,12 @@ export const CommentSend = ({
     },
     mode: "all",
   });
+
+  useEffect(() => {
+    if (post._id) {
+      form.setFocus("message");
+    }
+  }, [post._id]);
 
   useEffect(() => {
     if (replyComment) {
@@ -101,7 +108,7 @@ export const CommentSend = ({
   };
 
   return (
-    <div className="flex flex-col w-full">
+    <div className={`flex flex-col w-full bg-base-200 ${className}`}>
       {replyComment && (
         <ReplyToComment comment={replyComment} onClose={onCloseReply} />
       )}

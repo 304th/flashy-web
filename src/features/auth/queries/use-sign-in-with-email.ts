@@ -24,7 +24,9 @@ export const useSignInWithEmail = () => {
         throw new Error("Error signing in");
       }
 
-      return await api
+      // TODO: fix long modal not closing after signed-in (useMe returns but this holds) maybe remove auth/token/login
+
+      return api
         .post("auth/token/login", {
           json: { tokenId },
         })

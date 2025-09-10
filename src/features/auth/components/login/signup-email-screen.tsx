@@ -3,8 +3,8 @@ import { SignupForm } from "@/features/auth/components/login/signup-form";
 import { SocialAuth } from "@/features/auth/components/login/social-auth";
 
 export const SignupEmailScreen = ({
-                                    onEmailSent,
-                                  }: {
+  onEmailSent,
+}: {
   onEmailSent: (email: string) => void;
 }) => {
   return (

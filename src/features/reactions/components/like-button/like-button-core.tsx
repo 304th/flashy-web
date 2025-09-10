@@ -23,7 +23,8 @@ export const LikeButtonCore = ({
       className="group flex items-center gap-1 px-1 py-[2px] rounded-md
         cursor-pointer transition hover:text-[#E03336] hover:bg-[#E0333610]"
       role="button"
-      onClick={() => {
+      onClick={(e) => {
+        e.preventDefault();
         if (isLiked) {
           onUnlike();
         } else {

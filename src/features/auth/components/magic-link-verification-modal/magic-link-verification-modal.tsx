@@ -10,12 +10,15 @@ export interface MagicLinkVerificationModalProps {
   onClose(): void;
 }
 
-export const MagicLinkVerificationModal = ({ onClose, ...props }: MagicLinkVerificationModalProps) => {
+export const MagicLinkVerificationModal = ({
+  onClose,
+  ...props
+}: MagicLinkVerificationModalProps) => {
   useVerifyEmailLink(() => {
     const currentUrl = new URL(window.location.href);
     const newUrl = new URL(currentUrl.origin + currentUrl.pathname);
-    history.replaceState(null, '', newUrl.toString());
-  })
+    history.replaceState(null, "", newUrl.toString());
+  });
 
   return (
     <Modal onClose={onClose} className="!p-0 border-0" {...props}>
@@ -23,8 +26,7 @@ export const MagicLinkVerificationModal = ({ onClose, ...props }: MagicLinkVerif
         initial="hidden"
         animate="show"
         className="relative flex flex-col gap-16 p-8
-          bg-[url('/images/login-bg.jpg')] bg-cover rounded-xl
-          overflow-hidden"
+          bg-[url('/images/login-bg.jpg')] bg-cover rounded-xl overflow-hidden"
         variants={defaultVariants.container}
       >
         <motion.div className="absolute right-4 top-4" onClick={onClose}>

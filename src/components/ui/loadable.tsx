@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { TriangleAlertIcon } from "lucide-react";
 import { Spinner } from "@/components/ui/spinner/spinner";
 
 // Assuming queries come from a library like React Query
@@ -64,16 +65,18 @@ const LoadableError = ({
     if (fullScreen) {
       return (
         <div className="flex w-full h-full justify-center items-center">
-          <div className="flex justify-center items-center p-2 rounded bg-[#ff000010]">
-            <p className="text-red-500">{error}</p>
+          <div className="flex justify-center items-center p-2 gap-1 rounded bg-[#ff000010] text-red-500">
+            <TriangleAlertIcon size={16} />
+            <p>{error}</p>
           </div>
         </div>
       );
     }
 
     return (
-      <div className="flex justify-center items-center p-2 rounded bg-[#ff000010]">
-        <p className="text-red-500">{error}</p>
+      <div className="flex justify-center items-center p-2 gap-1 rounded bg-[#ff000010] text-red-500">
+        <TriangleAlertIcon size={16} />
+        <p>{error}</p>
       </div>
     );
   }

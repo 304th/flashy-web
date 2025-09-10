@@ -8,7 +8,7 @@ export const SocialPostPoll = ({ socialPost }: { socialPost: SocialPost }) => {
   if (
     !socialPost.poll ||
     !socialPost.poll.results ||
-    (socialPost.poll as any).length === 0
+    socialPost.poll.results.length === 0
   ) {
     //FIXME: wrong types -> fix on backend
     return null;

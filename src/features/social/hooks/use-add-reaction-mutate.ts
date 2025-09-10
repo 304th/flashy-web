@@ -2,24 +2,33 @@ import { useQueryClient } from "@tanstack/react-query";
 import { produce } from "immer";
 import { useMe } from "@/features/auth/queries/use-me";
 import type { AddReactionParams } from "@/features/reactions/queries/useAddReaction";
-import { updateQueryData } from "@/features/social/queries/useSocialPosts";
+import { optimisticUpdateSocialPosts } from "@/features/social/queries/use-social-posts";
 
-export const useRemoveReactionMutate = () => {
+export const useAddReactionMutate = () => {
   const [me] = useMe();
   const queryClient = useQueryClient();
 
-  return updateQueryData<AddReactionParams>(
+  return optimisticUpdateSocialPosts<AddReactionParams>(
     queryClient,
     (paginatedSocialPosts, params) => {
       return produce(paginatedSocialPosts, (draft) => {
         draft.pages.forEach((page) => {
           page.forEach((post) => {
             if (post._id === params.id) {
-              delete post.reactions.like[me!.fbId];
+              if (!post.reactions || !post.reactions?.like) {
+                post.reactions = { like: {} };
+              }
+
+              post.reactions.like[me!.fbId] = {
+                fbId: me!.fbId,
+                username: me!.username,
+                userimage: me!.userimage,
+              };
             }
           });
         });
       });
     },
+    me?.fbId,
   );
 };

@@ -25,7 +25,8 @@ export const RelightButton = ({
     <div
       className="group flex rounded-md items-center gap-1 px-1 py-[2px]
         cursor-pointer transition hover:text-[#FD980F] hover:bg-[#FD980F10]"
-      onClick={() => {
+      onClick={(e) => {
+        e.preventDefault();
         relightPost.mutate({
           id: post._id,
           isRelighted: !isRelighted,

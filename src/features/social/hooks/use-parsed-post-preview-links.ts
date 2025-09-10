@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useDebouncedValue } from "@tanstack/react-pacer/debouncer";
-import { useLinksPreview } from "@/features/social/queries/useLinksPreview";
+import { useLinksPreview } from "@/features/social/queries/use-links-preview";
 
 export const useParsedPostLinkPreviews = (
   description: string,

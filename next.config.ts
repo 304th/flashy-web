@@ -9,6 +9,9 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ['firebase', 'framer-motion', '@mux/mux-player-react'],
   },
+  images: {
+    unoptimized: true,
+  }
 };
 
 export default withBundleAnalyzer(nextConfig);

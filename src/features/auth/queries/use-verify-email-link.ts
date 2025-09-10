@@ -5,21 +5,24 @@ import { useSignInWithMagicLink } from "@/features/auth/queries/use-sign-in-with
 export const useVerifyEmailLink = (onSuccess: () => void) => {
   const signInWithMagicLink = useSignInWithMagicLink();
 
-  return getQuery(['verifyEmailLink'], async () => {
+  return getQuery(["verifyEmailLink"], async () => {
     if (await isSignInWithLink()) {
       const urlParams = new URLSearchParams(window.location.search);
-      const email = urlParams.get('email');
+      const email = urlParams.get("email");
 
       if (!email) {
-        return
+        return;
       }
 
-      await signInWithMagicLink.mutateAsync({
-        email,
-        link: window.location.href,
-      }, {
-        onSuccess,
-      });
+      await signInWithMagicLink.mutateAsync(
+        {
+          email,
+          link: window.location.href,
+        },
+        {
+          onSuccess,
+        },
+      );
     }
-  })
+  });
 };

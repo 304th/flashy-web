@@ -11,10 +11,15 @@ import { useLikeCommentMutate } from "@/features/comments/hooks/useLikeCommentMu
 
 export interface CommentsFeedProps {
   post: Reactable;
+  className?: string;
   onCommentReply: (comment: CommentPost) => void;
 }
 
-export const CommentsFeed = ({ post, onCommentReply }: CommentsFeedProps) => {
+export const CommentsFeed = ({
+  post,
+  className,
+  onCommentReply,
+}: CommentsFeedProps) => {
   const listRef = useRef<HTMLDivElement>(null);
   const [commentCount, commentsCountQuery] = useCommentsCount(post._id);
   const [comments, commentsQuery] = useComments(post._id);
@@ -44,14 +49,14 @@ export const CommentsFeed = ({ post, onCommentReply }: CommentsFeedProps) => {
           }
 
           return (
-            <div className="relative flex flex-col">
+            <div className="relative flex flex-col bg-base-100">
               <div className="flex w-full px-6 pt-6">
-                <Separator>{commentCount} replies</Separator>
+                <Separator>{commentCount} comments</Separator>
               </div>
               <div
                 ref={listRef}
-                className="flex flex-col w-fullalign-center min-h-[60px]
-                  max-h-[350px] overflow-scroll divide-y"
+                className={`flex flex-col w-full align-center min-h-[60px]
+                max-h-[350px] overflow-scroll divide-y ${className}`}
               >
                 <AnimatePresence initial={false}>
                   {comments?.map((comment) => (

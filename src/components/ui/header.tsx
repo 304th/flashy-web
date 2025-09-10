@@ -2,7 +2,7 @@ import { AccountLogin } from "@/features/auth/components/account-login/account-l
 
 export const Header = () => {
   return (
-    <div className="relative bg-base-200 border-b border-b-base-300 z-2">
+    <div className="relative bg-base-200 border-b border-b-base-300 z-3">
       <div
         className="flex bg-base-200 border-b border-b-base-300 w-full px-6 py-0
           h-16 items-center justify-between max-w-content"

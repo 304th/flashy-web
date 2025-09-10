@@ -15,7 +15,7 @@ export type OptimisticUpdater = (
 export const getQuery = <T>(
   queryKey: unknown[],
   queryFn: () => Promise<T>,
-  enabled: boolean = true,
+  enabled: (() => boolean) | boolean = true,
   options?: Record<string, any>,
 ) => {
   const query = useQuery<T | undefined>({
@@ -23,7 +23,7 @@ export const getQuery = <T>(
     queryFn: async () => {
       return await queryFn();
     },
-    enabled,
+    enabled: typeof enabled === "function" ? enabled() : enabled,
     ...options,
   });
 
@@ -50,7 +50,7 @@ export const getMutation = <
 };
 
 export const getInfiniteQuery = <T>(
-  queryKey: string[],
+  queryKey: unknown[],
   queryFn: ({ pageParam }: { pageParam: number }) => Promise<T>,
   enabled: boolean = true,
 ) => {
@@ -60,7 +60,7 @@ export const getInfiniteQuery = <T>(
       return await queryFn({ pageParam });
     },
     select: (data) => {
-      return data.pages.flat() as any;
+      return data.pages.flat() as T;
     },
     getNextPageParam: (lastPage, allPages) => {
       if (Array.isArray(lastPage) && lastPage.length > 0) {
@@ -109,6 +109,19 @@ export const handleOptimisticUpdate =
     queryClient.setQueryData(queryKey, (state: S) => mutate(state, variables));
 
     return { optimisticUpdates: [[queryKey, previous]] };
+  };
+
+export const handleOptimisticSuccess =
+  <S, E>(queryClient: QueryClient) =>
+  ({
+    queryKey,
+    update,
+  }: {
+    queryKey: unknown[];
+    update: (state: S, entity: E) => S;
+  }) =>
+  (entity: E) => {
+    queryClient.setQueryData(queryKey, (state: S) => update(state, entity));
   };
 
 export const handleOptimisticUpdateError =

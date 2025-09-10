@@ -10,7 +10,7 @@ import { IconButton } from "@/components/ui/icon-button";
 import { MeatballIcon } from "@/components/ui/icons/meatball";
 import { Separator } from "@/components/ui/separator";
 import { useModals } from "@/hooks/use-modals";
-import { useDeleteSocialPost } from "@/features/social/queries/useDeleteSocialPost";
+import { useDeleteSocialPost } from "@/features/social/queries/use-delete-social-post";
 import { usePinSocialPost } from "@/features/social/queries/use-pin-social-post";
 import { useDeleteSocialPostMutate } from "@/features/social/hooks/use-delete-social-post-mutate";
 import { useSocialPostOwned } from "@/features/social/hooks/use-social-post-owned";
@@ -33,7 +33,13 @@ export const SocialPostMenu = ({ socialPost }: { socialPost: SocialPost }) => {
 
       <DropdownMenu modal={false} open={open}>
         <DropdownMenuTrigger asChild className="relative z-1">
-          <IconButton onClick={() => setOpen(true)} className="relative z-1">
+          <IconButton
+            onClick={(e) => {
+              e.preventDefault();
+              setOpen(true);
+            }}
+            className="relative z-1"
+          >
             <MeatballIcon />
           </IconButton>
         </DropdownMenuTrigger>
@@ -43,10 +49,11 @@ export const SocialPostMenu = ({ socialPost }: { socialPost: SocialPost }) => {
         >
           {isOwned && (
             <DropdownMenuGroup className="flex flex-col gap-[2px]">
-              <DropdownMenuItem>Edit</DropdownMenuItem>
+              {/*<DropdownMenuItem>Edit</DropdownMenuItem>*/}
               <DropdownMenuItem
                 variant="destructive"
-                onClick={() => {
+                onClick={(e) => {
+                  e.preventDefault();
                   openModal("ConfirmModal", {
                     title: "Delete post",
                     description: "Are you sure you want to delete this post?",
@@ -63,27 +70,30 @@ export const SocialPostMenu = ({ socialPost }: { socialPost: SocialPost }) => {
               </DropdownMenuItem>
             </DropdownMenuGroup>
           )}
-          <Separator />
           {isSuperAdmin && (
-            <DropdownMenuGroup>
-              <DropdownMenuItem
-                variant={socialPost.pinned ? "destructive" : "default"}
-                onClick={() => {
-                  openModal("ConfirmModal", {
-                    title: socialPost.pinned ? "Unpin post" : "Pin post",
-                    description: `Are you sure you want to ${socialPost.pinned ? "unpin" : "pin"} this post?`,
-                    onConfirm: () => {
-                      pinPost.mutate({
-                        id: socialPost._id,
-                        pinned: !socialPost?.pinned,
-                      });
-                    },
-                  });
-                }}
-              >
-                {socialPost.pinned ? "Unpin" : "Pin"}
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
+            <>
+              <Separator />
+              <DropdownMenuGroup>
+                <DropdownMenuItem
+                  variant={socialPost.pinned ? "destructive" : "default"}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    openModal("ConfirmModal", {
+                      title: socialPost.pinned ? "Unpin post" : "Pin post",
+                      description: `Are you sure you want to ${socialPost.pinned ? "unpin" : "pin"} this post?`,
+                      onConfirm: () => {
+                        pinPost.mutate({
+                          id: socialPost._id,
+                          pinned: !socialPost?.pinned,
+                        });
+                      },
+                    });
+                  }}
+                >
+                  {socialPost.pinned ? "Unpin" : "Pin"}
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+            </>
           )}
         </DropdownMenuContent>
       </DropdownMenu>

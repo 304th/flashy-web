@@ -1,13 +1,15 @@
 import { nanoid } from "nanoid";
-import { CreateSocialPostParams } from "@/features/social/queries/useCreateSocialPost";
+import { CreateSocialPostParams } from "@/features/social/queries/use-create-social-post";
 
 export const createOptimisticSocialPost = (
   params: CreateSocialPostParams,
   author: Author,
-): SocialPost => ({
+): Optimistic<SocialPost> => ({
+  _optimisticId: nanoid(),
+  _optimisticStatus: "pending",
   _id: nanoid(),
   description: params.description || "",
-  image: "",
+  images: params.images.map((image) => URL.createObjectURL(image)),
   reactions: {},
   relits: {},
   likesCount: 0,

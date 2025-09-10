@@ -1,12 +1,13 @@
 import { produce } from "immer";
 import { useQueryClient } from "@tanstack/react-query";
 import { api } from "@/services/api";
+import { useMe } from "@/features/auth/queries/use-me";
 import {
   combineOptimisticUpdates,
   getMutation,
   handleOptimisticUpdateError,
 } from "@/lib/query";
-import { updateQueryData } from "@/features/social/queries/useSocialPosts";
+import { optimisticUpdateSocialPosts } from "@/features/social/queries/use-social-posts";
 
 export interface VotePollParams {
   postId: string;
@@ -14,12 +15,13 @@ export interface VotePollParams {
 }
 
 export const useVotePoll = () => {
+  const [me] = useMe();
   const queryClient = useQueryClient();
 
   return getMutation(
     ["votePoll"],
     async (params: VotePollParams) => {
-      return;
+      return; //TODO: Check implementation
       return api.post("social-posts/vote", {
         json: {
           postId: params.postId,
@@ -30,7 +32,7 @@ export const useVotePoll = () => {
     {
       onError: handleOptimisticUpdateError(queryClient),
       onMutate: combineOptimisticUpdates<VotePollParams>([
-        updateQueryData<VotePollParams>(
+        optimisticUpdateSocialPosts<VotePollParams>(
           queryClient,
           (paginatedSocialPosts, params) => {
             return produce(paginatedSocialPosts, (draft) => {
@@ -44,6 +46,7 @@ export const useVotePoll = () => {
               });
             });
           },
+          me?.fbId,
         ),
       ]),
     },

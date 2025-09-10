@@ -3,11 +3,7 @@ import { motion } from "framer-motion";
 import { Spinner } from "@/components/ui/spinner/spinner";
 import { defaultVariants } from "@/lib/framer";
 
-export const VerificationEmailSentScreen = ({
-  email,
-}: {
-  email: string;
-}) => {
+export const VerificationEmailSentScreen = ({ email }: { email: string }) => {
   return (
     <>
       <motion.div
@@ -21,8 +17,13 @@ export const VerificationEmailSentScreen = ({
           Check Your Mailbox
         </motion.p>
         <motion.div variants={defaultVariants.child}>
-          <p>We've sent you a verification link to <span className="text-white font-bold">{email}</span>.</p>
-          <p>Please check your inbox and click the link to verify your account.</p>
+          <p>
+            We've sent you a verification link to{" "}
+            <span className="text-white font-bold">{email}</span>.
+          </p>
+          <p>
+            Please check your inbox and click the link to verify your account.
+          </p>
         </motion.div>
         <div className="flex w-full justify-center">
           <Spinner />

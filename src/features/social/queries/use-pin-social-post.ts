@@ -1,7 +1,7 @@
 import { produce } from "immer";
 import { useQueryClient } from "@tanstack/react-query";
 import { getMutation, handleOptimisticUpdateError } from "@/lib/query";
-import { updateQueryData } from "@/features/social/queries/useSocialPosts";
+import { optimisticUpdateSocialPosts } from "@/features/social/queries/use-social-posts";
 import { api } from "@/services/api";
 import { useMe } from "@/features/auth/queries/use-me";
 
@@ -25,7 +25,7 @@ export const usePinSocialPost = () => {
     },
     {
       onError: handleOptimisticUpdateError(queryClient),
-      onMutate: updateQueryData<PinSocialPostParams>(
+      onMutate: optimisticUpdateSocialPosts<PinSocialPostParams>(
         queryClient,
         (paginatedSocialPosts, params) => {
           return produce(paginatedSocialPosts, (draft) => {
@@ -63,6 +63,7 @@ export const usePinSocialPost = () => {
             });
           });
         },
+        me?.fbId,
       ),
     },
   );

@@ -81,12 +81,9 @@ export const LoginForm = ({ onSuccess }: { onSuccess: () => void }) => {
                         <IconButton
                           size="xs"
                           type="button"
-                          onClick={() => setShowPassword(state => !state)}
+                          onClick={() => setShowPassword((state) => !state)}
                         >
-                          {
-                            showPassword ? <EyeIcon /> : <EyeClosedIcon />
-                          }
-
+                          {showPassword ? <EyeIcon /> : <EyeClosedIcon />}
                         </IconButton>
                       }
                       onChange={(e: Event) => {

@@ -1,5 +1,9 @@
 import { useQueryClient } from "@tanstack/react-query";
-import {getMutation, handleAuthSuccess, handleMutationError} from "@/lib/query";
+import {
+  getMutation,
+  handleAuthSuccess,
+  handleMutationError,
+} from "@/lib/query";
 import { api } from "@/services/api";
 import { signInWithToken } from "@/services/firebase";
 
@@ -14,12 +18,14 @@ export const useSignupWithEmail = () => {
   return getMutation<void, Error, SignupWithEmailParams>(
     ["signupWithEmail"],
     async (params: SignupWithEmailParams) => {
-      const data = await api.post('auth/email/register', {
-        json: {
-          email: params.email,
-          otp: params.otp,
-        }
-      }).json<{ idToken: string }>()
+      const data = await api
+        .post("auth/email/register", {
+          json: {
+            email: params.email,
+            otp: params.otp,
+          },
+        })
+        .json<{ idToken: string }>();
 
       await signInWithToken(data.idToken);
     },
@@ -29,7 +35,6 @@ export const useSignupWithEmail = () => {
     },
   );
 };
-
 
 // import { getMutation, handleMutationError } from "@/lib/query";
 // import { useVerifyCaptcha } from "@/features/auth/queries/use-verify-captcha";

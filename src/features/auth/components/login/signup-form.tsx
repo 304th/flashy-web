@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Turnstile } from '@marsidev/react-turnstile';
+import { Turnstile } from "@marsidev/react-turnstile";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
 import { z } from "zod";
@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { usePreRegisterEmail } from "@/features/auth/queries/use-pre-register-email";
 import { defaultVariants } from "@/lib/framer";
-import {IconButton} from "@/components/ui/icon-button";
+import { IconButton } from "@/components/ui/icon-button";
 import { EyeIcon, EyeClosedIcon } from "lucide-react";
 
 const formSchema = z
@@ -32,8 +32,8 @@ const formSchema = z
   });
 
 export const SignupForm = ({
-                             onEmailSent,
-                           }: {
+  onEmailSent,
+}: {
   onEmailSent: (email: string) => void;
 }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -98,12 +98,9 @@ export const SignupForm = ({
                           <IconButton
                             size="xs"
                             type="button"
-                            onClick={() => setShowPassword(state => !state)}
+                            onClick={() => setShowPassword((state) => !state)}
                           >
-                            {
-                              showPassword ? <EyeIcon /> : <EyeClosedIcon />
-                            }
-
+                            {showPassword ? <EyeIcon /> : <EyeClosedIcon />}
                           </IconButton>
                         }
                         {...props.field}
@@ -127,12 +124,15 @@ export const SignupForm = ({
                           <IconButton
                             size="xs"
                             type="button"
-                            onClick={() => setShowConfirmPassword(state => !state)}
-                          >
-                            {
-                              showConfirmPassword ? <EyeIcon /> : <EyeClosedIcon />
+                            onClick={() =>
+                              setShowConfirmPassword((state) => !state)
                             }
-
+                          >
+                            {showConfirmPassword ? (
+                              <EyeIcon />
+                            ) : (
+                              <EyeClosedIcon />
+                            )}
                           </IconButton>
                         }
                         {...props.field}
@@ -144,7 +144,10 @@ export const SignupForm = ({
               )}
             />
           </div>
-          <motion.div className="flex flex-col w-full items-center justify-center gap-5" variants={defaultVariants.child}>
+          <motion.div
+            className="flex flex-col w-full items-center justify-center gap-5"
+            variants={defaultVariants.child}
+          >
             <Button
               size="xl"
               className="w-full"
@@ -153,11 +156,17 @@ export const SignupForm = ({
             >
               Sign Up
             </Button>
-            <Turnstile siteKey={process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY!} onSuccess={(turnstileToken) => {
-              form.setValue("captchaToken", turnstileToken, { shouldValidate: true });
-            }} onError={(error) => {
-              console.log(error);
-            }} />
+            <Turnstile
+              siteKey={process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY!}
+              onSuccess={(turnstileToken) => {
+                form.setValue("captchaToken", turnstileToken, {
+                  shouldValidate: true,
+                });
+              }}
+              onError={(error) => {
+                console.log(error);
+              }}
+            />
           </motion.div>
         </div>
       </form>

@@ -35,9 +35,11 @@ export const SocialFeed = () => {
                           post: socialPost,
                         })
                       }
-                      onShareOpen={() => openModal("ShareModal", {
-                        post: socialPost,
-                      })}
+                      onShareOpen={() =>
+                        openModal("ShareModal", {
+                          post: socialPost,
+                        })
+                      }
                     />
                   </Link>
                 </motion.div>

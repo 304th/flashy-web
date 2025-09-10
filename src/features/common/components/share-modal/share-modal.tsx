@@ -1,4 +1,4 @@
-import React, {useMemo} from "react";
+import React, { useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   TwitterShareButton,
@@ -17,7 +17,7 @@ import { CloseButton } from "@/components/ui/close-button";
 import { Button } from "@/components/ui/button";
 
 export interface ShareModalProps {
-  post: Shareable,
+  post: Shareable;
   onConfirm(): void;
   onCancel?(): void;
   onClose(): void;
@@ -30,7 +30,10 @@ export const ShareModal = ({
   onClose,
   ...props
 }: ShareModalProps) => {
-  const shareableLink = useMemo(() => typeof window !== 'undefined' ? window.location.href : '', []);
+  const shareableLink = useMemo(
+    () => (typeof window !== "undefined" ? window.location.href : ""),
+    [],
+  );
 
   return (
     <Modal onClose={onClose} className={"!p-0"} {...props}>
@@ -85,7 +88,7 @@ export const ShareModal = ({
 const Modal = (props: any) => (
   <ModalComponent
     {...props}
-    className={`sm:min-w-unset min-w-[500px] !p-0 !bg-base-200
-      !rounded-md sm:w-full overflow-hidden ${props.className}`}
+    className={`sm:min-w-unset min-w-[500px] !p-0 !bg-base-200 !rounded-md
+      sm:w-full overflow-hidden ${props.className}`}
   />
 );

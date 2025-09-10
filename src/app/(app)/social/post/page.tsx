@@ -11,7 +11,7 @@ import { useQueryParams } from "@/hooks/use-query-params";
 import { CommentsFeed } from "@/features/comments/components/comments-feed/comments-feed";
 import React, { useState } from "react";
 import { CommentSend } from "@/features/comments/components/comment-send/comment-send";
-import {useModals} from "@/hooks/use-modals";
+import { useModals } from "@/hooks/use-modals";
 
 export default function SocialPostPage() {
   const id = useQueryParams("id");
@@ -55,9 +55,11 @@ const SocialPostDetails = ({
           <SocialPost
             socialPost={socialPost}
             className="!bg-[linear-gradient(180deg,#191919_0%,#191919_0.01%,#151515_100%)]"
-            onShareOpen={() => openModal("ShareModal", {
-              post: socialPost,
-            })}
+            onShareOpen={() =>
+              openModal("ShareModal", {
+                post: socialPost,
+              })
+            }
           />
           <CommentSend
             post={socialPost}

@@ -70,10 +70,12 @@ export const SocialPost = ({
         </div>
         {onShareOpen && (
           <div className="flex gap-2">
-            <IconButton onClick={(e) => {
-              e.preventDefault();
-              onShareOpen();
-            }}>
+            <IconButton
+              onClick={(e) => {
+                e.preventDefault();
+                onShareOpen();
+              }}
+            >
               <ShareIcon />
             </IconButton>
           </div>

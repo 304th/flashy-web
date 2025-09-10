@@ -13,6 +13,7 @@ export const CreateDropdown = () => {
 
   return (
     <div className="relative" onMouseLeave={() => setOpen(false)}>
+      {open && <div className="absolute w-[60px] h-8 right-0 bottom-[-8px]" />}
       <DropdownMenu modal={false} open={open}>
         <DropdownMenuTrigger asChild>
           <Button

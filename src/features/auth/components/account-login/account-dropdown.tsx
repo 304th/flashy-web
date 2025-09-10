@@ -25,6 +25,7 @@ export const AccountDropdown = () => {
 
   return (
     <div className="relative" onMouseLeave={() => setOpen(false)}>
+      {open && <div className="absolute w-[60px] h-8 right-0 bottom-[-8px]" />}
       <DropdownMenu modal={false} open={open}>
         <DropdownMenuTrigger asChild>
           <UserAvatar
@@ -33,7 +34,7 @@ export const AccountDropdown = () => {
           />
         </DropdownMenuTrigger>
         <DropdownMenuContent
-          className="w-[300px] bg-base-300 border-base-400"
+          className="w-[320px] bg-base-300 border-base-400"
           align="end"
         >
           <div
@@ -41,34 +42,34 @@ export const AccountDropdown = () => {
               inset-shadow-[0_0_4px_0_rgba(0,0,0,0.1)] inset-shadow-base-200
               rounded mb-1"
           >
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 whitespace-nowrap overflow-hidden text-ellipsis w-full">
               <UserAvatar avatar={me?.userimage} />
               <p className="text-white font-extrabold">{me?.username}</p>
             </div>
           </div>
           <DropdownMenuGroup>
             <DropdownMenuItem>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 p-1">
                 <UserIcon />
-                Channel
+                <p>Channel</p>
               </div>
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 p-1">
                 <VideoIcon />
-                My Videos
+                <p>My Videos</p>
               </div>
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 p-1">
                 <WalletIcon />
-                My Wallet
+                <p>My Wallet</p>
               </div>
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuItem>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 p-1">
               <SettingsIcon />
               Settings
             </div>
@@ -81,7 +82,7 @@ export const AccountDropdown = () => {
               })
             }
           >
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 p-1">
               <LogOutIcon />
               Log out
             </div>

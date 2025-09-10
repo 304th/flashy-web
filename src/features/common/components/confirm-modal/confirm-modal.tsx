@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 export interface ConfirmModalProps {
   title?: string;
   description?: string;
+  actionTitle?: string;
   destructive?: boolean;
   onConfirm(): void;
   onCancel?(): void;
@@ -16,6 +17,7 @@ export interface ConfirmModalProps {
 export const ConfirmModal = ({
   title = "Confirm",
   description,
+  actionTitle = "Proceed",
   destructive = false,
   onConfirm,
   onCancel,
@@ -47,7 +49,7 @@ export const ConfirmModal = ({
               onClose();
             }}
           >
-            Proceed
+            {actionTitle}
           </Button>
         </div>
       </motion.div>

@@ -30,7 +30,6 @@ export const SocialPostMenu = ({ socialPost }: { socialPost: SocialPost }) => {
   return (
     <div className="relative flex" onMouseLeave={() => setOpen(false)}>
       {open && <div className="absolute w-[50px] h-8 right-0 bottom-[-8px]" />}
-
       <DropdownMenu modal={false} open={open}>
         <DropdownMenuTrigger asChild className="relative z-1">
           <IconButton

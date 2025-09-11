@@ -23,6 +23,8 @@
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-tooltip": "^1.2.7",
     "@react-oauth/google": "^0.12.2",
+    "@tanstack/query-db-collection": "^0.2.14",
+    "@tanstack/react-db": "^0.1.15",
     "@tanstack/react-pacer": "^0.16.1",
     "@tanstack/react-query": "^5.81.5",
     "class-variance-authority": "^0.7.1",

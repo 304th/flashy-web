@@ -23,16 +23,16 @@ export const useComments = (id: string) =>
     },
   );
 
-export const updateQueryData = <T>(
+export const optimisticUpdateComments = <T>(
   queryClient: QueryClient,
   mutate: (
     state: Paginated<Optimistic<CommentPost>[]>,
     variables: T,
   ) => Paginated<Optimistic<CommentPost>[]>,
-  id: string,
+  postId: string,
 ) =>
   handleOptimisticUpdate<Paginated<Optimistic<CommentPost>[]>, T>(queryClient)({
-    queryKey: ["comments", id],
+    queryKey: ["comments", postId],
     mutate,
   });
 

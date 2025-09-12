@@ -1,7 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { produce } from "immer";
 import { useMe } from "@/features/auth/queries/use-me";
-import type { AddReactionParams } from "@/features/reactions/queries/useAddReaction";
+import type { AddReactionParams } from "@/features/reactions/queries/use-add-reaction";
 import { optimisticUpdateSocialPosts } from "@/features/social/queries/use-social-posts";
 
 export const useAddReactionMutate = () => {

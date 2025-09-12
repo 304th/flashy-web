@@ -5,12 +5,12 @@ import { Loadable } from "@/components/ui/loadable";
 import { Spinner } from "@/components/ui/spinner/spinner";
 import { Comment } from "@/features/comments/components/comment/comment";
 import { CommentFeedEmpty } from "@/features/comments/components/comments-feed/comment-feed-empty";
-import { useComments } from "@/features/comments/queries/useComments";
-import { useCommentsCount } from "@/features/comments/queries/useCommentsCount";
-import { useLikeCommentMutate } from "@/features/comments/hooks/useLikeCommentMutate";
+import { useComments } from "@/features/comments/queries/use-comments";
+import { useCommentsCount } from "@/features/comments/queries/use-comments-count";
+import { useLikeCommentMutate } from "@/features/comments/hooks/use-like-comment-mutate";
 
 export interface CommentsFeedProps {
-  post: Reactable;
+  post: Commentable;
   className?: string;
   onCommentReply: (comment: CommentPost) => void;
 }
@@ -70,6 +70,7 @@ export const CommentsFeed = ({
                       <Comment
                         key={comment._id}
                         comment={comment}
+                        post={post}
                         onReply={() => onCommentReply(comment)}
                         onLike={handleCommentLike}
                       />

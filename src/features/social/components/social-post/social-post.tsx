@@ -47,6 +47,7 @@ export const SocialPost = ({
         />
         <div className="flex gap-2 items-center">
           <p>{timeAgo(socialPost.createdAt)}</p>
+          {/* FIXME: fix this bullshit logic */}
           {onCommentsOpen && <SocialPostMenu socialPost={socialPost} />}
         </div>
       </div>

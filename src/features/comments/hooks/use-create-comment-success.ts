@@ -1,6 +1,6 @@
 import { produce } from "immer";
 import { useQueryClient } from "@tanstack/react-query";
-import { syncCommentsOnSuccess } from "@/features/comments/queries/useComments";
+import { syncCommentsOnSuccess } from "@/features/comments/queries/use-comments";
 
 export const useCreateCommentSuccess = (postId: string) => {
   const queryClient = useQueryClient();

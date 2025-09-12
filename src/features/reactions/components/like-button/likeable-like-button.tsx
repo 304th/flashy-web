@@ -1,5 +1,5 @@
 import type { LikeButtonButtonRender } from "@/features/reactions/components/like-button/like-button";
-import { useAddLike } from "@/features/reactions/queries/useAddLike";
+import { useAddLike } from "@/features/reactions/queries/use-add-like";
 
 export interface LikeableLikeButtonProps {
   post: Likeable;

@@ -11,11 +11,11 @@ import { SendIcon } from "@/components/ui/icons/send";
 import { ReplyToComment } from "@/features/comments/components/comment-send/reply-to-comment";
 import { MessageProgress } from "@/features/social/components/post-create/message-progress";
 import { useCreateComment } from "@/features/comments/queries/use-create-comment";
-import { useCreateReply } from "@/features/comments/queries/useCreateReply";
-import { useCreateCommentMutate } from "@/features/comments/hooks/useCreateCommentMutate";
+import { useCreateReply } from "@/features/comments/queries/use-create-reply";
+import { useCreateCommentMutate } from "@/features/comments/hooks/use-create-comment-mutate";
 import type { OptimisticUpdater } from "@/lib/query";
 import { defaultVariants } from "@/lib/framer";
-import { useCreateReplyMutate } from "@/features/comments/hooks/useCreateReplyMutate";
+import { useCreateReplyMutate } from "@/features/comments/hooks/use-create-reply-mutate";
 import { useCreateCommentSuccess } from "@/features/comments/hooks/use-create-comment-success";
 
 const formSchema = z.object({
@@ -111,7 +111,7 @@ export const CommentSend = ({
   };
 
   return (
-    <div className={`flex flex-col w-full bg-base-200 ${className}`}>
+    <div className={`relative flex flex-col w-full bg-base-200 ${className}`}>
       {replyComment && (
         <ReplyToComment comment={replyComment} onClose={onCloseReply} />
       )}

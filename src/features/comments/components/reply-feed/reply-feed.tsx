@@ -3,8 +3,8 @@ import { Loadable } from "@/components/ui/loadable";
 import { Spinner } from "@/components/ui/spinner/spinner";
 import { Comment } from "@/features/comments/components/comment/comment";
 import { CommentFeedEmpty } from "@/features/comments/components/comments-feed/comment-feed-empty";
-import { useReplies } from "@/features/comments/queries/useReplies";
-import { useLikeReplyMutate } from "@/features/comments/hooks/useLikeReplyMutate";
+import { useReplies } from "@/features/comments/queries/use-replies";
+import { useLikeReplyMutate } from "@/features/comments/hooks/use-like-reply-mutate";
 
 export const ReplyFeed = ({ comment }: { comment: CommentPost }) => {
   const [replies, repliesQuery] = useReplies(comment._id);

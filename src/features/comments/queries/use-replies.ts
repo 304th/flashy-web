@@ -7,7 +7,7 @@ export const useReplies = (commentId: string) =>
     return await api.get(`commentReplies/${commentId}`).json<Reply[]>();
   });
 
-export const updateQueryData = <T>(
+export const optimisticUpdateReplies = <T>(
   queryClient: QueryClient,
   mutate: (state: Reply[], variables: T) => Reply[],
   id: string,

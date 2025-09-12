@@ -136,6 +136,10 @@ declare global {
     isLiked: boolean;
   }
 
+  interface Commentable {
+    _id: string;
+  }
+
   interface Reactable {
     _id: string;
     reactions: Record<string, Record<string, Reaction>>;

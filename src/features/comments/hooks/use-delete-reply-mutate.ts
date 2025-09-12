@@ -1,13 +1,13 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { produce } from "immer";
 import { useMe } from "@/features/auth/queries/use-me";
-import { updateQueryData as updateRepliesQuery } from "@/features/comments/queries/useReplies";
-import { updateQueryData as updateCommentsQuery } from "@/features/comments/queries/useComments";
-import type { CreateReplyParams } from "@/features/comments/queries/useCreateReply";
+import { optimisticUpdateComments } from "@/features/comments/queries/use-comments";
+import { optimisticUpdateReplies } from "@/features/comments/queries/use-replies";
+import type { CreateReplyParams } from "@/features/comments/queries/use-create-reply";
+import { createOptimisticReply } from "@/features/comments/utils/create-optimistic-reply";
 import { combineOptimisticUpdates, OptimisticUpdater } from "@/lib/query";
-import { createOptimisticReply } from "@/features/comments/utils/createOptimisticReply";
 
-export const useCreateReplyMutate = (
+export const useDeleteReplyMutate = (
   postId: string,
   commentId?: string,
   mutates?: OptimisticUpdater[],
@@ -18,7 +18,7 @@ export const useCreateReplyMutate = (
   if (!commentId) return [];
 
   const updates = [
-    updateRepliesQuery<CreateReplyParams>(
+    optimisticUpdateReplies<CreateReplyParams>(
       queryClient,
       (paginatedComments, params) => {
         return produce(paginatedComments, (draft) => {
@@ -27,7 +27,7 @@ export const useCreateReplyMutate = (
       },
       commentId,
     ),
-    updateCommentsQuery<CreateReplyParams>(
+    optimisticUpdateComments<CreateReplyParams>(
       queryClient,
       (paginatedComments, params) => {
         return produce(paginatedComments, (draft) => {

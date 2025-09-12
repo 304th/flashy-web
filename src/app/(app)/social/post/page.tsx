@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeftIcon } from "lucide-react";
 import { SocialPost } from "@/features/social/components/social-post/social-post";
@@ -9,11 +10,16 @@ import { IconButton } from "@/components/ui/icon-button";
 import { useSocialPostById } from "@/features/social/queries/use-social-post-by-id";
 import { useQueryParams } from "@/hooks/use-query-params";
 import { CommentsFeed } from "@/features/comments/components/comments-feed/comments-feed";
-import React, { useState } from "react";
 import { CommentSend } from "@/features/comments/components/comment-send/comment-send";
 import { useModals } from "@/hooks/use-modals";
 
 export default function SocialPostPage() {
+  return <Suspense>
+    <SocialPostByIdPage />
+  </Suspense>
+}
+
+const SocialPostByIdPage = () => {
   const id = useQueryParams("id");
   const [socialPost, socialPostQuery] = useSocialPostById(id!);
 

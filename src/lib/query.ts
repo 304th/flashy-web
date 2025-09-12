@@ -54,7 +54,7 @@ export const getInfiniteQuery = <T>(
   queryFn: ({ pageParam }: { pageParam: number }) => Promise<T>,
   enabled: boolean = true,
 ) => {
-  const query = useInfiniteQuery<T, unknown, T, string[], number>({
+  const query = useInfiniteQuery<T, unknown, T, unknown[], number>({
     queryKey,
     queryFn: async ({ pageParam }) => {
       return await queryFn({ pageParam });

@@ -1,8 +1,8 @@
 import { useHasReacted } from "@/features/reactions/hooks/useHasReacted";
 import { useReactionsCount } from "@/features/reactions/hooks/useReactionsCount";
 import type { LikeButtonButtonRender } from "@/features/reactions/components/like-button/like-button";
-import { useAddReaction } from "@/features/reactions/queries/useAddReaction";
-import { useRemoveReaction } from "@/features/reactions/queries/useRemoveReaction";
+import { useAddReaction } from "@/features/reactions/queries/use-add-reaction";
+import { useRemoveReaction } from "@/features/reactions/queries/use-remove-reaction";
 
 export interface ReactableLikeButtonProps {
   post: Reactable;

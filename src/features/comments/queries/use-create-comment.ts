@@ -1,7 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import {
   getMutation,
-  handleMutationError,
   handleOptimisticUpdateError,
 } from "@/lib/query";
 import { api } from "@/services/api";
@@ -39,8 +38,8 @@ export const useCreateComment = (options?: {
     },
     {
       onMutate: options?.onMutate,
-      onError: handleOptimisticUpdateError(queryClient),
       onSuccess: options?.onSuccess,
+      onError: handleOptimisticUpdateError(queryClient),
     },
   );
 };

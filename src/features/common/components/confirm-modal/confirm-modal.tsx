@@ -41,7 +41,10 @@ export const ConfirmModal = ({
           </div>
         </div>
         <div className="flex w-full justify-end gap-2">
-          <Button variant="secondary">Cancel</Button>
+          <Button variant="secondary" onClick={() => {
+            onCancel?.();
+            onClose();
+          }}>Cancel</Button>
           <Button
             variant={destructive ? "destructive" : "default"}
             onClick={() => {

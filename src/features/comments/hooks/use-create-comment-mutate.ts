@@ -1,10 +1,10 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { produce } from "immer";
 import { useMe } from "@/features/auth/queries/use-me";
-import { updateQueryData as updateCommentsQuery } from "@/features/comments/queries/useComments";
-import { updateQueryData as updateCommentsCountQuery } from "@/features/comments/queries/useCommentsCount";
+import { optimisticUpdateComments } from "@/features/comments/queries/use-comments";
+import { optimisticUpdateCommentsCount } from "@/features/comments/queries/use-comments-count";
 import type { CreateCommentParams } from "@/features/comments/queries/use-create-comment";
-import { createOptimisticComment } from "@/features/comments/utils/createOptimisticComment";
+import { createOptimisticComment } from "@/features/comments/utils/create-optimistic-comment";
 import { combineOptimisticUpdates, OptimisticUpdater } from "@/lib/query";
 
 export const useCreateCommentMutate = (
@@ -14,7 +14,7 @@ export const useCreateCommentMutate = (
   const [me] = useMe();
   const queryClient = useQueryClient();
   const updates = [
-    updateCommentsQuery<CreateCommentParams>(
+    optimisticUpdateComments<CreateCommentParams>(
       queryClient,
       (paginatedComments, params) => {
         return produce(paginatedComments, (draft) => {
@@ -23,7 +23,7 @@ export const useCreateCommentMutate = (
       },
       id,
     ),
-    updateCommentsCountQuery<CreateCommentParams>(
+    optimisticUpdateCommentsCount<CreateCommentParams>(
       queryClient,
       (commentsCount) => {
         return commentsCount + 1;

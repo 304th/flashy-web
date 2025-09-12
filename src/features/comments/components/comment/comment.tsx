@@ -4,10 +4,12 @@ import { CommentButton } from "@/features/comments/components/comment-button/com
 import { ReplyFeed } from "@/features/comments/components/reply-feed/reply-feed";
 import { LikeButton } from "@/features/reactions/components/like-button/like-button";
 import { ReplyIcon } from "@/components/ui/icons/reply";
+import { CommentMenu } from "@/features/comments/components/comment/comment-menu";
 import { timeAgo } from "@/lib/utils";
 
 export interface CommentProps {
   comment: CommentPost | Reply;
+  post: Commentable;
   isReply?: boolean;
   className?: string;
   onReply?: () => void;
@@ -19,6 +21,7 @@ export const isComment = (post: CommentPost | Reply): post is CommentPost =>
 
 export const Comment = ({
   comment,
+  post,
   isReply,
   className,
   onReply,
@@ -44,8 +47,9 @@ export const Comment = ({
           />
         </div>
 
-        <div className="flex items-center">
+        <div className="flex gap-2 items-center">
           <p>{timeAgo(comment.created_at)}</p>
+          <CommentMenu comment={comment} post={post} />
         </div>
       </div>
       <p className="text-lg">{comment.text}</p>

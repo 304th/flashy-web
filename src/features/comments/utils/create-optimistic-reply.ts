@@ -1,5 +1,5 @@
 import { nanoid } from "nanoid";
-import { CreateReplyParams } from "@/features/comments/queries/useCreateReply";
+import { CreateReplyParams } from "@/features/comments/queries/use-create-reply";
 
 export const createOptimisticReply = (
   params: CreateReplyParams,

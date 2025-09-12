@@ -1,6 +1,6 @@
 import { getQuery, handleOptimisticUpdate } from "@/lib/query";
 import { api } from "@/services/api";
-import type { CommentResponse } from "@/features/comments/queries/useComments";
+import type { CommentResponse } from "@/features/comments/queries/use-comments";
 import type { QueryClient } from "@tanstack/react-query";
 
 export const useCommentsCount = (id: string) =>
@@ -10,7 +10,7 @@ export const useCommentsCount = (id: string) =>
     return data?.commentCount || 0;
   });
 
-export const updateQueryData = <T>(
+export const optimisticUpdateCommentsCount = <T>(
   queryClient: QueryClient,
   mutate: (state: number, variables: T) => number,
   id: string,

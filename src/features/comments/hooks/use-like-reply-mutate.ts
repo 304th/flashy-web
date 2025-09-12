@@ -1,12 +1,12 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { produce } from "immer";
-import { updateQueryData } from "@/features/comments/queries/useReplies";
-import type { AddLikeParams } from "@/features/reactions/queries/useAddLike";
+import { optimisticUpdateReplies } from "@/features/comments/queries/use-replies";
+import type { AddLikeParams } from "@/features/reactions/queries/use-add-like";
 
 export const useLikeReplyMutate = (commentId: string) => {
   const queryClient = useQueryClient();
 
-  return updateQueryData<AddLikeParams>(
+  return optimisticUpdateReplies<AddLikeParams>(
     queryClient,
     (replies, params) => {
       return produce(replies, (draft) => {

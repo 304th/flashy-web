@@ -3,7 +3,7 @@ import { produce } from "immer";
 import { useMe } from "@/features/auth/queries/use-me";
 import { updateQueryData as updateCommentsQuery } from "@/features/comments/queries/useComments";
 import { updateQueryData as updateCommentsCountQuery } from "@/features/comments/queries/useCommentsCount";
-import type { CreateCommentParams } from "@/features/comments/queries/useCreateComment";
+import type { CreateCommentParams } from "@/features/comments/queries/use-create-comment";
 import { createOptimisticComment } from "@/features/comments/utils/createOptimisticComment";
 import { combineOptimisticUpdates, OptimisticUpdater } from "@/lib/query";
 

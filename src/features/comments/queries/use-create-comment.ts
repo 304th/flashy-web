@@ -16,13 +16,14 @@ export interface CreateCommentParams {
 //FIXME: refactor on backend
 export const useCreateComment = (options?: {
   onMutate?: (variables: CreateCommentParams) => unknown;
+  onSuccess?: (newPost: CommentPost) => void;
 }) => {
   const queryClient = useQueryClient();
 
-  return getMutation(
+  return getMutation<CommentPost, Error, CreateCommentParams>(
     ["createComment"],
     async (params: CreateCommentParams) => {
-      return api
+      const data = await api
         .post("comment", {
           json: {
             itemMongoKey: params.postId,
@@ -32,11 +33,14 @@ export const useCreateComment = (options?: {
             comment: { text: params.message },
           },
         })
-        .json();
+        .json<{ response: CommentPost }>();
+
+      return data.response;
     },
     {
       onMutate: options?.onMutate,
       onError: handleOptimisticUpdateError(queryClient),
+      onSuccess: options?.onSuccess,
     },
   );
 };

@@ -28,7 +28,7 @@ export const Comment = ({
 
   return (
     <div
-      className={`flex flex-col p-4 gap-3 h-fit w-full bg-base-100 rounded
+      className={`flex flex-col p-4 gap-4 h-fit w-full bg-base-100 rounded
         ${className}`}
       style={showReplies ? { paddingBottom: 0 } : {}}
     >

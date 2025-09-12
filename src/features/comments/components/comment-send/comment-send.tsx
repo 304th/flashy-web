@@ -10,12 +10,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { SendIcon } from "@/components/ui/icons/send";
 import { ReplyToComment } from "@/features/comments/components/comment-send/reply-to-comment";
 import { MessageProgress } from "@/features/social/components/post-create/message-progress";
-import { useCreateComment } from "@/features/comments/queries/useCreateComment";
+import { useCreateComment } from "@/features/comments/queries/use-create-comment";
 import { useCreateReply } from "@/features/comments/queries/useCreateReply";
 import { useCreateCommentMutate } from "@/features/comments/hooks/useCreateCommentMutate";
 import type { OptimisticUpdater } from "@/lib/query";
 import { defaultVariants } from "@/lib/framer";
 import { useCreateReplyMutate } from "@/features/comments/hooks/useCreateReplyMutate";
+import {useCreateCommentSuccess} from "@/features/comments/hooks/use-create-comment-success";
 
 const formSchema = z.object({
   message: z.string().max(500),
@@ -47,8 +48,10 @@ export const CommentSend = ({
     replyComment?._id,
     onReplySend?.(),
   );
+  const syncComments = useCreateCommentSuccess(post._id);
   const sendComment = useCreateComment({
     onMutate: createCommentMutate,
+    onSuccess: syncComments,
   });
   const sendReply = useCreateReply({
     onMutate: createReplyMutate as any,
@@ -114,7 +117,7 @@ export const CommentSend = ({
       )}
       <Form {...form}>
         <form
-          className="flex items-center w-full border-t"
+          className="flex items-center w-full"
           onSubmit={form.handleSubmit(onSubmit)}
         >
           <FormField

@@ -10,7 +10,7 @@ export const ReplyToComment = ({
 }) => {
   return (
     <div
-      className="flex w-full border-t bg-base-300 px-4 py-2 items-center
+      className="flex w-full bg-base-300 px-4 py-2 items-center
         justify-between"
     >
       <div className="flex items-center gap-2">

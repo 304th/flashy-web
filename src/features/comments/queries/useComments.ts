@@ -1,4 +1,4 @@
-import { getInfiniteQuery, handleOptimisticUpdate } from "@/lib/query";
+import {getInfiniteQuery, handleOptimisticSuccess, handleOptimisticUpdate} from "@/lib/query";
 import { api } from "@/services/api";
 import type { QueryClient } from "@tanstack/react-query";
 
@@ -8,7 +8,7 @@ export interface CommentResponse {
 }
 
 export const useComments = (id: string) =>
-  getInfiniteQuery<CommentPost[]>(["comments", id], async ({ pageParam }) => {
+  getInfiniteQuery<Optimistic<CommentPost>[]>(["comments", id], async ({ pageParam }) => {
     const data = await api
       .get(`comments/${id}?skip=${pageParam - 1}`)
       .json<CommentResponse>();
@@ -19,12 +19,25 @@ export const useComments = (id: string) =>
 export const updateQueryData = <T>(
   queryClient: QueryClient,
   mutate: (
-    state: Paginated<CommentPost[]>,
+    state: Paginated<Optimistic<CommentPost>[]>,
     variables: T,
-  ) => Paginated<CommentPost[]>,
+  ) => Paginated<Optimistic<CommentPost>[]>,
   id: string,
 ) =>
-  handleOptimisticUpdate<Paginated<CommentPost[]>, T>(queryClient)({
+  handleOptimisticUpdate<Paginated<Optimistic<CommentPost>[]>, T>(queryClient)({
     queryKey: ["comments", id],
     mutate,
+  });
+
+export const syncCommentsOnSuccess = (
+  queryClient: QueryClient,
+  update: (
+    state: Paginated<Optimistic<CommentPost>[]>,
+    entity: CommentPost,
+  ) => Paginated<Optimistic<CommentPost>[]>,
+  postId?: string,
+) =>
+  handleOptimisticSuccess<Paginated<CommentPost[]>, CommentPost>(queryClient)({
+    queryKey: ["comments", postId],
+    update,
   });

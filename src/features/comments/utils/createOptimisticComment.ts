@@ -1,10 +1,12 @@
 import { nanoid } from "nanoid";
-import { CreateCommentParams } from "@/features/comments/queries/useCreateComment";
+import { CreateCommentParams } from "@/features/comments/queries/use-create-comment";
 
 export const createOptimisticComment = (
   params: CreateCommentParams,
   author: Author,
-): CommentPost => ({
+): Optimistic<CommentPost> => ({
+  _optimisticId: nanoid(),
+  _optimisticStatus: "pending",
   _id: nanoid(),
   text: params.message,
   repliesCount: 0,

@@ -20,15 +20,14 @@ export const SocialFeed = () => {
             <AnimatePresence initial={false} mode="popLayout">
               {socialPosts?.map((socialPost) => (
                 <motion.div
-                  key={socialPost._optimisticId || socialPost._id}
+                  key={socialPost._optimisticId || socialPost.orderId}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  layoutId={`post-${socialPost._optimisticId || socialPost._id}`}
+                  layoutId={`post-${socialPost._optimisticId || socialPost.orderId}`}
                 >
                   <Link href={`/social/post?id=${socialPost._id}`}>
                     <SocialPost
-                      key={socialPost._id}
                       socialPost={socialPost}
                       onCommentsOpen={() =>
                         openModal("PostCommentsModal", {

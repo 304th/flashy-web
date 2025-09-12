@@ -41,6 +41,7 @@ export const LikeButtonCore = ({
             width: "30px",
             height: "31px",
           }}
+          initialSegment={[95, 95]}
         />
       ) : (
         <div className="relative flex rounded-full">

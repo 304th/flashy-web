@@ -81,12 +81,13 @@ declare global {
     likesCount: number;
     commentsCount: number;
     relitsCount: number;
-    relits: Record<string, unknown>;
+    relits?: Record<string, unknown>;
     relightedBy?: ResponsibleUser;
     relightedPost?: SocialPost;
     mentionedUsers: any[];
     pinned: boolean;
     pinnedBy?: ResponsibleUser;
+    orderId: string;
     userId: string;
     username: string;
     userimage: string;
@@ -153,7 +154,7 @@ declare global {
   interface Relightable {
     _id: string;
     relitsCount: number;
-    relits: Record<string, unknown>;
+    relits?: Record<string, unknown>;
   }
 
   interface LinkPreview {

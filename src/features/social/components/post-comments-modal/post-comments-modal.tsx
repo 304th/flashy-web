@@ -47,7 +47,7 @@ export const PostCommentsModal = ({
       <CommentSend
         post={post}
         replyComment={replyComment}
-        className="sticky bottom-0 w-full shrink-0 rounded-br-md rounded-bl-md
+        className="sticky bottom-0 w-full shrink-0 rounded-br-md rounded-bl-md border-t
           z-1"
         onCommentSend={() => handleCommentCountUpdate}
         onCloseReply={() => setReplyComment(null)}

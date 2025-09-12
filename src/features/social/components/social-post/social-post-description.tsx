@@ -32,6 +32,8 @@ export const SocialPostDescription = ({
       </div>
     );
   }
+
+  return null;
 };
 
 const useLinkify = (description: SocialPost["description"]) => {

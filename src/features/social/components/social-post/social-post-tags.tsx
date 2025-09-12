@@ -9,9 +9,7 @@ export const SocialPostTags = ({ socialPost }: { socialPost: SocialPost }) => {
   return (
     <div className="flex items-center gap-2 border-t">
       {socialPost.pinned && <PinnedTag socialPost={socialPost} />}
-      {socialPost.relightedPost && socialPost.relightedBy && (
-        <RelightedTag socialPost={socialPost} />
-      )}
+      {socialPost.relightedBy && <RelightedTag socialPost={socialPost} />}
     </div>
   );
 };
@@ -25,7 +23,7 @@ const PinnedTag = ({ socialPost }: { socialPost: SocialPost }) => {
       <p className="text-sm">
         Pinned by{" "}
         <span className="text-white font-bold">
-          @{socialPost.pinnedBy?.username}
+          @{socialPost.relightedBy?.username}
         </span>
       </p>
     </div>
@@ -40,9 +38,7 @@ const RelightedTag = ({ socialPost }: { socialPost: SocialPost }) => {
       </div>
       <p className="text-sm">
         Relighted by{" "}
-        <span className="text-white font-bold">
-          @{socialPost.relightedBy?.username}
-        </span>
+        <span className="text-white font-bold">@{socialPost?.username}</span>
       </p>
     </div>
   );

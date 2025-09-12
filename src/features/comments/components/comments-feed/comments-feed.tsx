@@ -58,12 +58,14 @@ export const CommentsFeed = ({
                 className={`flex flex-col w-full align-center min-h-[60px]
                 max-h-[350px] overflow-scroll divide-y ${className}`}
               >
-                <AnimatePresence initial={false}>
+                <AnimatePresence initial={false} mode="popLayout">
                   {comments?.map((comment) => (
                     <motion.div
-                      key={comment._id}
-                      initial={{ opacity: 0, y: 1 }}
-                      animate={{ opacity: 1, y: 0 }}
+                      key={comment._optimisticId || comment._id}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      layout="position"
                     >
                       <Comment
                         key={comment._id}

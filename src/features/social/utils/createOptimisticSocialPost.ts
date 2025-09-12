@@ -18,6 +18,7 @@ export const createOptimisticSocialPost = (
   mentionedUsers: [],
   poll: { pollVotedId: null, results: [] },
   pinned: false,
+  orderId: nanoid(),
   userId: author.fbId,
   username: author.username,
   userimage: author.userimage,

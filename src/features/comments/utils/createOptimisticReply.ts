@@ -4,7 +4,9 @@ import { CreateReplyParams } from "@/features/comments/queries/useCreateReply";
 export const createOptimisticReply = (
   params: CreateReplyParams,
   author: Author,
-): Reply => ({
+): Optimistic<Reply> => ({
+  _optimisticId: nanoid(),
+  _optimisticStatus: "pending",
   _id: nanoid(),
   text: params.message,
   likesCount: 0,

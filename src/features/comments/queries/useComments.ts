@@ -1,4 +1,8 @@
-import {getInfiniteQuery, handleOptimisticSuccess, handleOptimisticUpdate} from "@/lib/query";
+import {
+  getInfiniteQuery,
+  handleOptimisticSuccess,
+  handleOptimisticUpdate,
+} from "@/lib/query";
 import { api } from "@/services/api";
 import type { QueryClient } from "@tanstack/react-query";
 
@@ -8,13 +12,16 @@ export interface CommentResponse {
 }
 
 export const useComments = (id: string) =>
-  getInfiniteQuery<Optimistic<CommentPost>[]>(["comments", id], async ({ pageParam }) => {
-    const data = await api
-      .get(`comments/${id}?skip=${pageParam - 1}`)
-      .json<CommentResponse>();
+  getInfiniteQuery<Optimistic<CommentPost>[]>(
+    ["comments", id],
+    async ({ pageParam }) => {
+      const data = await api
+        .get(`comments/${id}?skip=${pageParam - 1}`)
+        .json<CommentResponse>();
 
-    return data?.comment || [];
-  });
+      return data?.comment || [];
+    },
+  );
 
 export const updateQueryData = <T>(
   queryClient: QueryClient,

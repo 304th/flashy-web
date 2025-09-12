@@ -16,7 +16,7 @@ import { useCreateCommentMutate } from "@/features/comments/hooks/useCreateComme
 import type { OptimisticUpdater } from "@/lib/query";
 import { defaultVariants } from "@/lib/framer";
 import { useCreateReplyMutate } from "@/features/comments/hooks/useCreateReplyMutate";
-import {useCreateCommentSuccess} from "@/features/comments/hooks/use-create-comment-success";
+import { useCreateCommentSuccess } from "@/features/comments/hooks/use-create-comment-success";
 
 const formSchema = z.object({
   message: z.string().max(500),

@@ -67,17 +67,18 @@ const SocialPostDetails = ({
             className="!overflow-auto !max-h-full"
             onCommentReply={(comment) => setReplyComment(comment)}
           />
-          <div className="sticky bottom-0 pb-4 w-full shrink-0 bg-[#11111180] backdrop-blur-xl">
+          <div
+            className="sticky bottom-0 pb-4 w-full shrink-0 bg-[#11111180]
+              backdrop-blur-xl"
+          >
             <CommentSend
               post={socialPost}
               replyComment={replyComment}
-              className="rounded-br-md
-              rounded-bl-md z-1 border"
+              className="rounded-br-md rounded-bl-md z-1 border"
               // onCommentSend={() => handleCommentCountUpdate}
               onCloseReply={() => setReplyComment(null)}
             />
           </div>
-
         </div>
       </div>
     </div>

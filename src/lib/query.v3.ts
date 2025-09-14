@@ -36,7 +36,7 @@ class Transactions<Entity, State> {
     private readonly queryClient: QueryClient,
     private readonly queryKey: unknown[],
     private readonly schema: StaticSchema<Entity>,
-    private readonly updater: OptimisticUpdater<Entity, unknown>,
+    private readonly updater: OptimisticUpdater<Entity, State>,
   ) {
     this.previousState = [] as any as Entity extends readonly unknown[]
       ? Entity[number][]
@@ -107,7 +107,7 @@ export const usePartitionedQuery = <Entity, Params>({
 
   const updates = useMemo(
     () =>
-      new Transactions<Optimistic<Entity>, Paginated<Optimistic<Entity>>>(
+      new Transactions<Optimistic<Entity>, Paginated<Optimistic<Entity>[]>>(
         queryClient,
         queryKey,
         collection.getSchema(),

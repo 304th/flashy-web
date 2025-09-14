@@ -1,7 +1,7 @@
 import { nanoid } from "nanoid";
 
 class SocialPostSchema implements StaticSchema<SocialPost> {
-  getId(): string {
+  getId(): keyof SocialPost {
     return "_id";
   }
 

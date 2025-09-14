@@ -7,22 +7,17 @@ import { Loadable } from "@/components/ui/loadable";
 import { NotFound } from "@/components/ui/not-found";
 import { useModals } from "@/hooks/use-modals";
 import Link from "next/link";
-import { createOptimisticSocialPost } from "@/features/social/utils/createOptimisticSocialPost";
 import { useMe } from "@/features/auth/queries/use-me";
 import { Button } from "@/components/ui/button";
 
 export const SocialFeed = () => {
   const [me] = useMe();
-  const { data, query, updates } = useSocialPosts();
+  const { data, query, optimisticUpdates } = useSocialPosts();
   const { openModal } = useModals();
 
   const addPost = async () => {
-    await updates.prepend({
-      description: "asdasd",
-      images: [],
-      userId: me?.fbId!,
-      username: me?.username!,
-      userimage: me?.userimage!,
+    const oo = await optimisticUpdates.prepend({
+      description: "123123123",
     });
   };
 

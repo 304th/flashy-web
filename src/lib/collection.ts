@@ -4,8 +4,8 @@ export class Collection<Entity, Params = undefined> {
     private readonly read: (params?: Params) => Promise<Entity[]>,
   ) {}
 
-  getSchema() {
-    return this.schema;
+  getId(): keyof Entity {
+    return this.schema.getId();
   }
 
   async readData(params?: Params) {
@@ -18,11 +18,11 @@ export class Collection<Entity, Params = undefined> {
 }
 
 export const createCollection = <Entity, Params>({
-  getData,
+  sourceFrom,
   schema,
 }: {
-  getData: (params?: Params) => Promise<Entity[]>;
+  sourceFrom: (params?: Params) => Promise<Entity[]>;
   schema: StaticSchema<Entity>;
 }): Collection<Entity, Params> => {
-  return new Collection<Entity, Params>(schema, getData);
+  return new Collection<Entity, Params>(schema, sourceFrom);
 };

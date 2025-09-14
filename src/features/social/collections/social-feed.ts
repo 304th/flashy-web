@@ -6,7 +6,7 @@ export const socialFeedCollection = createCollection<
   SocialPost,
   { userId?: string }
 >({
-  async getData({ userId } = {}) {
+  async sourceFrom({ userId } = {}) {
     return await api
       .get(userId ? "relevant-social-posts" : "anonymous/social-posts")
       .json<SocialPost[]>();

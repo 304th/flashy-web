@@ -2,7 +2,7 @@ declare global {
   type JwtToken = `ey${string}.${string}.${string}`;
 
   interface StaticSchema<T> {
-    getId(): string;
+    getId(): keyof T;
     createEntityFromParams(params?: Partial<T>): T;
   }
 

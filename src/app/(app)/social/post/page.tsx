@@ -14,9 +14,11 @@ import { CommentSend } from "@/features/comments/components/comment-send/comment
 import { useModals } from "@/hooks/use-modals";
 
 export default function SocialPostPage() {
-  return <Suspense>
-    <SocialPostByIdPage />
-  </Suspense>
+  return (
+    <Suspense>
+      <SocialPostByIdPage />
+    </Suspense>
+  );
 }
 
 const SocialPostByIdPage = () => {
@@ -40,7 +42,7 @@ const SocialPostByIdPage = () => {
       </Loadable>
     </div>
   );
-}
+};
 
 const SocialPostDetails = ({
   socialPost,

@@ -5,8 +5,12 @@ import {
   MutationFunction,
   UseMutationOptions,
   type QueryClient,
+  useQueryClient,
 } from "@tanstack/react-query";
+import type { Collection } from "@/lib/collection";
+import { type Draft, produce } from "immer";
 import { toast } from "sonner";
+import { useMemo } from "react";
 
 export type OptimisticUpdater = (
   variables: any,
@@ -75,6 +79,55 @@ export const getInfiniteQuery = <T>(
 
   return [query.data, query] as const;
 };
+
+// export const getInfiniteQueryV2 = <Entity>({
+//   queryKey,
+//   queryFn,
+//   options,
+// }: {
+//   queryKey: unknown[];
+//   queryFn: ({
+//     pageParam,
+//   }: {
+//     pageParam: number;
+//   }) => Promise<Optimistic<Entity>[]>;
+//   options?: Record<string, any>;
+//   createOptimisticItem: (entity: Partial<Entity>) => Entity;
+// }) => {
+//   const queryClient = useQueryClient();
+//
+//   const query = useInfiniteQuery<
+//     Optimistic<Entity>[],
+//     unknown,
+//     Optimistic<Entity>[],
+//     unknown[],
+//     number
+//   >({
+//     queryKey,
+//     queryFn: async ({ pageParam }) => {
+//       return await queryFn({ pageParam });
+//     },
+//     select: (data) => {
+//       return data.pages.flat() as Optimistic<Entity>[];
+//     },
+//     getNextPageParam: (lastPage, allPages) => {
+//       if (Array.isArray(lastPage) && lastPage.length > 0) {
+//         return allPages.length + 1;
+//       }
+//
+//       return undefined;
+//     },
+//     initialPageParam: 1,
+//     ...options,
+//   });
+//
+//   const transactions = useMemo(
+//     () => new Transactions<Optimistic<Entity>>(queryClient, queryKey),
+//     [queryClient, queryKey],
+//   );
+//
+//   return [query.data, query, transactions] as const;
+// };
 
 export const handleMutationError = async (error: any) => {
   try {

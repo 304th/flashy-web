@@ -1,9 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { produce } from "immer";
 import { optimisticUpdateComments } from "@/features/comments/queries/use-comments";
-import {
-  optimisticUpdateCommentsCount,
-} from "@/features/comments/queries/use-comments-count";
+import { optimisticUpdateCommentsCount } from "@/features/comments/queries/use-comments-count";
 import { combineOptimisticUpdates, OptimisticUpdater } from "@/lib/query";
 import type { DeleteCommentParams } from "@/features/comments/queries/use-delete-comment";
 
@@ -18,7 +16,9 @@ export const useDeleteCommentMutate = (
       (paginatedComments, params) => {
         return produce(paginatedComments, (draft) => {
           draft.pages.forEach((page) => {
-            const index = page.findIndex((comment) => comment._id === params.id);
+            const index = page.findIndex(
+              (comment) => comment._id === params.id,
+            );
 
             if (index !== -1) {
               page.splice(index, 1);

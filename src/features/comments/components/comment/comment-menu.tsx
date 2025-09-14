@@ -13,7 +13,13 @@ import { useCommentOwned } from "@/features/comments/hooks/use-comment-owned";
 import { useDeleteComment } from "@/features/comments/queries/use-delete-comment";
 import { useDeleteCommentMutate } from "@/features/comments/hooks/use-delete-comment-mutate";
 
-export const CommentMenu = ({ comment, post }: { comment: CommentPost | Reply; post: Commentable }) => {
+export const CommentMenu = ({
+  comment,
+  post,
+}: {
+  comment: CommentPost | Reply;
+  post: Commentable;
+}) => {
   const [open, setOpen] = useState(false);
   const { openModal } = useModals();
   const deleteCommentsMutate = useDeleteCommentMutate(post._id);
@@ -49,7 +55,8 @@ export const CommentMenu = ({ comment, post }: { comment: CommentPost | Reply; p
                   e.preventDefault();
                   openModal("ConfirmModal", {
                     title: "Delete comment",
-                    description: "Are you sure you want to delete this comment?",
+                    description:
+                      "Are you sure you want to delete this comment?",
                     destructive: true,
                     onConfirm: () => {
                       deleteComment.mutate({

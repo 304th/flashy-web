@@ -1,33 +1,37 @@
 import type { QueryClient } from "@tanstack/react-query";
 import { api } from "@/services/api";
-import {
-  getInfiniteQuery,
-  handleOptimisticSuccess,
-  handleOptimisticUpdate,
-} from "@/lib/query";
+import { handleOptimisticSuccess, handleOptimisticUpdate } from "@/lib/query";
 import { useMe } from "@/features/auth/queries/use-me";
-import { decodePollResults } from "@/features/social/utils/poll";
+import { socialFeedCollection } from "@/features/social/collections/social-feed";
+import { usePartitionedQuery } from "@/lib/query.v3";
 
 export const useSocialPosts = () => {
   const [me] = useMe();
 
-  return getInfiniteQuery<Optimistic<SocialPost>[]>(
-    ["social", me?.fbId],
-    async () => {
-      const socialPosts = await api
-        .get(me?.fbId ? "relevant-social-posts" : "anonymous/social-posts")
-        .json<SocialPost[]>();
+  return usePartitionedQuery<SocialPost, { userId?: string }>({
+    collection: socialFeedCollection,
+    queryKey: ["social", me?.fbId],
+    getParams: ({ pageParam }) => ({ pageParam, userId: me?.fbId }),
+  });
 
-      //FIXME: fix poll logic
-      return socialPosts.map((socialPost) => ({
-        ...socialPost,
-        poll: {
-          ...socialPost.poll,
-          results: decodePollResults(socialPost.poll),
-        },
-      }));
-    },
-  );
+  // return getInfiniteQueryV2<SocialPost>({
+  //   queryKey: ["social", me?.fbId],
+  //   queryFn: async () => {
+  //     const socialPosts = await api
+  //       .get(me?.fbId ? "relevant-social-posts" : "anonymous/social-posts")
+  //       .json<SocialPost[]>();
+  //
+  //     //FIXME: fix poll logic
+  //     return socialPosts.map((socialPost) => ({
+  //       ...socialPost,
+  //       poll: {
+  //         ...socialPost.poll,
+  //         results: decodePollResults(socialPost.poll),
+  //       },
+  //     }));
+  //   },
+  //   schema:
+  // });
 };
 
 export const optimisticUpdateSocialPosts = <T>(

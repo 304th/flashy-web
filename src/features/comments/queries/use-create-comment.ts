@@ -1,8 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import {
-  getMutation,
-  handleOptimisticUpdateError,
-} from "@/lib/query";
+import { getMutation, handleOptimisticUpdateError } from "@/lib/query";
 import { api } from "@/services/api";
 
 export interface CreateCommentParams {

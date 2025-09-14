@@ -7,18 +7,33 @@ import { Loadable } from "@/components/ui/loadable";
 import { NotFound } from "@/components/ui/not-found";
 import { useModals } from "@/hooks/use-modals";
 import Link from "next/link";
+import { createOptimisticSocialPost } from "@/features/social/utils/createOptimisticSocialPost";
+import { useMe } from "@/features/auth/queries/use-me";
+import { Button } from "@/components/ui/button";
 
 export const SocialFeed = () => {
-  const [socialPosts, socialPostsQuery] = useSocialPosts();
+  const [me] = useMe();
+  const { data, query, updates } = useSocialPosts();
   const { openModal } = useModals();
+
+  const addPost = async () => {
+    await updates.prepend({
+      description: "asdasd",
+      images: [],
+      userId: me?.fbId!,
+      username: me?.username!,
+      userimage: me?.userimage!,
+    });
+  };
 
   return (
     <div className="flex flex-col gap-3">
-      <Loadable queries={[socialPostsQuery as any]} fullScreenForDefaults>
+      <Button onClick={() => addPost()}>Add post</Button>
+      <Loadable queries={[query as any]} fullScreenForDefaults>
         {() =>
-          socialPosts!.length > 0 ? (
+          data!.length > 0 ? (
             <AnimatePresence initial={false} mode="popLayout">
-              {socialPosts?.map((socialPost) => (
+              {data?.map((socialPost) => (
                 <motion.div
                   key={socialPost._optimisticId || socialPost.orderId}
                   initial={{ opacity: 0 }}

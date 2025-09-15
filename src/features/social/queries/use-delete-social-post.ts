@@ -25,24 +25,3 @@ export const useDeleteSocialPost = () => {
     optimisticUpdates: [async (params) => socialFeed.delete(params.id)],
   });
 }
-
-// export const useDeleteSocialPost = (options?: {
-//   onMutate?: (variables: DeleteSocialPostParams) => unknown;
-// }) => {
-//   const queryClient = useQueryClient();
-//
-//   return getMutation(
-//     ["deleteSocialPost"],
-//     async (params: DeleteSocialPostParams) => {
-//       api.delete(`social-posts`, {
-//         json: {
-//           post_id: params.id,
-//         },
-//       });
-//     },
-//     {
-//       onError: handleOptimisticUpdateError(queryClient),
-//       onMutate: options?.onMutate,
-//     },
-//   );
-// };

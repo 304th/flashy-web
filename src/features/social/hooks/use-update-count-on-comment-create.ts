@@ -5,7 +5,7 @@ import { optimisticUpdateSocialPosts } from "@/features/social/queries/use-socia
 import { updateQueryData as updateSocialPostByIdQuery } from "@/features/social/queries/use-social-post-by-id";
 import type { CreateCommentParams } from "@/features/comments/queries/use-create-comment";
 
-export const useUpdateCountOnCommentCreate = (id: string) => {
+export const useUpdateCountOnCommentCreate = (id?: string) => {
   const [me] = useMe();
   const queryClient = useQueryClient();
 

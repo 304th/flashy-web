@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { UserProfile } from "@/components/ui/user-profile";
 import { IconButton } from "@/components/ui/icon-button";
 import { ShareIcon } from "@/components/ui/icons/share";
@@ -10,26 +9,29 @@ import { SocialPostTags } from "@/features/social/components/social-post/social-
 import { SocialPostPoll } from "@/features/social/components/social-post/social-post-poll";
 import { SocialPostImages } from "@/features/social/components/social-post/social-post-images";
 import { RelightButton } from "@/features/social/components/relight-button/relight-button";
-import { useAddReactionMutate } from "@/features/social/hooks/use-add-reaction-mutate";
-import { useRemoveReactionMutate } from "@/features/social/hooks/use-remove-reaction-mutate";
-import { useRelightSocialPostMutate } from "@/features/social/hooks/use-relight-social-post-mutate";
+import type { OptimisticUpdate } from "@/lib/query.v3";
+import type {AddReactionParams} from "@/features/reactions/queries/use-add-reaction";
+import type {RemoveReactionParams} from "@/features/reactions/queries/use-remove-reaction";
+import type {RelightSocialPostParams} from "@/features/social/queries/use-relight-social-post";
 import { timeAgo } from "@/lib/utils";
 
 export const SocialPost = ({
   socialPost,
   className,
+  likeUpdates,
+  unlikeUpdates,
+  relightUpdates,
   onCommentsOpen,
   onShareOpen,
 }: {
   socialPost: Optimistic<SocialPost>;
   className?: string;
+  likeUpdates?: OptimisticUpdate<AddReactionParams>[];
+  unlikeUpdates?: OptimisticUpdate<RemoveReactionParams>[];
+  relightUpdates?: OptimisticUpdate<RelightSocialPostParams>[];
   onCommentsOpen?: () => void;
   onShareOpen?: () => void;
 }) => {
-  const handleAddMutate = useAddReactionMutate();
-  const handleRemoveMutate = useRemoveReactionMutate();
-  const handleRelightMutate = useRelightSocialPostMutate();
-
   return (
     <div
       className={`flex flex-col p-4 gap-3 h-fit w-[600px] transition rounded
@@ -64,10 +66,10 @@ export const SocialPost = ({
           )}
           <LikeButton
             post={socialPost}
-            onAdd={handleAddMutate}
-            onRemove={handleRemoveMutate}
+            likeUpdates={likeUpdates}
+            unlikeUpdates={unlikeUpdates}
           />
-          <RelightButton post={socialPost} onRelight={handleRelightMutate} />
+          <RelightButton post={socialPost} relightUpdates={relightUpdates} />
         </div>
         {onShareOpen && (
           <div className="flex gap-2">

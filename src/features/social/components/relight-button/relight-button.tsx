@@ -5,30 +5,32 @@ import {
   type RelightSocialPostParams,
   useRelightSocialPost,
 } from "@/features/social/queries/use-relight-social-post";
-import relightAnimation from "@/features/social/assets/relight-animation.json";
+import {useMe} from "@/features/auth/queries/use-me";
 import { useRelightsCount } from "@/features/social/hooks/use-relights-count";
+import type {OptimisticUpdate} from "@/lib/query.v3";
+import relightAnimation from "@/features/social/assets/relight-animation.json";
 
 export const RelightButton = ({
   post,
-  onRelight,
+  relightUpdates,
 }: {
   post: Relightable;
-  onRelight?: (variables: RelightSocialPostParams) => unknown;
+  relightUpdates?: OptimisticUpdate<RelightSocialPostParams>[]
 }) => {
+  const [me] = useMe();
   const isRelighted = useHasRelighted(post);
   const relitsCount = useRelightsCount(post);
-  const relightPost = useRelightSocialPost({
-    onMutate: onRelight,
-  });
+  const relightPost = useRelightSocialPost({ optimisticUpdates: relightUpdates });
 
   return (
     <div
-      className="group flex rounded-md items-center gap-1 px-1 py-[2px]
+      className="group flex rounded-md items-center min-w-14 gap-1 px-1 py-[2px]
         cursor-pointer transition hover:text-[#FD980F] hover:bg-[#FD980F10]"
       onClick={(e) => {
         e.preventDefault();
         relightPost.mutate({
           id: post._id,
+          username: me?.username!,
           isRelighted: !isRelighted,
         });
       }}

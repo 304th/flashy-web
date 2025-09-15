@@ -1,32 +1,28 @@
-import { useQueryClient } from "@tanstack/react-query";
 import { api } from "@/services/api";
-import { getMutation, handleOptimisticUpdateError } from "@/lib/query";
+import {createMutation} from "@/lib/mutation";
+import {type OptimisticUpdate, useOptimisticMutation} from "@/lib/query.v3";
 
 export interface AddLikeParams {
   id: string;
   isLiked: boolean;
 }
 
-export const useAddLike = (options?: {
-  onMutate?: (variables: AddLikeParams) => unknown;
-}) => {
-  const queryClient = useQueryClient();
+const addLike = createMutation<AddLikeParams>({
+  writeToSource: async (params) => {
+    return await api
+      .post("comment/like", {
+        json: {
+          _id: params.id,
+          isLiked: params.isLiked,
+        },
+      })
+      .json();
+  }
+})
 
-  return getMutation(
-    ["like"],
-    async (params: AddLikeParams) => {
-      return api
-        .post("comment/like", {
-          json: {
-            _id: params.id,
-            isLiked: params.isLiked,
-          },
-        })
-        .json();
-    },
-    {
-      onMutate: options?.onMutate,
-      onError: handleOptimisticUpdateError(queryClient),
-    },
-  );
-};
+export const useAddLike = ({ optimisticUpdates }: { optimisticUpdates?: OptimisticUpdate<AddLikeParams>[] }) => {
+  return useOptimisticMutation({
+    mutation: addLike,
+    optimisticUpdates,
+  })
+}

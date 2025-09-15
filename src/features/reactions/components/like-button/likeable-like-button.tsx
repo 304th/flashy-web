@@ -1,25 +1,22 @@
 import type { LikeButtonButtonRender } from "@/features/reactions/components/like-button/like-button";
-import { useAddLike } from "@/features/reactions/queries/use-add-like";
+import {type AddLikeParams, useAddLike} from "@/features/reactions/queries/use-add-like";
+import type {OptimisticUpdate} from "@/lib/query.v3";
 
 export interface LikeableLikeButtonProps {
   post: Likeable;
-  onAdd?: (variables: any) => unknown;
-  onRemove?: (variables: any) => unknown;
+  likeUpdates?: OptimisticUpdate<AddLikeParams>[];
+  unlikeUpdates?: OptimisticUpdate<AddLikeParams>[];
   children: LikeButtonButtonRender;
 }
 
 export const LikeableLikeButton = ({
   post,
-  onAdd,
-  onRemove,
+  likeUpdates,
+  unlikeUpdates,
   children,
 }: LikeableLikeButtonProps) => {
-  const like = useAddLike({
-    onMutate: onAdd,
-  });
-  const unlike = useAddLike({
-    onMutate: onRemove,
-  });
+  const like = useAddLike({ optimisticUpdates: likeUpdates });
+  const unlike = useAddLike({ optimisticUpdates: unlikeUpdates });
 
   return (
     <>

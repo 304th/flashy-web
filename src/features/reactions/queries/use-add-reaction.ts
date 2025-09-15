@@ -1,6 +1,6 @@
-import { useQueryClient } from "@tanstack/react-query";
 import { api } from "@/services/api";
-import { getMutation, handleMutationError } from "@/lib/query";
+import { createMutation } from "@/lib/mutation";
+import { type OptimisticUpdate, useOptimisticMutation} from "@/lib/query.v3";
 
 export interface AddReactionParams {
   id: string;
@@ -9,37 +9,24 @@ export interface AddReactionParams {
   count?: number;
 }
 
-export const useAddReaction = (options?: {
-  onMutate?: (variables: AddReactionParams) => unknown;
-}) => {
-  const queryClient = useQueryClient();
+const addReaction = createMutation<AddReactionParams>({
+  writeToSource: async (params) => {
+    return await api
+      .post("reactions/addReaction", {
+        json: {
+          postId: params.id,
+          postType: params.postType,
+          reactionType: params.reactionType,
+          count: params.count ?? 1,
+        },
+      })
+      .json();
+  }
+})
 
-  return getMutation(
-    ["addReaction"],
-    async ({ id, postType, reactionType, count = 1 }: AddReactionParams) => {
-      return await api
-        .post("reactions/addReaction", {
-          json: {
-            postId: id,
-            postType: postType,
-            reactionType: reactionType,
-            count: count,
-          },
-        })
-        .json();
-    },
-    {
-      onError: (error: any, _, context: any) => {
-        if (context.optimisticQueryKey && context.previous) {
-          queryClient.setQueryData(
-            context.optimisticQueryKey,
-            context.previous,
-          );
-        }
-
-        return handleMutationError(error);
-      },
-      onMutate: options?.onMutate,
-    },
-  );
-};
+export const useAddReaction = ({ optimisticUpdates }: { optimisticUpdates?: OptimisticUpdate<AddReactionParams>[] }) => {
+  return useOptimisticMutation({
+    mutation: addReaction,
+    optimisticUpdates,
+  });
+}

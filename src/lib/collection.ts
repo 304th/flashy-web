@@ -4,8 +4,8 @@ export class Collection<Entity, Params = undefined> {
     private readonly read: (params?: Params) => Promise<Entity[]>,
   ) {}
 
-  getId(): keyof Entity {
-    return this.schema.getId();
+  getEntityId(entity: Entity): string {
+    return entity[this.schema.getId()] as string;
   }
 
   async readData(params?: Params) {

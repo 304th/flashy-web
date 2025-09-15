@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-query";
 import type { Collection } from "@/lib/collection";
 import type { Mutation } from "@/lib/mutation";
+import {handleMutationError} from "@/lib/query";
 
 type DefaultParams = { pageParam: number };
 
@@ -20,17 +21,22 @@ type GetParamsType<T> = T extends undefined
   ? ((params: DefaultParams) => PartitionedParams<T>) | undefined
   : (params: DefaultParams) => PartitionedParams<T>;
 
-type OptimisticUpdate<Params> = (params: Params) => Promise<Transactions<any, any>>
+export type OptimisticUpdate<Params> = (params: Params) => Promise<Transactions<any, any>>
+interface OptimisticUpdaterOptions {
+  sync?: boolean;
+  rollback?: boolean;
+}
 
 interface OptimisticUpdater<Entity, State> {
   prepend(item: Entity, state: State): State;
   append(item: Entity, state: State): State;
   update(
     id: string,
-    item: Partial<Entity>,
+    item: (state: Draft<Optimistic<Entity>>) => void,
     state: State,
   ): State;
   delete(id: string, state: State): State;
+  replace: (id: string, item: Optimistic<Entity>, state: State) => State;
 }
 
 class PartitionedOptimisticUpdater<Entity>
@@ -50,29 +56,29 @@ class PartitionedOptimisticUpdater<Entity>
   }
   update(
     id: string,
-    item: Entity,
-    state: Paginated<Entity[]>,
+    updateFn: (state: Draft<Optimistic<Entity>>) => void,
+    state: Paginated<Optimistic<Entity>[]>,
   ): Paginated<Entity[]> {
     return produce(state, (draft) => {
-      draft.pages.forEach((page, index) => {
-        page.findIndex(
-          (post) => (post as Entity)[this.collection.getId()] === id,
+      draft.pages.forEach((page) => {
+        const foundIndex = page.findIndex(
+          (post) => this.collection.getEntityId(post as Optimistic<Entity>) === id,
         );
 
-        if (index !== -1) {
-          page[index] = item as Draft<Entity>;
+        if (foundIndex !== -1) {
+          updateFn(page[foundIndex]);
         }
       });
     });
   }
   delete(
     id: string,
-    state: Paginated<Entity[]>,
-  ): Paginated<Entity[]> {
+    state: Paginated<Optimistic<Entity>[]>,
+  ): Paginated<Optimistic<Entity>[]> {
     return produce(state, (draft) => {
       draft.pages.forEach((page, index) => {
         page.findIndex(
-          (post) => (post as Entity)[this.collection.getId()] === id,
+          (post) => this.collection.getEntityId(post as Optimistic<Entity>) === id,
         );
 
         if (index !== -1) {
@@ -81,10 +87,27 @@ class PartitionedOptimisticUpdater<Entity>
       });
     });
   }
+  replace(
+    id: string,
+    item: Optimistic<Entity>,
+    state: Paginated<Entity[]>,
+  ): Paginated<Entity[]> {
+    return produce(state, (draft) => {
+      draft.pages.forEach((page, index) => {
+        page.findIndex(
+          (post) => this.collection.getEntityId(post as Optimistic<Entity>) === id,
+        );
+
+        if (index !== -1) {
+          page[index] = item as Draft<Optimistic<Entity>>;
+        }
+      });
+    });
+  }
 }
 
 class Transactions<Entity, State> {
-  private readonly rollbacks: ((state: State, params: Optimistic<Entity>) => void)[];
+  private readonly rollbacks: ((state: State) => State)[];
   private readonly pendingSyncs: ((state: State, params: Optimistic<Entity>) => State)[];
 
   constructor(
@@ -107,16 +130,16 @@ class Transactions<Entity, State> {
 
   private async execute({
     update,
+    id,
     item,
     options,
     sync,
-    rollback,
   }: {
     update: (state: State) => State;
-    item?: Optimistic<Entity>;
-    options?: { sync?: boolean; rollback: boolean };
+    id?: string;
+    item?: Partial<Optimistic<Entity>>;
+    options?: OptimisticUpdaterOptions;
     sync?: (state: State, params: Optimistic<Entity>) => State;
-    rollback?: (state: State, params: Optimistic<Entity>) => void;
   }) {
     await this.queryClient.cancelQueries({ queryKey: this.queryKey });
     const previous = this.queryClient.getQueryData(this.queryKey) as State;
@@ -124,8 +147,8 @@ class Transactions<Entity, State> {
 
     if (options?.rollback) {
       this.rollbacks.push(() => previous);
-    } else if (rollback) {
-      this.rollbacks.push((state) => rollback());
+    } else {
+      this.rollbacks.push((draft) => this.updater.replace(id || this.collection.getEntityId(item as Entity), { _optimisticStatus: "error" } as Optimistic<Entity>, draft));
     }
 
     if (options?.sync && sync) {
@@ -136,64 +159,65 @@ class Transactions<Entity, State> {
   }
 
   async prepend(
-    item: Entity extends readonly unknown[] ? never : Partial<Entity>,
-    options?: { sync: boolean; rollback: boolean; },
+    item: Partial<Optimistic<Entity>>,
+    options: OptimisticUpdaterOptions = { sync: false, rollback: true },
   ): Promise<Transactions<Entity, State>> {
-    return this.execute(
-      (state: State): State =>
-        this.updater.prepend(
-          this.createOptimistic(this.collection.createItem(item)),
-          state,
-        ),
+    return this.execute({
+      item,
+      update: (state: State): State =>
+          this.updater.prepend(
+            this.createOptimistic(this.collection.createItem(item)),
+            state,
+          ),
       options,
-      (draft, params) => this.updater.update((params as any)[this.collection.getId()], params, draft),
-    );
+      sync: (draft, params) => this.updater.replace(this.collection.getEntityId(params), params, draft),
+    });
   }
 
   async append(
-    item: Entity extends readonly unknown[] ? never : Partial<Entity>,
-    options?: { sync: boolean; rollback: boolean; },
+    item: Optimistic<Entity>,
+    options: OptimisticUpdaterOptions = { sync: false, rollback: true },
   ): Promise<Transactions<Entity, State>> {
-    return this.execute(
-      (state: State): State =>
+    return this.execute({
+      item,
+      update: (state: State): State =>
         this.updater.append(
           this.createOptimistic(this.collection.createItem(item)),
           state,
         ),
       options,
-      (draft, params) => this.updater.update((params as any)[this.collection.getId()], params, draft),
-    );
+      sync: (draft, params) => this.updater.update(this.collection.getEntityId(params), (draft) => { draft }, draft),
+    });
   }
 
   async update(
     id: string,
-    item: Entity extends readonly unknown[] ? never : Partial<Entity>,
-    options?: { sync: boolean; rollback: boolean; },
+    updateFn: (state: Draft<Optimistic<Entity>>) => void,
+    options: OptimisticUpdaterOptions = { sync: false, rollback: true },
   ): Promise<Transactions<Entity, State>> {
-    return this.execute(
-      (state: State): State => this.updater.update(id, item, state),
+    return this.execute({
+      update: (state: State): State => this.updater.update(id, updateFn, state),
       options,
-      (draft, params) => this.updater.update((params as any)[this.collection.getId()], params, draft),
-    );
+      sync: (draft, params) => this.updater.replace(this.collection.getEntityId(params), params, draft),
+    });
   }
 
   async delete(
     id: string,
-    options?: { sync: boolean; rollback: boolean; },
+    options: OptimisticUpdaterOptions = { sync: false, rollback: true },
   ): Promise<Transactions<Entity, State>> {
-    return this.execute(
-      (state: State): State => this.updater.delete(id, state),
+    return this.execute({
+      id,
+      update: (state: State): State => this.updater.delete(id, state),
       options,
-    );
+    });
   }
 
   public rollback() {
     const runRollback = this.rollbacks.pop();
 
     if (runRollback) {
-      this.queryClient.setQueryData(this.queryKey, (state: State) =>
-        runRollback(state, { _optimisticStatus: "error" } as Optimistic<Entity>),
-      );
+      this.queryClient.setQueryData(this.queryKey, (state: State) => runRollback(state));
     }
   }
 
@@ -202,7 +226,7 @@ class Transactions<Entity, State> {
 
     if (pendingSync) {
       this.queryClient.setQueryData(this.queryKey, (state: State) =>
-        pendingSync(state, params),
+        pendingSync(state, params as Optimistic<Entity>),
       );
     }
   }
@@ -293,13 +317,17 @@ export const useOptimisticMutation = <Params, Response>({
     onMutate: async (params) => {
       let transactions: Transactions<unknown, unknown>[] = [];
 
-      if (optimisticUpdates) {
-        transactions = await Promise.all(
-          optimisticUpdates.map(async (update) => await update(params)),
-        );
-      }
+      try {
+        if (optimisticUpdates) {
+          transactions = await Promise.all(
+            optimisticUpdates.map(async (update) => await update(params)),
+          );
+        }
 
-      onMutate?.(params);
+        onMutate?.(params);
+      } catch (error) {
+        await handleMutationError(error);
+      }
 
       return { transactions };
     },
@@ -312,12 +340,33 @@ export const useOptimisticMutation = <Params, Response>({
 
       onSuccess?.(data);
     },
-    onError: async (error, params, context) => {
+    onError: async (error, _, context) => {
       context!.transactions.forEach((transaction) => {
-        transaction.rollback(params);
+        transaction.rollback();
       });
 
       onError?.(error);
+      await handleMutationError(error);
     },
   });
 };
+
+export const useQuerySubset = <SubsetData, QueryData extends unknown[]>({
+  existingQueryKey,
+  selectorFn,
+  deps,
+}: { existingQueryKey: readonly unknown[]; selectorFn: (data: QueryData) => SubsetData; deps: unknown[]}) => {
+  const queryClient = useQueryClient();
+
+  return useMemo(() => {
+    const data = queryClient.getQueryData<QueryData | PaginatedList<QueryData>>(existingQueryKey);
+
+    if (!data) {
+      return undefined;
+    }
+
+    const queryData = 'pages' in data ? data.pages.flat() as QueryData : data;
+
+    return selectorFn(queryData);
+  }, [existingQueryKey, ...deps]);
+}

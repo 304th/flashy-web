@@ -1,33 +1,28 @@
-import { useQueryClient } from "@tanstack/react-query";
-import { getMutation, handleOptimisticUpdateError } from "@/lib/query";
 import { api } from "@/services/api";
-import { useMe } from "@/features/auth/queries/use-me";
+import { createMutation } from "@/lib/mutation";
+import {type OptimisticUpdate, useOptimisticMutation} from "@/lib/query.v3";
 
 export interface RelightSocialPostParams {
   id: string;
+  username: string;
   isRelighted: boolean;
 }
 
-export const useRelightSocialPost = (options?: {
-  onMutate?: (variables: RelightSocialPostParams) => unknown;
-}) => {
-  const [me] = useMe();
-  const queryClient = useQueryClient();
+const relightSocialPost = createMutation({
+  writeToSource: async (params: RelightSocialPostParams) => {
+    return api.post("social-posts/repost", {
+      json: {
+        _id: params.id,
+        username: params.username,
+        isRelited: params.isRelighted,
+      },
+    });
+  }
+})
 
-  return getMutation(
-    ["relightSocialPost"],
-    async (params: RelightSocialPostParams) => {
-      return api.post("social-posts/repost", {
-        json: {
-          _id: params.id,
-          username: me!.username,
-          isRelited: params.isRelighted,
-        },
-      });
-    },
-    {
-      onError: handleOptimisticUpdateError(queryClient),
-      onMutate: options?.onMutate,
-    },
-  );
-};
+export const useRelightSocialPost = ({ optimisticUpdates }: { optimisticUpdates?: OptimisticUpdate<RelightSocialPostParams>[] }) => {
+  return useOptimisticMutation({
+    mutation: relightSocialPost,
+    optimisticUpdates,
+  })
+}

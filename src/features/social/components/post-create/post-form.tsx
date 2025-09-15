@@ -11,7 +11,6 @@ import { MessageProgress } from "@/features/social/components/post-create/messag
 import { PostLinkPreview } from "@/features/social/components/post-link-preview/post-link-preview";
 import { PostOptions } from "@/features/social/components/post-create/post-options";
 import {
-  CreateSocialPostParams,
   useCreateSocialPost,
 } from "@/features/social/queries/use-create-social-post";
 import { useParsedPostLinkPreviews } from "@/features/social/hooks/use-parsed-post-preview-links";
@@ -23,18 +22,9 @@ const formSchema = z.object({
   images: z.array(z.custom<File>()).optional(),
 });
 
-export const PostForm = ({
-  onPostCreateMutate,
-  onPostCreateSuccess,
-}: {
-  onPostCreateMutate: (variables: CreateSocialPostParams) => unknown;
-  onPostCreateSuccess: (newSocialPost: SocialPost) => unknown;
-}) => {
+export const PostForm = () => {
   const optionsMenuRef = useRef<{ reset: () => void } | null>(null);
-  const createSocialPost = useCreateSocialPost({
-    onMutate: onPostCreateMutate,
-    onSuccess: onPostCreateSuccess,
-  });
+  const createSocialPost = useCreateSocialPost();
 
   const form = useForm({
     resolver: zodResolver(formSchema),

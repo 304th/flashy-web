@@ -74,8 +74,8 @@ export const useCreateSocialPost = () => {
 
   return useOptimisticMutation<CreateSocialPostParams, SocialPost>({
     mutation: createSocialPostMutation,
-    optimisticUpdates: [(params) => {
-      return socialFeed.prepend({
+    optimisticUpdates: [async (params) => {
+      return await socialFeed.prepend({
         ...params,
         images: params.images?.map(image => URL.createObjectURL(image)),
         poll: {

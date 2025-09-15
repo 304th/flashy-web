@@ -17,6 +17,7 @@ declare global {
   }
 
   type Paginated<T> = { pages: T[]; pageParams: number[] };
+  type PaginatedList<T> = { pages: T; pageParams: number[] };
   type ApiResponse<T> = SuccessResponse<T> | ErrorResponse;
   type PostType =
     | "social"

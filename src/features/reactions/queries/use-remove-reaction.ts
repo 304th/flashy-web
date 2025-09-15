@@ -1,44 +1,30 @@
-import { useQueryClient } from "@tanstack/react-query";
 import { api } from "@/services/api";
-import { getMutation, handleMutationError } from "@/lib/query";
+import {createMutation} from "@/lib/mutation";
+import { OptimisticUpdate, useOptimisticMutation } from "@/lib/query.v3";
 
-interface RemoveReactionParams {
+export interface RemoveReactionParams {
   id: string;
   postType: PostType;
   reactionType: string;
 }
 
-export const useRemoveReaction = (options?: {
-  onMutate?: (variables: RemoveReactionParams) => unknown;
-}) => {
-  const queryClient = useQueryClient();
+const removeReaction = createMutation<RemoveReactionParams>({
+  writeToSource: async (params) => {
+    return await api
+      .delete("reactions/deleteReaction", {
+        json: {
+          postId: params.id,
+          postType: params.postType,
+          reactionType: params.reactionType,
+        },
+      })
+      .json();
+  }
+})
 
-  return getMutation(
-    ["removeReaction"],
-    async ({ id, postType, reactionType }: RemoveReactionParams) => {
-      return await api
-        .delete("reactions/deleteReaction", {
-          json: {
-            postId: id,
-            postType: postType,
-            reactionType: reactionType,
-          },
-        })
-        .json();
-    },
-    {
-      onError: (error: any, _, context: any) => {
-        //FIXME: refactor
-        if (context.optimisticQueryKey && context.previous) {
-          queryClient.setQueryData(
-            context.optimisticQueryKey,
-            context.previous,
-          );
-        }
-
-        return handleMutationError(error);
-      },
-      onMutate: options?.onMutate,
-    },
-  );
-};
+export const useRemoveReaction = ({ optimisticUpdates }: { optimisticUpdates?: OptimisticUpdate<RemoveReactionParams>[] }) => {
+  return useOptimisticMutation({
+    mutation: removeReaction,
+    optimisticUpdates,
+  });
+}

@@ -20,7 +20,7 @@ export const LikeButtonCore = ({
 
   return (
     <div
-      className="group flex items-center gap-1 px-1 py-[2px] rounded-md
+      className="group flex items-center gap-1 px-1 py-[2px] min-w-14 rounded-md
         cursor-pointer transition hover:text-[#E03336] hover:bg-[#E0333610]"
       role="button"
       onClick={(e) => {

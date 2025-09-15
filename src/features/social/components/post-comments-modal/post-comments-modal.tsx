@@ -1,27 +1,43 @@
 import React, { useState } from "react";
-import { motion } from "framer-motion";
 import { Modal as ModalComponent } from "@/packages/modals";
 import { CloseButton } from "@/components/ui/close-button";
 import { SocialPost } from "@/features/social/components/social-post/social-post";
 import { CommentSend } from "@/features/comments/components/comment-send/comment-send";
 import { CommentsFeed } from "@/features/comments/components/comments-feed/comments-feed";
-import { useUpdateCountOnCommentCreate } from "@/features/social/hooks/use-update-count-on-comment-create";
-import { useSocialPostById } from "@/features/social/queries/use-social-post-by-id";
-import { defaultVariants } from "@/lib/framer";
+import { useQuerySubset } from "@/lib/query.v3";
+import { useMe } from "@/features/auth/queries/use-me";
+import {
+  useSocialFeedUpdatesOnReactionAdd,
+  useSocialFeedUpdatesOnReactionRemove
+} from "@/features/social/hooks/use-social-feed-reaction-updates";
+import {useSocialFeedRelightUpdates} from "@/features/social/hooks/use-social-feed-relight-updates";
 
 export interface PostCommentsModalProps {
-  post: SocialPost;
+  postId: string;
   onClose(): void;
 }
 
 export const PostCommentsModal = ({
-  post,
+  postId,
   onClose,
   ...props
 }: PostCommentsModalProps) => {
+  const [me] = useMe();
   const [replyComment, setReplyComment] = useState<CommentPost | null>(null);
-  const [socialPost] = useSocialPostById(post._id);
-  const handleCommentCountUpdate = useUpdateCountOnCommentCreate(post._id);
+  const socialPost = useQuerySubset<SocialPost, SocialPost[]>({
+    existingQueryKey: ["social", me?.fbId],
+    selectorFn: (socialPosts) => socialPosts.filter(post => post._id === postId)[0],
+    deps: [postId],
+  });
+  const likeUpdates = useSocialFeedUpdatesOnReactionAdd();
+  const unlikeUpdates = useSocialFeedUpdatesOnReactionRemove();
+  const relightUpdates = useSocialFeedRelightUpdates();
+
+  // const handleCommentCountUpdate = useUpdateCountOnCommentCreate(socialPost._id);
+
+  if (!socialPost) {
+    return null;
+  }
 
   return (
     <Modal onClose={onClose} className="!p-[0]" {...props}>
@@ -35,21 +51,24 @@ export const PostCommentsModal = ({
       >
         <div className="flex flex-col gap-4 w-full bg-base-200 border-b">
           <SocialPost
-            socialPost={socialPost || post}
+            socialPost={socialPost}
+            likeUpdates={likeUpdates}
+            unlikeUpdates={unlikeUpdates}
+            relightUpdates={relightUpdates}
             className="rounded-b-none"
           />
         </div>
         <CommentsFeed
-          post={post}
+          post={socialPost}
           onCommentReply={(comment) => setReplyComment(comment)}
         />
       </div>
       <CommentSend
-        post={post}
+        post={socialPost}
         replyComment={replyComment}
         className="sticky bottom-0 w-full shrink-0 rounded-br-md rounded-bl-md
           border-t z-1"
-        onCommentSend={() => handleCommentCountUpdate}
+        onCommentSend={() => {}}
         onCloseReply={() => setReplyComment(null)}
       />
     </Modal>

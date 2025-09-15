@@ -1,29 +1,26 @@
 "use client";
 
+import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { SocialPost } from "@/features/social/components/social-post/social-post";
 import { useSocialPosts } from "@/features/social/queries/use-social-posts";
 import { Loadable } from "@/components/ui/loadable";
 import { NotFound } from "@/components/ui/not-found";
 import { useModals } from "@/hooks/use-modals";
-import Link from "next/link";
 import { useMe } from "@/features/auth/queries/use-me";
-import { Button } from "@/components/ui/button";
+import { useSocialFeedUpdatesOnReactionAdd, useSocialFeedUpdatesOnReactionRemove } from "@/features/social/hooks/use-social-feed-reaction-updates";
+import {useSocialFeedRelightUpdates} from "@/features/social/hooks/use-social-feed-relight-updates";
 
 export const SocialFeed = () => {
   const [me] = useMe();
-  const { data, query, optimisticUpdates } = useSocialPosts();
+  const { data, query, optimisticUpdates: socialFeed } = useSocialPosts();
   const { openModal } = useModals();
-
-  const addPost = async () => {
-    const oo = await optimisticUpdates.prepend({
-      description: "123123123",
-    });
-  };
+  const likeUpdates = useSocialFeedUpdatesOnReactionAdd();
+  const unlikeUpdates = useSocialFeedUpdatesOnReactionRemove();
+  const relightUpdates = useSocialFeedRelightUpdates();
 
   return (
     <div className="flex flex-col gap-3">
-      <Button onClick={() => addPost()}>Add post</Button>
       <Loadable queries={[query as any]} fullScreenForDefaults>
         {() =>
           data!.length > 0 ? (
@@ -39,9 +36,12 @@ export const SocialFeed = () => {
                   <Link href={`/social/post?id=${socialPost._id}`}>
                     <SocialPost
                       socialPost={socialPost}
+                      likeUpdates={likeUpdates}
+                      unlikeUpdates={unlikeUpdates}
+                      relightUpdates={relightUpdates}
                       onCommentsOpen={() =>
                         openModal("PostCommentsModal", {
-                          post: socialPost,
+                          postId: socialPost._id,
                         })
                       }
                       onShareOpen={() =>

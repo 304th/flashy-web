@@ -8,8 +8,11 @@ import { Loadable } from "@/components/ui/loadable";
 import { NotFound } from "@/components/ui/not-found";
 import { useModals } from "@/hooks/use-modals";
 import { useMe } from "@/features/auth/queries/use-me";
-import { useSocialFeedUpdatesOnReactionAdd, useSocialFeedUpdatesOnReactionRemove } from "@/features/social/hooks/use-social-feed-reaction-updates";
-import {useSocialFeedRelightUpdates} from "@/features/social/hooks/use-social-feed-relight-updates";
+import {
+  useSocialFeedUpdatesOnReactionAdd,
+  useSocialFeedUpdatesOnReactionRemove,
+} from "@/features/social/hooks/use-social-feed-reaction-updates";
+import { useSocialFeedRelightUpdates } from "@/features/social/hooks/use-social-feed-relight-updates";
 
 export const SocialFeed = () => {
   const [me] = useMe();

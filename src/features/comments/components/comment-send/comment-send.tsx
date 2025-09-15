@@ -10,13 +10,18 @@ import { Textarea } from "@/components/ui/textarea";
 import { SendIcon } from "@/components/ui/icons/send";
 import { ReplyToComment } from "@/features/comments/components/comment-send/reply-to-comment";
 import { MessageProgress } from "@/features/social/components/post-create/message-progress";
-import { useCreateComment } from "@/features/comments/queries/use-create-comment";
-import { useCreateReply } from "@/features/comments/queries/use-create-reply";
-import { useCreateCommentMutate } from "@/features/comments/hooks/use-create-comment-mutate";
-import type { OptimisticUpdater } from "@/lib/query";
+import {
+  type CreateCommentParams,
+  useCreateComment,
+} from "@/features/comments/queries/use-create-comment";
+import {
+  type CreateReplyParams,
+  useCreateReply,
+} from "@/features/comments/queries/use-create-reply";
+import type { OptimisticUpdate } from "@/lib/query.v3";
 import { defaultVariants } from "@/lib/framer";
-import { useCreateReplyMutate } from "@/features/comments/hooks/use-create-reply-mutate";
-import { useCreateCommentSuccess } from "@/features/comments/hooks/use-create-comment-success";
+import { useReplies } from "@/features/comments/queries/use-replies";
+import { useComments } from "@/features/comments/queries/use-comments";
 
 const formSchema = z.object({
   message: z.string().max(500),
@@ -26,8 +31,7 @@ export interface CommentSendProps {
   post: Reactable;
   replyComment: CommentPost | null;
   className?: string;
-  onCommentSend?: () => OptimisticUpdater[];
-  onReplySend?: () => OptimisticUpdater[];
+  sendCommentUpdates?: OptimisticUpdate<CreateCommentParams>[];
   onCloseReply?: () => void;
 }
 
@@ -35,26 +39,22 @@ export const CommentSend = ({
   post,
   replyComment,
   className,
-  onCommentSend,
-  onReplySend,
+  sendCommentUpdates,
   onCloseReply,
 }: CommentSendProps) => {
-  const createCommentMutate = useCreateCommentMutate(
-    post._id,
-    onCommentSend?.(),
-  );
-  const createReplyMutate = useCreateReplyMutate(
-    post._id,
-    replyComment?._id,
-    onReplySend?.(),
-  );
-  const syncComments = useCreateCommentSuccess(post._id);
+  const { optimisticUpdates: replies } = useReplies(replyComment?._id);
+  const { optimisticUpdates: comments } = useComments(post._id);
   const sendComment = useCreateComment({
-    onMutate: createCommentMutate,
-    onSuccess: syncComments,
+    optimisticUpdates: sendCommentUpdates,
   });
   const sendReply = useCreateReply({
-    onMutate: createReplyMutate as any,
+    optimisticUpdates: [
+      async (params) => replies.prepend(params, { sync: true }),
+      async () =>
+        comments.update(replyComment?._id!, (comment) => {
+          comment.repliesCount += 1;
+        }),
+    ],
   });
 
   const form = useForm({
@@ -84,7 +84,7 @@ export const CommentSend = ({
       sendReply.mutate(
         {
           commentId: replyComment._id,
-          message: params.message,
+          text: params.message,
           mentionedUsers: [],
         },
         {
@@ -98,7 +98,7 @@ export const CommentSend = ({
         {
           postId: post._id,
           postType: "post",
-          message: params.message,
+          text: params.message,
           mentionedUsers: [],
         },
         {

@@ -9,7 +9,7 @@ import {
 } from "@tanstack/react-query";
 import type { Collection } from "@/lib/collection";
 import type { Mutation } from "@/lib/mutation";
-import {handleMutationError} from "@/lib/query";
+import { handleMutationError } from "@/lib/query";
 
 type DefaultParams = { pageParam: number };
 
@@ -21,7 +21,9 @@ type GetParamsType<T> = T extends undefined
   ? ((params: DefaultParams) => PartitionedParams<T>) | undefined
   : (params: DefaultParams) => PartitionedParams<T>;
 
-export type OptimisticUpdate<Params> = (params: Params) => Promise<Transactions<any, any>>
+export type OptimisticUpdate<Params> = (
+  params: Params,
+) => Promise<Transactions<any, any>>;
 interface OptimisticUpdaterOptions {
   sync?: boolean;
   rollback?: boolean;
@@ -32,7 +34,7 @@ interface OptimisticUpdater<Entity, State> {
   append(item: Entity, state: State): State;
   update(
     id: string,
-    item: (state: Draft<Optimistic<Entity>>) => void,
+    updateFn: (state: Draft<Optimistic<Entity>>) => void,
     state: State,
   ): State;
   delete(id: string, state: State): State;
@@ -62,7 +64,8 @@ class PartitionedOptimisticUpdater<Entity>
     return produce(state, (draft) => {
       draft.pages.forEach((page) => {
         const foundIndex = page.findIndex(
-          (post) => this.collection.getEntityId(post as Optimistic<Entity>) === id,
+          (post) =>
+            this.collection.getEntityId(post as Optimistic<Entity>) === id,
         );
 
         if (foundIndex !== -1) {
@@ -78,7 +81,8 @@ class PartitionedOptimisticUpdater<Entity>
     return produce(state, (draft) => {
       draft.pages.forEach((page, index) => {
         page.findIndex(
-          (post) => this.collection.getEntityId(post as Optimistic<Entity>) === id,
+          (post) =>
+            this.collection.getEntityId(post as Optimistic<Entity>) === id,
         );
 
         if (index !== -1) {
@@ -95,7 +99,8 @@ class PartitionedOptimisticUpdater<Entity>
     return produce(state, (draft) => {
       draft.pages.forEach((page, index) => {
         page.findIndex(
-          (post) => this.collection.getEntityId(post as Optimistic<Entity>) === id,
+          (post) =>
+            this.collection.getEntityId(post as Optimistic<Entity>) === id,
         );
 
         if (index !== -1) {
@@ -108,7 +113,10 @@ class PartitionedOptimisticUpdater<Entity>
 
 class Transactions<Entity, State> {
   private readonly rollbacks: ((state: State) => State)[];
-  private readonly pendingSyncs: ((state: State, params: Optimistic<Entity>) => State)[];
+  private readonly pendingSyncs: ((
+    state: State,
+    params: Optimistic<Entity>,
+  ) => State)[];
 
   constructor(
     private readonly queryClient: QueryClient,
@@ -144,15 +152,24 @@ class Transactions<Entity, State> {
     await this.queryClient.cancelQueries({ queryKey: this.queryKey });
     const previous = this.queryClient.getQueryData(this.queryKey) as State;
     this.queryClient.setQueryData(this.queryKey, update);
+    const mergedOptions = { sync: false, rollback: true, ...options };
 
-    if (options?.rollback) {
+    if (mergedOptions?.rollback) {
       this.rollbacks.push(() => previous);
     } else {
-      this.rollbacks.push((draft) => this.updater.replace(id || this.collection.getEntityId(item as Entity), { _optimisticStatus: "error" } as Optimistic<Entity>, draft));
+      this.rollbacks.push((draft) =>
+        this.updater.update(
+          id || this.collection.getEntityId(item as Entity),
+          (draft) => {
+            draft._optimisticStatus = "error";
+          },
+          draft,
+        ),
+      );
     }
 
-    if (options?.sync && sync) {
-      this.pendingSyncs.push((state: State, params) => sync(state, params))
+    if (mergedOptions?.sync && sync) {
+      this.pendingSyncs.push((state: State, params) => sync(state, params));
     }
 
     return this;
@@ -165,12 +182,17 @@ class Transactions<Entity, State> {
     return this.execute({
       item,
       update: (state: State): State =>
-          this.updater.prepend(
-            this.createOptimistic(this.collection.createItem(item)),
-            state,
-          ),
+        this.updater.prepend(
+          this.createOptimistic(this.collection.createItem(item)),
+          state,
+        ),
       options,
-      sync: (draft, params) => this.updater.replace(this.collection.getEntityId(params), params, draft),
+      sync: (draft, params) =>
+        this.updater.replace(
+          this.collection.getEntityId(params),
+          params,
+          draft,
+        ),
     });
   }
 
@@ -186,7 +208,14 @@ class Transactions<Entity, State> {
           state,
         ),
       options,
-      sync: (draft, params) => this.updater.update(this.collection.getEntityId(params), (draft) => { draft }, draft),
+      sync: (draft, params) =>
+        this.updater.update(
+          this.collection.getEntityId(params),
+          (draft) => {
+            draft;
+          },
+          draft,
+        ),
     });
   }
 
@@ -198,7 +227,12 @@ class Transactions<Entity, State> {
     return this.execute({
       update: (state: State): State => this.updater.update(id, updateFn, state),
       options,
-      sync: (draft, params) => this.updater.replace(this.collection.getEntityId(params), params, draft),
+      sync: (draft, params) =>
+        this.updater.replace(
+          this.collection.getEntityId(params),
+          params,
+          draft,
+        ),
     });
   }
 
@@ -217,7 +251,9 @@ class Transactions<Entity, State> {
     const runRollback = this.rollbacks.pop();
 
     if (runRollback) {
-      this.queryClient.setQueryData(this.queryKey, (state: State) => runRollback(state));
+      this.queryClient.setQueryData(this.queryKey, (state: State) =>
+        runRollback(state),
+      );
     }
   }
 
@@ -355,18 +391,24 @@ export const useQuerySubset = <SubsetData, QueryData extends unknown[]>({
   existingQueryKey,
   selectorFn,
   deps,
-}: { existingQueryKey: readonly unknown[]; selectorFn: (data: QueryData) => SubsetData; deps: unknown[]}) => {
+}: {
+  existingQueryKey: readonly unknown[];
+  selectorFn: (data: QueryData) => SubsetData;
+  deps: unknown[];
+}) => {
   const queryClient = useQueryClient();
 
   return useMemo(() => {
-    const data = queryClient.getQueryData<QueryData | PaginatedList<QueryData>>(existingQueryKey);
+    const data = queryClient.getQueryData<QueryData | PaginatedList<QueryData>>(
+      existingQueryKey,
+    );
 
     if (!data) {
       return undefined;
     }
 
-    const queryData = 'pages' in data ? data.pages.flat() as QueryData : data;
+    const queryData = "pages" in data ? (data.pages.flat() as QueryData) : data;
 
     return selectorFn(queryData);
   }, [existingQueryKey, ...deps]);
-}
+};

@@ -1,36 +1,35 @@
-import { useQueryClient } from "@tanstack/react-query";
 import { api } from "@/services/api";
-import { getMutation, handleOptimisticUpdateError } from "@/lib/query";
+import { createMutation } from "@/lib/mutation";
+import { type OptimisticUpdate, useOptimisticMutation } from "@/lib/query.v3";
 
 export interface CreateReplyParams {
   commentId: string;
   mentionedUsers: string[];
-  message: string;
+  text: string;
 }
 
-export const useCreateReply = (options?: {
-  onMutate?: (variables: CreateReplyParams) => unknown;
-}) => {
-  const queryClient = useQueryClient();
-
-  return getMutation(
-    ["createReply"],
-    async (params: CreateReplyParams) => {
-      return api
-        .post("reply", {
-          json: {
-            mentionedUsers: params.mentionedUsers,
-            reply: {
-              parentCommentId: params.commentId,
-              text: params.message,
-            },
+const createReply = createMutation<CreateReplyParams>({
+  writeToSource: async (params) => {
+    const data = await api
+      .post("reply", {
+        json: {
+          mentionedUsers: params.mentionedUsers,
+          reply: {
+            parentCommentId: params.commentId,
+            text: params.text,
           },
-        })
-        .json();
-    },
-    {
-      onMutate: options?.onMutate,
-      onError: handleOptimisticUpdateError(queryClient),
-    },
-  );
-};
+        },
+      })
+      .json<{ response: Reply }>();
+
+    return data.response;
+  },
+});
+
+export const useCreateReply = ({
+  optimisticUpdates,
+}: { optimisticUpdates?: OptimisticUpdate<CreateReplyParams>[] } = {}) =>
+  useOptimisticMutation({
+    mutation: createReply,
+    optimisticUpdates,
+  });

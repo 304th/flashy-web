@@ -7,7 +7,6 @@ import { Comment } from "@/features/comments/components/comment/comment";
 import { CommentFeedEmpty } from "@/features/comments/components/comments-feed/comment-feed-empty";
 import { useComments } from "@/features/comments/queries/use-comments";
 import { useCommentsCount } from "@/features/comments/queries/use-comments-count";
-import { useLikeCommentMutate } from "@/features/comments/hooks/use-like-comment-mutate";
 
 export interface CommentsFeedProps {
   post: Commentable;
@@ -21,9 +20,8 @@ export const CommentsFeed = ({
   onCommentReply,
 }: CommentsFeedProps) => {
   const listRef = useRef<HTMLDivElement>(null);
-  const [commentCount, commentsCountQuery] = useCommentsCount(post._id);
-  const [comments, commentsQuery] = useComments(post._id);
-  const handleCommentLike = useLikeCommentMutate(post._id);
+  const commentCount = useCommentsCount(post._id);
+  const { data: comments, query } = useComments(post._id);
 
   useEffect(() => {
     if (commentCount) {
@@ -34,7 +32,7 @@ export const CommentsFeed = ({
   return (
     <div className="flex flex-col bg-base-150">
       <Loadable
-        queries={[commentsQuery as any, commentsCountQuery]}
+        queries={[query as any]}
         fallback={
           <div className="flex justify-center w-full p-6">
             <Separator>
@@ -72,7 +70,6 @@ export const CommentsFeed = ({
                         comment={comment}
                         post={post}
                         onReply={() => onCommentReply(comment)}
-                        onLike={handleCommentLike}
                       />
                     </motion.div>
                   ))}

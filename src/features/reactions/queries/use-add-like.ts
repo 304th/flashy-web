@@ -1,6 +1,6 @@
 import { api } from "@/services/api";
-import {createMutation} from "@/lib/mutation";
-import {type OptimisticUpdate, useOptimisticMutation} from "@/lib/query.v3";
+import { createMutation } from "@/lib/mutation";
+import { type OptimisticUpdate, useOptimisticMutation } from "@/lib/query.v3";
 
 export interface AddLikeParams {
   id: string;
@@ -17,12 +17,16 @@ const addLike = createMutation<AddLikeParams>({
         },
       })
       .json();
-  }
-})
+  },
+});
 
-export const useAddLike = ({ optimisticUpdates }: { optimisticUpdates?: OptimisticUpdate<AddLikeParams>[] }) => {
+export const useAddLike = ({
+  optimisticUpdates,
+}: {
+  optimisticUpdates?: OptimisticUpdate<AddLikeParams>[];
+}) => {
   return useOptimisticMutation({
     mutation: addLike,
     optimisticUpdates,
-  })
-}
+  });
+};

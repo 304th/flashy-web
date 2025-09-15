@@ -1,5 +1,5 @@
 import { api } from "@/services/api";
-import {createMutation} from "@/lib/mutation";
+import { createMutation } from "@/lib/mutation";
 import { OptimisticUpdate, useOptimisticMutation } from "@/lib/query.v3";
 
 export interface RemoveReactionParams {
@@ -19,12 +19,16 @@ const removeReaction = createMutation<RemoveReactionParams>({
         },
       })
       .json();
-  }
-})
+  },
+});
 
-export const useRemoveReaction = ({ optimisticUpdates }: { optimisticUpdates?: OptimisticUpdate<RemoveReactionParams>[] }) => {
+export const useRemoveReaction = ({
+  optimisticUpdates,
+}: {
+  optimisticUpdates?: OptimisticUpdate<RemoveReactionParams>[];
+}) => {
   return useOptimisticMutation({
     mutation: removeReaction,
     optimisticUpdates,
   });
-}
+};

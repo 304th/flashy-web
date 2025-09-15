@@ -1,6 +1,9 @@
 import type { LikeButtonButtonRender } from "@/features/reactions/components/like-button/like-button";
-import {type AddLikeParams, useAddLike} from "@/features/reactions/queries/use-add-like";
-import type {OptimisticUpdate} from "@/lib/query.v3";
+import {
+  type AddLikeParams,
+  useAddLike,
+} from "@/features/reactions/queries/use-add-like";
+import type { OptimisticUpdate } from "@/lib/query.v3";
 
 export interface LikeableLikeButtonProps {
   post: Likeable;

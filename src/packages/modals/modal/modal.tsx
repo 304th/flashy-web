@@ -1,5 +1,6 @@
 "use client";
-import { useRef, PropsWithChildren, ReactNode, useLayoutEffect } from "react";
+
+import { useRef, PropsWithChildren, ReactNode, useLayoutEffect, useEffect } from "react";
 import { useOutsideAction } from "@/hooks/use-outside-action";
 
 export interface ModalProps {
@@ -31,17 +32,22 @@ export const Modal = ({
         onClose?.();
       }
     },
-    ...ignoreList.current,
+    ['data-radix-popper-content-wrapper']
   );
 
   useLayoutEffect(() => {
     if (ignoreIds) {
+      let ignoredElements: Element[] = [];
+
       for (const id of ignoreIds) {
         const element = document.getElementById(id);
+
         if (element) {
-          ignoreList.current.push(element);
+          ignoredElements.push(element);
         }
       }
+
+      ignoreList.current = ignoredElements;
     }
   }, [ignoreIds]);
 

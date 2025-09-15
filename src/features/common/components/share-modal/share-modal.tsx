@@ -15,7 +15,7 @@ import {
 import { Modal as ModalComponent } from "@/packages/modals";
 import { CloseButton } from "@/components/ui/close-button";
 import { Button } from "@/components/ui/button";
-import {defaultVariants} from "@/lib/framer";
+import { defaultVariants } from "@/lib/framer";
 
 export interface ShareModalProps {
   post: Shareable;
@@ -41,7 +41,8 @@ export const ShareModal = ({
       <motion.div
         initial="hidden"
         animate="show"
-        className="relative flex flex-col p-6 gap-6 rounded-md !bg-[linear-gradient(180deg,#151515_0%,#151515_0.01%,#1d1d1d80_100%)]"
+        className="relative flex flex-col p-6 gap-6 rounded-md
+          !bg-[linear-gradient(180deg,#151515_0%,#151515_0.01%,#1d1d1d80_100%)]"
       >
         <div className="flex w-full">
           <div className="absolute right-2 top-2" onClick={onClose}>
@@ -51,38 +52,78 @@ export const ShareModal = ({
             <p className="text-2xl font-extrabold text-white">Share</p>
           </div>
         </div>
-        <motion.div className="flex items-center justify-center gap-3" initial="hidden" animate="show" variants={defaultVariants.container}>
-          <motion.div className="p-1 bg-base-400 rounded-md" variants={defaultVariants.child}>
+        <motion.div
+          className="flex items-center justify-center gap-3"
+          initial="hidden"
+          animate="show"
+          variants={defaultVariants.container}
+        >
+          <motion.div
+            className="p-1 bg-base-400 rounded-md"
+            variants={defaultVariants.child}
+          >
             <motion.div whileHover={{ scale: 1.2 }}>
-              <TwitterShareButton title="Flashy Social Post" url={shareableLink} className="flex">
+              <TwitterShareButton
+                title="Flashy Social Post"
+                url={shareableLink}
+                className="flex"
+              >
                 <XIcon borderRadius={8} size={56} />
               </TwitterShareButton>
             </motion.div>
           </motion.div>
-          <motion.div className="p-1 bg-base-400 rounded-md" variants={defaultVariants.child}>
+          <motion.div
+            className="p-1 bg-base-400 rounded-md"
+            variants={defaultVariants.child}
+          >
             <motion.div whileHover={{ scale: 1.2 }}>
-              <TelegramShareButton title="Flashy Social Post" url={shareableLink} className="flex">
+              <TelegramShareButton
+                title="Flashy Social Post"
+                url={shareableLink}
+                className="flex"
+              >
                 <TelegramIcon borderRadius={8} size={56} />
               </TelegramShareButton>
             </motion.div>
           </motion.div>
-          <motion.div className="p-1 bg-base-400 rounded-md" variants={defaultVariants.child}>
+          <motion.div
+            className="p-1 bg-base-400 rounded-md"
+            variants={defaultVariants.child}
+          >
             <motion.div whileHover={{ scale: 1.2 }}>
-              <ThreadsShareButton title="Flashy Social Post" url={shareableLink} className="flex">
+              <ThreadsShareButton
+                title="Flashy Social Post"
+                url={shareableLink}
+                className="flex"
+              >
                 <ThreadsIcon borderRadius={8} size={56} />
               </ThreadsShareButton>
             </motion.div>
           </motion.div>
-          <motion.div className="p-1 bg-base-400 rounded-md" variants={defaultVariants.child}>
+          <motion.div
+            className="p-1 bg-base-400 rounded-md"
+            variants={defaultVariants.child}
+          >
             <motion.div whileHover={{ scale: 1.2 }}>
-              <WhatsappShareButton title="Flashy Social Post" url={shareableLink} className="flex">
+              <WhatsappShareButton
+                title="Flashy Social Post"
+                url={shareableLink}
+                className="flex"
+              >
                 <WhatsappIcon borderRadius={8} size={56} />
               </WhatsappShareButton>
             </motion.div>
           </motion.div>
-          <motion.div className="p-1 bg-base-400 rounded-md" variants={defaultVariants.child}>
+          <motion.div
+            className="p-1 bg-base-400 rounded-md"
+            variants={defaultVariants.child}
+          >
             <motion.div whileHover={{ scale: 1.2 }}>
-              <BlueskyShareButton title="Flashy Social Post" url={shareableLink} className="flex">
+              <BlueskyShareButton
+                title="Flashy Social Post"
+                url={shareableLink}
+                className="flex"
+              >
                 <BlueskyIcon borderRadius={8} size={56} />
               </BlueskyShareButton>
             </motion.div>

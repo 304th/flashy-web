@@ -10,9 +10,7 @@ import { Button } from "@/components/ui/button";
 import { MessageProgress } from "@/features/social/components/post-create/message-progress";
 import { PostLinkPreview } from "@/features/social/components/post-link-preview/post-link-preview";
 import { PostOptions } from "@/features/social/components/post-create/post-options";
-import {
-  useCreateSocialPost,
-} from "@/features/social/queries/use-create-social-post";
+import { useCreateSocialPost } from "@/features/social/queries/use-create-social-post";
 import { useParsedPostLinkPreviews } from "@/features/social/hooks/use-parsed-post-preview-links";
 import { defaultVariants } from "@/lib/framer";
 

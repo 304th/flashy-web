@@ -3,25 +3,21 @@ import { useEffect, RefObject } from "react";
 export const useOutsideAction = (
   ref: RefObject<HTMLElement>,
   handler: any,
-  ...additionalRefs: any[]
+  ignoredAttributes: string[] = [],
 ) => {
   useEffect(() => {
     const clickListener = (event: MouseEvent | TouchEvent) => {
-      const target = event.target as Node;
+      const target = event.target as any;
 
-      if (additionalRefs.length > 0) {
-        const foundHit = [ref, ...additionalRefs].some((ref) => {
-          if (
-            ref &&
-            (ref.current?.contains?.(target as Node) ||
-              ref.contains?.(target as Node))
-          ) {
-            return true;
+      if (ref && !ref.current?.contains?.(target as Node)) {
+        let target = event.target as any;
+
+        while (target) {
+          if (target.getAttribute && ignoredAttributes.some(attr => target.getAttribute(attr) !== null)) {
+            return;
           }
-        });
 
-        if (foundHit) {
-          return;
+          target = target.parentElement;
         }
       } else if (ref && ref.current?.contains?.(target as Node)) {
         return;
@@ -45,5 +41,5 @@ export const useOutsideAction = (
       document.removeEventListener("touchstart", clickListener);
       document.removeEventListener("keydown", keyDownListener);
     };
-  }, [ref, handler, additionalRefs]);
+  }, [ref, handler]);
 };

@@ -26,7 +26,11 @@ export const LikeButton = ({
 }) => {
   if (isReactable(post)) {
     return (
-      <ReactableLikeButton post={post} likeUpdates={likeUpdates} unlikeUpdates={unlikeUpdates}>
+      <ReactableLikeButton
+        post={post}
+        likeUpdates={likeUpdates}
+        unlikeUpdates={unlikeUpdates}
+      >
         {({ isLiked, likesCount, onLike, onUnlike }) => (
           <LikeButtonCore
             isLiked={isLiked}
@@ -40,7 +44,11 @@ export const LikeButton = ({
   }
 
   return (
-    <LikeableLikeButton post={post} likeUpdates={likeUpdates} unlikeUpdates={unlikeUpdates}>
+    <LikeableLikeButton
+      post={post}
+      likeUpdates={likeUpdates}
+      unlikeUpdates={unlikeUpdates}
+    >
       {({ isLiked, likesCount, onLike, onUnlike }) => (
         <LikeButtonCore
           isLiked={isLiked}

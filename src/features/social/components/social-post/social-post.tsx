@@ -10,9 +10,9 @@ import { SocialPostPoll } from "@/features/social/components/social-post/social-
 import { SocialPostImages } from "@/features/social/components/social-post/social-post-images";
 import { RelightButton } from "@/features/social/components/relight-button/relight-button";
 import type { OptimisticUpdate } from "@/lib/query.v3";
-import type {AddReactionParams} from "@/features/reactions/queries/use-add-reaction";
-import type {RemoveReactionParams} from "@/features/reactions/queries/use-remove-reaction";
-import type {RelightSocialPostParams} from "@/features/social/queries/use-relight-social-post";
+import type { AddReactionParams } from "@/features/reactions/queries/use-add-reaction";
+import type { RemoveReactionParams } from "@/features/reactions/queries/use-remove-reaction";
+import type { RelightSocialPostParams } from "@/features/social/queries/use-relight-social-post";
 import { timeAgo } from "@/lib/utils";
 
 export const SocialPost = ({

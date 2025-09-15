@@ -1,30 +1,30 @@
-import { useQueryClient } from "@tanstack/react-query";
-import { getMutation, handleOptimisticUpdateError } from "@/lib/query";
 import { api } from "@/services/api";
+import { createMutation } from "@/lib/mutation";
+import { type OptimisticUpdate, useOptimisticMutation } from "@/lib/query.v3";
 
 export interface DeleteCommentParams {
   id: string;
 }
 
-export const useDeleteComment = (options?: {
-  onMutate?: (variables: DeleteCommentParams) => unknown;
-}) => {
-  const queryClient = useQueryClient();
+const deleteComment = createMutation({
+  writeToSource: async (params: DeleteCommentParams) => {
+    return api
+      .delete("comment", {
+        json: {
+          _id: params.id,
+        },
+      })
+      .json();
+  },
+});
 
-  return getMutation<CommentPost, Error, DeleteCommentParams>(
-    ["deleteComment"],
-    async (params: DeleteCommentParams) => {
-      return api
-        .delete("comment", {
-          json: {
-            _id: params.id,
-          },
-        })
-        .json();
-    },
-    {
-      onMutate: options?.onMutate,
-      onError: handleOptimisticUpdateError(queryClient),
-    },
-  );
+export const useDeleteComment = ({
+  optimisticUpdates,
+}: {
+  optimisticUpdates?: OptimisticUpdate<DeleteCommentParams>[];
+}) => {
+  return useOptimisticMutation({
+    mutation: deleteComment,
+    optimisticUpdates,
+  });
 };

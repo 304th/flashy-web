@@ -1,6 +1,6 @@
 import { api } from "@/services/api";
 import { createMutation } from "@/lib/mutation";
-import { type OptimisticUpdate, useOptimisticMutation} from "@/lib/query.v3";
+import { type OptimisticUpdate, useOptimisticMutation } from "@/lib/query.v3";
 
 export interface AddReactionParams {
   id: string;
@@ -21,12 +21,16 @@ const addReaction = createMutation<AddReactionParams>({
         },
       })
       .json();
-  }
-})
+  },
+});
 
-export const useAddReaction = ({ optimisticUpdates }: { optimisticUpdates?: OptimisticUpdate<AddReactionParams>[] }) => {
+export const useAddReaction = ({
+  optimisticUpdates,
+}: {
+  optimisticUpdates?: OptimisticUpdate<AddReactionParams>[];
+}) => {
   return useOptimisticMutation({
     mutation: addReaction,
     optimisticUpdates,
   });
-}
+};

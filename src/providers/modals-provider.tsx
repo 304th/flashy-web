@@ -24,6 +24,6 @@ export type ModalType = keyof typeof modalsConfig;
 export const ModalsProvider = ({ children }: PropsWithChildren<object>) => (
   <ModalCenterProvider config={modalsConfig}>
     {children}
-    <ModalCenter ignoreIds={[config.misc.notificationCenterId]} />
+    <ModalCenter ignoreIds={[config.misc.notificationCenterId, "123"]} />
   </ModalCenterProvider>
 );

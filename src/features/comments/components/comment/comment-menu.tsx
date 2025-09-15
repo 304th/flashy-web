@@ -10,21 +10,27 @@ import { IconButton } from "@/components/ui/icon-button";
 import { MeatballIcon } from "@/components/ui/icons/meatball";
 import { useModals } from "@/hooks/use-modals";
 import { useCommentOwned } from "@/features/comments/hooks/use-comment-owned";
-import { useDeleteComment } from "@/features/comments/queries/use-delete-comment";
-import { useDeleteCommentMutate } from "@/features/comments/hooks/use-delete-comment-mutate";
+import { type DeleteCommentParams, useDeleteComment } from "@/features/comments/queries/use-delete-comment";
+import { useComments } from "@/features/comments/queries/use-comments";
+import { OptimisticUpdate } from "@/lib/query.v3";
 
 export const CommentMenu = ({
   comment,
   post,
+  deleteCommentUpdates,
 }: {
   comment: CommentPost | Reply;
   post: Commentable;
+  deleteCommentUpdates?: OptimisticUpdate<DeleteCommentParams>[];
 }) => {
   const [open, setOpen] = useState(false);
   const { openModal } = useModals();
-  const deleteCommentsMutate = useDeleteCommentMutate(post._id);
+  const { optimisticUpdates: comments } = useComments(post._id);
   const deleteComment = useDeleteComment({
-    onMutate: deleteCommentsMutate,
+    optimisticUpdates: [
+      async (params) => comments.delete(params.id)
+
+    ],
   });
   const isOwned = useCommentOwned(comment);
 
@@ -53,6 +59,7 @@ export const CommentMenu = ({
                 variant="destructive"
                 onClick={(e) => {
                   e.preventDefault();
+                  setOpen(false);
                   openModal("ConfirmModal", {
                     title: "Delete comment",
                     description:
@@ -63,7 +70,7 @@ export const CommentMenu = ({
                         id: comment._id,
                       });
                     },
-                  });
+                  }, { subModal: true });
                 }}
               >
                 Delete

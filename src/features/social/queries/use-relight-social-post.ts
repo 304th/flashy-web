@@ -1,6 +1,6 @@
 import { api } from "@/services/api";
 import { createMutation } from "@/lib/mutation";
-import {type OptimisticUpdate, useOptimisticMutation} from "@/lib/query.v3";
+import { type OptimisticUpdate, useOptimisticMutation } from "@/lib/query.v3";
 
 export interface RelightSocialPostParams {
   id: string;
@@ -17,12 +17,16 @@ const relightSocialPost = createMutation({
         isRelited: params.isRelighted,
       },
     });
-  }
-})
+  },
+});
 
-export const useRelightSocialPost = ({ optimisticUpdates }: { optimisticUpdates?: OptimisticUpdate<RelightSocialPostParams>[] }) => {
+export const useRelightSocialPost = ({
+  optimisticUpdates,
+}: {
+  optimisticUpdates?: OptimisticUpdate<RelightSocialPostParams>[];
+}) => {
   return useOptimisticMutation({
     mutation: relightSocialPost,
     optimisticUpdates,
-  })
-}
+  });
+};

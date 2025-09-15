@@ -15,7 +15,10 @@ export interface GetSignedUrlForUploadParams {
   fileType: string;
 }
 
-const createSignedUploadUrl = createMutation<GetSignedUrlForUploadParams, { fileName: string; fileType: string; uploadUrl: string }>({
+const createSignedUploadUrl = createMutation<
+  GetSignedUrlForUploadParams,
+  { fileName: string; fileType: string; uploadUrl: string }
+>({
   writeToSource: async (params) => {
     return await api
       .post("generate-signed-upload-params", {
@@ -26,19 +29,24 @@ const createSignedUploadUrl = createMutation<GetSignedUrlForUploadParams, { file
       })
       .json();
   },
-})
+});
 
-const createSocialPostMutation = createMutation<CreateSocialPostParams, SocialPost>({
+const createSocialPostMutation = createMutation<
+  CreateSocialPostParams,
+  SocialPost
+>({
   writeToSource: async (params) => {
     let uploadedImages: string[] = [];
 
     if (params.images.length > 0) {
       uploadedImages = await Promise.all(
         params.images.map(async (image) => {
-          const { uploadUrl, fileType } = await createSignedUploadUrl.writeData({
-            fileName: image.name,
-            fileType: image.type,
-          })
+          const { uploadUrl, fileType } = await createSignedUploadUrl.writeData(
+            {
+              fileName: image.name,
+              fileType: image.type,
+            },
+          );
 
           await ky.put(uploadUrl, {
             body: image,
@@ -66,29 +74,34 @@ const createSocialPostMutation = createMutation<CreateSocialPostParams, SocialPo
         },
       })
       .json<SocialPost>();
-  }
-})
+  },
+});
 
 export const useCreateSocialPost = () => {
-  const { optimisticUpdates: socialFeed } = useSocialPosts()
+  const { optimisticUpdates: socialFeed } = useSocialPosts();
 
   return useOptimisticMutation<CreateSocialPostParams, SocialPost>({
     mutation: createSocialPostMutation,
-    optimisticUpdates: [async (params) => {
-      return await socialFeed.prepend({
-        ...params,
-        images: params.images?.map(image => URL.createObjectURL(image)),
-        poll: {
-          pollVotedId: null,
-          results: params.poll.map((item, index) => ({
-            id: index + 1,
-            text: item,
-            votes: 0,
-          }))
-        },
-      }, {
-        sync: true
-      })
-    }],
-  })
-}
+    optimisticUpdates: [
+      async (params) => {
+        return await socialFeed.prepend(
+          {
+            ...params,
+            images: params.images?.map((image) => URL.createObjectURL(image)),
+            poll: {
+              pollVotedId: null,
+              results: params.poll.map((item, index) => ({
+                id: index + 1,
+                text: item,
+                votes: 0,
+              })),
+            },
+          },
+          {
+            sync: true,
+          },
+        );
+      },
+    ],
+  });
+};

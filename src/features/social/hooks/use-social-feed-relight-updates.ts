@@ -1,10 +1,10 @@
-import type {RelightSocialPostParams} from "@/features/social/queries/use-relight-social-post";
-import {useSocialPosts} from "@/features/social/queries/use-social-posts";
-import {useMe} from "@/features/auth/queries/use-me";
+import type { RelightSocialPostParams } from "@/features/social/queries/use-relight-social-post";
+import { useSocialPosts } from "@/features/social/queries/use-social-posts";
+import { useMe } from "@/features/auth/queries/use-me";
 
 export const useSocialFeedRelightUpdates = () => {
   const [me] = useMe();
-  const { optimisticUpdates: socialFeed } = useSocialPosts()
+  const { optimisticUpdates: socialFeed } = useSocialPosts();
 
   return [
     async (params: RelightSocialPostParams) => {
@@ -17,7 +17,7 @@ export const useSocialFeedRelightUpdates = () => {
         } else if (!params.isRelighted) {
           delete post.relits?.[me!.fbId];
         }
-      })
-    }
-  ]
-}
+      });
+    },
+  ];
+};

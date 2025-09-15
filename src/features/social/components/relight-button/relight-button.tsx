@@ -5,9 +5,9 @@ import {
   type RelightSocialPostParams,
   useRelightSocialPost,
 } from "@/features/social/queries/use-relight-social-post";
-import {useMe} from "@/features/auth/queries/use-me";
+import { useMe } from "@/features/auth/queries/use-me";
 import { useRelightsCount } from "@/features/social/hooks/use-relights-count";
-import type {OptimisticUpdate} from "@/lib/query.v3";
+import type { OptimisticUpdate } from "@/lib/query.v3";
 import relightAnimation from "@/features/social/assets/relight-animation.json";
 
 export const RelightButton = ({
@@ -15,12 +15,14 @@ export const RelightButton = ({
   relightUpdates,
 }: {
   post: Relightable;
-  relightUpdates?: OptimisticUpdate<RelightSocialPostParams>[]
+  relightUpdates?: OptimisticUpdate<RelightSocialPostParams>[];
 }) => {
   const [me] = useMe();
   const isRelighted = useHasRelighted(post);
   const relitsCount = useRelightsCount(post);
-  const relightPost = useRelightSocialPost({ optimisticUpdates: relightUpdates });
+  const relightPost = useRelightSocialPost({
+    optimisticUpdates: relightUpdates,
+  });
 
   return (
     <div

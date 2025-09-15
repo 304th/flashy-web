@@ -14,7 +14,7 @@ const deleteSocialPost = createMutation<DeleteSocialPostParams>({
         post_id: params.id,
       },
     });
-  }
+  },
 });
 
 export const useDeleteSocialPost = () => {
@@ -24,4 +24,4 @@ export const useDeleteSocialPost = () => {
     mutation: deleteSocialPost,
     optimisticUpdates: [async (params) => socialFeed.delete(params.id)],
   });
-}
+};

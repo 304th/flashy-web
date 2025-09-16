@@ -28,6 +28,7 @@ export default function SocialPostPage() {
 const SocialPostByIdPage = () => {
   const id = useQueryParams("id");
   const { data: socialPost, query } = useSocialPostById(id!);
+  const router = useRouter();
 
   if (!id) {
     return <SocialPostNotFound />;
@@ -35,6 +36,12 @@ const SocialPostByIdPage = () => {
 
   return (
     <div className="flex flex-col gap-4 w-full">
+      <div className="flex gap-4 items-center">
+        <IconButton size="lg" onClick={() => router.back()}>
+          <ArrowLeftIcon />
+        </IconButton>
+        <p className="text-white text-xl font-bold">Post</p>
+      </div>
       <Loadable queries={[query]}>
         {() =>
           socialPost ? (
@@ -53,7 +60,6 @@ const SocialPostDetails = ({
 }: {
   socialPost: Optimistic<SocialPost>;
 }) => {
-  const router = useRouter();
   const { openModal } = useModals();
   const [me] = useMe();
   const [replyComment, setReplyComment] = useState<CommentPost | null>(null);
@@ -62,13 +68,6 @@ const SocialPostDetails = ({
 
   return (
     <div className="flex flex-col gap-4 w-full">
-      <div className="flex gap-4 items-center">
-        <IconButton size="lg" onClick={() => router.back()}>
-          <ArrowLeftIcon />
-        </IconButton>
-        <p className="text-white text-xl font-bold">Post</p>
-      </div>
-
       <div className="flex gap-4 items-start w-full">
         <div className="flex flex-col w-full">
           <SocialPost

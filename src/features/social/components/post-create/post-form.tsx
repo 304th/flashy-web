@@ -20,7 +20,7 @@ const formSchema = z.object({
   images: z.array(z.custom<File>()).optional(),
 });
 
-export const PostForm = () => {
+export const PostForm = ({ onSuccess }: { onSuccess: () => void; }) => {
   const optionsMenuRef = useRef<{ reset: () => void } | null>(null);
   const createSocialPost = useCreateSocialPost();
 
@@ -51,6 +51,7 @@ export const PostForm = () => {
           });
           form.reset();
           optionsMenuRef.current?.reset();
+          onSuccess?.();
         })}
         className="flex flex-col w-full gap-2"
       >

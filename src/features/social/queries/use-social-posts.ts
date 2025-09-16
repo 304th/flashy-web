@@ -1,9 +1,6 @@
-import type { QueryClient } from "@tanstack/react-query";
-import { api } from "@/services/api";
-import { handleOptimisticSuccess, handleOptimisticUpdate } from "@/lib/query";
 import { useMe } from "@/features/auth/queries/use-me";
 import { socialFeedCollection } from "@/features/social/collections/social-feed";
-import { usePartitionedQuery } from "@/lib/query.v3";
+import { usePartitionedQuery } from "@/lib/query-toolkit";
 
 export const useSocialPosts = () => {
   const [me] = useMe();
@@ -33,29 +30,3 @@ export const useSocialPosts = () => {
   //   schema:
   // });
 };
-
-export const optimisticUpdateSocialPosts = <T>(
-  queryClient: QueryClient,
-  mutate: (
-    state: Paginated<Optimistic<SocialPost>[]>,
-    variables: T,
-  ) => Paginated<Optimistic<SocialPost>[]>,
-  userId?: string,
-) =>
-  handleOptimisticUpdate<Paginated<Optimistic<SocialPost>[]>, T>(queryClient)({
-    queryKey: ["social", userId],
-    mutate,
-  });
-
-export const syncSocialPostsOnSuccess = (
-  queryClient: QueryClient,
-  update: (
-    state: Paginated<Optimistic<SocialPost>[]>,
-    entity: SocialPost,
-  ) => Paginated<Optimistic<SocialPost>[]>,
-  userId?: string,
-) =>
-  handleOptimisticSuccess<Paginated<SocialPost[]>, SocialPost>(queryClient)({
-    queryKey: ["social", userId],
-    update,
-  });

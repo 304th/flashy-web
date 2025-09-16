@@ -1,9 +1,9 @@
 import { useMemo, useEffect, useState } from "react";
 import { addHours, differenceInMilliseconds } from "date-fns";
-import { useVotePoll } from "@/features/social/queries/use-vote-poll";
+// import { useVotePoll } from "@/features/social/queries/use-vote-poll";
 
 export const SocialPostPoll = ({ socialPost }: { socialPost: SocialPost }) => {
-  const votePoll = useVotePoll();
+  const votePoll = () => {}//useVotePoll();
 
   if (
     !socialPost.poll ||

@@ -1,4 +1,4 @@
-import { getMutation } from "@/lib/query";
+import { getMutation } from "@/lib/query-toolkit";
 import { api } from "@/services/api";
 
 export interface GetSignedUrlForUploadParams {

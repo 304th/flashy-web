@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { handleMutationError } from "@/lib/query";
+import { handleMutationError } from "@/lib/query-toolkit";
 import { signOut } from "@/services/firebase";
 
 export const useLogout = () => {

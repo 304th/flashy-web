@@ -1,22 +1,22 @@
 import { api } from "@/services/api";
-import { getQuery, handleOptimisticUpdate } from "@/lib/query";
-import type { QueryClient } from "@tanstack/react-query";
+import {useLiveEntity} from "@/lib/query-toolkit/use-live-entity";
+import {createEntity} from "@/lib/query-toolkit/entity";
+import {socialPostSchema} from "@/features/social/schemas/social-post.schema";
 
-export const useSocialPostById = (id: string) =>
-  getQuery(
-    ["social", id],
-    async () => {
-      return await api.get(`social-post-item/${id}`).json<SocialPost>();
-    },
-    Boolean(id),
-  );
+const socialPostEntity = createEntity<SocialPost, { id: string }>({
+  sourceFrom: async (params) => {
+    return await api.get(`social-post-item/${params?.id!}`).json<SocialPost>();
+  },
+  schema: socialPostSchema,
+})
 
-export const updateQueryData = <T>(
-  queryClient: QueryClient,
-  mutate: (state: SocialPost, variables: T) => SocialPost,
-  id: string,
-) =>
-  handleOptimisticUpdate<SocialPost, T>(queryClient)({
+export const useSocialPostById = (id: string) => {
+  return useLiveEntity<SocialPost, { id: string }>({
+    entity: socialPostEntity,
     queryKey: ["social", id],
-    mutate,
-  });
+    getParams: () => ({ id }),
+    options: {
+      enabled: Boolean(id),
+    }
+  })
+}

@@ -30,7 +30,7 @@ export default function RootLayout({
   children: ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="overscroll-y-none">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

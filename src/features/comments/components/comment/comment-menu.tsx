@@ -10,9 +10,12 @@ import { IconButton } from "@/components/ui/icon-button";
 import { MeatballIcon } from "@/components/ui/icons/meatball";
 import { useModals } from "@/hooks/use-modals";
 import { useCommentOwned } from "@/features/comments/hooks/use-comment-owned";
-import { type DeleteCommentParams, useDeleteComment } from "@/features/comments/queries/use-delete-comment";
+import {
+  type DeleteCommentParams,
+  useDeleteComment,
+} from "@/features/comments/mutations/use-delete-comment";
 import { useComments } from "@/features/comments/queries/use-comments";
-import { OptimisticUpdate } from "@/lib/query.v3";
+import { OptimisticUpdate } from "@/lib/query-toolkit";
 
 export const CommentMenu = ({
   comment,
@@ -27,10 +30,7 @@ export const CommentMenu = ({
   const { openModal } = useModals();
   const { optimisticUpdates: comments } = useComments(post._id);
   const deleteComment = useDeleteComment({
-    optimisticUpdates: [
-      async (params) => comments.delete(params.id)
-
-    ],
+    optimisticUpdates: [async (params) => comments.delete(params.id)],
   });
   const isOwned = useCommentOwned(comment);
 
@@ -60,17 +60,21 @@ export const CommentMenu = ({
                 onClick={(e) => {
                   e.preventDefault();
                   setOpen(false);
-                  openModal("ConfirmModal", {
-                    title: "Delete comment",
-                    description:
-                      "Are you sure you want to delete this comment?",
-                    destructive: true,
-                    onConfirm: () => {
-                      deleteComment.mutate({
-                        id: comment._id,
-                      });
+                  openModal(
+                    "ConfirmModal",
+                    {
+                      title: "Delete comment",
+                      description:
+                        "Are you sure you want to delete this comment?",
+                      destructive: true,
+                      onConfirm: () => {
+                        deleteComment.mutate({
+                          id: comment._id,
+                        });
+                      },
                     },
-                  }, { subModal: true });
+                    { subModal: true },
+                  );
                 }}
               >
                 Delete

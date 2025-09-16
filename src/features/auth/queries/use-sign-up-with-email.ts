@@ -3,7 +3,7 @@ import {
   getMutation,
   handleAuthSuccess,
   handleMutationError,
-} from "@/lib/query";
+} from "@/lib/query-toolkit";
 import { api } from "@/services/api";
 import { signInWithToken } from "@/services/firebase";
 

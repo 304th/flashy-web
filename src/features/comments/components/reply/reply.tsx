@@ -2,7 +2,7 @@ import { UserProfile } from "@/components/ui/user-profile";
 import { LikeButton } from "@/features/reactions/components/like-button/like-button";
 import { ReplyIcon } from "@/components/ui/icons/reply";
 import { timeAgo } from "@/lib/utils";
-import {useReplies} from "@/features/comments/queries/use-replies";
+import { useReplies } from "@/features/comments/queries/use-replies";
 import type { AddLikeParams } from "@/features/reactions/queries/use-add-like";
 
 export interface ReplyProps {
@@ -45,18 +45,22 @@ export const Reply = ({ reply, comment, className }: ReplyProps) => {
         <div className="flex gap-2">
           <LikeButton
             post={reply}
-            likeUpdates={[async (params: AddLikeParams) => {
-              return replies.update(params.id, (reply) => {
-                reply.likesCount += params.isLiked ? 1 : 0;
-                reply.isLiked = true;
-              })
-            }]}
-            unlikeUpdates={[async (params: AddLikeParams) => {
-              return replies.update(params.id, (reply) => {
-                reply.likesCount += !params.isLiked ? -1 : 0;
-                reply.isLiked = false;
-              })
-            }]}
+            likeUpdates={[
+              async (params: AddLikeParams) => {
+                return replies.update(params.id, (reply) => {
+                  reply.likesCount += params.isLiked ? 1 : 0;
+                  reply.isLiked = true;
+                });
+              },
+            ]}
+            unlikeUpdates={[
+              async (params: AddLikeParams) => {
+                return replies.update(params.id, (reply) => {
+                  reply.likesCount += !params.isLiked ? -1 : 0;
+                  reply.isLiked = false;
+                });
+              },
+            ]}
           />
         </div>
       </div>

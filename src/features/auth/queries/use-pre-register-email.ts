@@ -1,5 +1,5 @@
 import { api } from "@/services/api";
-import { getMutation } from "@/lib/query";
+import { getMutation } from "@/lib/query-toolkit";
 
 export interface PreRegisterEmailParams {
   email: string;

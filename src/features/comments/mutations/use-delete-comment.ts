@@ -1,6 +1,9 @@
 import { api } from "@/services/api";
-import { createMutation } from "@/lib/mutation";
-import { type OptimisticUpdate, useOptimisticMutation } from "@/lib/query.v3";
+import { createMutation } from "@/lib/query-toolkit/mutation";
+import {
+  type OptimisticUpdate,
+  useOptimisticMutation,
+} from "@/lib/query-toolkit";
 
 export interface DeleteCommentParams {
   id: string;

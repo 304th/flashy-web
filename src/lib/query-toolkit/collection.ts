@@ -17,7 +17,7 @@ export class Collection<Entity, Params = undefined> {
   }
 }
 
-export const createCollection = <Entity, Params>({
+export const createCollection = <Entity, Params = undefined>({
   sourceFrom,
   schema,
 }: {

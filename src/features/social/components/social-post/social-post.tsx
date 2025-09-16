@@ -9,10 +9,10 @@ import { SocialPostTags } from "@/features/social/components/social-post/social-
 import { SocialPostPoll } from "@/features/social/components/social-post/social-post-poll";
 import { SocialPostImages } from "@/features/social/components/social-post/social-post-images";
 import { RelightButton } from "@/features/social/components/relight-button/relight-button";
-import type { OptimisticUpdate } from "@/lib/query.v3";
+import type { OptimisticUpdate } from "@/lib/query-toolkit";
 import type { AddReactionParams } from "@/features/reactions/queries/use-add-reaction";
 import type { RemoveReactionParams } from "@/features/reactions/queries/use-remove-reaction";
-import type { RelightSocialPostParams } from "@/features/social/queries/use-relight-social-post";
+import type { RelightSocialPostParams } from "@/features/social/mutations/use-relight-social-post";
 import { timeAgo } from "@/lib/utils";
 
 export const SocialPost = ({
@@ -34,7 +34,7 @@ export const SocialPost = ({
 }) => {
   return (
     <div
-      className={`flex flex-col p-4 gap-3 h-fit w-[600px] transition rounded
+      className={`flex flex-col p-4 gap-3 h-fit w-full transition rounded
         bg-[linear-gradient(180deg,#151515_0%,#151515_0.01%,#19191920_100%)]
         ${className}
         ${socialPost._optimisticStatus === "pending" ? "opacity-50 pointer-events-none" : ""}`}

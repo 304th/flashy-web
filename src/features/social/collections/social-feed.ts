@@ -1,5 +1,5 @@
 import { api } from "@/services/api";
-import { createCollection } from "@/lib/collection";
+import { createCollection } from "@/lib/query-toolkit/collection";
 import { socialPostSchema } from "@/features/social/schemas/social-post.schema";
 
 export const socialFeedCollection = createCollection<

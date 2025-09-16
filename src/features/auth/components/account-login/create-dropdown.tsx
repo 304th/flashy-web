@@ -6,10 +6,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+import { useModals } from "@/hooks/use-modals";
 import { brightenColor } from "@/lib/css";
 
 export const CreateDropdown = () => {
   const [open, setOpen] = useState(false);
+  const { openModal } = useModals()
 
   return (
     <div className="relative" onMouseLeave={() => setOpen(false)}>
@@ -115,6 +117,9 @@ export const CreateDropdown = () => {
                       </defs>
                     </svg>
                   }
+                  onClick={() => {
+                    openModal('SocialCreateModal');
+                  }}
                 />
               </div>
             </div>
@@ -130,10 +135,12 @@ const CreateOption = ({
   label,
   icon,
   color,
+  onClick,
 }: {
   label: string;
   icon: ReactNode;
   color: string;
+  onClick?: () => void;
 }) => {
   const highlightColor = useMemo(() => brightenColor(color, 40), [color]);
 
@@ -142,6 +149,7 @@ const CreateOption = ({
       key={label}
       className="group relative flex flex-col w-full cursor-pointer
         overflow-hidden"
+      onClick={onClick}
     >
       <div
         className="flex items-center justify-between w-full p-3"

@@ -1,5 +1,5 @@
 import { api } from "@/services/api";
-import { getQuery } from "@/lib/query";
+import { getQuery } from "@/lib/query-toolkit";
 
 export const useFeaturedStream = () =>
   getQuery<any>(["streams", "live"], async () => {

@@ -1,4 +1,4 @@
-import { usePartitionedQuery } from "@/lib/query.v3";
+import { usePartitionedQuery } from "@/lib/query-toolkit";
 import { repliesCollection } from "@/features/comments/collections/replies";
 
 export const useReplies = (commentId?: string) => {

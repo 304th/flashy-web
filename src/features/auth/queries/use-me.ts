@@ -1,5 +1,5 @@
 import { api } from "@/services/api";
-import { getQuery } from "@/lib/query";
+import { getQuery } from "@/lib/query-toolkit";
 import { useAuthedUser } from "@/features/auth/hooks/use-authed-user";
 
 export const useMe = () => {

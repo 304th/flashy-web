@@ -5,7 +5,7 @@ import {
   LikeButtonCoreProps,
 } from "@/features/reactions/components/like-button/like-button-core";
 import { LikeableLikeButton } from "@/features/reactions/components/like-button/likeable-like-button";
-import { OptimisticUpdate } from "@/lib/query.v3";
+import { OptimisticUpdate } from "@/lib/query-toolkit";
 
 export const isReactable = (post: any): post is Reactable => {
   return post.reactions;

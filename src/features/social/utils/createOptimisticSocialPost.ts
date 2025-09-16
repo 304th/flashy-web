@@ -1,5 +1,5 @@
 import { nanoid } from "nanoid";
-import { CreateSocialPostParams } from "@/features/social/queries/use-create-social-post";
+import { CreateSocialPostParams } from "@/features/social/mutations/use-create-social-post";
 
 export const createOptimisticSocialPost = (
   params: CreateSocialPostParams,

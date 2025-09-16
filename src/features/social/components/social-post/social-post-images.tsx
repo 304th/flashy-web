@@ -5,7 +5,7 @@ export const SocialPostImages = ({
 }: {
   socialPost: SocialPost;
 }) => {
-  if (socialPost.images?.length === 0) {
+  if (!socialPost.images || socialPost.images?.length === 0) {
     return null;
   }
 

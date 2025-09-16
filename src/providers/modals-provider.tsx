@@ -9,6 +9,7 @@ import { PostCommentsModal } from "@/features/social/components/post-comments-mo
 import { ConfirmModal } from "@/features/common/components/confirm-modal/confirm-modal";
 import { MagicLinkVerificationModal } from "@/features/auth/components/magic-link-verification-modal/magic-link-verification-modal";
 import { ShareModal } from "@/features/common/components/share-modal/share-modal";
+import { SocialCreateModal } from "@/features/social/components/social-create-modal/social-create-modal";
 
 const modalsConfig = {
   LoginModal,
@@ -17,6 +18,7 @@ const modalsConfig = {
   ConfirmModal,
   MagicLinkVerificationModal,
   ShareModal,
+  SocialCreateModal,
 };
 
 export type ModalType = keyof typeof modalsConfig;

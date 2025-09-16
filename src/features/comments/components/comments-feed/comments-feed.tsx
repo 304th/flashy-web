@@ -20,7 +20,7 @@ export const CommentsFeed = ({
   onCommentReply,
 }: CommentsFeedProps) => {
   const listRef = useRef<HTMLDivElement>(null);
-  const commentCount = useCommentsCount(post._id);
+  const [commentCount] = useCommentsCount(post._id);
   const { data: comments, query } = useComments(post._id);
 
   useEffect(() => {

@@ -3,7 +3,7 @@ import {
   type AddLikeParams,
   useAddLike,
 } from "@/features/reactions/queries/use-add-like";
-import type { OptimisticUpdate } from "@/lib/query.v3";
+import type { OptimisticUpdate } from "@/lib/query-toolkit";
 
 export interface LikeableLikeButtonProps {
   post: Likeable;

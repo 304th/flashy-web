@@ -2,6 +2,22 @@ import { useMe } from "@/features/auth/queries/use-me";
 import { useSocialPosts } from "@/features/social/queries/use-social-posts";
 import type { AddReactionParams } from "@/features/reactions/queries/use-add-reaction";
 import type { RemoveReactionParams } from "@/features/reactions/queries/use-remove-reaction";
+import type { WritableDraft } from "immer";
+
+export const addReactionToPost = (author: Author) => (post: WritableDraft<Optimistic<SocialPost>>) => {
+  post.reactions = post.reactions || { like: {} };
+  post.reactions.like = post.reactions.like || {};
+
+  post.reactions.like[author.fbId] = {
+    fbId: author.fbId,
+    username: author.username,
+    userimage: author.userimage,
+  };
+}
+
+export const deleteReactionFromPost = (author: Author) => (post: WritableDraft<Optimistic<SocialPost>>) => {
+  delete post.reactions.like[author.fbId];
+}
 
 export const useSocialFeedUpdatesOnReactionAdd = () => {
   const [me] = useMe();
@@ -9,16 +25,7 @@ export const useSocialFeedUpdatesOnReactionAdd = () => {
 
   return [
     async (params: AddReactionParams) => {
-      return await socialFeed.update(params.id, (post) => {
-        post.reactions = post.reactions || { like: {} };
-        post.reactions.like = post.reactions.like || {};
-
-        post.reactions.like[me!.fbId] = {
-          fbId: me!.fbId,
-          username: me!.username,
-          userimage: me!.userimage,
-        };
-      });
+      return await socialFeed.update(params.id, addReactionToPost(me!));
     },
   ];
 };
@@ -29,9 +36,7 @@ export const useSocialFeedUpdatesOnReactionRemove = () => {
 
   return [
     async (params: RemoveReactionParams) => {
-      return await socialFeed.update(params.id, (post) => {
-        delete post.reactions.like[me!.fbId];
-      });
+      return await socialFeed.update(params.id, deleteReactionFromPost(me!));
     },
   ];
 };

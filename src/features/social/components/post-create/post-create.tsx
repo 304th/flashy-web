@@ -10,7 +10,7 @@ export const PostCreate = () => {
   if (!me) return null;
 
   return (
-    <div className="flex flex-col rounded p-4 bg-base-250 h-fit w-[600px] gap-3">
+    <div className="flex flex-col rounded p-4 bg-base-250 h-fit w-full gap-3">
       <div className="flex items-center w-full">
         <UserProfile user={me} />
       </div>

@@ -4,7 +4,7 @@ import {
   getMutation,
   handleAuthSuccess,
   handleMutationError,
-} from "@/lib/query";
+} from "@/lib/query-toolkit";
 import { signInWithEmail } from "@/services/firebase";
 
 interface LoginWithEmailParams {

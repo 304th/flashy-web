@@ -13,7 +13,10 @@ export const useOutsideAction = (
         let target = event.target as any;
 
         while (target) {
-          if (target.getAttribute && ignoredAttributes.some(attr => target.getAttribute(attr) !== null)) {
+          if (
+            target.getAttribute &&
+            ignoredAttributes.some((attr) => target.getAttribute(attr) !== null)
+          ) {
             return;
           }
 

@@ -9,7 +9,7 @@ import {
   type RemoveReactionParams,
   useRemoveReaction,
 } from "@/features/reactions/queries/use-remove-reaction";
-import type { OptimisticUpdate } from "@/lib/query.v3";
+import type { OptimisticUpdate } from "@/lib/query-toolkit";
 
 export interface ReactableLikeButtonProps {
   post: Reactable;

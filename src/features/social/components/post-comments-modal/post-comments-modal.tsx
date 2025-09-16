@@ -4,7 +4,7 @@ import { CloseButton } from "@/components/ui/close-button";
 import { SocialPost } from "@/features/social/components/social-post/social-post";
 import { CommentSend } from "@/features/comments/components/comment-send/comment-send";
 import { CommentsFeed } from "@/features/comments/components/comments-feed/comments-feed";
-import { useQuerySubset } from "@/lib/query.v3";
+import { useSubsetQuery } from "@/lib/query-toolkit";
 import { useMe } from "@/features/auth/queries/use-me";
 import {
   useSocialFeedUpdatesOnReactionAdd,
@@ -27,12 +27,14 @@ export const PostCommentsModal = ({
   const [me] = useMe();
   const [replyComment, setReplyComment] = useState<CommentPost | null>(null);
   const { optimisticUpdates: socialFeed } = useSocialPosts();
-  const socialPost = useQuerySubset<SocialPost, SocialPost[]>({
+  const [socialPost] = useSubsetQuery<SocialPost, SocialPost[]>({
+    key: postId,
     existingQueryKey: ["social", me?.fbId],
     selectorFn: (socialPosts) =>
       socialPosts.filter((post) => post._id === postId)[0],
     deps: [postId],
   });
+
   const { optimisticUpdates: comments } = useComments(postId);
   const likeUpdates = useSocialFeedUpdatesOnReactionAdd();
   const unlikeUpdates = useSocialFeedUpdatesOnReactionRemove();
@@ -53,7 +55,10 @@ export const PostCommentsModal = ({
       <div
         className="flex flex-col w-full overflow-y-scroll max-h-[70vh] mb-[1px]"
       >
-        <div className="relative flex flex-col gap-4 w-full bg-base-200 border-b z-1">
+        <div
+          className="relative flex flex-col gap-4 w-full bg-base-200 border-b
+            z-1"
+        >
           <SocialPost
             socialPost={socialPost}
             likeUpdates={likeUpdates}
@@ -91,7 +96,7 @@ export const PostCommentsModal = ({
 const Modal = (props: any) => (
   <ModalComponent
     {...props}
-    className={`sm:min-w-unset min-w-[450px] overflow-hidden !bg-base-200
+    className={`sm:min-w-unset min-w-[600px] overflow-hidden !bg-base-200
       !rounded-md sm:w-full ${props.className}`}
   />
 );

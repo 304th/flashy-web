@@ -1,7 +1,7 @@
 import ky from "ky";
 import { api } from "@/services/api";
-import { useOptimisticMutation } from "@/lib/query.v3";
-import { createMutation } from "@/lib/mutation";
+import { useOptimisticMutation } from "@/lib/query-toolkit";
+import { createMutation } from "@/lib/query-toolkit/mutation";
 import { useSocialPosts } from "@/features/social/queries/use-social-posts";
 
 export interface CreateSocialPostParams {

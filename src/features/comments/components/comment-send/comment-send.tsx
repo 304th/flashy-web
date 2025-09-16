@@ -13,12 +13,12 @@ import { MessageProgress } from "@/features/social/components/post-create/messag
 import {
   type CreateCommentParams,
   useCreateComment,
-} from "@/features/comments/queries/use-create-comment";
+} from "@/features/comments/mutations/use-create-comment";
 import {
   type CreateReplyParams,
   useCreateReply,
-} from "@/features/comments/queries/use-create-reply";
-import type { OptimisticUpdate } from "@/lib/query.v3";
+} from "@/features/comments/mutations/use-create-reply";
+import type { OptimisticUpdate } from "@/lib/query-toolkit";
 import { defaultVariants } from "@/lib/framer";
 import { useReplies } from "@/features/comments/queries/use-replies";
 import { useComments } from "@/features/comments/queries/use-comments";

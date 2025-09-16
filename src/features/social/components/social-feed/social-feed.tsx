@@ -7,7 +7,6 @@ import { useSocialPosts } from "@/features/social/queries/use-social-posts";
 import { Loadable } from "@/components/ui/loadable";
 import { NotFound } from "@/components/ui/not-found";
 import { useModals } from "@/hooks/use-modals";
-import { useMe } from "@/features/auth/queries/use-me";
 import {
   useSocialFeedUpdatesOnReactionAdd,
   useSocialFeedUpdatesOnReactionRemove,
@@ -15,8 +14,7 @@ import {
 import { useSocialFeedRelightUpdates } from "@/features/social/hooks/use-social-feed-relight-updates";
 
 export const SocialFeed = () => {
-  const [me] = useMe();
-  const { data, query, optimisticUpdates: socialFeed } = useSocialPosts();
+  const { data, query } = useSocialPosts();
   const { openModal } = useModals();
   const likeUpdates = useSocialFeedUpdatesOnReactionAdd();
   const unlikeUpdates = useSocialFeedUpdatesOnReactionRemove();

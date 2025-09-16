@@ -1,4 +1,4 @@
-import { getQuery } from "@/lib/query";
+import { getQuery } from "@/lib/query-toolkit";
 import { api } from "@/services/api";
 
 export const useSocialPostLinks = (id: string) =>

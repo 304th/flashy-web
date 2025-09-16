@@ -4,10 +4,10 @@ import { useHasRelighted } from "@/features/social/hooks/use-has-relighted";
 import {
   type RelightSocialPostParams,
   useRelightSocialPost,
-} from "@/features/social/queries/use-relight-social-post";
+} from "@/features/social/mutations/use-relight-social-post";
 import { useMe } from "@/features/auth/queries/use-me";
 import { useRelightsCount } from "@/features/social/hooks/use-relights-count";
-import type { OptimisticUpdate } from "@/lib/query.v3";
+import type { OptimisticUpdate } from "@/lib/query-toolkit";
 import relightAnimation from "@/features/social/assets/relight-animation.json";
 
 export const RelightButton = ({

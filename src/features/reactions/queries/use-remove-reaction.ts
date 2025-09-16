@@ -1,6 +1,6 @@
 import { api } from "@/services/api";
-import { createMutation } from "@/lib/mutation";
-import { OptimisticUpdate, useOptimisticMutation } from "@/lib/query.v3";
+import { createMutation } from "@/lib/query-toolkit/mutation";
+import { OptimisticUpdate, useOptimisticMutation } from "@/lib/query-toolkit";
 
 export interface RemoveReactionParams {
   id: string;

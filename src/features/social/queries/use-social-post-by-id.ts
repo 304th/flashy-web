@@ -1,14 +1,23 @@
 import { api } from "@/services/api";
-import {useLiveEntity} from "@/lib/query-toolkit/use-live-entity";
-import {createEntity} from "@/lib/query-toolkit/entity";
-import {socialPostSchema} from "@/features/social/schemas/social-post.schema";
+import { useLiveEntity } from "@/lib/query-toolkit/use-live-entity";
+import { createEntity } from "@/lib/query-toolkit/entity";
+import { decodePollResults } from "@/features/social/utils/poll";
 
 const socialPostEntity = createEntity<SocialPost, { id: string }>({
   sourceFrom: async (params) => {
-    return await api.get(`social-post-item/${params?.id!}`).json<SocialPost>();
+    const socialPost = await api
+      .get(`social-post-item/${params?.id!}`)
+      .json<SocialPost>();
+
+    return {
+      ...socialPost,
+      poll: {
+        ...socialPost.poll,
+        results: decodePollResults(socialPost.poll),
+      },
+    };
   },
-  schema: socialPostSchema,
-})
+});
 
 export const useSocialPostById = (id: string) => {
   return useLiveEntity<SocialPost, { id: string }>({
@@ -17,6 +26,6 @@ export const useSocialPostById = (id: string) => {
     getParams: () => ({ id }),
     options: {
       enabled: Boolean(id),
-    }
-  })
-}
+    },
+  });
+};

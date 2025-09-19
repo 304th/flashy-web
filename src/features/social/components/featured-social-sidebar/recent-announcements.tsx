@@ -4,11 +4,13 @@ import { useRecentAnnouncements } from "@/features/social/queries/use-recent-ann
 export const RecentAnnouncements = () => {
   const [recentAnnouncements] = useRecentAnnouncements();
 
-  return <AnimatePresence initial={false}>
-    {
-      recentAnnouncements && recentAnnouncements.length > 0 && <motion.div className="flex flex-col p-4 gap-3 h-fit w-full transition rounded">
-
-      </motion.div>
-    }
-  </AnimatePresence>
-}
+  return (
+    <AnimatePresence initial={false}>
+      {recentAnnouncements && recentAnnouncements.length > 0 && (
+        <motion.div
+          className="flex flex-col p-4 gap-3 h-fit w-full transition rounded"
+        ></motion.div>
+      )}
+    </AnimatePresence>
+  );
+};

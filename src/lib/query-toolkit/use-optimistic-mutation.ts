@@ -1,7 +1,10 @@
 import type { Mutation } from "@/lib/query-toolkit/mutation";
-import type { OptimisticUpdate } from "@/lib/query-toolkit/optimistic-mutations/optimistic-mutations";
+import {
+  EntityOptimisticMutations,
+  OptimisticUpdate,
+} from "@/lib/query-toolkit/optimistic-mutations/optimistic-mutations";
 import { useMutation } from "@tanstack/react-query";
-import { OptimisticMutations } from "@/lib/query-toolkit/optimistic-mutations/optimistic-mutations";
+import type { CollectionOptimisticMutations } from "@/lib/query-toolkit/optimistic-mutations/optimistic-mutations";
 import { handleMutationError } from "@/lib/query-toolkit";
 
 export const useOptimisticMutation = <Params, Response>({
@@ -21,13 +24,21 @@ export const useOptimisticMutation = <Params, Response>({
     Response,
     Error,
     Params,
-    { transactions: OptimisticMutations<unknown, unknown>[] }
+    {
+      transactions: Awaited<
+        | CollectionOptimisticMutations<unknown, unknown>
+        | EntityOptimisticMutations<any>
+      >[];
+    }
   >({
     mutationFn: async (params: Params) => {
       return await mutation.writeData(params);
     },
     onMutate: async (params) => {
-      let transactions: OptimisticMutations<unknown, unknown>[] = [];
+      let transactions: Awaited<
+        | CollectionOptimisticMutations<unknown, unknown>
+        | EntityOptimisticMutations<any>
+      >[] = [];
 
       try {
         if (optimisticUpdates) {

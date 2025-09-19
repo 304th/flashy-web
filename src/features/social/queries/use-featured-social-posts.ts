@@ -1,4 +1,7 @@
-import {FeaturedPosts, featuredSocialPostsCollection} from "@/features/social/collections/featured-social-posts";
+import {
+  FeaturedPosts,
+  featuredSocialPostsCollection,
+} from "@/features/social/collections/featured-social-posts";
 import { useLiveEntity } from "@/lib/query-toolkit/use-live-entity";
 
 export const useFeaturedSocialPosts = () => {

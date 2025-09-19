@@ -1,9 +1,9 @@
 import { Draft, produce } from "immer";
 import type { Collection } from "@/lib/query-toolkit/collection";
-import type { Entity } from "@/lib/query-toolkit/entity";
 
-export interface OptimisticUpdaterOptions {
+export interface OptimisticUpdaterOptions<Entity> {
   sync?: boolean;
+  syncFn?: (state: Entity) => Optimistic<Entity>;
   rollback?: boolean;
 }
 
@@ -17,6 +17,9 @@ export interface OptimisticUpdater<Entity, State> {
   ): State;
   delete(id: string, state: State): State;
   replace: (id: string, item: Optimistic<Entity>, state: State) => State;
+  replaceAt: (index: number, item: Optimistic<Entity>, state: State) => State;
+  replaceLast: (item: Optimistic<Entity>, state: State) => State;
+  move: (id: string, position: number, state: State) => State;
 }
 
 export class PartitionedOptimisticUpdater<Entity>
@@ -29,11 +32,13 @@ export class PartitionedOptimisticUpdater<Entity>
       draft.pages[0].unshift(item as Draft<Entity>);
     });
   }
+
   append(item: Entity, state: Paginated<Entity[]>): Paginated<Entity[]> {
     return produce(state, (draft) => {
       draft.pages[0].push(item as Draft<Entity>);
     });
   }
+
   update(
     id: string,
     updateFn: (state: Draft<Optimistic<Entity>>) => void,
@@ -52,41 +57,141 @@ export class PartitionedOptimisticUpdater<Entity>
       });
     });
   }
+
   delete(
     id: string,
     state: Paginated<Optimistic<Entity>[]>,
   ): Paginated<Optimistic<Entity>[]> {
     return produce(state, (draft) => {
-      draft.pages.forEach((page, index) => {
-        //FIXME: SEEMS LIKE ITS NOT WORKING CORRECTLY!!! foundIndex is not USED!!!!
-        page.findIndex(
+      draft.pages.forEach((page) => {
+        const foundIndex = page.findIndex(
           (post) =>
             this.collection.getEntityId(post as Optimistic<Entity>) === id,
         );
 
-        if (index !== -1) {
-          page.splice(index, 1);
+        if (foundIndex !== -1) {
+          page.splice(foundIndex, 1);
         }
       });
     });
   }
+
   replace(
     id: string,
     item: Optimistic<Entity>,
     state: Paginated<Entity[]>,
   ): Paginated<Entity[]> {
     return produce(state, (draft) => {
-      draft.pages.forEach((page, index) => {
-        //FIXME: SEEMS LIKE ITS NOT WORKING CORRECTLY!!! foundIndex is not USED!!!!
-        page.findIndex(
+      draft.pages.forEach((page) => {
+        const foundIndex = page.findIndex(
           (post) =>
             this.collection.getEntityId(post as Optimistic<Entity>) === id,
         );
 
-        if (index !== -1) {
-          page[index] = item as Draft<Optimistic<Entity>>;
+        if (foundIndex !== -1) {
+          page[foundIndex] = item as Draft<Optimistic<Entity>>;
         }
       });
+    });
+  }
+
+  replaceAt(
+    index: number,
+    item: Optimistic<Entity>,
+    state: Paginated<Entity[]>,
+  ): Paginated<Entity[]> {
+    return produce(state, (draft) => {
+      let currentIndex = 0;
+
+      for (const page of draft.pages) {
+        if (currentIndex + page.length > index) {
+          const pageIndex = index - currentIndex;
+          page[pageIndex] = item as Draft<Optimistic<Entity>>;
+          break;
+        }
+        currentIndex += page.length;
+      }
+    });
+  }
+
+  replaceLast(
+    item: Optimistic<Entity>,
+    state: Paginated<Entity[]>,
+  ): Paginated<Entity[]> {
+    return produce(state, (draft) => {
+      let currentPageIndex = draft.pages.length - 1;
+      while (
+        currentPageIndex >= 0 &&
+        draft.pages[currentPageIndex].length === 0
+      ) {
+        currentPageIndex--;
+      }
+
+      if (currentPageIndex >= 0 && draft.pages[currentPageIndex].length > 0) {
+        draft.pages[currentPageIndex][
+          draft.pages[currentPageIndex].length - 1
+        ] = item as Draft<Optimistic<Entity>>;
+      } else {
+        draft.pages.push([item as Draft<Optimistic<Entity>>]);
+      }
+    });
+  }
+
+  move(
+    id: string,
+    position: number,
+    state: Paginated<Entity[]>,
+  ): Paginated<Entity[]> {
+    return produce(state, (draft) => {
+      let targetItem: Optimistic<Entity> | undefined;
+      let sourcePageIndex = -1;
+      let sourceItemIndex = -1;
+
+      // Find the item and its current position
+      draft.pages.forEach((page, pageIndex) => {
+        const itemIndex = page.findIndex(
+          (post) =>
+            this.collection.getEntityId(post as Optimistic<Entity>) === id,
+        );
+        if (itemIndex !== -1) {
+          sourcePageIndex = pageIndex;
+          sourceItemIndex = itemIndex;
+          targetItem = page[itemIndex] as any;
+        }
+      });
+
+      if (!targetItem || sourcePageIndex === -1 || sourceItemIndex === -1) {
+        return;
+      }
+
+      draft.pages[sourcePageIndex].splice(sourceItemIndex, 1);
+
+      let itemsBefore = 0;
+      let targetPageIndex = 0;
+      let targetItemIndex = position;
+
+      for (let i = 0; i < draft.pages.length; i++) {
+        if (itemsBefore + draft.pages[i].length > position) {
+          targetPageIndex = i;
+          targetItemIndex = position - itemsBefore;
+          break;
+        }
+        itemsBefore += draft.pages[i].length;
+      }
+
+      if (targetPageIndex >= draft.pages.length) {
+        draft.pages.push([]);
+        targetPageIndex = draft.pages.length - 1;
+        targetItemIndex = 0;
+      }
+
+      draft.pages[targetPageIndex].splice(
+        targetItemIndex,
+        0,
+        targetItem as Draft<Optimistic<Entity>>,
+      );
+
+      draft.pages = draft.pages.filter((page) => page.length > 0);
     });
   }
 }
@@ -144,6 +249,45 @@ export class LiveOptimisticUpdater<Entity>
       if (foundIndex !== -1) {
         draft[foundIndex] = item as Draft<Optimistic<Entity>>;
       }
+    });
+  }
+
+  replaceAt(
+    index: number,
+    item: Optimistic<Entity>,
+    state: Entity[],
+  ): Entity[] {
+    return produce(state, (draft) => {
+      draft[index] = item as Draft<Optimistic<Entity>>;
+    });
+  }
+
+  replaceLast(item: Optimistic<Entity>, state: Entity[]): Entity[] {
+    return produce(state, (draft) => {
+      if (draft.length > 0) {
+        draft[draft.length - 1] = item as Draft<Optimistic<Entity>>;
+      } else {
+        draft.push(item as Draft<Optimistic<Entity>>);
+      }
+    });
+  }
+
+  move(id: string, position: number, state: Entity[]): Entity[] {
+    return produce(state, (draft) => {
+      const sourceIndex = draft.findIndex(
+        (post) =>
+          this.collection.getEntityId(post as Optimistic<Entity>) === id,
+      );
+
+      if (sourceIndex === -1) {
+        return;
+      }
+
+      const [targetItem] = draft.splice(sourceIndex, 1);
+
+      const targetIndex = Math.max(0, Math.min(position, draft.length));
+
+      draft.splice(targetIndex, 0, targetItem as Draft<Optimistic<Entity>>);
     });
   }
 }

@@ -4,7 +4,7 @@ import { UserProfile } from "@/components/ui/user-profile";
 import { PostForm } from "@/features/social/components/post-create/post-form";
 import { useMe } from "@/features/auth/queries/use-me";
 
-export const PostCreate = ({ onSuccess }: { onSuccess: () => void }) => {
+export const PostCreate = ({ onSuccess }: { onSuccess?: () => void }) => {
   const [me] = useMe();
 
   if (!me) {

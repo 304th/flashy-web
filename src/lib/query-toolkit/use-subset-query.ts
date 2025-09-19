@@ -1,6 +1,9 @@
 import { useQueryClient, useQuery } from "@tanstack/react-query";
 
-const isPaginatedList = <QueryData>(data: QueryData | PaginatedList<QueryData>): data is PaginatedList<QueryData> => typeof data === 'object' && data !== null && 'pages' in data;
+const isPaginatedList = <QueryData>(
+  data: QueryData | PaginatedList<QueryData>,
+): data is PaginatedList<QueryData> =>
+  typeof data === "object" && data !== null && "pages" in data;
 
 export const useSubsetQuery = <SubsetData, QueryData>({
   key,
@@ -18,9 +21,9 @@ export const useSubsetQuery = <SubsetData, QueryData>({
   const query = useQuery<SubsetData>({
     queryKey: [...existingQueryKey, "subset", key, ...deps],
     queryFn: () => {
-      const data = queryClient.getQueryData<QueryData | PaginatedList<QueryData>>(
-        existingQueryKey
-      );
+      const data = queryClient.getQueryData<
+        QueryData | PaginatedList<QueryData>
+      >(existingQueryKey);
 
       if (!data) {
         throw new Error("No data found for the provided query key");

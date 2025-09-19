@@ -1,3 +1,35 @@
+import { api } from "@/services/api";
+import {
+  createMutation,
+  OptimisticUpdate,
+  useOptimisticMutation,
+} from "@/lib/query-toolkit";
+
+export interface VotePollParams {
+  postId: string;
+  choiceId: number;
+}
+
+const votePollMutation = createMutation<VotePollParams>({
+  writeToSource: async (params) => {
+    return api.post("social-posts/vote", {
+      json: {
+        postId: params.postId,
+        choiceId: params.choiceId,
+      },
+    });
+  },
+});
+
+export const useVotePoll = ({
+  optimisticUpdates,
+}: { optimisticUpdates?: OptimisticUpdate<VotePollParams>[] } = {}) => {
+  return useOptimisticMutation<VotePollParams, unknown>({
+    mutation: votePollMutation,
+    optimisticUpdates,
+  });
+};
+
 // import { produce } from "immer";
 // import { useQueryClient } from "@tanstack/react-query";
 // import { api } from "@/services/api";

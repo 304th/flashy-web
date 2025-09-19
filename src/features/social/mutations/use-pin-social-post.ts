@@ -1,3 +1,34 @@
+import {
+  createMutation,
+  OptimisticUpdate,
+  useOptimisticMutation,
+} from "@/lib/query-toolkit";
+import { api } from "@/services/api";
+
+export interface PinSocialPostParams {
+  id: string;
+  pinned: boolean;
+}
+
+const pinSocialPost = createMutation({
+  writeToSource: async (params: PinSocialPostParams) => {
+    return api.post(`social-posts/${params.id}/pinned`, {
+      json: {
+        pinned: params.pinned,
+      },
+    });
+  },
+});
+
+export const usePinSocialPost = ({
+  optimisticUpdates,
+}: { optimisticUpdates?: OptimisticUpdate<PinSocialPostParams>[] } = {}) => {
+  return useOptimisticMutation({
+    mutation: pinSocialPost,
+    optimisticUpdates,
+  });
+};
+
 // import { produce } from "immer";
 // import { useQueryClient } from "@tanstack/react-query";
 // import { getMutation, handleOptimisticUpdateError } from "@/lib/query-toolkit";

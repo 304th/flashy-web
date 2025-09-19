@@ -9,29 +9,24 @@ import { SocialPostTags } from "@/features/social/components/social-post/social-
 import { SocialPostPoll } from "@/features/social/components/social-post/social-post-poll";
 import { SocialPostImages } from "@/features/social/components/social-post/social-post-images";
 import { RelightButton } from "@/features/social/components/relight-button/relight-button";
-import type { OptimisticUpdate } from "@/lib/query-toolkit";
-import type { AddReactionParams } from "@/features/reactions/queries/use-add-reaction";
-import type { RemoveReactionParams } from "@/features/reactions/queries/use-remove-reaction";
-import type { RelightSocialPostParams } from "@/features/social/mutations/use-relight-social-post";
 import { timeAgo } from "@/lib/utils";
+import { useSocialPostContext } from "@/features/social/components/social-post/social-post-context";
 
 export const SocialPost = ({
   socialPost,
   className,
-  likeUpdates,
-  unlikeUpdates,
-  relightUpdates,
-  onCommentsOpen,
-  onShareOpen,
 }: {
   socialPost: Optimistic<SocialPost>;
   className?: string;
-  likeUpdates?: OptimisticUpdate<AddReactionParams>[];
-  unlikeUpdates?: OptimisticUpdate<RemoveReactionParams>[];
-  relightUpdates?: OptimisticUpdate<RelightSocialPostParams>[];
-  onCommentsOpen?: () => void;
-  onShareOpen?: () => void;
 }) => {
+  const {
+    likeUpdates,
+    unlikeUpdates,
+    relightUpdates,
+    onCommentsOpen,
+    onShareOpen,
+  } = useSocialPostContext();
+
   return (
     <div
       className={`flex flex-col p-4 gap-3 h-fit w-full transition rounded
@@ -61,7 +56,7 @@ export const SocialPost = ({
           {onCommentsOpen && (
             <CommentButton
               commentsCount={socialPost.commentsCount}
-              onComment={onCommentsOpen}
+              onComment={() => onCommentsOpen(socialPost._id)}
             />
           )}
           <LikeButton
@@ -76,7 +71,7 @@ export const SocialPost = ({
             <IconButton
               onClick={(e) => {
                 e.preventDefault();
-                onShareOpen();
+                onShareOpen(socialPost);
               }}
             >
               <ShareIcon />

@@ -2,7 +2,7 @@
 
 import React, { useContext, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
-import {AnimatePresence, motion, useAnimation} from "framer-motion";
+import { AnimatePresence, motion, useAnimation } from "framer-motion";
 import {
   ModalValueContext,
   ModalDispatchContext,
@@ -36,17 +36,17 @@ export const ModalCenter = ({ ignoreIds = [] }: ModalCenterProps) => {
     dispatch({ type: null });
   }, [dispatch, pathname]);
 
-  return <AnimatePresence initial={false}>
-    {
-      modalComponents.length > 0 && (
+  return (
+    <AnimatePresence initial={false}>
+      {modalComponents.length > 0 && (
         <motion.div
           ref={ref}
           initial={overlayAnimation.initial}
           animate={overlayAnimation.animate}
           exit={overlayAnimation.exit}
           transition={overlayAnimation.transition}
-          className="fixed bottom-0 left-0 right-0 top-0 z-[49] backdrop-saturate-50
-        bg-[#17171760] sm:w-full"
+          className="fixed bottom-0 left-0 right-0 top-0 z-[49]
+            backdrop-saturate-50 bg-[#17171760] sm:w-full"
         >
           {modalComponents.map((modal, index, allModals) => (
             <motion.div
@@ -67,9 +67,9 @@ export const ModalCenter = ({ ignoreIds = [] }: ModalCenterProps) => {
             </motion.div>
           ))}
         </motion.div>
-      )
-    }
-  </AnimatePresence>
+      )}
+    </AnimatePresence>
+  );
   //
   // return modalComponents.length > 0 ? (
   //   <motion.div

@@ -1,4 +1,10 @@
-import { type QueryClient, type MutationFunction, type UseMutationOptions, useQuery, useMutation } from "@tanstack/react-query";
+import {
+  type QueryClient,
+  type MutationFunction,
+  type UseMutationOptions,
+  useQuery,
+  useMutation,
+} from "@tanstack/react-query";
 import { toast } from "sonner";
 
 export const getQuery = <T>(

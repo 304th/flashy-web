@@ -1,4 +1,3 @@
-
 import { api } from "@/services/api";
 import { createEntity } from "@/lib/query-toolkit/entity";
 
@@ -11,8 +10,6 @@ export interface FeaturedPosts {
 
 export const featuredSocialPostsCollection = createEntity<FeaturedPosts>({
   async sourceFrom() {
-    return api
-      .get("anonymous/social-featured-posts")
-      .json<FeaturedPosts>();
+    return api.get("anonymous/social-featured-posts").json<FeaturedPosts>();
   },
 });

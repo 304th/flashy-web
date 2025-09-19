@@ -11,7 +11,7 @@ import { brightenColor } from "@/lib/css";
 
 export const CreateDropdown = () => {
   const [open, setOpen] = useState(false);
-  const { openModal } = useModals()
+  const { openModal } = useModals();
 
   return (
     <div className="relative" onMouseLeave={() => setOpen(false)}>
@@ -118,7 +118,7 @@ export const CreateDropdown = () => {
                     </svg>
                   }
                   onClick={() => {
-                    openModal('SocialCreateModal');
+                    openModal("SocialCreateModal");
                   }}
                 />
               </div>

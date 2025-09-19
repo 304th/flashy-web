@@ -11,15 +11,17 @@ import { MeatballIcon } from "@/components/ui/icons/meatball";
 import { Separator } from "@/components/ui/separator";
 import { useModals } from "@/hooks/use-modals";
 import { useDeleteSocialPost } from "@/features/social/mutations/use-delete-social-post";
-// import { usePinSocialPost } from "@/features/social/queries/use-pin-social-post";
+import { usePinSocialPost } from "@/features/social/mutations/use-pin-social-post";
 import { useSocialPostOwned } from "@/features/social/hooks/use-social-post-owned";
 import { useIsSuperAdmin } from "@/features/auth/hooks/use-is-super-admin";
+import { useSocialPostContext } from "@/features/social/components/social-post/social-post-context";
 
 export const SocialPostMenu = ({ socialPost }: { socialPost: SocialPost }) => {
   const [open, setOpen] = useState(false);
   const { openModal } = useModals();
+  const { pinUpdates } = useSocialPostContext();
   const deleteSocialPost = useDeleteSocialPost();
-  const pinPost = () => {}//usePinSocialPost();
+  const pinPost = usePinSocialPost({ optimisticUpdates: pinUpdates });
   const isSuperAdmin = useIsSuperAdmin();
   const isOwned = useSocialPostOwned(socialPost);
 

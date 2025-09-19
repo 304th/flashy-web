@@ -4,20 +4,22 @@ import type { AddReactionParams } from "@/features/reactions/queries/use-add-rea
 import type { RemoveReactionParams } from "@/features/reactions/queries/use-remove-reaction";
 import type { WritableDraft } from "immer";
 
-export const addReactionToPost = (author: Author) => (post: WritableDraft<Optimistic<SocialPost>>) => {
-  post.reactions = post.reactions || { like: {} };
-  post.reactions.like = post.reactions.like || {};
+export const addReactionToPost =
+  (author: Author) => (post: WritableDraft<Optimistic<SocialPost>>) => {
+    post.reactions = post.reactions || { like: {} };
+    post.reactions.like = post.reactions.like || {};
 
-  post.reactions.like[author.fbId] = {
-    fbId: author.fbId,
-    username: author.username,
-    userimage: author.userimage,
+    post.reactions.like[author.fbId] = {
+      fbId: author.fbId,
+      username: author.username,
+      userimage: author.userimage,
+    };
   };
-}
 
-export const deleteReactionFromPost = (author: Author) => (post: WritableDraft<Optimistic<SocialPost>>) => {
-  delete post.reactions.like[author.fbId];
-}
+export const deleteReactionFromPost =
+  (author: Author) => (post: WritableDraft<Optimistic<SocialPost>>) => {
+    delete post.reactions.like[author.fbId];
+  };
 
 export const useSocialFeedUpdatesOnReactionAdd = () => {
   const [me] = useMe();

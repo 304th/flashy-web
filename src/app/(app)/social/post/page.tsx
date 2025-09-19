@@ -13,9 +13,12 @@ import { useQueryParams } from "@/hooks/use-query-params";
 import { useModals } from "@/hooks/use-modals";
 import { useMe } from "@/features/auth/queries/use-me";
 import { useSocialPostById } from "@/features/social/queries/use-social-post-by-id";
-import { addReactionToPost, deleteReactionFromPost } from "@/features/social/hooks/use-social-feed-reaction-updates";
+import {
+  addReactionToPost,
+  deleteReactionFromPost,
+} from "@/features/social/hooks/use-social-feed-reaction-updates";
 import { relightSocialPost } from "@/features/social/hooks/use-social-feed-relight-updates";
-import {useComments} from "@/features/comments/queries/use-comments";
+import { useComments } from "@/features/comments/queries/use-comments";
 
 export default function SocialPostPage() {
   return (
@@ -64,7 +67,7 @@ const SocialPostDetails = ({
   const [me] = useMe();
   const [replyComment, setReplyComment] = useState<CommentPost | null>(null);
   const { optimisticUpdates } = useSocialPostById(socialPost._id);
-  const { optimisticUpdates: comments } = useComments(socialPost._id)
+  const { optimisticUpdates: comments } = useComments(socialPost._id);
 
   return (
     <div className="flex flex-col gap-4 w-full">
@@ -73,9 +76,16 @@ const SocialPostDetails = ({
           <SocialPost
             socialPost={socialPost}
             className="!bg-[linear-gradient(180deg,#191919_0%,#191919_0.01%,#151515_100%)]"
-            likeUpdates={[() => optimisticUpdates.update(addReactionToPost(me!))]}
-            unlikeUpdates={[() => optimisticUpdates.update(deleteReactionFromPost(me!))]}
-            relightUpdates={[(params) => optimisticUpdates.update(relightSocialPost(me!, params))]}
+            likeUpdates={[
+              () => optimisticUpdates.update(addReactionToPost(me!)),
+            ]}
+            unlikeUpdates={[
+              () => optimisticUpdates.update(deleteReactionFromPost(me!)),
+            ]}
+            relightUpdates={[
+              (params) =>
+                optimisticUpdates.update(relightSocialPost(me!, params)),
+            ]}
             onShareOpen={() =>
               openModal("ShareModal", {
                 post: socialPost,

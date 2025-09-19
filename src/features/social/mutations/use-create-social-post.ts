@@ -66,11 +66,13 @@ const createSocialPostMutation = createMutation<
         json: {
           description: params.description,
           images: uploadedImages,
-          poll: params.poll.map((item: any, index: number) => ({
-            id: index + 1,
-            text: item,
-            votes: [],
-          })),
+          poll: JSON.stringify(
+            params.poll.map((item: any, index: number) => ({
+              id: index + 1,
+              text: item,
+              votes: [],
+            })),
+          ),
         },
       })
       .json<SocialPost>();
@@ -99,6 +101,15 @@ export const useCreateSocialPost = () => {
           },
           {
             sync: true,
+            syncFn: (socialPost) => {
+              return {
+                ...socialPost,
+                poll: {
+                  pollVotedId: null,
+                  results: socialPost.poll,
+                },
+              };
+            },
           },
         );
       },

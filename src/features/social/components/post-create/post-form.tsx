@@ -20,7 +20,7 @@ const formSchema = z.object({
   images: z.array(z.custom<File>()).optional(),
 });
 
-export const PostForm = ({ onSuccess }: { onSuccess: () => void; }) => {
+export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
   const optionsMenuRef = useRef<{ reset: () => void } | null>(null);
   const createSocialPost = useCreateSocialPost();
 

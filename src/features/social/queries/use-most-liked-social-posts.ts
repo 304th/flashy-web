@@ -6,5 +6,5 @@ export const useMostLikedSocialPosts = () => {
     key: "mostLiked",
     existingQueryKey: ["social", "featured"],
     selectorFn: (data) => data.recentAnnouncements,
-  })
-}
+  });
+};

@@ -1,9 +1,16 @@
 import { useMemo, useEffect, useState } from "react";
 import { addHours, differenceInMilliseconds } from "date-fns";
-// import { useVotePoll } from "@/features/social/queries/use-vote-poll";
+import {
+  useVotePoll,
+  VotePollParams,
+} from "@/features/social/mutations/use-vote-poll";
+import { useSocialPostContext } from "@/features/social/components/social-post/social-post-context";
 
 export const SocialPostPoll = ({ socialPost }: { socialPost: SocialPost }) => {
-  const votePoll = () => {}//useVotePoll();
+  const { votePollUpdates } = useSocialPostContext();
+  const votePoll = useVotePoll({
+    optimisticUpdates: votePollUpdates,
+  });
 
   if (
     !socialPost.poll ||
@@ -80,7 +87,10 @@ const PollOption = ({
               ? "pointer-events-none"
               : "hover:bg-base-400 hover:border-base-600"
         } cursor-pointer overflow-hidden`}
-      onClick={onVote}
+      onClick={(e) => {
+        e.preventDefault();
+        onVote();
+      }}
     >
       {isVoted && (
         <div

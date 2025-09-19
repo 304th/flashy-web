@@ -2,7 +2,6 @@ import { nanoid } from "nanoid";
 import type { Draft } from "immer";
 import { QueryClient } from "@tanstack/react-query";
 import type { Collection } from "@/lib/query-toolkit/collection";
-import type { Entity } from "@/lib/query-toolkit/entity";
 import {
   type OptimisticUpdater,
   type OptimisticUpdaterOptions,
@@ -11,7 +10,9 @@ import {
 
 export type OptimisticUpdate<Params> = (
   params: Params,
-) => Promise<CollectionOptimisticMutations<any, any> | EntityOptimisticMutations<any>>;
+) => Promise<
+  CollectionOptimisticMutations<any, any> | EntityOptimisticMutations<any>
+>;
 
 export class CollectionOptimisticMutations<Entity, State> {
   private readonly rollbacks: ((state: State) => State)[];
@@ -48,7 +49,7 @@ export class CollectionOptimisticMutations<Entity, State> {
     update: (state: State) => State;
     id?: string;
     item?: Partial<Optimistic<Entity>>;
-    options?: OptimisticUpdaterOptions;
+    options?: OptimisticUpdaterOptions<Entity>;
     sync?: (state: State, params: Optimistic<Entity>) => State;
   }) {
     await this.queryClient.cancelQueries({ queryKey: this.queryKey });
@@ -71,7 +72,12 @@ export class CollectionOptimisticMutations<Entity, State> {
     }
 
     if (mergedOptions?.sync && sync) {
-      this.pendingSyncs.push((state: State, params) => sync(state, params));
+      this.pendingSyncs.push((state: State, params) =>
+        sync(
+          state,
+          mergedOptions.syncFn ? mergedOptions.syncFn(params) : params,
+        ),
+      );
     }
 
     return this;
@@ -79,50 +85,44 @@ export class CollectionOptimisticMutations<Entity, State> {
 
   async prepend(
     item: Partial<Optimistic<Entity>>,
-    options: OptimisticUpdaterOptions = { sync: false, rollback: true },
+    options: OptimisticUpdaterOptions<Entity> = { sync: false, rollback: true },
   ): Promise<CollectionOptimisticMutations<Entity, State>> {
+    const optimisticItem = this.createOptimistic(
+      this.collection.createItem(item),
+    );
+
     return this.execute({
       item,
       update: (state: State): State =>
-        this.updater.prepend(
-          this.createOptimistic(this.collection.createItem(item)),
-          state,
-        ),
+        this.updater.prepend(this.createOptimistic(optimisticItem), state),
       options,
-      sync: (draft, params) =>
-        this.updater.replace(
-          this.collection.getEntityId(params),
-          params,
-          draft,
-        ),
+      sync: (draft, params) => {
+        return this.updater.replaceAt(0, params, draft);
+      },
     });
   }
 
   async append(
     item: Optimistic<Entity>,
-    options: OptimisticUpdaterOptions = { sync: false, rollback: true },
+    options: OptimisticUpdaterOptions<Entity> = { sync: false, rollback: true },
   ): Promise<CollectionOptimisticMutations<Entity, State>> {
+    const optimisticItem = this.createOptimistic(
+      this.collection.createItem(item),
+    );
+
     return this.execute({
       item,
       update: (state: State): State =>
-        this.updater.append(
-          this.createOptimistic(this.collection.createItem(item)),
-          state,
-        ),
+        this.updater.append(optimisticItem, state),
       options,
-      sync: (draft, params) =>
-        this.updater.replace(
-          this.collection.getEntityId(params),
-          params,
-          draft,
-        ),
+      sync: (draft, params) => this.updater.replaceLast(params, draft),
     });
   }
 
   async update(
     id: string,
     updateFn: (state: Draft<Optimistic<Entity>>) => void,
-    options: OptimisticUpdaterOptions = { sync: false, rollback: true },
+    options: OptimisticUpdaterOptions<Entity> = { sync: false, rollback: true },
   ): Promise<CollectionOptimisticMutations<Entity, State>> {
     return this.execute({
       update: (state: State): State => this.updater.update(id, updateFn, state),
@@ -138,12 +138,29 @@ export class CollectionOptimisticMutations<Entity, State> {
 
   async delete(
     id: string,
-    options: OptimisticUpdaterOptions = { sync: false, rollback: true },
+    options: OptimisticUpdaterOptions<Entity> = { sync: false, rollback: true },
   ): Promise<CollectionOptimisticMutations<Entity, State>> {
     return this.execute({
       id,
       update: (state: State): State => this.updater.delete(id, state),
       options,
+    });
+  }
+
+  async move(
+    id: string,
+    position: number,
+    options: OptimisticUpdaterOptions<Entity> = { sync: false, rollback: true },
+  ) {
+    return this.execute({
+      update: (state: State): State => this.updater.move(id, position, state),
+      options,
+      sync: (draft, params) =>
+        this.updater.replace(
+          this.collection.getEntityId(params),
+          params,
+          draft,
+        ),
     });
   }
 
@@ -170,9 +187,7 @@ export class CollectionOptimisticMutations<Entity, State> {
 
 export class EntityOptimisticMutations<Item> {
   private readonly rollbacks: ((state: Item) => Item)[];
-  private readonly pendingSyncs: ((
-    state: Item,
-  ) => Item)[];
+  private readonly pendingSyncs: ((state: Item) => Item)[];
 
   constructor(
     private readonly queryClient: QueryClient,
@@ -189,7 +204,7 @@ export class EntityOptimisticMutations<Item> {
     sync,
   }: {
     update: (state: Optimistic<Item>) => Optimistic<Item>;
-    options?: OptimisticUpdaterOptions;
+    options?: OptimisticUpdaterOptions<Item>;
     sync?: (params: Optimistic<Item>) => Item;
   }) {
     await this.queryClient.cancelQueries({ queryKey: this.queryKey });
@@ -201,12 +216,9 @@ export class EntityOptimisticMutations<Item> {
       this.rollbacks.push(() => previous);
     } else {
       this.rollbacks.push((draft) =>
-        this.updater.update(
-          (draft) => {
-            draft._optimisticStatus = "error";
-          },
-          draft as Optimistic<Item>,
-        ),
+        this.updater.update((draft) => {
+          draft._optimisticStatus = "error";
+        }, draft as Optimistic<Item>),
       );
     }
 
@@ -219,10 +231,11 @@ export class EntityOptimisticMutations<Item> {
 
   async update(
     updateFn: (state: Draft<Optimistic<Item>>) => void,
-    options: OptimisticUpdaterOptions = { sync: false, rollback: true },
+    options: OptimisticUpdaterOptions<Item> = { sync: false, rollback: true },
   ): Promise<EntityOptimisticMutations<Item>> {
     return this.execute({
-      update: (state: Optimistic<Item>): Optimistic<Item> => this.updater.update(updateFn, state),
+      update: (state: Optimistic<Item>): Optimistic<Item> =>
+        this.updater.update(updateFn, state),
       options,
     });
   }

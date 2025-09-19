@@ -1,21 +1,25 @@
-'use client';
+"use client";
 
-import {Loadable} from "@/components/ui/loadable";
+import { Loadable } from "@/components/ui/loadable";
 import { MostCommentedPosts } from "./most-commented-posts";
-import {MostLikedPosts} from "@/features/social/components/featured-social-sidebar/most-liked-posts";
-import {MostRelightedPosts} from "@/features/social/components/featured-social-sidebar/most-relighted-posts";
+import { MostLikedPosts } from "@/features/social/components/featured-social-sidebar/most-liked-posts";
+import { MostRelightedPosts } from "@/features/social/components/featured-social-sidebar/most-relighted-posts";
 import { useFeaturedSocialPosts } from "@/features/social/queries/use-featured-social-posts";
 
 export const FeaturedSocialSidebar = () => {
   const { query } = useFeaturedSocialPosts();
 
-  return <div className="sticky top-4 flex flex-col gap-3">
-    <Loadable queries={[query]} fullScreenForDefaults>
-      {() => <>
-        <MostLikedPosts />
-        <MostCommentedPosts />
-        <MostRelightedPosts />
-      </>}
-    </Loadable>
-  </div>
-}
+  return (
+    <div className="sticky top-4 flex flex-col gap-3">
+      <Loadable queries={[query]} fullScreenForDefaults>
+        {() => (
+          <>
+            <MostLikedPosts />
+            <MostCommentedPosts />
+            <MostRelightedPosts />
+          </>
+        )}
+      </Loadable>
+    </div>
+  );
+};

@@ -8,16 +8,10 @@ export interface SocialCreateModal {
   onClose(): void;
 }
 
-export const SocialCreateModal = ({
- onClose,
- ...props
-}: SocialCreateModal) => {
+export const SocialCreateModal = ({ onClose, ...props }: SocialCreateModal) => {
   return (
     <Modal onClose={onClose} className={"!p-0"} {...props}>
-      <motion.div
-        initial="hidden"
-        animate="show"
-      >
+      <motion.div>
         <div className="flex w-full">
           <div className="absolute right-2 top-2" onClick={onClose}>
             <CloseButton />

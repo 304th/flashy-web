@@ -1,8 +1,6 @@
 import { useMemo } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  EntityOptimisticMutations
-} from "@/lib/query-toolkit/optimistic-mutations/optimistic-mutations";
+import { EntityOptimisticMutations } from "@/lib/query-toolkit/optimistic-mutations/optimistic-mutations";
 import type { Entity } from "@/lib/query-toolkit/entity";
 import { EntityOptimisticUpdater } from "@/lib/query-toolkit/optimistic-mutations/updaters";
 

@@ -2,6 +2,7 @@
 
 import { Loadable } from "@/components/ui/loadable";
 import { MostCommentedPosts } from "./most-commented-posts";
+import { RecentAnnouncements } from "@/features/social/components/featured-social-sidebar/recent-announcements";
 import { MostLikedPosts } from "@/features/social/components/featured-social-sidebar/most-liked-posts";
 import { MostRelightedPosts } from "@/features/social/components/featured-social-sidebar/most-relighted-posts";
 import { useFeaturedSocialPosts } from "@/features/social/queries/use-featured-social-posts";
@@ -14,9 +15,10 @@ export const FeaturedSocialSidebar = () => {
       <Loadable queries={[query]} fullScreenForDefaults>
         {() => (
           <>
-            <MostLikedPosts />
-            <MostCommentedPosts />
-            <MostRelightedPosts />
+            <RecentAnnouncements />
+            {/*<MostLikedPosts />*/}
+            {/*<MostCommentedPosts />*/}
+            {/*<MostRelightedPosts />*/}
           </>
         )}
       </Loadable>

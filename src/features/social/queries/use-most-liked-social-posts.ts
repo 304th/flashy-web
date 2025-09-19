@@ -5,6 +5,6 @@ export const useMostLikedSocialPosts = () => {
   return useSubsetQuery<SocialPost[], FeaturedPosts>({
     key: "mostLiked",
     existingQueryKey: ["social", "featured"],
-    selectorFn: (data) => data.recentAnnouncements,
+    selectorFn: (data) => data.mostLiked,
   });
 };

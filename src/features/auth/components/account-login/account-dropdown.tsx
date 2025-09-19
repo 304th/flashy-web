@@ -17,6 +17,7 @@ import {
 import { useMe } from "@/features/auth/queries/use-me";
 import { useLogout } from "@/features/auth/queries/use-logout";
 import { UserAvatar } from "@/components/ui/user-avatar";
+import Link from "next/link";
 
 export const AccountDropdown = () => {
   const [me] = useMe();
@@ -51,12 +52,14 @@ export const AccountDropdown = () => {
             </div>
           </div>
           <DropdownMenuGroup>
-            <DropdownMenuItem>
-              <div className="flex items-center gap-2 p-1">
-                <UserIcon />
-                <p>Channel</p>
-              </div>
-            </DropdownMenuItem>
+            <Link href="/profile/social">
+              <DropdownMenuItem>
+                <div className="flex items-center gap-2 p-1">
+                  <UserIcon />
+                  <p>Channel</p>
+                </div>
+              </DropdownMenuItem>
+            </Link>
             <DropdownMenuItem>
               <div className="flex items-center gap-2 p-1">
                 <VideoIcon />

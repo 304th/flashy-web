@@ -97,6 +97,7 @@ declare global {
     userId: string;
     username: string;
     userimage: string;
+    behindKey?: boolean;
     createdAt: string;
     updatedAt: string;
   }

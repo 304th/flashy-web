@@ -9,8 +9,9 @@ import { SocialPostTags } from "@/features/social/components/social-post/social-
 import { SocialPostPoll } from "@/features/social/components/social-post/social-post-poll";
 import { SocialPostImages } from "@/features/social/components/social-post/social-post-images";
 import { RelightButton } from "@/features/social/components/relight-button/relight-button";
-import { timeAgo } from "@/lib/utils";
 import { useSocialPostContext } from "@/features/social/components/social-post/social-post-context";
+import { SocialPostBehindKey } from "@/features/social/components/social-post/social-post-behind-key";
+import { timeAgo } from "@/lib/utils";
 
 export const SocialPost = ({
   socialPost,
@@ -29,7 +30,7 @@ export const SocialPost = ({
 
   return (
     <div
-      className={`flex flex-col p-4 gap-3 h-fit w-full transition rounded
+      className={`relative flex flex-col p-4 gap-3 h-fit w-full transition rounded
         bg-[linear-gradient(180deg,#151515_0%,#151515_0.01%,#19191920_100%)]
         ${className}
         ${socialPost._optimisticStatus === "pending" ? "opacity-50 pointer-events-none" : ""}`}
@@ -48,6 +49,7 @@ export const SocialPost = ({
           {onCommentsOpen && <SocialPostMenu socialPost={socialPost} />}
         </div>
       </div>
+      {/*<SocialPostBehindKey socialPost={socialPost} />*/}
       <SocialPostDescription socialPost={socialPost} />
       <SocialPostPoll socialPost={socialPost} />
       <SocialPostImages socialPost={socialPost} />

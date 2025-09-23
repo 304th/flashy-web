@@ -8,6 +8,7 @@ export interface CreateSocialPostParams {
   description?: string;
   poll: string[];
   images: File[];
+  behindKey: boolean;
 }
 
 export interface GetSignedUrlForUploadParams {
@@ -73,6 +74,7 @@ const createSocialPostMutation = createMutation<
               votes: [],
             })),
           ),
+          behindKey: params.behindKey,
         },
       })
       .json<SocialPost>();

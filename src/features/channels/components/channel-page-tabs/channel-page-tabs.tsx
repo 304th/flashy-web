@@ -1,7 +1,7 @@
 'use client';
 
-import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { TabMenu } from "@/components/ui/tabs/tabs";
 
 const tabs = [
@@ -33,13 +33,13 @@ export const ChannelPageTabs = () => {
 
   return (
     <TabMenu.Root defaultValue={defaultTab} className="border p-1 rounded-[100px] w-fit bg-base-200 overflow-hidden">
-      <TabMenu.List className="gap-1 h-10 ">
+      <TabMenu.List className="gap-1 h-10 overflow-hidden">
         {tabs.map(({ key, label, path }) => (
-            <TabMenu.Trigger key={key} value={label} className="px-4 cursor-pointer z-1">
-              <Link href={path}>
-                {label}
-              </Link>
-            </TabMenu.Trigger>
+          <TabMenu.Trigger key={key} value={label} className="cursor-pointer z-1">
+            <Link href={path} className="w-full h-full px-4 flex items-center">
+              {label}
+            </Link>
+          </TabMenu.Trigger>
         ))}
       </TabMenu.List>
     </TabMenu.Root>

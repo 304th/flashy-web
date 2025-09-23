@@ -24,7 +24,7 @@ export const useSignInWithGoogle = () => {
       }
 
       return await api
-        .post("auth/login/token", {
+        .post("auth/token/login", {
           json: {
             tokenId,
           },

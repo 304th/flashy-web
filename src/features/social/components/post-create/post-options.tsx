@@ -1,13 +1,17 @@
 import { config } from "@/services/config";
-import { forwardRef, useState, useImperativeHandle } from "react";
+import {forwardRef, useState, useImperativeHandle, useId} from "react";
 import { motion } from "framer-motion";
 import { PlusIcon, XIcon } from "lucide-react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { toast } from "sonner";
 import { PictureIcon } from "@/components/ui/icons/picture";
 import { PollIcon } from "@/components/ui/icons/poll";
+import { EyeIcon } from "@/components/ui/icons/eye";
+import { KeyBunchIcon } from "@/components/ui/icons/key-bunch";
 import { IconButton } from "@/components/ui/icon-button";
 import { FormField, FormItem } from "@/components/ui/form";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ImageUpload } from "@/components/ui/image-upload";
@@ -16,6 +20,7 @@ import { defaultVariants } from "@/lib/framer";
 export const PostOptions = forwardRef((_, ref) => {
   const [showImages, setShowImages] = useState<boolean>(false);
   const [showPoll, setShowPoll] = useState<boolean>(false);
+  const [showVisibility, setShowVisibility] = useState<boolean>(false);
   const context = useFormContext();
   const { fields, append, remove } = useFieldArray({
     control: context.control,
@@ -53,6 +58,11 @@ export const PostOptions = forwardRef((_, ref) => {
           onClose={handleClosePoll}
         />
       )}
+      {showVisibility && (
+        <VisibilityEditor
+          onClose={handleClosePoll}
+        />
+      )}
       <div className="flex justify-start items-center gap-2">
         <IconButton
           type="button"
@@ -75,6 +85,16 @@ export const PostOptions = forwardRef((_, ref) => {
           }}
         >
           <PollIcon />
+        </IconButton>
+
+        <IconButton
+          type="button"
+          className={`hover:bg-[#ab05a0] ${showVisibility && "bg-[#ab05a0]"}`}
+          onClick={() => {
+            setShowVisibility((state) => !state);
+          }}
+        >
+          <EyeIcon />
         </IconButton>
       </div>
     </div>
@@ -158,6 +178,23 @@ const ImageEditor = () => {
           toast.error(error);
         }}
       />
+    </div>
+  );
+};
+
+const VisibilityEditor = ({ onClose }: { onClose: () => void }) => {
+  const id = useId()
+  const context = useFormContext();
+
+  return (
+    <div className="flex items-center w-full border-y py-2 justify-between">
+      <div className="flex items-center gap-2">
+        <KeyBunchIcon />
+        <Label className="text-paragraph-sm cursor-pointer" htmlFor={id}>
+          Lock for key holders
+        </Label>
+      </div>
+      <Switch.Root id={id} onCheckedChange={checked => context.setValue("behindKey", checked)} />
     </div>
   );
 };

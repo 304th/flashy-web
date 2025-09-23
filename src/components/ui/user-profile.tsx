@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from "react";
 import { UserAvatar } from "@/components/ui/user-avatar";
-import { VerifiedIcon } from "@/components/ui/icons/verified";
+import { UserBadge } from "@/components/ui/user-badge";
 
 export const UserProfile = ({
   user,
@@ -20,10 +20,10 @@ export const UserProfile = ({
       />
       <div className="flex flex-col gap-1">
         {withoutUsername ? null : (
-          <>
+          <div className="flex items-center gap-2">
             <p className="text-white font-bold text-base">{user.username}</p>
-            {user.verified && <VerifiedIcon />}
-          </>
+            <UserBadge user={user} />
+          </div>
         )}
         {children}
       </div>

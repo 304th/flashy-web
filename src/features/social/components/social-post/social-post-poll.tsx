@@ -110,7 +110,7 @@ const PollOption = ({
 };
 
 const PollTimer = ({ createdAt }: { createdAt: string }) => {
-  const [timeLeft, setTimeLeft] = useState("");
+  const [timeLeft, setTimeLeft] = useState<string | null>("");
 
   useEffect(() => {
     const calculateTimeLeft = () => {
@@ -119,7 +119,7 @@ const PollTimer = ({ createdAt }: { createdAt: string }) => {
       const distance = differenceInMilliseconds(expiration, now);
 
       if (distance <= 0) {
-        setTimeLeft("Expired");
+        setTimeLeft(null);
         return;
       }
 
@@ -136,10 +136,16 @@ const PollTimer = ({ createdAt }: { createdAt: string }) => {
     return () => clearInterval(timer);
   }, [createdAt]);
 
+  if (!timeLeft) {
+    return <p className="text-sm whitespace-nowrap">
+      Poll has ended
+    </p>
+  }
+
   return (
     <div className="flex w-[135px]">
       <p className="text-sm whitespace-nowrap">
-        {timeLeft ? `Ends in ${timeLeft}` : "Poll has ended"}
+        Ends in {timeLeft}
       </p>
     </div>
   );

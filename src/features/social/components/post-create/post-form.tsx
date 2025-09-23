@@ -18,6 +18,7 @@ const formSchema = z.object({
   description: z.string().max(config.content.social.maxLength),
   poll: z.array(z.object({ value: z.string() })).optional(),
   images: z.array(z.custom<File>()).optional(),
+  behindKey: z.boolean().optional(),
 });
 
 export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
@@ -30,6 +31,7 @@ export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
       description: "",
       poll: [],
       images: [],
+      behindKey: false,
     },
     mode: "all",
   });
@@ -48,6 +50,7 @@ export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
             description: params.description,
             poll: params.poll?.map((poll) => poll.value) || [], //FIXME: what?
             images: params.images || [],
+            behindKey: params.behindKey || false,
           });
           form.reset();
           optionsMenuRef.current?.reset();

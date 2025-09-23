@@ -16,9 +16,9 @@ export const FeaturedSocialSidebar = () => {
         {() => (
           <>
             <RecentAnnouncements />
-            {/*<MostLikedPosts />*/}
-            {/*<MostCommentedPosts />*/}
-            {/*<MostRelightedPosts />*/}
+            <MostLikedPosts />
+            <MostCommentedPosts />
+            <MostRelightedPosts />
           </>
         )}
       </Loadable>

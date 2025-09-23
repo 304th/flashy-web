@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -29,13 +29,21 @@ const tabs = [
 
 export const ChannelPageTabs = () => {
   const pathname = usePathname();
-  const defaultTab = tabs.find(tab => tab.path === pathname)?.label || "wallet";
+  const defaultTab =
+    tabs.find((tab) => tab.path === pathname)?.label || "wallet";
 
   return (
-    <TabMenu.Root defaultValue={defaultTab} className="border p-1 rounded-[100px] w-fit bg-base-200 overflow-hidden">
+    <TabMenu.Root
+      defaultValue={defaultTab}
+      className="border p-1 rounded-[100px] w-fit bg-base-200 overflow-hidden"
+    >
       <TabMenu.List className="gap-1 h-10 overflow-hidden">
         {tabs.map(({ key, label, path }) => (
-          <TabMenu.Trigger key={key} value={label} className="cursor-pointer z-1">
+          <TabMenu.Trigger
+            key={key}
+            value={label}
+            className="cursor-pointer z-1"
+          >
             <Link href={path} className="w-full h-full px-4 flex items-center">
               {label}
             </Link>

@@ -18,7 +18,7 @@ import { useSocialPostContext } from "@/features/social/components/social-post/s
 import { useMe } from "@/features/auth/queries/use-me";
 
 export const SocialPostMenu = ({ socialPost }: { socialPost: SocialPost }) => {
-  const [me] = useMe()
+  const [me] = useMe();
   const [open, setOpen] = useState(false);
   const { openModal } = useModals();
   const { pinUpdates } = useSocialPostContext();

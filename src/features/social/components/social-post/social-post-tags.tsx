@@ -1,6 +1,6 @@
 import { MiniPinIcon } from "@/components/ui/icons/mini-pin";
 import { MiniRelightIcon } from "@/components/ui/icons/mini-relight";
-import {MiniKeyIcon} from "@/components/ui/icons/mini-key";
+import { MiniKeyIcon } from "@/components/ui/icons/mini-key";
 
 export const SocialPostTags = ({ socialPost }: { socialPost: SocialPost }) => {
   if (!socialPost.pinned && !socialPost.relightedPost && !socialPost.unlocked) {
@@ -50,10 +50,7 @@ const UnlockedTag = () => {
   return (
     <div className="flex items-center gap-1 pt-2">
       <MiniKeyIcon />
-      <p className="text-sm">
-        Unlocked
-      </p>
+      <p className="text-sm">Unlocked</p>
     </div>
   );
 };
-

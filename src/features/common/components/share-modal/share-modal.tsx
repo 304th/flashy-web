@@ -41,7 +41,8 @@ export const ShareModal = ({
       <motion.div
         initial="hidden"
         animate="show"
-        className="relative flex flex-col p-6 gap-6 rounded-md bg-cover bg-center"
+        className="relative flex flex-col p-6 gap-6 rounded-md bg-cover
+          bg-center"
         style={{ backgroundImage: `url(/images/forest.png)` }}
       >
         <div className="flex w-full">

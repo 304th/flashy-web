@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -11,7 +11,7 @@ export default function ProfileLayout({
 }: Readonly<{
   children: ReactNode;
 }>) {
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   return (
     <div className="relative flex flex-col gap-4 w-full">
@@ -20,7 +20,12 @@ export default function ProfileLayout({
         <ChannelPageTabs />
       </div>
       <AnimatePresence initial={false}>
-        <motion.div key={pathname} className="flex w-full" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        <motion.div
+          key={pathname}
+          className="flex w-full"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
           {children}
         </motion.div>
       </AnimatePresence>

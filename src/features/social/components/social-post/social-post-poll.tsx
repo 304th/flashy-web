@@ -137,16 +137,12 @@ const PollTimer = ({ createdAt }: { createdAt: string }) => {
   }, [createdAt]);
 
   if (!timeLeft) {
-    return <p className="text-sm whitespace-nowrap">
-      Poll has ended
-    </p>
+    return <p className="text-sm whitespace-nowrap">Poll has ended</p>;
   }
 
   return (
     <div className="flex w-[135px]">
-      <p className="text-sm whitespace-nowrap">
-        Ends in {timeLeft}
-      </p>
+      <p className="text-sm whitespace-nowrap">Ends in {timeLeft}</p>
     </div>
   );
 };

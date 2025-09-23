@@ -6,7 +6,7 @@ const keyPriceEntity = createEntity<KeyPrice, { userId: string }>({
   sourceFrom: async (params) => {
     return await api.get(`keys/${params?.userId!}/price`).json();
   },
-})
+});
 
 export const useKeyPrice = (userId: string) => {
   return useLiveEntity<KeyPrice, { userId: string }>({
@@ -16,5 +16,5 @@ export const useKeyPrice = (userId: string) => {
     options: {
       enabled: Boolean(userId),
     },
-  })
-}
+  });
+};

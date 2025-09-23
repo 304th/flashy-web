@@ -16,13 +16,12 @@ export const SocialPost = ({
   socialPost: Optimistic<SocialPost>;
   className?: string;
 }) => {
-  const {
-    onCommentsOpen,
-  } = useSocialPostContext();
+  const { onCommentsOpen } = useSocialPostContext();
 
   return (
     <div
-      className={`relative flex flex-col p-4 gap-3 h-fit w-full transition rounded
+      className={`relative flex flex-col p-4 gap-3 h-fit w-full transition
+        rounded
         bg-[linear-gradient(180deg,#151515_0%,#151515_0.01%,#19191920_100%)]
         ${className}
         ${socialPost._optimisticStatus === "pending" ? "opacity-50 pointer-events-none" : ""}`}

@@ -3,25 +3,21 @@ import { motion } from "framer-motion";
 import { Modal as ModalComponent } from "@/packages/modals";
 import { CloseButton } from "@/components/ui/close-button";
 import { Button } from "@/components/ui/button";
-import {Loadable} from "@/components/ui/loadable";
-import {KeyLockIcon} from "@/components/ui/icons/key-lock";
-import {HelpIcon} from "@/components/ui/icons/help";
-import {UserProfile} from "@/components/ui/user-profile";
-import {useKeyPrice} from "@/features/keys/queries/useKeyPrice";
-import {KeyIcon} from "@/components/ui/icons/key";
-import {BlazeIcon} from "@/components/ui/icons/blaze";
-import {AlertIcon} from "@/components/ui/icons/alert";
+import { Loadable } from "@/components/ui/loadable";
+import { KeyLockIcon } from "@/components/ui/icons/key-lock";
+import { HelpIcon } from "@/components/ui/icons/help";
+import { UserProfile } from "@/components/ui/user-profile";
+import { useKeyPrice } from "@/features/keys/queries/useKeyPrice";
+import { KeyIcon } from "@/components/ui/icons/key";
+import { BlazeIcon } from "@/components/ui/icons/blaze";
+import { AlertIcon } from "@/components/ui/icons/alert";
 
 export interface BuyKeyModalProps {
   user: User;
   onClose(): void;
 }
 
-export const BuyKeyModal = ({
-  user,
-  onClose,
-  ...props
-}: BuyKeyModalProps) => {
+export const BuyKeyModal = ({ user, onClose, ...props }: BuyKeyModalProps) => {
   const { data: keyPrice, query: keyPriceQuery } = useKeyPrice(user.fbId);
 
   return (
@@ -42,7 +38,10 @@ export const BuyKeyModal = ({
           </div>
           <div className="flex flex-col gap-2 items-center w-[80%] text-center">
             <KeyLockIcon />
-            <p>Holding a key will unlock exclusive content & many more features in the future.</p>
+            <p>
+              Holding a key will unlock exclusive content & many more features
+              in the future.
+            </p>
             <div className="flex items-center gap-1 text-base-700">
               <HelpIcon />
               <p className="text-xs">You can buy & also sell keys</p>
@@ -54,10 +53,12 @@ export const BuyKeyModal = ({
               <KeyIcon />
               <p className="text-base-800">=</p>
               <Loadable queries={[keyPriceQuery]}>
-                {() => <div className="flex items-center gap-1">
-                  {keyPrice?.buyInBlaze.toFixed(2)}
-                  <BlazeIcon />
-                </div>}
+                {() => (
+                  <div className="flex items-center gap-1">
+                    {keyPrice?.buyInBlaze.toFixed(2)}
+                    <BlazeIcon />
+                  </div>
+                )}
               </Loadable>
             </div>
           </div>

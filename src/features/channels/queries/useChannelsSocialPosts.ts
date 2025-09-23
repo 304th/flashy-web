@@ -1,11 +1,16 @@
-import {createCollection, usePartitionedQuery} from "@/lib/query-toolkit";
-import {api} from "@/services/api";
-import {socialPostSchema} from "@/features/social/schemas/social-post.schema";
-import {decodePollResults} from "@/features/social/utils/poll";
+import { createCollection, usePartitionedQuery } from "@/lib/query-toolkit";
+import { api } from "@/services/api";
+import { socialPostSchema } from "@/features/social/schemas/social-post.schema";
+import { decodePollResults } from "@/features/social/utils/poll";
 
-const channelPostsCollection = createCollection<SocialPost, { userId: string; pageParam?: number }>({
-  async sourceFrom({ userId }){
-    const response = await api.get(`user/${userId}/social-posts`).json<SocialPost[]>();
+const channelPostsCollection = createCollection<
+  SocialPost,
+  { userId: string; pageParam?: number }
+>({
+  async sourceFrom({ userId }) {
+    const response = await api
+      .get(`user/${userId}/social-posts`)
+      .json<SocialPost[]>();
 
     //FIXME: refactor backend
     return response.map((socialPost) => ({
@@ -16,16 +21,18 @@ const channelPostsCollection = createCollection<SocialPost, { userId: string; pa
       },
     }));
   },
-  schema: socialPostSchema
-})
+  schema: socialPostSchema,
+});
 
 export const useChannelsSocialPosts = ({ userId }: { userId?: string }) => {
-  return usePartitionedQuery<SocialPost, { userId: string; pageParam: number }>({
-    queryKey: ["channels", userId, 'social'],
-    collection: channelPostsCollection,
-    getParams: ({ pageParam }) => ({ pageParam, userId: userId! }),
-    options: {
-      enabled: Boolean(userId),
+  return usePartitionedQuery<SocialPost, { userId: string; pageParam: number }>(
+    {
+      queryKey: ["channels", userId, "social"],
+      collection: channelPostsCollection,
+      getParams: ({ pageParam }) => ({ pageParam, userId: userId! }),
+      options: {
+        enabled: Boolean(userId),
+      },
     },
-  });
-}
+  );
+};

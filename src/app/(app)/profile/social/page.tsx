@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
 import Link from "next/link";
-import {Loadable} from "@/components/ui/loadable";
-import {AnimatePresence, motion} from "framer-motion";
-import {SocialPost} from "@/features/social/components/social-post/social-post";
-import {NotFound} from "@/components/ui/not-found";
-import {useProfileSocialPosts} from "@/features/profile/queries/use-profile-social-posts";
+import { Loadable } from "@/components/ui/loadable";
+import { AnimatePresence, motion } from "framer-motion";
+import { SocialPost } from "@/features/social/components/social-post/social-post";
+import { NotFound } from "@/components/ui/not-found";
+import { useProfileSocialPosts } from "@/features/profile/queries/use-profile-social-posts";
 
 export default function ProfileSocialPage() {
   const { data, query } = useProfileSocialPosts();

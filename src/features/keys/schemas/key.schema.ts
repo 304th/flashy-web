@@ -9,7 +9,7 @@ class KeySchema implements StaticSchema<Key> {
     return {
       user: nanoid(),
       boughtBy: nanoid(),
-      boughtPrice: '0.0',
+      boughtPrice: "0.0",
       ...params,
     };
   }

@@ -75,7 +75,8 @@ const TabMenuHorizontalList = React.forwardRef<
           className={cn(
             `absolute -bottom-px left-0 h-full bg-base-300 opacity-0
             transition-all duration-300
-            group-has-[[data-state=active]]/tab-list:opacity-100 rounded-[100px]`,
+            group-has-[[data-state=active]]/tab-list:opacity-100
+            rounded-[100px]`,
             {
               hidden: !mounted,
             },
@@ -102,8 +103,7 @@ const TabMenuHorizontalTrigger = React.forwardRef<
       ref={forwardedRef}
       className={cn(
         // base
-        `group/tab-item h-12 py-3.5 text-label-sm text-base-800
-        outline-none`,
+        "group/tab-item h-12 py-3.5 text-label-sm text-base-800 outline-none",
         "flex items-center justify-center gap-1.5",
         "transition duration-200 ease-out",
         // focus

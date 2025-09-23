@@ -1,5 +1,5 @@
 import { config } from "@/services/config";
-import {forwardRef, useState, useImperativeHandle, useId} from "react";
+import { forwardRef, useState, useImperativeHandle, useId } from "react";
 import { motion } from "framer-motion";
 import { PlusIcon, XIcon } from "lucide-react";
 import { useFieldArray, useFormContext } from "react-hook-form";
@@ -58,11 +58,7 @@ export const PostOptions = forwardRef((_, ref) => {
           onClose={handleClosePoll}
         />
       )}
-      {showVisibility && (
-        <VisibilityEditor
-          onClose={handleClosePoll}
-        />
-      )}
+      {showVisibility && <VisibilityEditor onClose={handleClosePoll} />}
       <div className="flex justify-start items-center gap-2">
         <IconButton
           type="button"
@@ -183,7 +179,7 @@ const ImageEditor = () => {
 };
 
 const VisibilityEditor = ({ onClose }: { onClose: () => void }) => {
-  const id = useId()
+  const id = useId();
   const context = useFormContext();
 
   return (
@@ -194,7 +190,10 @@ const VisibilityEditor = ({ onClose }: { onClose: () => void }) => {
           Lock for key holders
         </Label>
       </div>
-      <Switch.Root id={id} onCheckedChange={checked => context.setValue("behindKey", checked)} />
+      <Switch.Root
+        id={id}
+        onCheckedChange={(checked) => context.setValue("behindKey", checked)}
+      />
     </div>
   );
 };

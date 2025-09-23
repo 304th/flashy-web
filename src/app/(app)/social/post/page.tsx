@@ -20,7 +20,7 @@ import {
 } from "@/features/social/hooks/use-social-feed-reaction-updates";
 import { relightSocialPost } from "@/features/social/hooks/use-social-feed-relight-updates";
 import { useComments } from "@/features/comments/queries/use-comments";
-import {useIsSocialPostLocked} from "@/features/social/hooks/use-is-social-post-locked";
+import { useIsSocialPostLocked } from "@/features/social/hooks/use-is-social-post-locked";
 
 export default function SocialPostPage() {
   return (
@@ -97,38 +97,36 @@ const SocialPostDetails = ({
               socialPost={socialPost}
               className="!bg-[linear-gradient(180deg,#191919_0%,#191919_0.01%,#151515_100%)]"
             />
-            {
-              isLocked ? null : (
-                <>
-                  <CommentsFeed
+            {isLocked ? null : (
+              <>
+                <CommentsFeed
+                  post={socialPost}
+                  className="!overflow-auto !max-h-full"
+                  onCommentReply={(comment) => setReplyComment(comment)}
+                />
+                <div
+                  className="sticky bottom-0 pb-4 w-full shrink-0 bg-[#11111180]
+                    backdrop-blur-xl"
+                >
+                  <CommentSend
                     post={socialPost}
-                    className="!overflow-auto !max-h-full"
-                    onCommentReply={(comment) => setReplyComment(comment)}
+                    replyComment={replyComment}
+                    className="rounded-br-md rounded-bl-md z-1 border"
+                    sendCommentUpdates={[
+                      async (params) => {
+                        return await comments.prepend(params, { sync: true });
+                      },
+                      async () => {
+                        return await optimisticUpdates.update((post) => {
+                          post.commentsCount += 1;
+                        });
+                      },
+                    ]}
+                    onCloseReply={() => setReplyComment(null)}
                   />
-                  <div
-                    className="sticky bottom-0 pb-4 w-full shrink-0 bg-[#11111180]
-                backdrop-blur-xl"
-                  >
-                    <CommentSend
-                      post={socialPost}
-                      replyComment={replyComment}
-                      className="rounded-br-md rounded-bl-md z-1 border"
-                      sendCommentUpdates={[
-                        async (params) => {
-                          return await comments.prepend(params, { sync: true });
-                        },
-                        async () => {
-                          return await optimisticUpdates.update((post) => {
-                            post.commentsCount += 1;
-                          });
-                        },
-                      ]}
-                      onCloseReply={() => setReplyComment(null)}
-                    />
-                  </div>
-                </>
-              )
-            }
+                </div>
+              </>
+            )}
           </SocialPostProvider>
         </div>
       </div>

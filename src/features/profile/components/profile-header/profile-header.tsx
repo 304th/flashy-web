@@ -3,11 +3,14 @@
 import { ProfileHeaderBanner } from "@/features/profile/components/profile-header/profile-header-banner";
 import { ProfileHeaderUserBar } from "@/features/profile/components/profile-header/profile-header-user-bar";
 import { GradualBlurMemo as GradualBlur } from "@/components/ui/gradual-blur/gradual-blur";
-import {Suspense} from "react";
+import { Suspense } from "react";
 
 export const ProfileHeader = () => {
   return (
-    <div className="relative flex flex-col w-full h-[390px] bg-base-400 rounded-md overflow-hidden">
+    <div
+      className="relative flex flex-col w-full h-[390px] bg-base-400 rounded-md
+        overflow-hidden"
+    >
       <ProfileHeaderBanner />
       <div className="absolute w-full bottom-0">
         <Suspense>

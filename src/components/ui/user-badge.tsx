@@ -11,21 +11,27 @@ export const UserBadge = ({
   className?: string;
 }>) => {
   if (user.representative) {
-    return <div className={`flex scale-75 ${className}`}>
-      <RepIcon />
-    </div>
+    return (
+      <div className={`flex scale-75 ${className}`}>
+        <RepIcon />
+      </div>
+    );
   }
 
   if (user.verified) {
-    return <div className={`flex scale-75 ${className}`}>
-      <VerifiedIcon />
-    </div>
+    return (
+      <div className={`flex scale-75 ${className}`}>
+        <VerifiedIcon />
+      </div>
+    );
   }
 
   if (user.moderator) {
-    return <div className={`flex scale-75 ${className}`}>
-      <ModeratorIcon />
-    </div>
+    return (
+      <div className={`flex scale-75 ${className}`}>
+        <ModeratorIcon />
+      </div>
+    );
   }
 
   return null;

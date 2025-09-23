@@ -41,8 +41,8 @@ export const ShareModal = ({
       <motion.div
         initial="hidden"
         animate="show"
-        className="relative flex flex-col p-6 gap-6 rounded-md
-          !bg-[linear-gradient(180deg,#151515_0%,#151515_0.01%,#1d1d1d80_100%)]"
+        className="relative flex flex-col p-6 gap-6 rounded-md bg-cover bg-center"
+        style={{ backgroundImage: `url(/images/forest.png)` }}
       >
         <div className="flex w-full">
           <div className="absolute right-2 top-2" onClick={onClose}>

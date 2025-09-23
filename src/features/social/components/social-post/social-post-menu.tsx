@@ -15,8 +15,10 @@ import { usePinSocialPost } from "@/features/social/mutations/use-pin-social-pos
 import { useSocialPostOwned } from "@/features/social/hooks/use-social-post-owned";
 import { useIsSuperAdmin } from "@/features/auth/hooks/use-is-super-admin";
 import { useSocialPostContext } from "@/features/social/components/social-post/social-post-context";
+import { useMe } from "@/features/auth/queries/use-me";
 
 export const SocialPostMenu = ({ socialPost }: { socialPost: SocialPost }) => {
+  const [me] = useMe()
   const [open, setOpen] = useState(false);
   const { openModal } = useModals();
   const { pinUpdates } = useSocialPostContext();
@@ -24,6 +26,10 @@ export const SocialPostMenu = ({ socialPost }: { socialPost: SocialPost }) => {
   const pinPost = usePinSocialPost({ optimisticUpdates: pinUpdates });
   const isSuperAdmin = useIsSuperAdmin();
   const isOwned = useSocialPostOwned(socialPost);
+
+  if (!me) {
+    return null;
+  }
 
   return (
     <div className="relative flex" onMouseLeave={() => setOpen(false)}>

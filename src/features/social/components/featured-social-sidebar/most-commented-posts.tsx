@@ -15,8 +15,8 @@ export const MostCommentedPosts = () => {
           <p className="text-sm text-base-800">Most Commented</p>
           <div className="flex flex-col gap-3 divide-y">
             {mostCommentedPosts.map((socialPost) => (
-              <Link href={`/social/post?id=${socialPost._id}`}>
-                <MiniSocialPost key={socialPost._id} socialPost={socialPost} />
+              <Link key={socialPost._id} href={`/social/post?id=${socialPost._id}`}>
+                <MiniSocialPost socialPost={socialPost} />
               </Link>
             ))}
           </div>

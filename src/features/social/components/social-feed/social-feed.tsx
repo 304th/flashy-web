@@ -18,12 +18,12 @@ import { useSocialFeedPinUpdates } from "@/features/social/hooks/use-social-feed
 
 export const SocialFeed = () => {
   const { data, query } = useSocialPosts();
-  const { openModal } = useModals();
   const likeUpdates = useSocialFeedUpdatesOnReactionAdd();
   const unlikeUpdates = useSocialFeedUpdatesOnReactionRemove();
   const relightUpdates = useSocialFeedRelightUpdates();
   const votePollUpdates = useSocialFeedVotePollUpdates();
   const pinUpdates = useSocialFeedPinUpdates();
+  const { openModal } = useModals();
 
   return (
     <div className="flex flex-col gap-3">

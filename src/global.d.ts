@@ -98,6 +98,7 @@ declare global {
     username: string;
     userimage: string;
     behindKey?: boolean;
+    unlocked?: boolean;
     createdAt: string;
     updatedAt: string;
   }
@@ -178,6 +179,19 @@ declare global {
     title: string;
     url: string;
     videos: string[];
+  }
+
+  interface Key {
+    user: string;
+    boughtBy: string;
+    boughtPrice: string;
+  }
+
+  interface KeyPrice {
+    buy: number;
+    buyInBlaze: number;
+    sell: number;
+    sellInBlaze: number;
   }
 }
 

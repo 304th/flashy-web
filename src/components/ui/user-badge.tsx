@@ -1,7 +1,8 @@
-import type { PropsWithChildren } from "react";
+import {PropsWithChildren, useMemo} from "react";
 import { RepIcon } from "@/components/ui/icons/rep";
 import { VerifiedIcon } from "@/components/ui/icons/verified";
 import { ModeratorIcon } from "@/components/ui/icons/moderator";
+import { useRepsAndMods } from "@/features/channels/queries/useRepsAndMods";
 
 export const UserBadge = ({
   user,
@@ -10,25 +11,34 @@ export const UserBadge = ({
   user: User;
   className?: string;
 }>) => {
-  if (user.representative) {
+  const [repsAndMods] = useRepsAndMods();
+  const foundUser = useMemo(() => {
+    if (!repsAndMods) {
+      return null
+    }
+
+    return repsAndMods[user.fbId];
+  }, [repsAndMods, user]);
+
+  if (foundUser?.representative) {
     return (
-      <div className={`flex scale-75 ${className}`}>
+      <div className={`flex scale-60 ${className}`}>
         <RepIcon />
       </div>
     );
   }
 
-  if (user.verified) {
+  if (foundUser?.verified) {
     return (
-      <div className={`flex scale-75 ${className}`}>
+      <div className={`flex scale-60 ${className}`}>
         <VerifiedIcon />
       </div>
     );
   }
 
-  if (user.moderator) {
+  if (foundUser?.moderator) {
     return (
-      <div className={`flex scale-75 ${className}`}>
+      <div className={`flex scale-60 ${className}`}>
         <ModeratorIcon />
       </div>
     );

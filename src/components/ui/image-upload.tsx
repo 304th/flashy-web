@@ -8,18 +8,22 @@ import { formatBytes } from "@/lib/utils";
 
 export interface ImageUploadProps {
   accept?: string;
-  maxAllowedSize: number;
+  maxAllowedSize?: number;
+  initialPreview?: string;
+  className?: string;
   onChange: (file: File | null) => void;
-  onError(error: string): void;
+  onError?: (error: string) => void;
 }
 
 export const ImageUpload = ({
   accept = "image/jpeg,image/png,image/jpg,image/gif",
   maxAllowedSize = config.content.uploads.maxSize,
+  initialPreview,
+  className,
   onChange,
   onError,
 }: ImageUploadProps) => {
-  const [preview, setPreview] = useState<string | null>(null);
+  const [preview, setPreview] = useState<string | null>(() => initialPreview ?? null);
   const formattedSizeLimit = useMemo(
     () => formatBytes(maxAllowedSize, 0),
     [maxAllowedSize],
@@ -32,7 +36,7 @@ export const ImageUpload = ({
     }
 
     if (file.size > maxAllowedSize) {
-      return onError("File size must be less than 2 MB.");
+      return onError?.("File size must be less than 2 MB.");
     }
 
     onChange(file);
@@ -41,7 +45,7 @@ export const ImageUpload = ({
 
   return (
     <FileUpload.Root
-      className="relative overflow-hidden"
+      className={`relative overflow-hidden ${className}`}
       onDrop={(e) => {
         e.preventDefault();
         e.stopPropagation();

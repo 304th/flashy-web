@@ -1,9 +1,9 @@
 "use client";
 
+import { Suspense } from "react";
 import { ProfileHeaderBanner } from "@/features/profile/components/profile-header/profile-header-banner";
 import { ProfileHeaderUserBar } from "@/features/profile/components/profile-header/profile-header-user-bar";
 import { GradualBlurMemo as GradualBlur } from "@/components/ui/gradual-blur/gradual-blur";
-import { Suspense } from "react";
 
 export const ProfileHeader = () => {
   return (

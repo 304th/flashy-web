@@ -11,6 +11,7 @@ import { MagicLinkVerificationModal } from "@/features/auth/components/magic-lin
 import { ShareModal } from "@/features/common/components/share-modal/share-modal";
 import { SocialCreateModal } from "@/features/social/components/social-create-modal/social-create-modal";
 import { BuyKeyModal } from "@/features/keys/components/buy-key-modal/buy-key-modal";
+import { ProfileSettingsModal } from "@/features/profile/components/profile-settings-modal/profile-settings-modal";
 
 const modalsConfig = {
   LoginModal,
@@ -21,6 +22,7 @@ const modalsConfig = {
   ShareModal,
   SocialCreateModal,
   BuyKeyModal,
+  ProfileSettingsModal,
 };
 
 export type ModalType = keyof typeof modalsConfig;

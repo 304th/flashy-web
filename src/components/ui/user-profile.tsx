@@ -20,7 +20,7 @@ export const UserProfile = ({
       />
       <div className="flex flex-col gap-1">
         {withoutUsername ? null : (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             <p className="text-white font-bold text-base">{user.username}</p>
             <UserBadge user={user} />
           </div>

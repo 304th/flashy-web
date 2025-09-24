@@ -4,10 +4,12 @@ import { ShareIcon } from "lucide-react";
 import { Loadable } from "@/components/ui/loadable";
 import { Button } from "@/components/ui/button";
 import { UserProfile } from "@/components/ui/user-profile";
+import { useModals } from "@/hooks/use-modals";
 import { useMe } from "@/features/auth/queries/use-me";
 
 export const ProfileHeaderUserBar = ({ className }: { className?: string }) => {
   const [me, query] = useMe();
+  const { openModal } = useModals()
 
   return (
     <div
@@ -27,7 +29,7 @@ export const ProfileHeaderUserBar = ({ className }: { className?: string }) => {
         }
       </Loadable>
       <div className="flex w-1/5 flex-col items-center gap-2">
-        <Button size="lg" variant="secondary" className="w-full">
+        <Button size="lg" variant="secondary" className="w-full" onClick={() => openModal('ProfileSettingsModal')}>
           Edit Profile
         </Button>
         <div className="flex w-full items-center justify-between">

@@ -1,9 +1,9 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 
 export const ProfileHeaderBanner = () => {
-  const { scrollYProgress } = useScroll();
-  const y = useTransform(scrollYProgress, [0, 1], [0, 500]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.92]);
+  const { scrollY } = useScroll();
+  const y = useTransform(scrollY, [0, 1000], [0, 500]);
+  const scale = useTransform(scrollY, [0, 1000], [1, 0.92]);
 
   return (
     <motion.div
@@ -12,7 +12,7 @@ export const ProfileHeaderBanner = () => {
     >
       <motion.div
         className="absolute w-[110%] h-[110%] flex bg-cover bg-center m-[-40px]"
-        style={{ y, scale, backgroundImage: "url('/images/banner.jpg')" }}
+        style={{ y, scale, backgroundImage: "url('/images/channel-placeholder.png')" }}
       />
     </motion.div>
   );

@@ -2,7 +2,7 @@ import { createCollection, usePartitionedQuery } from "@/lib/query-toolkit";
 import { api } from "@/services/api";
 import { socialPostSchema } from "@/features/social/schemas/social-post.schema";
 import { decodePollResults } from "@/features/social/utils/poll";
-import { useAuthedUser } from "@/features/auth/hooks/use-authed-user";
+import { useAuthed } from "@/features/auth/hooks/use-authed";
 
 const profilePostsCollection = createCollection<
   SocialPost,
@@ -24,7 +24,7 @@ const profilePostsCollection = createCollection<
 });
 
 export const useProfileSocialPosts = () => {
-  const currentUser = useAuthedUser();
+  const currentUser = useAuthed();
 
   return usePartitionedQuery<SocialPost, { pageParam: number }>({
     queryKey: ["me", currentUser?.uid, "social"],

@@ -7,7 +7,7 @@ import { ProfileHeader } from "@/features/profile/components/profile-header/prof
 import { ChannelPageTabs } from "@/features/channels/components/channel-page-tabs/channel-page-tabs";
 import { getTabNameFromPathname } from "@/features/channels/utils/get-tab-name-from-pathname";
 import { capitalize } from "media-chrome/utils/utils";
-import { useAuthedUser } from "@/features/auth/hooks/use-authed-user";
+import { useAuthed } from "@/features/auth/hooks/use-authed";
 
 const profileTabs = [
   {
@@ -40,7 +40,7 @@ export default function ProfileLayout({
   const router = useRouter();
   const pathname = usePathname();
   const tabName = getTabNameFromPathname(pathname);
-  const user = useAuthedUser();
+  const user = useAuthed();
 
   useEffect(() => {
     if (!user) {

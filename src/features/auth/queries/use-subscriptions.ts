@@ -1,6 +1,6 @@
 import { createEntity, useLiveEntity } from "@/lib/query-toolkit";
 import { api } from "@/services/api";
-import { useAuthedUser } from "@/features/auth/hooks/use-authed-user";
+import { useAuthed } from "@/features/auth/hooks/use-authed";
 
 const subscriptions = createEntity<string[]>({
   sourceFrom: async () => {
@@ -9,7 +9,7 @@ const subscriptions = createEntity<string[]>({
 });
 
 export const useSubscriptions = () => {
-  const currentUser = useAuthedUser();
+  const currentUser = useAuthed();
 
   return useLiveEntity<string[]>({
     queryKey: ["me", "subscriptions"],

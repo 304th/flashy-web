@@ -1,22 +1,43 @@
+import { useQueryClient } from "@tanstack/react-query";
+import { Authed, useAuthed } from "@/features/auth/hooks/use-authed";
 import { api } from "@/services/api";
 import { useLiveEntity } from "@/lib/query-toolkit";
-import { useAuthedUser } from "@/features/auth/hooks/use-authed-user";
 import { createEntity } from "@/lib/query-toolkit/entity";
 
-const meEntity = createEntity<User>({
-  sourceFrom: async () => {
+const meEntity = createEntity<User, Authed>({
+  sourceFrom: async (params) => {
+    if (params?.status === "pending") {
+      throw new Error("pending");
+    }
+
     return await api.get("auth/me/logged-in").json();
   },
 });
 
 export const useMe = () => {
-  const currentUser = useAuthedUser();
+  const authed = useAuthed();
+  const queryClient = useQueryClient();
 
-  return useLiveEntity<User>({
+  return useLiveEntity<User, Authed>({
     entity: meEntity,
-    queryKey: ["me", currentUser?.uid],
+    queryKey: ["me", authed.user?.uid],
+    getParams: () => authed,
     options: {
-      enabled: Boolean(currentUser),
+      enabled: Boolean(authed.status === 'pending' || authed.user?.uid),
+      retry: (failureCount, error) => {
+        if (error.message === "pending") {
+          return true;
+        }
+
+        if (authed.status === 'resolved' && !authed.user?.uid) {
+          void queryClient.cancelQueries({
+            queryKey: ["me"],
+          })
+        }
+
+        return failureCount < 1;
+      },
+      retryDelay: 500,
     },
   });
 };

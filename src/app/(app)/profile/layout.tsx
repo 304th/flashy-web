@@ -40,13 +40,13 @@ export default function ProfileLayout({
   const router = useRouter();
   const pathname = usePathname();
   const tabName = getTabNameFromPathname(pathname);
-  const user = useAuthed();
+  const authed = useAuthed();
 
   useEffect(() => {
-    if (!user) {
+    if (authed.status === 'resolved' && !authed.user) {
       router.push("/");
     }
-  }, [user]);
+  }, [authed]);
 
   return (
     <div className="relative flex flex-col gap-4 w-full">

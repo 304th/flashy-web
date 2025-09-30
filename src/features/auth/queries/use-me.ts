@@ -23,16 +23,16 @@ export const useMe = () => {
     queryKey: ["me", authed.user?.uid],
     getParams: () => authed,
     options: {
-      enabled: Boolean(authed.status === 'pending' || authed.user?.uid),
+      enabled: Boolean(authed.status === "pending" || authed.user?.uid),
       retry: (failureCount, error) => {
         if (error.message === "pending") {
           return true;
         }
 
-        if (authed.status === 'resolved' && !authed.user?.uid) {
+        if (authed.status === "resolved" && !authed.user?.uid) {
           void queryClient.cancelQueries({
             queryKey: ["me"],
-          })
+          });
         }
 
         return failureCount < 1;

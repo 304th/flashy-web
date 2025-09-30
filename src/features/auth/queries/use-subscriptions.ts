@@ -9,13 +9,13 @@ const subscriptions = createEntity<string[]>({
 });
 
 export const useSubscriptions = () => {
-  const currentUser = useAuthed();
+  const authed = useAuthed();
 
   return useLiveEntity<string[]>({
-    queryKey: ["me", "subscriptions"],
+    queryKey: ["me", authed.user?.uid, "subscriptions"],
     entity: subscriptions,
     options: {
-      enabled: Boolean(currentUser),
+      enabled: Boolean(authed.user?.uid),
     },
   });
 };

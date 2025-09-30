@@ -18,7 +18,7 @@ export const useAuthed = () => {
   return useSyncExternalStore<Authed>(
     (callback) => {
       return firebaseAuth.onAuthStateChanged(() => {
-        authed.status = 'resolved';
+        authed.status = "resolved";
 
         return callback();
       });
@@ -28,7 +28,7 @@ export const useAuthed = () => {
         authed = {
           user: firebaseAuth.currentUser,
           status: "pending",
-        }
+        };
       }
 
       return authed;

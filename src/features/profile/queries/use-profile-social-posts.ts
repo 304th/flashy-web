@@ -24,14 +24,14 @@ const profilePostsCollection = createCollection<
 });
 
 export const useProfileSocialPosts = () => {
-  const currentUser = useAuthed();
+  const authed = useAuthed();
 
   return usePartitionedQuery<SocialPost, { pageParam: number }>({
-    queryKey: ["me", currentUser?.uid, "social"],
+    queryKey: ["me", authed.user?.uid, "social"],
     collection: profilePostsCollection,
     getParams: ({ pageParam }) => ({ pageParam }),
     options: {
-      enabled: Boolean(currentUser),
+      enabled: Boolean(authed.user?.uid),
     },
   });
 };

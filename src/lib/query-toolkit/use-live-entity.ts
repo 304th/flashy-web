@@ -12,7 +12,7 @@ import { EntityOptimisticUpdater } from "@/lib/query-toolkit/optimistic-mutation
 interface UseLiveEntityProps<Item, Params = undefined> {
   queryKey: unknown[];
   entity: Entity<Item, Params>;
-  options?: Omit<UseQueryOptions<Item, Error, Item, unknown[]>, 'queryKey'>;
+  options?: Omit<UseQueryOptions<Item, Error, Item, unknown[]>, "queryKey">;
   getParams?: () => Params;
 }
 

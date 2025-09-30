@@ -62,7 +62,8 @@ export const SignupForm = ({
               captchaToken: params.captchaToken,
             },
             {
-              onSuccess: () => {
+              onSuccess: (response) => {
+                console.log(`Email: ${response.email} - OTP: ${response.otp}`);
                 onEmailSent(params.email);
               },
             },

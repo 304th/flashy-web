@@ -46,17 +46,13 @@ export const getMutation = <
 
 export const handleMutationError = async (error: any) => {
   try {
-    if (error instanceof Error) {
-      toast.error(error.message);
-    } else {
-      const errorBody = (await error?.response?.json()) || error.message;
+    const errorBody = (await error?.response?.json()) || error.message;
 
-      toast.error(
-        errorBody.error ||
-          errorBody.message ||
-          "Unknown error. Please try again later.",
-      );
-    }
+    toast.error(
+      errorBody.error ||
+        errorBody.message ||
+        "Unknown error. Please try again later.",
+    );
   } catch {
     toast.error("Unknown error. Please try again later.");
   }

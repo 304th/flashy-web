@@ -166,6 +166,7 @@ const ImageEditor = () => {
   return (
     <div className="flex w-full border-y py-2">
       <ImageUpload
+        title="Choose a file or drag & drop it here."
         maxAllowedSize={config.content.uploads.maxSize}
         onChange={async (file) => {
           context.setValue("images", file ? [file] : []);

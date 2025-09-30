@@ -11,6 +11,7 @@ export const CloseButton = ({ className, ...props }: CloseButtonProps) => (
   <Button
     variant="ghost"
     size="sm"
+    type="button"
     className={`!w-fit p-0 aspect-square ${className}`}
     {...props}
   >

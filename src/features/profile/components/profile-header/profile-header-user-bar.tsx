@@ -6,10 +6,11 @@ import { Button } from "@/components/ui/button";
 import { UserProfile } from "@/components/ui/user-profile";
 import { useModals } from "@/hooks/use-modals";
 import { useMe } from "@/features/auth/queries/use-me";
+import { ChannelSubscriptions } from "@/features/channels/components/channel-subscriptions/channel-subscriptions";
 
 export const ProfileHeaderUserBar = ({ className }: { className?: string }) => {
-  const [me, query] = useMe();
-  const { openModal } = useModals()
+  const { data: me, query } = useMe();
+  const { openModal } = useModals();
 
   return (
     <div
@@ -20,7 +21,16 @@ export const ProfileHeaderUserBar = ({ className }: { className?: string }) => {
         {() =>
           me ? (
             <UserProfile user={me} avatarClassname="size-20">
-              <Button variant="secondary" className="w-fit">
+              <Button
+                variant="secondary"
+                className="w-fit"
+                onClick={() =>
+                  openModal("ShareModal", {
+                    id: me?.fbId,
+                    type: "channel",
+                  })
+                }
+              >
                 <ShareIcon />
                 Share
               </Button>
@@ -29,23 +39,15 @@ export const ProfileHeaderUserBar = ({ className }: { className?: string }) => {
         }
       </Loadable>
       <div className="flex w-1/5 flex-col items-center gap-2">
-        <Button size="lg" variant="secondary" className="w-full" onClick={() => openModal('ProfileSettingsModal')}>
+        <Button
+          size="lg"
+          variant="secondary"
+          className="w-full"
+          onClick={() => openModal("ProfileSettingsModal")}
+        >
           Edit Profile
         </Button>
-        <div className="flex w-full items-center justify-between">
-          <div className="flex items-center gap-2">
-            <p className="text-2xl font-bold text-white">
-              {(1232).toLocaleString()}
-            </p>
-            <p className="text-white">Followers</p>
-          </div>
-          <div className="flex items-center gap-2">
-            <p className="text-2xl font-bold text-white">
-              {(120).toLocaleString()}
-            </p>
-            <p className="text-white">Following</p>
-          </div>
-        </div>
+        <ChannelSubscriptions channel={me} />
       </div>
     </div>
   );

@@ -10,22 +10,28 @@ import { IconButton } from "@/components/ui/icon-button";
 import { MeatballIcon } from "@/components/ui/icons/meatball";
 import { Separator } from "@/components/ui/separator";
 import { useModals } from "@/hooks/use-modals";
+import { useMe } from "@/features/auth/queries/use-me";
 import { useDeleteSocialPost } from "@/features/social/mutations/use-delete-social-post";
 import { usePinSocialPost } from "@/features/social/mutations/use-pin-social-post";
 import { useSocialPostOwned } from "@/features/social/hooks/use-social-post-owned";
 import { useIsSuperAdmin } from "@/features/auth/hooks/use-is-super-admin";
 import { useSocialPostContext } from "@/features/social/components/social-post/social-post-context";
-import { useMe } from "@/features/auth/queries/use-me";
+import { useIsChannelMuted } from "@/features/auth/hooks/use-is-channel-muted";
+import { useMuteChannel } from "@/features/channels/mutations/use-mute-channel";
+import { useUnmuteChannel } from "@/features/channels/mutations/use-unmute-channel";
 
 export const SocialPostMenu = ({ socialPost }: { socialPost: SocialPost }) => {
-  const [me] = useMe();
+  const { data: me } = useMe();
   const [open, setOpen] = useState(false);
   const { openModal } = useModals();
-  const { pinUpdates } = useSocialPostContext();
+  const { pinUpdates, muteUpdates, unmuteUpdates } = useSocialPostContext();
   const deleteSocialPost = useDeleteSocialPost();
   const pinPost = usePinSocialPost({ optimisticUpdates: pinUpdates });
+  const muteUser = useMuteChannel({ optimisticUpdates: muteUpdates });
+  const unmuteUser = useUnmuteChannel({ optimisticUpdates: unmuteUpdates });
   const isSuperAdmin = useIsSuperAdmin();
   const isOwned = useSocialPostOwned(socialPost);
+  const hasMuted = useIsChannelMuted(socialPost.userId);
 
   if (!me) {
     return null;
@@ -72,6 +78,35 @@ export const SocialPostMenu = ({ socialPost }: { socialPost: SocialPost }) => {
                 Delete
               </DropdownMenuItem>
             </DropdownMenuGroup>
+          )}
+          {!isOwned && (
+            <>
+              <DropdownMenuGroup>
+                <DropdownMenuItem
+                  variant="destructive"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    openModal("ConfirmModal", {
+                      title: hasMuted ? "Unmute" : "Mute",
+                      description: `Are you sure you want to ${hasMuted ? "unmute" : "mute"} this channel?`,
+                      onConfirm: () => {
+                        if (hasMuted) {
+                          unmuteUser.mutate({
+                            userId: socialPost.userId,
+                          });
+                        } else {
+                          muteUser.mutate({
+                            userId: socialPost.userId,
+                          });
+                        }
+                      },
+                    });
+                  }}
+                >
+                  {hasMuted ? "Unmute" : "Mute"}
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+            </>
           )}
           {isSuperAdmin && (
             <>

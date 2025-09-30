@@ -66,7 +66,7 @@ const SocialPostDetails = ({
   socialPost: Optimistic<SocialPost>;
 }) => {
   const { openModal } = useModals();
-  const [me] = useMe();
+  const { data: me } = useMe();
   const [replyComment, setReplyComment] = useState<CommentPost | null>(null);
   const { optimisticUpdates } = useSocialPostById(socialPost._id);
   const { optimisticUpdates: comments } = useComments(socialPost._id);
@@ -89,7 +89,8 @@ const SocialPostDetails = ({
             ]}
             onShareOpen={() =>
               openModal("ShareModal", {
-                post: socialPost,
+                id: socialPost._id,
+                type: "social",
               })
             }
           >

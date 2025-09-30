@@ -40,3 +40,11 @@ export const formatBytes = (bytes: number, decimals: number = 2): string => {
 
   return `${value} ${sizes[i]}`;
 };
+
+export const prune = (objectToPrune: object) => {
+  return Object.fromEntries(
+    Object.entries(objectToPrune).filter(
+      ([_, value]) => value !== undefined && value !== null && value !== "",
+    ),
+  );
+};

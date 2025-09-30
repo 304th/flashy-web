@@ -19,7 +19,7 @@ export const pinPost =
   };
 
 export const useSocialFeedPinUpdates = () => {
-  const [me] = useMe();
+  const { data: me } = useMe();
   const { optimisticUpdates: socialFeed } = useSocialPosts();
 
   return [

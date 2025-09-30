@@ -1,8 +1,8 @@
-import {PropsWithChildren, useMemo} from "react";
+import { PropsWithChildren, useMemo } from "react";
 import { RepIcon } from "@/components/ui/icons/rep";
 import { VerifiedIcon } from "@/components/ui/icons/verified";
 import { ModeratorIcon } from "@/components/ui/icons/moderator";
-import { useRepsAndMods } from "@/features/channels/queries/useRepsAndMods";
+import { useRepsAndMods } from "@/features/channels/queries/use-reps-and-mods";
 
 export const UserBadge = ({
   user,
@@ -14,7 +14,7 @@ export const UserBadge = ({
   const [repsAndMods] = useRepsAndMods();
   const foundUser = useMemo(() => {
     if (!repsAndMods) {
-      return null
+      return null;
     }
 
     return repsAndMods[user.fbId];

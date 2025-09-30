@@ -17,7 +17,7 @@ export const relightSocialPost =
   };
 
 export const useSocialFeedRelightUpdates = () => {
-  const [me] = useMe();
+  const { data: me } = useMe();
   const { optimisticUpdates: socialFeed } = useSocialPosts();
 
   return [

@@ -3,7 +3,7 @@ import { socialFeedCollection } from "@/features/social/collections/social-feed"
 import { usePartitionedQuery } from "@/lib/query-toolkit";
 
 export const useSocialPosts = () => {
-  const [me] = useMe();
+  const { data: me } = useMe();
 
   return usePartitionedQuery<SocialPost, { userId?: string }>({
     collection: socialFeedCollection,

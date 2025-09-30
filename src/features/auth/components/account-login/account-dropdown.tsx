@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Link from "next/link";
 import {
   UserIcon,
   VideoIcon,
@@ -14,25 +15,33 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { UserAvatar } from "@/components/ui/user-avatar";
 import { useMe } from "@/features/auth/queries/use-me";
 import { useLogout } from "@/features/auth/queries/use-logout";
-import { UserAvatar } from "@/components/ui/user-avatar";
-import Link from "next/link";
+import { usePathnameChangedEffect } from "@/hooks/use-pathname-changed-effect";
+import { useModals } from "@/hooks/use-modals";
 
 export const AccountDropdown = () => {
-  const [me] = useMe();
+  const { data: me } = useMe();
   const [open, setOpen] = useState(false);
   const logout = useLogout();
+  const { openModal } = useModals();
+
+  usePathnameChangedEffect(() => {
+    setOpen(false);
+  });
 
   return (
     <div className="relative" onMouseLeave={() => setOpen(false)}>
       {open && <div className="absolute w-[60px] h-8 right-0 bottom-[-8px]" />}
       <DropdownMenu modal={false} open={open}>
         <DropdownMenuTrigger asChild>
-          <UserAvatar
-            avatar={me?.userimage}
-            onMouseEnter={() => setOpen(true)}
-          />
+          <Link href="/profile/social">
+            <UserAvatar
+              avatar={me?.userimage}
+              onMouseEnter={() => setOpen(true)}
+            />
+          </Link>
         </DropdownMenuTrigger>
         <DropdownMenuContent
           className="w-[320px] bg-base-300 border-base-400"
@@ -60,21 +69,30 @@ export const AccountDropdown = () => {
                 </div>
               </DropdownMenuItem>
             </Link>
-            <DropdownMenuItem>
-              <div className="flex items-center gap-2 p-1">
-                <VideoIcon />
-                <p>My Videos</p>
-              </div>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <div className="flex items-center gap-2 p-1">
-                <WalletIcon />
-                <p>My Wallet</p>
-              </div>
-            </DropdownMenuItem>
+            <Link href="/profile/video">
+              <DropdownMenuItem>
+                <div className="flex items-center gap-2 p-1">
+                  <VideoIcon />
+                  <p>My Videos</p>
+                </div>
+              </DropdownMenuItem>
+            </Link>
+            <Link href="/profile/wallet">
+              <DropdownMenuItem>
+                <div className="flex items-center gap-2 p-1">
+                  <WalletIcon />
+                  <p>My Wallet</p>
+                </div>
+              </DropdownMenuItem>
+            </Link>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => {
+              openModal("ProfileSettingsModal");
+              setOpen(false);
+            }}
+          >
             <div className="flex items-center gap-2 p-1">
               <SettingsIcon />
               Settings

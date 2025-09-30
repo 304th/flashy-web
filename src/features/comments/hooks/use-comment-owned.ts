@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useMe } from "@/features/auth/queries/use-me";
 
 export const useCommentOwned = (comment: CommentPost | Reply) => {
-  const [me] = useMe();
+  const { data: me } = useMe();
 
   return useMemo(() => {
     if (!me) return false;

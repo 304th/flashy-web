@@ -24,7 +24,7 @@ const channelPostsCollection = createCollection<
   schema: socialPostSchema,
 });
 
-export const useChannelsSocialPosts = ({ userId }: { userId?: string }) => {
+export const useChannelSocialPosts = ({ userId }: { userId?: string }) => {
   return usePartitionedQuery<SocialPost, { userId: string; pageParam: number }>(
     {
       queryKey: ["channels", userId, "social"],

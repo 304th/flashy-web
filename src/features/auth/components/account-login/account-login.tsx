@@ -6,7 +6,7 @@ import { NotLoggedIn } from "@/features/auth/components/account-login/not-logged
 import { LoggedIn } from "@/features/auth/components/account-login/logged-in";
 
 export const AccountLogin = () => {
-  const [me, query] = useMe();
+  const { data: me, query } = useMe();
 
   return (
     <Loadable queries={[query]}>

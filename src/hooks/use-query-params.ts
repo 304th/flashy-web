@@ -1,21 +1,25 @@
 import { useSearchParams } from "next/navigation";
 
-export function useQueryParams(param: string): string | null;
+export function useQueryParams(param: string): string | undefined;
 export function useQueryParams<T>(
   param: string,
-  modifier: (queryParam: string | null) => T,
+  modifier: (queryParam: string | undefined) => T,
 ): T;
 export function useQueryParams<T>(
   param: string,
-  modifier?: (queryParam: string | null) => T,
-): T | string | null {
+  modifier?: (queryParam: string | undefined) => T,
+): T | string | undefined {
   const searchParams = useSearchParams();
 
   if (!searchParams) {
-    return null;
+    return undefined;
   }
 
-  const queryParam = searchParams.get(param);
+  const queryParam = searchParams.get(param) || undefined;
+
+  if (!queryParam) {
+    return undefined;
+  }
 
   return modifier ? modifier(queryParam) : queryParam;
 }

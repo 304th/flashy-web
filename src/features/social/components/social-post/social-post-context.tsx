@@ -4,7 +4,9 @@ import type { AddReactionParams } from "@/features/reactions/queries/use-add-rea
 import type { RemoveReactionParams } from "@/features/reactions/queries/use-remove-reaction";
 import type { RelightSocialPostParams } from "@/features/social/mutations/use-relight-social-post";
 import type { VotePollParams } from "@/features/social/mutations/use-vote-poll";
-import { PinSocialPostParams } from "@/features/social/mutations/use-pin-social-post";
+import type { PinSocialPostParams } from "@/features/social/mutations/use-pin-social-post";
+import type { MuteChannelParams } from "@/features/channels/mutations/use-mute-channel";
+import type { UnmuteChannelParams } from "@/features/channels/mutations/use-unmute-channel";
 
 interface SocialPostContextType {
   likeUpdates?: OptimisticUpdate<AddReactionParams>[];
@@ -12,6 +14,8 @@ interface SocialPostContextType {
   relightUpdates?: OptimisticUpdate<RelightSocialPostParams>[];
   votePollUpdates?: OptimisticUpdate<VotePollParams>[];
   pinUpdates?: OptimisticUpdate<PinSocialPostParams>[];
+  muteUpdates?: OptimisticUpdate<MuteChannelParams>[];
+  unmuteUpdates?: OptimisticUpdate<UnmuteChannelParams>[];
   onCommentsOpen?: (postId: string) => void;
   onShareOpen?: (socialPost: SocialPost) => void;
 }
@@ -36,6 +40,8 @@ export const SocialPostProvider = ({
   relightUpdates,
   votePollUpdates,
   pinUpdates,
+  muteUpdates,
+  unmuteUpdates,
   onCommentsOpen,
   onShareOpen,
   children,
@@ -48,6 +54,8 @@ export const SocialPostProvider = ({
         relightUpdates,
         votePollUpdates,
         pinUpdates,
+        muteUpdates,
+        unmuteUpdates,
         onCommentsOpen,
         onShareOpen,
       }}

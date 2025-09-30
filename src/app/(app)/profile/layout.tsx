@@ -1,23 +1,61 @@
 "use client";
 
-import { ReactNode } from "react";
+import { type ReactNode, useEffect } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { ProfileHeader } from "@/features/profile/components/profile-header/profile-header";
 import { ChannelPageTabs } from "@/features/channels/components/channel-page-tabs/channel-page-tabs";
-import { usePathname } from "next/navigation";
+import { getTabNameFromPathname } from "@/features/channels/utils/get-tab-name-from-pathname";
+import { capitalize } from "media-chrome/utils/utils";
+import { useAuthedUser } from "@/features/auth/hooks/use-authed-user";
+
+const profileTabs = [
+  {
+    key: "social",
+    label: "Social",
+    path: "/profile/social",
+  },
+  {
+    key: "video",
+    label: "Video",
+    path: "/profile/video",
+  },
+  {
+    key: "about",
+    label: "About",
+    path: "/profile/about",
+  },
+  {
+    key: "wallet",
+    label: "Wallet",
+    path: "/profile/wallet",
+  },
+];
 
 export default function ProfileLayout({
   children,
 }: Readonly<{
   children: ReactNode;
 }>) {
+  const router = useRouter();
   const pathname = usePathname();
+  const tabName = getTabNameFromPathname(pathname);
+  const user = useAuthedUser();
+
+  useEffect(() => {
+    if (!user) {
+      router.push("/");
+    }
+  }, [user]);
 
   return (
     <div className="relative flex flex-col gap-4 w-full">
       <ProfileHeader />
-      <div className="flex w-full justify-center items-center">
-        <ChannelPageTabs />
+      <div className="relative flex w-full justify-center items-center">
+        <p className="absolute left-0 text-xl text-white font-bold">
+          {capitalize(tabName)}
+        </p>
+        <ChannelPageTabs currentTab={tabName} tabs={profileTabs} />
       </div>
       <AnimatePresence initial={false}>
         <motion.div

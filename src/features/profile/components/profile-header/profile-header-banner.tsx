@@ -12,7 +12,11 @@ export const ProfileHeaderBanner = () => {
     >
       <motion.div
         className="absolute w-[110%] h-[110%] flex bg-cover bg-center m-[-40px]"
-        style={{ y, scale, backgroundImage: "url('/images/channel-placeholder.png')" }}
+        style={{
+          y,
+          scale,
+          backgroundImage: "url('/images/channel-placeholder.png')",
+        }}
       />
     </motion.div>
   );

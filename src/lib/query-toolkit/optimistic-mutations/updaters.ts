@@ -20,6 +20,10 @@ export interface OptimisticUpdater<Entity, State> {
   replaceAt: (index: number, item: Optimistic<Entity>, state: State) => State;
   replaceLast: (item: Optimistic<Entity>, state: State) => State;
   move: (id: string, position: number, state: State) => State;
+  filter: (
+    updateFn: (item: Optimistic<Entity>) => boolean,
+    state: State,
+  ) => State;
 }
 
 export class PartitionedOptimisticUpdater<Entity>
@@ -55,6 +59,17 @@ export class PartitionedOptimisticUpdater<Entity>
           updateFn(page[foundIndex]);
         }
       });
+    });
+  }
+
+  filter(
+    filterFn: (item: Optimistic<Entity>) => boolean,
+    state: Paginated<Entity[]>,
+  ) {
+    return produce(state, (draft) => {
+      draft.pages = draft.pages.map((page) =>
+        page.filter((item) => filterFn(item as Optimistic<Entity>)),
+      );
     });
   }
 
@@ -288,6 +303,12 @@ export class LiveOptimisticUpdater<Entity>
       const targetIndex = Math.max(0, Math.min(position, draft.length));
 
       draft.splice(targetIndex, 0, targetItem as Draft<Optimistic<Entity>>);
+    });
+  }
+
+  filter(filterFn: (item: Optimistic<Entity>) => boolean, state: Entity[]) {
+    return produce(state, (draft) => {
+      return draft.filter(filterFn as (item: Draft<Entity>) => boolean);
     });
   }
 }

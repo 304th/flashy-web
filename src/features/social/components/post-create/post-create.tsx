@@ -5,7 +5,7 @@ import { PostForm } from "@/features/social/components/post-create/post-form";
 import { useMe } from "@/features/auth/queries/use-me";
 
 export const PostCreate = ({ onSuccess }: { onSuccess?: () => void }) => {
-  const [me] = useMe();
+  const { data: me } = useMe();
 
   if (!me) {
     return null;

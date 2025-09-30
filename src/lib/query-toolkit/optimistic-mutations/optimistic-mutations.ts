@@ -164,6 +164,16 @@ export class CollectionOptimisticMutations<Entity, State> {
     });
   }
 
+  async filter(
+    filterFn: (state: Draft<Optimistic<Entity>>) => void,
+    options: OptimisticUpdaterOptions<Entity> = { sync: false, rollback: true },
+  ) {
+    return this.execute({
+      update: (state: State): State => this.updater.filter(filterFn, state),
+      options,
+    });
+  }
+
   public rollback() {
     const runRollback = this.rollbacks.pop();
 

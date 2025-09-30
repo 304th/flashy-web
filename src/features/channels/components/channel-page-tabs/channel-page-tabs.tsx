@@ -1,36 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { TabMenu } from "@/components/ui/tabs/tabs";
 
-const tabs = [
-  {
-    key: "social",
-    label: "Social",
-    path: "/profile/social",
-  },
-  {
-    key: "video",
-    label: "Video",
-    path: "/profile/video",
-  },
-  {
-    key: "about",
-    label: "About",
-    path: "/profile/about",
-  },
-  {
-    key: "wallet",
-    label: "Wallet",
-    path: "/profile/wallet",
-  },
-];
-
-export const ChannelPageTabs = () => {
-  const pathname = usePathname();
+export const ChannelPageTabs = ({
+  currentTab,
+  tabs,
+}: {
+  currentTab: string;
+  tabs: { key: string; label: string; path: string }[];
+}) => {
+  const searchParams = useSearchParams();
+  const queryString = searchParams.toString();
   const defaultTab =
-    tabs.find((tab) => tab.path === pathname)?.label || "wallet";
+    tabs.find((tab) => tab.key === currentTab)?.label || "wallet";
 
   return (
     <TabMenu.Root
@@ -42,9 +26,12 @@ export const ChannelPageTabs = () => {
           <TabMenu.Trigger
             key={key}
             value={label}
-            className="cursor-pointer z-1"
+            className="cursor-pointer z-1 hover:text-white"
           >
-            <Link href={path} className="w-full h-full px-4 flex items-center">
+            <Link
+              href={queryString ? [path, queryString].join("?") : path}
+              className="w-full h-full px-4 flex items-center"
+            >
               {label}
             </Link>
           </TabMenu.Trigger>

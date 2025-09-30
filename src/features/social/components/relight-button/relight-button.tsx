@@ -17,7 +17,7 @@ export const RelightButton = ({
   post: Relightable;
   relightUpdates?: OptimisticUpdate<RelightSocialPostParams>[];
 }) => {
-  const [me] = useMe();
+  const { data: me } = useMe();
   const isRelighted = useHasRelighted(post);
   const relitsCount = useRelightsCount(post);
   const relightPost = useRelightSocialPost({

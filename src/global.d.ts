@@ -47,6 +47,12 @@ declare global {
     moderator?: boolean;
     representative?: boolean;
     superAdmin?: boolean;
+    mutedUsers?: string[];
+    bio?: string;
+    banner?: string;
+    links?: Record<string, string>;
+    followersCount?: number;
+    followingCount?: number;
   }
 
   interface Author {

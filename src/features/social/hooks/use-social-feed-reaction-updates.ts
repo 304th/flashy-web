@@ -22,7 +22,7 @@ export const deleteReactionFromPost =
   };
 
 export const useSocialFeedUpdatesOnReactionAdd = () => {
-  const [me] = useMe();
+  const { data: me } = useMe();
   const { optimisticUpdates: socialFeed } = useSocialPosts();
 
   return [
@@ -33,7 +33,7 @@ export const useSocialFeedUpdatesOnReactionAdd = () => {
 };
 
 export const useSocialFeedUpdatesOnReactionRemove = () => {
-  const [me] = useMe();
+  const { data: me } = useMe();
   const { optimisticUpdates: socialFeed } = useSocialPosts();
 
   return [

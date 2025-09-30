@@ -24,7 +24,7 @@ export const PostCommentsModal = ({
   onClose,
   ...props
 }: PostCommentsModalProps) => {
-  const [me] = useMe();
+  const { data: me } = useMe();
   const [replyComment, setReplyComment] = useState<CommentPost | null>(null);
   const { optimisticUpdates: socialFeed } = useSocialPosts();
   const [socialPost] = useSubsetQuery<SocialPost, SocialPost[]>({
@@ -36,9 +36,9 @@ export const PostCommentsModal = ({
   });
 
   const { optimisticUpdates: comments } = useComments(postId);
-  const likeUpdates = useSocialFeedUpdatesOnReactionAdd();
-  const unlikeUpdates = useSocialFeedUpdatesOnReactionRemove();
-  const relightUpdates = useSocialFeedRelightUpdates();
+  // const likeUpdates = useSocialFeedUpdatesOnReactionAdd();
+  // const unlikeUpdates = useSocialFeedUpdatesOnReactionRemove();
+  // const relightUpdates = useSocialFeedRelightUpdates();
 
   if (!socialPost) {
     //FIXME: put lower so that modal is not glitched out
@@ -59,13 +59,7 @@ export const PostCommentsModal = ({
           className="relative flex flex-col gap-4 w-full bg-base-200 border-b
             z-1"
         >
-          <SocialPost
-            socialPost={socialPost}
-            likeUpdates={likeUpdates}
-            unlikeUpdates={unlikeUpdates}
-            relightUpdates={relightUpdates}
-            className="rounded-b-none"
-          />
+          <SocialPost socialPost={socialPost} className="rounded-b-none" />
         </div>
         <CommentsFeed
           post={socialPost}

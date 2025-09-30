@@ -15,6 +15,8 @@ import { useSocialFeedRelightUpdates } from "@/features/social/hooks/use-social-
 import { useSocialFeedVotePollUpdates } from "@/features/social/hooks/use-social-feed-vote-poll-updates";
 import { SocialPostProvider } from "@/features/social/components/social-post/social-post-context";
 import { useSocialFeedPinUpdates } from "@/features/social/hooks/use-social-feed-pin-updates";
+import { useSocialFeedMuteUpdates } from "@/features/social/hooks/use-social-feed-mute-updates";
+import { useSocialFeedUnmuteUpdates } from "@/features/social/hooks/use-social-feed-unmute-updates";
 
 export const SocialFeed = () => {
   const { data, query } = useSocialPosts();
@@ -23,6 +25,8 @@ export const SocialFeed = () => {
   const relightUpdates = useSocialFeedRelightUpdates();
   const votePollUpdates = useSocialFeedVotePollUpdates();
   const pinUpdates = useSocialFeedPinUpdates();
+  const muteUpdates = useSocialFeedMuteUpdates();
+  const unmuteUpdates = useSocialFeedUnmuteUpdates();
   const { openModal } = useModals();
 
   return (
@@ -33,6 +37,8 @@ export const SocialFeed = () => {
         relightUpdates={relightUpdates}
         votePollUpdates={votePollUpdates}
         pinUpdates={pinUpdates}
+        muteUpdates={muteUpdates}
+        unmuteUpdates={unmuteUpdates}
         onCommentsOpen={(postId: string) =>
           openModal("PostCommentsModal", {
             postId: postId,
@@ -40,7 +46,8 @@ export const SocialFeed = () => {
         }
         onShareOpen={(socialPost: SocialPost) => {
           openModal("ShareModal", {
-            post: socialPost,
+            id: socialPost._id,
+            type: "social",
           });
         }}
       >

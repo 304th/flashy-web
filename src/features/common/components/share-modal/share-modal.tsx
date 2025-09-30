@@ -18,23 +18,32 @@ import { Button } from "@/components/ui/button";
 import { defaultVariants } from "@/lib/framer";
 
 export interface ShareModalProps {
-  post: Shareable;
+  id: string;
+  type: "social" | "video" | "channel";
+  title: string;
   onConfirm(): void;
   onCancel?(): void;
   onClose(): void;
 }
 
 export const ShareModal = ({
-  post,
+  id,
+  type,
   onConfirm,
   onCancel,
   onClose,
   ...props
 }: ShareModalProps) => {
-  const shareableLink = useMemo(
-    () => (typeof window !== "undefined" ? window.location.href : ""),
-    [],
-  );
+  const [url, title] = useMemo(() => {
+    const info = getShareableInfo(id, type);
+
+    return [
+      typeof window !== "undefined"
+        ? window.location.origin + info.path
+        : info.path,
+      info.title,
+    ];
+  }, [id, type]);
 
   return (
     <Modal onClose={onClose} className={"!p-0"} {...props}>
@@ -64,11 +73,7 @@ export const ShareModal = ({
             variants={defaultVariants.child}
           >
             <motion.div whileHover={{ scale: 1.2 }}>
-              <TwitterShareButton
-                title="Flashy Social Post"
-                url={shareableLink}
-                className="flex"
-              >
+              <TwitterShareButton title={title} url={url} className="flex">
                 <XIcon borderRadius={8} size={56} />
               </TwitterShareButton>
             </motion.div>
@@ -78,11 +83,7 @@ export const ShareModal = ({
             variants={defaultVariants.child}
           >
             <motion.div whileHover={{ scale: 1.2 }}>
-              <TelegramShareButton
-                title="Flashy Social Post"
-                url={shareableLink}
-                className="flex"
-              >
+              <TelegramShareButton title={title} url={url} className="flex">
                 <TelegramIcon borderRadius={8} size={56} />
               </TelegramShareButton>
             </motion.div>
@@ -92,11 +93,7 @@ export const ShareModal = ({
             variants={defaultVariants.child}
           >
             <motion.div whileHover={{ scale: 1.2 }}>
-              <ThreadsShareButton
-                title="Flashy Social Post"
-                url={shareableLink}
-                className="flex"
-              >
+              <ThreadsShareButton title={title} url={url} className="flex">
                 <ThreadsIcon borderRadius={8} size={56} />
               </ThreadsShareButton>
             </motion.div>
@@ -106,11 +103,7 @@ export const ShareModal = ({
             variants={defaultVariants.child}
           >
             <motion.div whileHover={{ scale: 1.2 }}>
-              <WhatsappShareButton
-                title="Flashy Social Post"
-                url={shareableLink}
-                className="flex"
-              >
+              <WhatsappShareButton title={title} url={url} className="flex">
                 <WhatsappIcon borderRadius={8} size={56} />
               </WhatsappShareButton>
             </motion.div>
@@ -120,11 +113,7 @@ export const ShareModal = ({
             variants={defaultVariants.child}
           >
             <motion.div whileHover={{ scale: 1.2 }}>
-              <BlueskyShareButton
-                title="Flashy Social Post"
-                url={shareableLink}
-                className="flex"
-              >
+              <BlueskyShareButton title={title} url={url} className="flex">
                 <BlueskyIcon borderRadius={8} size={56} />
               </BlueskyShareButton>
             </motion.div>
@@ -145,3 +134,27 @@ const Modal = (props: any) => (
       sm:w-full overflow-hidden ${props.className}`}
   />
 );
+
+const getShareableInfo = (
+  id: ShareModalProps["id"],
+  type: ShareModalProps["type"],
+): { path: string; title: string } => {
+  switch (type) {
+    case "social":
+      return {
+        path: `/social/post?id=${id}`,
+        title: "Check out this post",
+      };
+    case "video":
+      return {
+        path: `/video/post?id=${id}`,
+        title: "Check out this video",
+      };
+    case "channel":
+    default:
+      return {
+        path: `/channel/social?id=${id}`,
+        title: "Check out this channel",
+      };
+  }
+};

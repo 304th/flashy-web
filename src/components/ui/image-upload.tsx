@@ -9,7 +9,10 @@ import { formatBytes } from "@/lib/utils";
 export interface ImageUploadProps {
   accept?: string;
   maxAllowedSize?: number;
+  title?: string;
+  description?: string;
   initialPreview?: string;
+  withBrowseButton?: boolean;
   className?: string;
   onChange: (file: File | null) => void;
   onError?: (error: string) => void;
@@ -18,12 +21,17 @@ export interface ImageUploadProps {
 export const ImageUpload = ({
   accept = "image/jpeg,image/png,image/jpg,image/gif",
   maxAllowedSize = config.content.uploads.maxSize,
+  title,
+  description,
   initialPreview,
+  withBrowseButton = false,
   className,
   onChange,
   onError,
 }: ImageUploadProps) => {
-  const [preview, setPreview] = useState<string | null>(() => initialPreview ?? null);
+  const [preview, setPreview] = useState<string | null>(
+    () => initialPreview ?? null,
+  );
   const formattedSizeLimit = useMemo(
     () => formatBytes(maxAllowedSize, 0),
     [maxAllowedSize],
@@ -45,7 +53,7 @@ export const ImageUpload = ({
 
   return (
     <FileUpload.Root
-      className={`relative overflow-hidden ${className}`}
+      className={`relative ${className}`}
       onDrop={(e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -65,19 +73,26 @@ export const ImageUpload = ({
           handleFilesUpload(Array.from(e.target.files || []));
         }}
       />
-      <FileUpload.Icon className="relative z-1" as={UploadCloudIcon} />
-      <div className="relative space-y-1.5 z-1">
-        <div className="text-label-sm text-text-strong-950">
-          Choose an image or drag & drop it here.
-        </div>
-        <div className="text-paragraph-xs text-text-sub-600">
-          JPEG, PNG, GIF formats, up to {formattedSizeLimit}.
-        </div>
+      <FileUpload.Icon
+        className="relative z-2 text-white"
+        as={UploadCloudIcon}
+      />
+      <div className="relative space-y-1.5 z-2">
+        {title && <div className="text-label-sm text-white">{title}</div>}
+        {description && (
+          <div className="text-paragraph-xs text-white">{description}</div>
+        )}
+        <p className="text-xs text-white">Up to {formattedSizeLimit}</p>
       </div>
-      <FileUpload.Button>Browse File</FileUpload.Button>
+      {withBrowseButton && (
+        <FileUpload.Button className="relative z-2 text-white">
+          Browse File
+        </FileUpload.Button>
+      )}
       {preview && (
         <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat z-1"
+          className={`absolute inset-0 bg-cover bg-center bg-no-repeat z-1
+          opacity-40 ${className}`}
           style={{ backgroundImage: `url(${preview})` }}
         />
       )}

@@ -1,9 +1,7 @@
-import { config } from "@/services/config";
-import { forwardRef, useState, useImperativeHandle, useEffect } from "react";
+import { forwardRef, useImperativeHandle, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { PlusIcon, XIcon } from "lucide-react";
 import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
-import { toast } from "sonner";
 import { PictureIcon } from "@/components/ui/icons/picture";
 import { PollIcon } from "@/components/ui/icons/poll";
 import { EyeIcon } from "@/components/ui/icons/eye";
@@ -53,36 +51,6 @@ export const PostOptions = forwardRef((_, ref) => {
 
   const handleCloseVisibility = () => {
     setShowVisibility(false);
-  };
-
-  const onFilesAdd = (newFiles: File[]) => {
-    const currentImages = context.getValues("images") || [];
-    context.setValue("images", [...currentImages, ...newFiles], { shouldDirty: true });
-  };
-
-  const handleFilesUpload = (files: File[]) => {
-    if (files.length === 0) {
-      return;
-    }
-
-    const maxSize = config.content.uploads.maxSize;
-    const validFiles: File[] = [];
-    let hasError = false;
-
-    for (const file of files) {
-      if (file.size > maxSize) {
-        toast.error(`File "${file.name}" size must be less than 2 MB.`);
-        hasError = true;
-      } else {
-        validFiles.push(file);
-      }
-    }
-
-    if (validFiles.length > 0) {
-      onFilesAdd(validFiles);
-    } else if (!hasError) {
-      toast.error("No valid files selected.");
-    }
   };
 
   return (
@@ -135,19 +103,6 @@ export const PostOptions = forwardRef((_, ref) => {
         >
           <EyeIcon />
         </IconButton>
-
-        <input
-          id="file-upload"
-          type="file"
-          accept="image/jpeg,image/png,image/jpg,image/gif"
-          multiple
-          tabIndex={-1}
-          className="hidden"
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            handleFilesUpload(Array.from(e.target.files || []));
-            e.target.value = "";
-          }}
-        />
       </div>
     </div>
   );

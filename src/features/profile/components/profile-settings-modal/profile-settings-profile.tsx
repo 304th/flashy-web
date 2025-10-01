@@ -13,7 +13,7 @@ export const ProfileSettingsProfile = () => {
   return (
     <div
       className="flex flex-col gap-3 p-4 w-full grow items-center h-full
-        overflow-scroll"
+        overflow-scroll disable-scroll-bar"
     >
       <ImageUpload
         title="Upload Banner"

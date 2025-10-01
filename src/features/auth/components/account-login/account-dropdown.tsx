@@ -57,7 +57,7 @@ export const AccountDropdown = () => {
                 overflow-hidden text-ellipsis w-full"
             >
               <UserAvatar avatar={me?.userimage} />
-              <p className="text-white font-extrabold">{me?.username}</p>
+              <p className="text-white font-extrabold ellipsis">{me?.username}</p>
             </div>
           </div>
           <DropdownMenuGroup>

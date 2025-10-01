@@ -13,6 +13,11 @@ import {
 import { useSocialFeedRelightUpdates } from "@/features/social/hooks/use-social-feed-relight-updates";
 import { useComments } from "@/features/comments/queries/use-comments";
 import { useSocialPosts } from "@/features/social/queries/use-social-posts";
+import { useSocialFeedVotePollUpdates } from "../../hooks/use-social-feed-vote-poll-updates";
+import { useSocialFeedPinUpdates } from "../../hooks/use-social-feed-pin-updates";
+import { useSocialFeedMuteUpdates } from "../../hooks/use-social-feed-mute-updates";
+import { useSocialFeedUnmuteUpdates } from "../../hooks/use-social-feed-unmute-updates";
+import { SocialPostProvider } from "../social-post/social-post-context";
 
 export interface PostCommentsModalProps {
   postId: string;
@@ -35,6 +40,14 @@ export const PostCommentsModal = ({
     deps: [postId],
   });
 
+  const likeUpdates = useSocialFeedUpdatesOnReactionAdd();
+  const unlikeUpdates = useSocialFeedUpdatesOnReactionRemove();
+  const relightUpdates = useSocialFeedRelightUpdates();
+  const votePollUpdates = useSocialFeedVotePollUpdates();
+  const pinUpdates = useSocialFeedPinUpdates();
+  const muteUpdates = useSocialFeedMuteUpdates();
+  const unmuteUpdates = useSocialFeedUnmuteUpdates();
+
   const { optimisticUpdates: comments } = useComments(postId);
   // const likeUpdates = useSocialFeedUpdatesOnReactionAdd();
   // const unlikeUpdates = useSocialFeedUpdatesOnReactionRemove();
@@ -53,13 +66,24 @@ export const PostCommentsModal = ({
         </div>
       </div>
       <div
-        className="flex flex-col w-full overflow-y-scroll max-h-[70vh] mb-[1px]"
+        className="flex flex-col w-full overflow-y-scroll max-h-[70vh] mb-[1px] disable-scroll-bar"
       >
         <div
           className="relative flex flex-col gap-4 w-full bg-base-200 border-b
             z-1"
         >
+        <SocialPostProvider
+          likeUpdates={likeUpdates}
+          unlikeUpdates={unlikeUpdates}
+          relightUpdates={relightUpdates}
+          votePollUpdates={votePollUpdates}
+          pinUpdates={pinUpdates}
+          muteUpdates={muteUpdates}
+          unmuteUpdates={unmuteUpdates}
+        >
           <SocialPost socialPost={socialPost} className="rounded-b-none" />
+      </SocialPostProvider>
+        
         </div>
         <CommentsFeed
           post={socialPost}

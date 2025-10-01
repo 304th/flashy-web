@@ -1,8 +1,8 @@
 import { config } from "@/services/config";
-import { forwardRef, useState, useImperativeHandle, useId } from "react";
+import { forwardRef, useState, useImperativeHandle, useEffect } from "react";
 import { motion } from "framer-motion";
 import { PlusIcon, XIcon } from "lucide-react";
-import { useFieldArray, useFormContext } from "react-hook-form";
+import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 import { PictureIcon } from "@/components/ui/icons/picture";
 import { PollIcon } from "@/components/ui/icons/poll";
@@ -14,14 +14,13 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ImageUpload } from "@/components/ui/image-upload";
 import { defaultVariants } from "@/lib/framer";
 
 export const PostOptions = forwardRef((_, ref) => {
-  const [showImages, setShowImages] = useState<boolean>(false);
   const [showPoll, setShowPoll] = useState<boolean>(false);
   const [showVisibility, setShowVisibility] = useState<boolean>(false);
   const context = useFormContext();
+  const images = useWatch({ control: context.control, name: "images" }) || [];
   const { fields, append, remove } = useFieldArray({
     control: context.control,
     name: "poll",
@@ -29,8 +28,9 @@ export const PostOptions = forwardRef((_, ref) => {
 
   useImperativeHandle(ref, () => ({
     reset: () => {
-      setShowImages(false);
+      context.setValue("images", [], { shouldDirty: true });
       setShowPoll(false);
+      setShowVisibility(false);
     },
   }));
 
@@ -47,9 +47,47 @@ export const PostOptions = forwardRef((_, ref) => {
     setShowPoll(false);
   };
 
+  const handleShowVisibility = () => {
+    setShowVisibility(true);
+  };
+
+  const handleCloseVisibility = () => {
+    setShowVisibility(false);
+  };
+
+  const onFilesAdd = (newFiles: File[]) => {
+    const currentImages = context.getValues("images") || [];
+    context.setValue("images", [...currentImages, ...newFiles], { shouldDirty: true });
+  };
+
+  const handleFilesUpload = (files: File[]) => {
+    if (files.length === 0) {
+      return;
+    }
+
+    const maxSize = config.content.uploads.maxSize;
+    const validFiles: File[] = [];
+    let hasError = false;
+
+    for (const file of files) {
+      if (file.size > maxSize) {
+        toast.error(`File "${file.name}" size must be less than 2 MB.`);
+        hasError = true;
+      } else {
+        validFiles.push(file);
+      }
+    }
+
+    if (validFiles.length > 0) {
+      onFilesAdd(validFiles);
+    } else if (!hasError) {
+      toast.error("No valid files selected.");
+    }
+  };
+
   return (
     <div className="flex w-full flex-col justify-start gap-2">
-      {showImages && <ImageEditor />}
+      {images.length > 0 && <ImageEditor />}
       {showPoll && (
         <PollEditor
           fields={fields}
@@ -58,13 +96,14 @@ export const PostOptions = forwardRef((_, ref) => {
           onClose={handleClosePoll}
         />
       )}
-      {showVisibility && <VisibilityEditor onClose={handleClosePoll} />}
+      {showVisibility && <VisibilityEditor onClose={handleCloseVisibility} />}
       <div className="flex justify-start items-center gap-2">
         <IconButton
           type="button"
-          className={`hover:bg-blue-700 ${showImages && "bg-blue-700"}`}
+          className={`hover:bg-blue-700 ${images.length > 0 && "bg-blue-700"}`}
           onClick={() => {
-            setShowImages((state) => !state);
+            const fileInput = document.getElementById('file-upload');
+            fileInput?.click();
           }}
         >
           <PictureIcon />
@@ -87,11 +126,28 @@ export const PostOptions = forwardRef((_, ref) => {
           type="button"
           className={`hover:bg-[#ab05a0] ${showVisibility && "bg-[#ab05a0]"}`}
           onClick={() => {
-            setShowVisibility((state) => !state);
+            if (showVisibility) {
+              handleCloseVisibility();
+            } else {
+              handleShowVisibility();
+            }
           }}
         >
           <EyeIcon />
         </IconButton>
+
+        <input
+          id="file-upload"
+          type="file"
+          accept="image/jpeg,image/png,image/jpg,image/gif"
+          multiple
+          tabIndex={-1}
+          className="hidden"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            handleFilesUpload(Array.from(e.target.files || []));
+            e.target.value = "";
+          }}
+        />
       </div>
     </div>
   );
@@ -162,6 +218,68 @@ const PollEditor = ({
 
 const ImageEditor = () => {
   const context = useFormContext();
+  const images = useWatch({ control: context.control, name: "images" }) || [];
+  const [urls, setUrls] = useState<Map<File, string>>(new Map());
+
+  useEffect(() => {
+    const newUrls = new Map(urls);
+
+    images.forEach((file) => {
+      if (!newUrls.has(file)) {
+        newUrls.set(file, URL.createObjectURL(file));
+      }
+    });
+
+    for (const [file, url] of urls) {
+      if (!images.includes(file)) {
+        URL.revokeObjectURL(url);
+        newUrls.delete(file);
+      }
+    }
+
+    setUrls(newUrls);
+  }, [images]);
+
+  useEffect(() => {
+    return () => {
+      urls.forEach((url) => {
+        URL.revokeObjectURL(url);
+      });
+    };
+  }, []);
+
+  const removeImage = (index: number) => {
+    const newImages = [...images];
+    newImages.splice(index, 1);
+    context.setValue("images", newImages, { shouldDirty: true });
+  };
+
+  return (
+    <div className="flex w-full py-2">
+      <div className="flex flex-wrap gap-2">
+        {images.map((file, index) => (
+          <div key={`${file.name}-${file.size}-${file.type}`} className="relative w-20 h-20">
+            <img
+              src={urls.get(file)}
+              alt={`preview ${index}`}
+              className="w-full h-full object-cover rounded"
+            />
+            <button
+              onClick={() => removeImage(index)}
+              className="absolute -top-1 -right-1 bg-gray-500 text-white rounded-full p-1 cursor-pointer hover:bg-gray-700 transition duration-200 ease-in-out"
+            >
+              <XIcon size={16} />
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// OLD
+/* const ImageEditor = () => {
+  const context = useFormContext();
 
   return (
     <div className="flex w-full border-y py-2">
@@ -177,7 +295,7 @@ const ImageEditor = () => {
       />
     </div>
   );
-};
+}; */
 
 const VisibilityEditor = ({ onClose }: { onClose: () => void }) => {
   const id = useId();

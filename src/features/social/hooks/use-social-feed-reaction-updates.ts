@@ -1,8 +1,8 @@
+import type { WritableDraft } from "immer";
 import { useMe } from "@/features/auth/queries/use-me";
 import { useSocialPosts } from "@/features/social/queries/use-social-posts";
 import type { AddReactionParams } from "@/features/reactions/queries/use-add-reaction";
 import type { RemoveReactionParams } from "@/features/reactions/queries/use-remove-reaction";
-import type { WritableDraft } from "immer";
 
 export const addReactionToPost =
   (author: Author) => (post: WritableDraft<Optimistic<SocialPost>>) => {

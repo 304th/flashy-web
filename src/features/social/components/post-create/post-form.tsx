@@ -41,11 +41,14 @@ export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
     description,
     500,
   );
+  
+  console.log(form.formState)
 
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit((params) => {
+          console.log('SUBMIT');
           createSocialPost.mutate({
             description: params.description,
             poll: params.poll?.map((poll) => poll.value) || [], //FIXME: what?

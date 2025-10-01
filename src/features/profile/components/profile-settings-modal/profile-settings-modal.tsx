@@ -110,7 +110,7 @@ export const ProfileSettingsModal = ({
               </div>
             </div>
             <div className="flex w-full grow shrink overflow-hidden">
-              <div className="flex flex-col w-1/3 h-auto bg-base-200 border-r">
+              <div className="flex flex-col w-1/3 h-auto bg-base-200 border-r NAVBAR">
                 <NavLink
                   value="profile"
                   title="Profile"
@@ -135,7 +135,7 @@ export const ProfileSettingsModal = ({
                       key="profile"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      className="flex grow shrink overflow-hidden"
+                      className="flex grow shrink overflow-hidden PROFILE"
                     >
                       <ProfileSettingsProfile />
                     </motion.div>

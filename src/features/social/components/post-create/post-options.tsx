@@ -221,6 +221,7 @@ const ImageEditor = () => {
             />
             <button
               onClick={() => removeImage(index)}
+              type="button"
               className="absolute -top-1 -right-1 bg-gray-500 text-white rounded-full p-1 cursor-pointer hover:bg-gray-700 transition duration-200 ease-in-out"
             >
               <XIcon size={16} />

@@ -77,29 +77,25 @@ export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
     }
   };
 
+  const [_, setDragCounter] = useState(0);
+
   const handleDragEnter = useCallback((e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
+    setDragCounter((prev) => prev + 1);
     setIsDragActive(true);
   }, []);
 
   const handleDragLeave = useCallback((e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    
-    // Проверяем, вышли ли мы за пределы текущего элемента
-    const rect = e.currentTarget.getBoundingClientRect();
-    const mouseX = e.clientX;
-    const mouseY = e.clientY;
-    
-    if (
-      mouseX < rect.left || 
-      mouseX > rect.right || 
-      mouseY < rect.top || 
-      mouseY > rect.bottom
-    ) {
-      setIsDragActive(false);
-    }
+    setDragCounter((prev) => {
+      const next = prev - 1;
+      if (next === 0) {
+        setIsDragActive(false);
+      }
+      return next;
+    });
   }, []);
 
   const handleDragOver = useCallback((e: DragEvent<HTMLDivElement>) => {
@@ -110,6 +106,7 @@ export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
   const handleDrop = useCallback((e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
+    setDragCounter(0);
     setIsDragActive(false);
 
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
@@ -122,7 +119,6 @@ export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit((params) => {
-          console.log('SUBMIT');
           createSocialPost.mutate({
             description: params.description,
             poll: params.poll?.map((poll) => poll.value) || [],
@@ -135,38 +131,47 @@ export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
         })}
         className="flex flex-col w-full gap-2"
       >
-        <div 
-          className={`relative rounded-lg transition-all duration-150 ${
-            isDragActive 
-              ? 'p-0 border-2 border-blue-500 bg-blue-50' 
+        <div
+          className={`relative rounded-lg transition-all duration-150 ${isDragActive
+              ? 'p-0 border-2 border-blue-500 bg-blue-50'
               : 'p-0 border-2 border-transparent'
-          }`}
+            }`}
           onDragEnter={handleDragEnter}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
         >
-          {isDragActive && (
-            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-lg z-10 pointer-events-none">
-              <p className="text-white text-lg font-semibold">Upload Images here (up to 2mb)</p>
-            </div>
-          )}
-          
+          <AnimatePresence>
+            {isDragActive && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-lg z-10 pointer-events-none"
+              >
+                <p className="text-white text-lg font-semibold">Upload Images here (up to 2mb)</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
           <FormField
             name="description"
             render={(props) => (
               <motion.div variants={defaultVariants.child}>
                 <FormItem className="m-0 p-0">
-                  <Textarea
-                    maxLength={config.content.social.maxLength}
-                    placeholder="What ya thinking..."
-                    {...props.field}
-                    className={`min-h-[120px] border ${
-                      isDragActive 
-                        ? 'border-0 bg-blue-50' 
-                        : 'border-gray-300'
-                    } shadow-none focus-visible:ring-0 focus-visible:ring-offset-0`}
-                  />
+                <Textarea
+                  maxLength={config.content.social.maxLength}
+                  placeholder="What ya thinking..."
+                  noHover={isDragActive}
+                  {...props.field}
+                  className={`min-h-[120px] shadow-none focus-visible:ring-0 focus-visible:ring-offset-0
+                    transition-colors duration-150
+                    ${isDragActive
+                      ? "border-blue-500 bg-blue-50 pointer-events-none"
+                      : "border-gray-700 bg-base-200"
+                    }`}
+                />
                 </FormItem>
               </motion.div>
             )}
@@ -192,7 +197,7 @@ export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
             </motion.div>
           )}
         </AnimatePresence>
-        
+
         <div className="relative flex w-full items-center justify-between py-2">
           <PostOptions ref={optionsMenuRef} />
           <div className="absolute right-0 bottom-0 flex items-center gap-2">
@@ -210,7 +215,7 @@ export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
             </Button>
           </div>
         </div>
-        
+
         {/* Hidden file input for programmatic access */}
         <input
           id="file-upload"

@@ -120,7 +120,7 @@ export const ShareModal = ({
           </motion.div>
         </motion.div>
         <div className="flex w-full justify-end gap-2">
-          <Button variant="secondary">Cancel</Button>
+          <Button variant="secondary" onClick={onClose}>Cancel</Button>
         </div>
       </motion.div>
     </Modal>

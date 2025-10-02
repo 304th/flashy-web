@@ -24,7 +24,7 @@ export const UserProfile = ({
           : `/channel/social?id=${user.fbId}`
       }
     >
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 hover:bg-base-300 transition p-[2px] rounded-md">
         <UserAvatar
           avatar={user.userimage}
           className={`size-8 ${avatarClassname}`}

@@ -63,9 +63,7 @@ export const SocialFeed = () => {
                     exit={{ opacity: 0 }}
                     layoutId={`post-${socialPost._optimisticId || socialPost.orderId}`}
                   >
-                    <Link href={`/social/post?id=${socialPost._id}`}>
-                      <SocialPost socialPost={socialPost} />
-                    </Link>
+                    <SocialPost socialPost={socialPost} isLinkable />
                   </motion.div>
                 ))}
               </AnimatePresence>

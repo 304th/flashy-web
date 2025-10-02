@@ -25,9 +25,7 @@ export default function ChannelSocialPage() {
                     exit={{ opacity: 0 }}
                     layoutId={`profile-post-${socialPost._optimisticId || socialPost.orderId}`}
                   >
-                    <Link href={`/social/post?id=${socialPost._id}`}>
-                      <SocialPost socialPost={socialPost} />
-                    </Link>
+                    <SocialPost socialPost={socialPost} isLinkable />
                   </motion.div>
                 ))}
               </AnimatePresence>

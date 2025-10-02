@@ -1,28 +1,27 @@
+import Link from 'next/link';
 import { UserProfile } from "@/components/ui/user-profile";
-import { SocialPostDescription } from "@/features/social/components/social-post/social-post-description";
 import { SocialPostMenu } from "@/features/social/components/social-post/social-post-menu";
-import { SocialPostTags } from "@/features/social/components/social-post/social-post-tags";
-import { SocialPostPoll } from "@/features/social/components/social-post/social-post-poll";
-import { SocialPostImages } from "@/features/social/components/social-post/social-post-images";
-import { SocialPostActions } from "@/features/social/components/social-post/social-post-actions";
 import { useSocialPostContext } from "@/features/social/components/social-post/social-post-context";
-import { SocialPostBehindKey } from "@/features/social/components/social-post/social-post-behind-key";
+import { SocialPostContent}  from "@/features/social/components/social-post/social-post-content";
 import { timeAgo } from "@/lib/utils";
 
 export const SocialPost = ({
   socialPost,
+  isLinkable,
   className,
 }: {
   socialPost: Optimistic<SocialPost>;
+  isLinkable?: boolean;
   className?: string;
 }) => {
   const { onCommentsOpen } = useSocialPostContext();
 
   return (
-    <div
+    <article
       className={`relative flex flex-col p-4 gap-3 h-fit w-full transition
         rounded
         bg-[linear-gradient(180deg,#151515_0%,#151515_0.01%,#19191920_100%)]
+        ${isLinkable ? 'hover:bg-base-200' : ''}
         ${className}
         ${socialPost._optimisticStatus === "pending" ? "opacity-50 pointer-events-none" : ""}`}
     >
@@ -40,12 +39,13 @@ export const SocialPost = ({
           {onCommentsOpen && <SocialPostMenu socialPost={socialPost} />}
         </div>
       </div>
-      <SocialPostBehindKey socialPost={socialPost} />
-      <SocialPostDescription socialPost={socialPost} />
-      <SocialPostPoll socialPost={socialPost} />
-      <SocialPostImages socialPost={socialPost} />
-      <SocialPostActions socialPost={socialPost} />
-      <SocialPostTags socialPost={socialPost} />
-    </div>
+      {
+        isLinkable ? (
+          <Link href={`/social/post?id=${socialPost._id}`}>
+            <SocialPostContent socialPost={socialPost} />
+          </Link>
+        ) : <SocialPostContent socialPost={socialPost} />
+      }
+    </article>
   );
 };

@@ -1,5 +1,11 @@
 import { config } from "@/services/config";
-import React, { useRef, useState, useCallback, ChangeEvent, DragEvent } from "react";
+import React, {
+  useRef,
+  useState,
+  useCallback,
+  ChangeEvent,
+  DragEvent,
+} from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -44,31 +50,36 @@ export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
     500,
   );
 
-  const handleFilesUpload = useCallback((files: File[]) => {
-    if (files.length === 0) {
-      return;
-    }
-
-    const maxSize = config.content.uploads.maxSize;
-    const validFiles: File[] = [];
-    let hasError = false;
-
-    for (const file of files) {
-      if (file.size > maxSize) {
-        toast.error(`File "${file.name}" size must be less than 2 MB.`);
-        hasError = true;
-      } else {
-        validFiles.push(file);
+  const handleFilesUpload = useCallback(
+    (files: File[]) => {
+      if (files.length === 0) {
+        return;
       }
-    }
 
-    if (validFiles.length > 0) {
-      const currentImages = form.getValues("images") || [];
-      form.setValue("images", [...currentImages, ...validFiles], { shouldDirty: true });
-    } else if (!hasError) {
-      toast.error("No valid files selected.");
-    }
-  }, [form]);
+      const maxSize = config.content.uploads.maxSize;
+      const validFiles: File[] = [];
+      let hasError = false;
+
+      for (const file of files) {
+        if (file.size > maxSize) {
+          toast.error(`File "${file.name}" size must be less than 2 MB.`);
+          hasError = true;
+        } else {
+          validFiles.push(file);
+        }
+      }
+
+      if (validFiles.length > 0) {
+        const currentImages = form.getValues("images") || [];
+        form.setValue("images", [...currentImages, ...validFiles], {
+          shouldDirty: true,
+        });
+      } else if (!hasError) {
+        toast.error("No valid files selected.");
+      }
+    },
+    [form],
+  );
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -103,17 +114,20 @@ export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
     e.stopPropagation();
   }, []);
 
-  const handleDrop = useCallback((e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragCounter(0);
-    setIsDragActive(false);
+  const handleDrop = useCallback(
+    (e: DragEvent<HTMLDivElement>) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setDragCounter(0);
+      setIsDragActive(false);
 
-    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      handleFilesUpload(Array.from(e.dataTransfer.files));
-      e.dataTransfer.clearData();
-    }
-  }, [handleFilesUpload]);
+      if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+        handleFilesUpload(Array.from(e.dataTransfer.files));
+        e.dataTransfer.clearData();
+      }
+    },
+    [handleFilesUpload],
+  );
 
   return (
     <Form {...form}>
@@ -132,9 +146,10 @@ export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
         className="flex flex-col w-full gap-2"
       >
         <div
-          className={`relative rounded-lg transition-all duration-150 ${isDragActive
-              ? 'p-0 border-2 border-blue-500 bg-blue-50'
-              : 'p-0 border-2 border-transparent'
+          className={`relative rounded-lg transition-all duration-150 ${
+            isDragActive
+              ? "p-0 border border-blue-500 border-dashed"
+              : "p-0 border border-transparent"
             }`}
           onDragEnter={handleDragEnter}
           onDragOver={handleDragOver}
@@ -148,36 +163,38 @@ export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-lg z-10 pointer-events-none"
+                className="absolute inset-0 flex items-center justify-center
+                  bg-[url(/images/forest.png)] bg-contain bg-opacity-50 rounded-lg z-10 pointer-events-none"
               >
-                <p className="text-white text-lg font-semibold">Upload Images here (up to 2mb)</p>
+                <p className="text-white text-lg font-semibold">
+                  Upload Images here (up to 3mb)
+                </p>
               </motion.div>
             )}
           </AnimatePresence>
-
           <FormField
             name="description"
             render={(props) => (
               <motion.div variants={defaultVariants.child}>
                 <FormItem className="m-0 p-0">
-                <Textarea
-                  maxLength={config.content.social.maxLength}
-                  placeholder="What ya thinking..."
-                  noHover={isDragActive}
-                  {...props.field}
-                  className={`min-h-[120px] shadow-none focus-visible:ring-0 focus-visible:ring-offset-0
-                    transition-colors duration-150
-                    ${isDragActive
-                      ? "border-blue-500 bg-blue-50 pointer-events-none"
-                      : "border-gray-700 bg-base-200"
+                  <Textarea
+                    maxLength={config.content.social.maxLength}
+                    placeholder="What ya thinking..."
+                    noHover={isDragActive}
+                    {...props.field}
+                    className={`min-h-[120px] shadow-none focus-visible:ring-0
+                    focus-visible:ring-offset-0 transition-colors duration-150
+                    ${
+                      isDragActive
+                        ? "pointer-events-none"
+                        : "border-base-400 bg-base-200"
                     }`}
-                />
+                  />
                 </FormItem>
               </motion.div>
             )}
           />
         </div>
-
         <AnimatePresence initial={false}>
           {previewLinks && parsedUrls.length > 0 && (
             <motion.div

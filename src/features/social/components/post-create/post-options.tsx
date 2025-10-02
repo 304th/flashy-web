@@ -70,7 +70,7 @@ export const PostOptions = forwardRef((_, ref) => {
           type="button"
           className={`hover:bg-blue-700 ${images.length > 0 && "bg-blue-700"}`}
           onClick={() => {
-            const fileInput = document.getElementById('file-upload');
+            const fileInput = document.getElementById("file-upload");
             fileInput?.click();
           }}
         >
@@ -213,7 +213,10 @@ const ImageEditor = () => {
     <div className="flex w-full py-2">
       <div className="flex flex-wrap gap-2">
         {images.map((file, index) => (
-          <div key={`${file.name}-${file.size}-${file.type}`} className="relative w-20 h-20">
+          <div
+            key={`${file.name}-${file.size}-${file.type}`}
+            className="relative w-20 h-20"
+          >
             <img
               src={urls.get(file)}
               alt={`preview ${index}`}
@@ -222,7 +225,9 @@ const ImageEditor = () => {
             <button
               onClick={() => removeImage(index)}
               type="button"
-              className="absolute -top-1 -right-1 bg-gray-500 text-white rounded-full p-1 cursor-pointer hover:bg-gray-700 transition duration-200 ease-in-out"
+              className="absolute -top-1 -right-1 bg-gray-500 text-white
+                rounded-full p-1 cursor-pointer hover:bg-gray-700 transition
+                duration-200 ease-in-out"
             >
               <XIcon size={16} />
             </button>

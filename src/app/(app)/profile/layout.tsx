@@ -43,7 +43,7 @@ export default function ProfileLayout({
   const authed = useAuthed();
 
   useEffect(() => {
-    if (authed.status === 'resolved' && !authed.user) {
+    if (authed.status === "resolved" && !authed.user) {
       router.push("/");
     }
   }, [authed]);

@@ -33,7 +33,12 @@ export const SocialPostImages = ({
     }
     if (imageCount === 3) {
       if (index === 0) {
-        return { width: "100%", height: "400px", objectFit: "cover", gridRow: "span 2" };
+        return {
+          width: "100%",
+          height: "400px",
+          objectFit: "cover",
+          gridRow: "span 2",
+        };
       }
       return { width: "100%", height: "200px", objectFit: "cover" };
     }

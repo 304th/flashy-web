@@ -66,24 +66,24 @@ export const PostCommentsModal = ({
         </div>
       </div>
       <div
-        className="flex flex-col w-full overflow-y-scroll max-h-[70vh] mb-[1px] disable-scroll-bar"
+        className="flex flex-col w-full overflow-y-scroll max-h-[70vh] mb-[1px]
+          disable-scroll-bar"
       >
         <div
           className="relative flex flex-col gap-4 w-full bg-base-200 border-b
             z-1"
         >
-        <SocialPostProvider
-          likeUpdates={likeUpdates}
-          unlikeUpdates={unlikeUpdates}
-          relightUpdates={relightUpdates}
-          votePollUpdates={votePollUpdates}
-          pinUpdates={pinUpdates}
-          muteUpdates={muteUpdates}
-          unmuteUpdates={unmuteUpdates}
-        >
-          <SocialPost socialPost={socialPost} className="rounded-b-none" />
-      </SocialPostProvider>
-        
+          <SocialPostProvider
+            likeUpdates={likeUpdates}
+            unlikeUpdates={unlikeUpdates}
+            relightUpdates={relightUpdates}
+            votePollUpdates={votePollUpdates}
+            pinUpdates={pinUpdates}
+            muteUpdates={muteUpdates}
+            unmuteUpdates={unmuteUpdates}
+          >
+            <SocialPost socialPost={socialPost} className="rounded-b-none" />
+          </SocialPostProvider>
         </div>
         <CommentsFeed
           post={socialPost}

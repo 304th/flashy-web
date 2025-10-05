@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { SocialPost } from "@/features/social/components/social-post/social-post";
 import { useSocialPosts } from "@/features/social/queries/use-social-posts";

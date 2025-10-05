@@ -109,6 +109,19 @@ declare global {
     updatedAt: string;
   }
 
+  interface Video {
+    fbId: string;
+    title: string;
+    publishDate: string;
+    storyImage: string;
+    videoDuration: number;
+    views: number;
+    price: number;
+    username: string;
+    createdAt: string;
+    updatedAt: string;
+  }
+
   interface Reaction {
     _id?: string;
     username: string;

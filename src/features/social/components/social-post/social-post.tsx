@@ -4,6 +4,7 @@ import { SocialPostMenu } from "@/features/social/components/social-post/social-
 import { useSocialPostContext } from "@/features/social/components/social-post/social-post-context";
 import { SocialPostContent } from "@/features/social/components/social-post/social-post-content";
 import { timeAgo } from "@/lib/utils";
+import {useIsSocialPostLocked} from "@/features/social/hooks/use-is-social-post-locked";
 
 export const SocialPost = ({
   socialPost,
@@ -15,6 +16,7 @@ export const SocialPost = ({
   className?: string;
 }) => {
   const { onCommentsOpen } = useSocialPostContext();
+  const isLocked = useIsSocialPostLocked(socialPost);
 
   return (
     <article
@@ -38,7 +40,7 @@ export const SocialPost = ({
           {onCommentsOpen && <SocialPostMenu socialPost={socialPost} />}
         </div>
       </div>
-      {isLinkable ? (
+      {isLinkable && !isLocked ? (
         <Link href={`/social/post?id=${socialPost._id}`}>
           <SocialPostContent socialPost={socialPost} />
         </Link>

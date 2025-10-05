@@ -17,7 +17,7 @@ export const SocialPostBehindKey = ({
 
   return (
     <div
-      className="relative aspect-video max-h-[200px] rounded-md"
+      className="relative aspect-video max-h-[200px] rounded-md cursor-pointer"
       onClick={(e) => {
         e.preventDefault();
         openModal("BuyKeyModal", {

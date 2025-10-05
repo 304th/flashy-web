@@ -47,7 +47,7 @@ export const ChannelHeaderUserBar = ({ className }: { className?: string }) => {
           ) : null
         }
       </Loadable>
-      <div className="flex w-1/5 flex-col items-center gap-2">
+      <div className="flex w-1/5 min-w-[270px] flex-col items-center gap-2">
         <ChannelSubscribeButton channelId={channelId} />
         <ChannelSubscriptions channel={channel} />
       </div>

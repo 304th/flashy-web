@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { Loadable } from "@/components/ui/loadable";
 import { AnimatePresence, motion } from "framer-motion";
 import { SocialPost } from "@/features/social/components/social-post/social-post";
@@ -12,7 +11,7 @@ export default function ProfileSocialPage() {
 
   return (
     <div className="flex gap-4 w-full justify-center">
-      <div className="flex flex-col gap-4 w-[45%]">
+      <div className="flex flex-col gap-4 w-[45%] min-w-[560px]">
         <Loadable queries={[query as any]} fullScreenForDefaults>
           {() =>
             data && data.length > 0 ? (

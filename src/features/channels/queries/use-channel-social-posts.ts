@@ -5,11 +5,11 @@ import { decodePollResults } from "@/features/social/utils/poll";
 
 const channelPostsCollection = createCollection<
   SocialPost,
-  { userId: string; pageParam?: number }
+  { channelId: string; pageParam?: number }
 >({
-  async sourceFrom({ userId }) {
+  async sourceFrom({ channelId }) {
     const response = await api
-      .get(`user/${userId}/social-posts`)
+      .get(`user/${channelId}/social-posts`)
       .json<SocialPost[]>();
 
     //FIXME: refactor backend
@@ -24,14 +24,14 @@ const channelPostsCollection = createCollection<
   schema: socialPostSchema,
 });
 
-export const useChannelSocialPosts = ({ userId }: { userId?: string }) => {
-  return usePartitionedQuery<SocialPost, { userId: string; pageParam: number }>(
+export const useChannelSocialPosts = ({ channelId }: { channelId?: string }) => {
+  return usePartitionedQuery<SocialPost, { channelId: string; pageParam: number }>(
     {
-      queryKey: ["channels", userId, "social"],
+      queryKey: ["channels", channelId, "social"],
       collection: channelPostsCollection,
-      getParams: ({ pageParam }) => ({ pageParam, userId: userId! }),
+      getParams: ({ pageParam }) => ({ pageParam, channelId: channelId! }),
       options: {
-        enabled: Boolean(userId),
+        enabled: Boolean(channelId),
       },
     },
   );

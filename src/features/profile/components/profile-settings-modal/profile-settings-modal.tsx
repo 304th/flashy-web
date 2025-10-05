@@ -111,8 +111,7 @@ export const ProfileSettingsModal = ({
             </div>
             <div className="flex w-full grow shrink overflow-hidden">
               <div
-                className="flex flex-col w-1/3 h-auto bg-base-200 border-r
-                  NAVBAR"
+                className="flex flex-col w-1/3 h-auto bg-base-200 border-r"
               >
                 <NavLink
                   value="profile"

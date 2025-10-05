@@ -17,13 +17,11 @@ export const ProfileSettingsProfile = () => {
     >
       <ImageUpload
         title="Upload Banner"
-        initialPreview="/images/channel-placeholder.png"
         className="w-full"
         onChange={() => {}}
       />
       <ImageUpload
         title="Upload Avatar"
-        initialPreview="/images/channel-placeholder.png"
         className="rounded-full aspect-square w-fit"
         onChange={() => {}}
       />

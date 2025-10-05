@@ -20,7 +20,7 @@ export const ProfileHeaderUserBar = ({ className }: { className?: string }) => {
       <Loadable queries={[query]}>
         {() =>
           me ? (
-            <UserProfile user={me} avatarClassname="size-20">
+            <UserProfile user={me} isLinkable={false} avatarClassname="size-20">
               <Button
                 variant="secondary"
                 className="w-fit"

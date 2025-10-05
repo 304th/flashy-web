@@ -14,7 +14,7 @@ export const useSocialPostImagesAttach = <T extends FieldValues>({
   getValues,
 }: {
   fieldName?: keyof T;
-  maxSize: number;
+  maxSize?: number;
   setValue: UseFormSetValue<T>;
   getValues: UseFormGetValues<T>;
 }) => {

@@ -3,7 +3,7 @@ import {
   getMutation,
   handleMutationError,
   handleAuthSuccess,
-} from "@/lib/query";
+} from "@/lib/query-toolkit";
 import { useQueryClient } from "@tanstack/react-query";
 
 interface VerifyOtpParams {

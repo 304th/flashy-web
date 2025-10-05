@@ -165,7 +165,7 @@ export class CollectionOptimisticMutations<Entity, State> {
   }
 
   async filter(
-    filterFn: (state: Draft<Optimistic<Entity>>) => void,
+    filterFn: (state: Optimistic<Entity>) => boolean,
     options: OptimisticUpdaterOptions<Entity> = { sync: false, rollback: true },
   ) {
     return this.execute({

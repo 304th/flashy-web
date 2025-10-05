@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useEffect } from "react";
+import {type PropsWithChildren, type ReactNode, Suspense, useEffect} from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChannelProvider } from "@/features/profile/components/channel-context/channel-context";
@@ -35,6 +35,14 @@ export default function ChannelLayout({
 }: Readonly<{
   children: ReactNode;
 }>) {
+  return <Suspense>
+    <ChannelLayoutComponent>
+      {children}
+    </ChannelLayoutComponent>
+  </Suspense>
+}
+
+const ChannelLayoutComponent = ({ children }: PropsWithChildren<{}>) => {
   const router = useRouter();
   const pathname = usePathname();
   const channelId = useQueryParams("id");
@@ -59,7 +67,9 @@ export default function ChannelLayout({
           <p className="absolute left-0 text-xl text-white font-bold">
             {capitalize(tabName)}
           </p>
-          <ChannelPageTabs currentTab={tabName} tabs={channelTabs} />
+          <Suspense>
+            <ChannelPageTabs currentTab={tabName} tabs={channelTabs} />
+          </Suspense>
         </div>
         <AnimatePresence initial={false}>
           <motion.div

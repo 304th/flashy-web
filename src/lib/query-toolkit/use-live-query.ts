@@ -1,6 +1,6 @@
-import type { Collection } from "@/lib/query-toolkit/collection";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMemo } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import type { Collection } from "@/lib/query-toolkit/collection";
 import { CollectionOptimisticMutations } from "@/lib/query-toolkit/optimistic-mutations/optimistic-mutations";
 import { LiveOptimisticUpdater } from "@/lib/query-toolkit/optimistic-mutations/updaters";
 
@@ -22,7 +22,7 @@ export const useLiveQuery = <Entity, Params = undefined>({
     queryFn: async () => {
       const params = getParams ? getParams() : undefined;
 
-      return await collection.readData(params);
+      return await collection.readData(params as any); //FIXME: fix types
     },
     ...options,
   });

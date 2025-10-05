@@ -1,6 +1,6 @@
 "use client";
 
-import { type ReactNode, useEffect } from "react";
+import {type ReactNode, Suspense, useEffect} from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { ProfileHeader } from "@/features/profile/components/profile-header/profile-header";
@@ -55,7 +55,9 @@ export default function ProfileLayout({
         <p className="absolute left-0 text-xl text-white font-bold">
           {capitalize(tabName)}
         </p>
-        <ChannelPageTabs currentTab={tabName} tabs={profileTabs} />
+        <Suspense>
+          <ChannelPageTabs currentTab={tabName} tabs={profileTabs} />
+        </Suspense>
       </div>
       <AnimatePresence initial={false}>
         <motion.div

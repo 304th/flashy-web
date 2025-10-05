@@ -1,5 +1,5 @@
 import Image from "next/image";
-import type { MouseEvent } from "react";
+import type {CSSProperties, MouseEvent} from "react";
 
 import "yet-another-react-lightbox/styles.css";
 import { useModals } from "@/hooks/use-modals";
@@ -32,7 +32,7 @@ export const SocialPostImages = ({
     }
   };
 
-  const getImageStyles = (index: number, imageCount: number) => {
+  const getImageStyles = (index: number, imageCount: number): CSSProperties => {
     if (imageCount === 1) {
       return { width: "100%", height: "auto", maxHeight: "500px" };
     }

@@ -12,19 +12,19 @@ export const ProfileHeaderBanner = () => {
       className="relative flex w-full h-full bg-cover bg-center justify-center
         overflow-hidden"
     >
-      {
-        query.isPending ? <div className="absolute inset-0 skeleton">
-        </div> : (
-          <motion.div
-            className="absolute w-[110%] h-[110%] flex bg-cover bg-center m-[-40px]"
-            style={{
-              y,
-              scale,
-              backgroundImage: `url('${me?.banner ? me.banner : '/images/channel-placeholder.png'}')`,
-            }}
-          />
-        )
-      }
+      {query.isPending ? (
+        <div className="absolute inset-0 skeleton"></div>
+      ) : (
+        <motion.div
+          className="absolute w-[110%] h-[110%] flex bg-cover bg-center
+            m-[-40px]"
+          style={{
+            y,
+            scale,
+            backgroundImage: `url('${me?.banner ? me.banner : "/images/channel-placeholder.png"}')`,
+          }}
+        />
+      )}
     </motion.div>
   );
 };

@@ -15,10 +15,10 @@ import { HelpIcon } from "@/components/ui/icons/help";
 import { useMe } from "@/features/auth/queries/use-me";
 import { useUpdateUsername } from "@/features/profile/mutations/use-update-username";
 import { useUpdateUserInfo } from "@/features/profile/mutations/use-update-user-info";
-import {uploadImage} from "@/features/common/mutations/use-upload-image";
-import {createSignedUploadUrlMutation} from "@/features/common/mutations/use-create-signed-upload-url";
-import {useUpdateBanner} from "@/features/profile/mutations/use-update-banner";
-import {useUpdateAvatar} from "@/features/profile/mutations/use-update-avatar";
+import { uploadImage } from "@/features/common/mutations/use-upload-image";
+import { createSignedUploadUrlMutation } from "@/features/common/mutations/use-create-signed-upload-url";
+import { useUpdateBanner } from "@/features/profile/mutations/use-update-banner";
+import { useUpdateAvatar } from "@/features/profile/mutations/use-update-avatar";
 import { prune } from "@/lib/utils";
 
 export interface ProfileSettingsModalProps {
@@ -103,7 +103,7 @@ export const ProfileSettingsModal = ({
 
               updateBanner.mutate({
                 banner,
-              })
+              });
             }
 
             if (params.avatarUpload) {
@@ -121,7 +121,7 @@ export const ProfileSettingsModal = ({
 
               updateAvatar.mutate({
                 userimage,
-              })
+              });
             }
 
             if (params.username && me?.username !== params.username) {
@@ -140,14 +140,14 @@ export const ProfileSettingsModal = ({
 
             if (params.banner === null) {
               updateBanner.mutate({
-                banner: '',
-              })
+                banner: "",
+              });
             }
 
             if (params.avatar === null) {
               updateAvatar.mutate({
-                userimage: '',
-              })
+                userimage: "",
+              });
             }
 
             onClose();

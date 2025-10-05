@@ -8,10 +8,13 @@ import {
   ModalHeader,
 } from "@/packages/modals";
 import { Button } from "@/components/ui/button";
-import { centerAspectCrop, completeCrop } from "@/features/common/utils/image-crop";
+import {
+  centerAspectCrop,
+  completeCrop,
+} from "@/features/common/utils/image-crop";
 import { useOutsideAction } from "@/hooks/use-outside-action";
-import {motion} from "framer-motion";
-import {CloseButton} from "@/components/ui/close-button";
+import { motion } from "framer-motion";
+import { CloseButton } from "@/components/ui/close-button";
 
 const DEFAULT_CROP: Crop = { unit: "%", x: 0, y: 0, width: 100, height: 100 };
 
@@ -65,59 +68,61 @@ export const CropImageModal = ({
 
   useOutsideAction(ref, onClose);
 
-  return <Modal onClose={onClose} className={"!p-0"} {...props}>
-    <motion.div
-      initial="hidden"
-      animate="show"
-      className="relative flex flex-col p-6 gap-6 rounded-md"
-    >
-      <div className="flex w-full">
-        <div className="absolute right-2 top-2" onClick={onClose}>
-          <CloseButton />
+  return (
+    <Modal onClose={onClose} className={"!p-0"} {...props}>
+      <motion.div
+        initial="hidden"
+        animate="show"
+        className="relative flex flex-col p-6 gap-6 rounded-md"
+      >
+        <div className="flex w-full">
+          <div className="absolute right-2 top-2" onClick={onClose}>
+            <CloseButton />
+          </div>
+          <div className="flex flex-col w-full justify-center">
+            <p className="text-2xl font-extrabold text-white">Crop Image</p>
+          </div>
         </div>
-        <div className="flex flex-col w-full justify-center">
-          <p className="text-2xl font-extrabold text-white">Crop Image</p>
+        <div className="flex items-center justify-center w-full flex-grow">
+          {imageSrc ? (
+            <ReactCrop
+              crop={crop}
+              onChange={(_, percentCrop) => setCrop(percentCrop)}
+              aspect={isAvatar ? 1 : aspectRatio}
+              circularCrop={isAvatar}
+              keepSelection
+            >
+              <img
+                ref={imageRef}
+                alt="Crop me"
+                src={imageSrc}
+                className="max-h-[75vh] max-w-[75vh]"
+                style={{ transform: `scale(${1}) rotate(0deg)` }}
+                onLoad={handleImageLoad}
+              />
+            </ReactCrop>
+          ) : null}
         </div>
-      </div>
-      <div className="flex items-center justify-center w-full flex-grow">
-        {imageSrc ? (
-          <ReactCrop
-            crop={crop}
-            onChange={(_, percentCrop) => setCrop(percentCrop)}
-            aspect={isAvatar ? 1 : aspectRatio}
-            circularCrop={isAvatar}
-            keepSelection
+        <div className="flex w-full justify-end gap-2">
+          <Button
+            variant="secondary"
+            onClick={() => {
+              onClose();
+            }}
           >
-            <img
-              ref={imageRef}
-              alt="Crop me"
-              src={imageSrc}
-              className="max-h-[75vh] max-w-[75vh]"
-              style={{ transform: `scale(${1}) rotate(0deg)` }}
-              onLoad={handleImageLoad}
-            />
-          </ReactCrop>
-        ) : null}
-      </div>
-      <div className="flex w-full justify-end gap-2">
-        <Button
-          variant="secondary"
-          onClick={() => {
-            onClose();
-          }}
-        >
-          Cancel
-        </Button>
-        <Button
-          onClick={() => {
-            onClose();
-          }}
-        >
-          Upload Image
-        </Button>
-      </div>
-    </motion.div>
-  </Modal>
+            Cancel
+          </Button>
+          <Button
+            onClick={() => {
+              onClose();
+            }}
+          >
+            Upload Image
+          </Button>
+        </div>
+      </motion.div>
+    </Modal>
+  );
 
   // return (
   //   <div
@@ -149,38 +154,86 @@ export const CropImageModal = ({
   //         </ReactCrop>
   //       ) : null}
   //     </div>
-      {/*<ModalFooter*/}
-      {/*  variant={ModalFooterVariant.STRETCH}*/}
-      {/*  className="w-full justify-end border-t border-[var(--selection-color)]*/}
-      {/*    [&>div]:justify-end"*/}
-      {/*>*/}
-      {/*  <Button*/}
-      {/*    disabled={!Boolean(crop)}*/}
-      {/*    pending={pending}*/}
-      {/*    onClick={() =>*/}
-      {/*      completeCrop({*/}
-      {/*        imageRef,*/}
-      {/*        crop,*/}
-      {/*        onCrop: async (blob: any) => {*/}
-      {/*          setPending(true);*/}
-      {/*          await onSuccess(blob);*/}
-      {/*          setPending(false);*/}
-      {/*          onClose();*/}
-      {/*        },*/}
-      {/*      })*/}
-      {/*    }*/}
-      {/*  >*/}
-      {/*    {actionLabel}*/}
-      {/*  </Button>*/}
-      {/*</ModalFooter>*/}
-    // </div>
+  {
+    /*<ModalFooter*/
+  }
+  {
+    /*  variant={ModalFooterVariant.STRETCH}*/
+  }
+  {
+    /*  className="w-full justify-end border-t border-[var(--selection-color)]*/
+  }
+  {
+    /*    [&>div]:justify-end"*/
+  }
+  {
+    /*>*/
+  }
+  {
+    /*  <Button*/
+  }
+  {
+    /*    disabled={!Boolean(crop)}*/
+  }
+  {
+    /*    pending={pending}*/
+  }
+  {
+    /*    onClick={() =>*/
+  }
+  {
+    /*      completeCrop({*/
+  }
+  {
+    /*        imageRef,*/
+  }
+  {
+    /*        crop,*/
+  }
+  {
+    /*        onCrop: async (blob: any) => {*/
+  }
+  {
+    /*          setPending(true);*/
+  }
+  {
+    /*          await onSuccess(blob);*/
+  }
+  {
+    /*          setPending(false);*/
+  }
+  {
+    /*          onClose();*/
+  }
+  {
+    /*        },*/
+  }
+  {
+    /*      })*/
+  }
+  {
+    /*    }*/
+  }
+  {
+    /*  >*/
+  }
+  {
+    /*    {actionLabel}*/
+  }
+  {
+    /*  </Button>*/
+  }
+  {
+    /*</ModalFooter>*/
+  }
+  // </div>
   // );
 };
 
 const Modal = (props: any) => (
   <ModalComponent
     {...props}
-    className={`sm:min-w-unset min-w-[500px] !bg-base-300
-      !rounded-md sm:w-full overflow-hidden ${props.className}`}
+    className={`sm:min-w-unset min-w-[500px] !bg-base-300 !rounded-md sm:w-full
+      overflow-hidden ${props.className}`}
   />
 );

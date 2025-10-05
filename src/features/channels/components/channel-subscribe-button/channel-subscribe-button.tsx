@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useIsSubscribed } from "@/features/auth/hooks/use-is-subscribed";
 import { useSubscribeToChannel } from "@/features/channels/mutations/use-subscribe-to-channel";
+import { ChannelBuyKeyButton } from "@/features/channels/components/channel-subscribe-button/channel-buy-key-button";
 
 export const ChannelSubscribeButton = ({
   channelId,
@@ -9,6 +10,10 @@ export const ChannelSubscribeButton = ({
 }) => {
   const isSubscribed = useIsSubscribed(channelId);
   const subscribe = useSubscribeToChannel();
+
+  if (isSubscribed) {
+    return <ChannelBuyKeyButton channelId={channelId} />
+  }
 
   return (
     <Button

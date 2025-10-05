@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { Modal } from "@/packages/modals";
+import React, { useState } from "react";
 import dynamic from "next/dynamic";
 
 const Lightbox = dynamic(() => import("yet-another-react-lightbox"), { ssr: false });

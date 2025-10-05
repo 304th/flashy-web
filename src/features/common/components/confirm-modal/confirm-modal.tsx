@@ -29,7 +29,7 @@ export const ConfirmModal = ({
       <motion.div
         initial="hidden"
         animate="show"
-        className="relative flex flex-col p-6 gap-6 rounded-md"
+        className="relative flex flex-col p-4 gap-6 rounded-md"
       >
         <div className="flex w-full">
           <div className="absolute right-2 top-2" onClick={onClose}>
@@ -68,7 +68,7 @@ export const ConfirmModal = ({
 const Modal = (props: any) => (
   <ModalComponent
     {...props}
-    className={`sm:min-w-unset min-w-[500px] !bg-base-300 border-none
+    className={`sm:min-w-unset min-w-[500px] !bg-base-300
       !rounded-md sm:w-full overflow-hidden ${props.className}`}
   />
 );

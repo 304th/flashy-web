@@ -1,4 +1,11 @@
-import { forwardRef, useImperativeHandle, useState, useEffect } from "react";
+import { config } from "@/services/config";
+import {
+  forwardRef,
+  useImperativeHandle,
+  useState,
+  useEffect,
+  useId,
+} from "react";
 import { motion } from "framer-motion";
 import { PlusIcon, XIcon } from "lucide-react";
 import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
@@ -173,7 +180,8 @@ const PollEditor = ({
 
 const ImageEditor = () => {
   const context = useFormContext();
-  const images = useWatch({ control: context.control, name: "images" }) || [];
+  const images: File[] =
+    useWatch({ control: context.control, name: "images" }) || [];
   const [urls, setUrls] = useState<Map<File, string>>(new Map());
 
   useEffect(() => {
@@ -195,6 +203,7 @@ const ImageEditor = () => {
     setUrls(newUrls);
   }, [images]);
 
+  //FIXME: maybe some other way
   useEffect(() => {
     return () => {
       urls.forEach((url) => {

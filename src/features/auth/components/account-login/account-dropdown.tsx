@@ -20,6 +20,7 @@ import { useMe } from "@/features/auth/queries/use-me";
 import { useLogout } from "@/features/auth/queries/use-logout";
 import { usePathnameChangedEffect } from "@/hooks/use-pathname-changed-effect";
 import { useModals } from "@/hooks/use-modals";
+import {UserProfile} from "@/components/ui/user-profile";
 
 export const AccountDropdown = () => {
   const { data: me } = useMe();
@@ -48,19 +49,14 @@ export const AccountDropdown = () => {
           align="end"
         >
           <div
-            className="flex p-3 h-[80px] bg-base-300
+            className="flex p-3 h-[80px] bg-base-300 bg-cover
               inset-shadow-[0_0_4px_0_rgba(0,0,0,0.1)] inset-shadow-base-200
               rounded mb-1"
+            style={{
+              backgroundImage: `url('${me!.banner ? me!.banner : '/images/channel-placeholder.png'}')`,
+            }}
           >
-            <div
-              className="flex items-center gap-2 whitespace-nowrap
-                overflow-hidden text-ellipsis w-full"
-            >
-              <UserAvatar avatar={me?.userimage} />
-              <p className="text-white font-extrabold ellipsis">
-                {me?.username}
-              </p>
-            </div>
+            <UserProfile user={me!} className="w-full flex backdrop-blur-md items-center" />
           </div>
           <DropdownMenuGroup>
             <Link href="/profile/social">

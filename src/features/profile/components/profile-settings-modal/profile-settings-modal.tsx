@@ -15,6 +15,10 @@ import { HelpIcon } from "@/components/ui/icons/help";
 import { useMe } from "@/features/auth/queries/use-me";
 import { useUpdateUsername } from "@/features/profile/mutations/use-update-username";
 import { useUpdateUserInfo } from "@/features/profile/mutations/use-update-user-info";
+import {uploadImage} from "@/features/common/mutations/use-upload-image";
+import {createSignedUploadUrlMutation} from "@/features/common/mutations/use-create-signed-upload-url";
+import {useUpdateBanner} from "@/features/profile/mutations/use-update-banner";
+import {useUpdateAvatar} from "@/features/profile/mutations/use-update-avatar";
 import { prune } from "@/lib/utils";
 
 export interface ProfileSettingsModalProps {
@@ -34,8 +38,10 @@ const formSchema = z.object({
     )
     .refine((val) => !val.includes(" "), "Username cannot contain spaces"),
   bio: z.string().optional(),
-  banner: z.string().optional(),
-  avatar: z.string().optional(),
+  banner: z.string().optional().nullable(),
+  avatar: z.string().optional().nullable(),
+  bannerUpload: z.instanceof(File).optional(),
+  avatarUpload: z.instanceof(File).optional(),
   links: z
     .object({
       x: z.string().url().optional(),
@@ -73,12 +79,51 @@ export const ProfileSettingsModal = ({
 
   const updateUsername = useUpdateUsername();
   const updateUserInfo = useUpdateUserInfo();
+  const updateBanner = useUpdateBanner();
+  const updateAvatar = useUpdateAvatar();
 
   return (
     <Modal onClose={onClose} className="!p-0" {...props}>
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit((params) => {
+          onSubmit={form.handleSubmit(async (params) => {
+            // Upload images first
+            if (params.bannerUpload) {
+              const { uploadUrl, fileType } =
+                await createSignedUploadUrlMutation.writeData({
+                  fileName: params.bannerUpload.name,
+                  fileType: params.bannerUpload.type,
+                });
+
+              const banner = await uploadImage.writeData({
+                file: params.bannerUpload,
+                type: fileType,
+                uploadUrl: uploadUrl,
+              });
+
+              updateBanner.mutate({
+                banner,
+              })
+            }
+
+            if (params.avatarUpload) {
+              const { uploadUrl, fileType } =
+                await createSignedUploadUrlMutation.writeData({
+                  fileName: params.avatarUpload.name,
+                  fileType: params.avatarUpload.type,
+                });
+
+              const userimage = await uploadImage.writeData({
+                file: params.avatarUpload,
+                type: fileType,
+                uploadUrl: uploadUrl,
+              });
+
+              updateAvatar.mutate({
+                userimage,
+              })
+            }
+
             if (params.username && me?.username !== params.username) {
               updateUsername.mutate({ username: params.username });
             }
@@ -92,6 +137,20 @@ export const ProfileSettingsModal = ({
                 links: prune(params.links || {}),
               });
             }
+
+            if (params.banner === null) {
+              updateBanner.mutate({
+                banner: '',
+              })
+            }
+
+            if (params.avatar === null) {
+              updateAvatar.mutate({
+                userimage: '',
+              })
+            }
+
+            onClose();
           })}
         >
           <motion.div
@@ -110,9 +169,7 @@ export const ProfileSettingsModal = ({
               </div>
             </div>
             <div className="flex w-full grow shrink overflow-hidden">
-              <div
-                className="flex flex-col w-1/3 h-auto bg-base-200 border-r"
-              >
+              <div className="flex flex-col w-1/3 h-auto bg-base-200 border-r">
                 <NavLink
                   value="profile"
                   title="Profile"
@@ -175,9 +232,8 @@ export const ProfileSettingsModal = ({
                   <Button
                     type="submit"
                     disabled={!form.formState.isDirty}
-                    onClick={() => {
-                      onClose();
-                    }}
+                    pending={form.formState.isSubmitting}
+                    className="min-w-[70px]"
                   >
                     Save
                   </Button>

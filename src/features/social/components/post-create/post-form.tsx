@@ -1,7 +1,5 @@
 import { config } from "@/services/config";
-import React, {
-  useRef,
-} from "react";
+import React, { useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -89,7 +87,8 @@ export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
                 className="absolute inset-0 flex items-center justify-center
-                  bg-[url(/images/forest.png)] bg-contain bg-opacity-50 rounded-lg z-10 pointer-events-none"
+                  bg-[url(/images/forest.png)] bg-contain bg-opacity-50
+                  rounded-lg z-10 pointer-events-none"
               >
                 <p className="text-white text-lg font-semibold">
                   Upload Images here (up to 3mb)
@@ -139,7 +138,6 @@ export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
             </motion.div>
           )}
         </AnimatePresence>
-
         <div className="relative flex w-full items-center justify-between py-2">
           <PostOptions ref={optionsMenuRef} />
           <div className="absolute right-0 bottom-0 flex items-center gap-2">
@@ -157,7 +155,6 @@ export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
             </Button>
           </div>
         </div>
-
         {/* Hidden file input for programmatic access */}
         <input
           id="file-upload"

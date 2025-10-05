@@ -1,3 +1,4 @@
+import { useFormContext } from "react-hook-form";
 import { ImageUpload } from "@/components/ui/image-upload";
 import {
   FormControl,
@@ -10,6 +11,10 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 export const ProfileSettingsProfile = () => {
+  const context = useFormContext();
+  const bannerUrl = context.watch("banner");
+  const avatarUrl = context.watch("avatar");
+
   return (
     <div
       className="flex flex-col gap-3 p-4 w-full grow items-center h-full
@@ -17,13 +22,27 @@ export const ProfileSettingsProfile = () => {
     >
       <ImageUpload
         title="Upload Banner"
+        initialPreview={bannerUrl}
         className="w-full"
-        onChange={() => {}}
+        onChange={async (file) => {
+          if (file) {
+            context.setValue("bannerUpload", file, { shouldDirty: true });
+          } else {
+            context.setValue("banner", null, { shouldDirty: true });
+          }
+        }}
       />
       <ImageUpload
         title="Upload Avatar"
+        initialPreview={avatarUrl}
         className="rounded-full aspect-square w-fit"
-        onChange={() => {}}
+        onChange={async (file) => {
+          if (file) {
+            context.setValue("avatarUpload", file, { shouldDirty: true });
+          } else {
+            context.setValue("avatar", null, { shouldDirty: true });
+          }
+        }}
       />
       <FormField
         name="username"

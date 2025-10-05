@@ -50,7 +50,7 @@ export const ShareModal = ({
       <motion.div
         initial="hidden"
         animate="show"
-        className="relative flex flex-col p-6 gap-6 rounded-md bg-cover
+        className="relative flex flex-col p-4 gap-6 rounded-md bg-cover
           bg-center"
         style={{ backgroundImage: `url(/images/forest.png)` }}
       >
@@ -120,7 +120,9 @@ export const ShareModal = ({
           </motion.div>
         </motion.div>
         <div className="flex w-full justify-end gap-2">
-          <Button variant="secondary" onClick={onClose}>Cancel</Button>
+          <Button variant="secondary" onClick={onClose}>
+            Cancel
+          </Button>
         </div>
       </motion.div>
     </Modal>

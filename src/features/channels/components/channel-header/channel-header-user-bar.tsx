@@ -22,7 +22,11 @@ export const ChannelHeaderUserBar = ({ className }: { className?: string }) => {
       <Loadable queries={[query]}>
         {() =>
           channel ? (
-            <UserProfile user={channel} isLinkable={false} avatarClassname="size-20">
+            <UserProfile
+              user={channel}
+              isLinkable={false}
+              avatarClassname="size-20"
+            >
               <div className="flex items-center gap-2">
                 <Button
                   variant="secondary"

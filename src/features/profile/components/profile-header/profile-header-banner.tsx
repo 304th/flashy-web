@@ -1,6 +1,8 @@
 import { motion, useScroll, useTransform } from "framer-motion";
+import { useMe } from "@/features/auth/queries/use-me";
 
 export const ProfileHeaderBanner = () => {
+  const { data: me, query } = useMe();
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 1000], [0, 500]);
   const scale = useTransform(scrollY, [0, 1000], [1, 0.92]);
@@ -10,14 +12,19 @@ export const ProfileHeaderBanner = () => {
       className="relative flex w-full h-full bg-cover bg-center justify-center
         overflow-hidden"
     >
-      <motion.div
-        className="absolute w-[110%] h-[110%] flex bg-cover bg-center m-[-40px]"
-        style={{
-          y,
-          scale,
-          backgroundImage: "url('/images/channel-placeholder.png')",
-        }}
-      />
+      {
+        query.isPending ? <div className="absolute inset-0 skeleton">
+        </div> : (
+          <motion.div
+            className="absolute w-[110%] h-[110%] flex bg-cover bg-center m-[-40px]"
+            style={{
+              y,
+              scale,
+              backgroundImage: `url('${me?.banner ? me.banner : '/images/channel-placeholder.png'}')`,
+            }}
+          />
+        )
+      }
     </motion.div>
   );
 };

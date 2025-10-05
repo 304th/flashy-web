@@ -1,8 +1,9 @@
-import ky from "ky";
 import { api } from "@/services/api";
 import { useOptimisticMutation } from "@/lib/query-toolkit";
 import { createMutation } from "@/lib/query-toolkit/mutation";
 import { useSocialPosts } from "@/features/social/queries/use-social-posts";
+import { createSignedUploadUrlMutation } from "@/features/common/mutations/use-create-signed-upload-url";
+import { uploadImage } from "@/features/common/mutations/use-upload-image";
 
 export interface CreateSocialPostParams {
   description?: string;
@@ -10,27 +11,6 @@ export interface CreateSocialPostParams {
   images: File[];
   behindKey: boolean;
 }
-
-export interface GetSignedUrlForUploadParams {
-  fileName: string;
-  fileType: string;
-}
-
-const createSignedUploadUrl = createMutation<
-  GetSignedUrlForUploadParams,
-  { fileName: string; fileType: string; uploadUrl: string }
->({
-  writeToSource: async (params) => {
-    return await api
-      .post("generate-signed-upload-params", {
-        json: {
-          fileName: params.fileName,
-          fileType: params.fileType,
-        },
-      })
-      .json();
-  },
-});
 
 const createSocialPostMutation = createMutation<
   CreateSocialPostParams,
@@ -42,22 +22,17 @@ const createSocialPostMutation = createMutation<
     if (params.images.length > 0) {
       uploadedImages = await Promise.all(
         params.images.map(async (image) => {
-          const { uploadUrl, fileType } = await createSignedUploadUrl.writeData(
-            {
+          const { uploadUrl, fileType } =
+            await createSignedUploadUrlMutation.writeData({
               fileName: image.name,
               fileType: image.type,
-            },
-          );
+            });
 
-          await ky.put(uploadUrl, {
-            body: image,
-            headers: {
-              "Content-Type": fileType,
-              "Cache-Control": "max-age=31536000",
-            },
+          return await uploadImage.writeData({
+            file: image,
+            type: fileType,
+            uploadUrl: uploadUrl,
           });
-
-          return uploadUrl.replace(/\?.*$/, "");
         }),
       );
     }
@@ -108,7 +83,7 @@ export const useCreateSocialPost = () => {
                 ...socialPost,
                 poll: {
                   pollVotedId: null,
-                  results: socialPost.poll,
+                  results: socialPost.poll.results,
                 },
               };
             },

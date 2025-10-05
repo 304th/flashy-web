@@ -15,8 +15,8 @@ import { PostOptions } from "@/features/social/components/post-create/post-optio
 import { useCreateSocialPost } from "@/features/social/mutations/use-create-social-post";
 import { useParsedPostLinkPreviews } from "@/features/social/hooks/use-parsed-post-preview-links";
 import { defaultVariants } from "@/lib/framer";
-import { useImageUpload } from "./use-image-upload";
-import { useDragAndDrop } from "./use-drag-n-drop";
+import { useSocialPostImagesAttach } from "../../hooks/use-social-post-images-attach";
+import { useDragAndDrop } from "../../hooks/use-drag-n-drop";
 
 const formSchema = z.object({
   description: z.string().max(config.content.social.maxLength),
@@ -46,7 +46,7 @@ export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
     500,
   );
 
-  const { handleFilesUpload, handleFileChange } = useImageUpload({
+  const { handleFilesUpload, handleFileChange } = useSocialPostImagesAttach({
     setValue: form.setValue,
     getValues: form.getValues,
     fieldName: "images",

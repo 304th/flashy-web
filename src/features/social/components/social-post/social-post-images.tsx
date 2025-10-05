@@ -93,31 +93,6 @@ export const SocialPostImages = ({
           </div>
         ))}
       </div>
-
-      {/* {open && (
-        <Lightbox
-          open={open}
-          close={() => setOpen(false)}
-          slides={slides}
-          index={index}
-          on={{
-            view: ({ index: nextIndex }) => setIndex(nextIndex),
-          }}
-          render={{
-            backdrop: ({ close }) => (
-              <div
-                className="yarl__backdrop"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  e.nativeEvent.stopImmediatePropagation();
-                  close();
-                }}
-              />
-            ),
-          }}
-        />
-      )} */}
     </>
   );
 };

@@ -27,13 +27,6 @@ const modalsConfig = {
   ProfileSettingsModal,
 };
 
-export type ModalType = keyof typeof modalsConfig;
-
-export interface ModalTypeConfig<T extends ModalType, P extends Record<string, any>> {
-  type: T,
-  props: P,
-}
-
 export type ModalPropsTypes = {
   type: 'LoginModal',
   props: LoginModalProps,

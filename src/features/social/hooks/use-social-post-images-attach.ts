@@ -2,7 +2,7 @@ import { config } from "@/services/config";
 import { toast } from "sonner";
 import { UseFormGetValues, UseFormSetValue, FieldValues } from "react-hook-form";
 
-export const useImageUpload = <T extends FieldValues>({
+export const useSocialPostImagesAttach = <T extends FieldValues>({
   setValue,
   getValues,
   fieldName = "images",

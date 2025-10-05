@@ -36,6 +36,7 @@ export const ImageUpload = ({
     () => formatBytes(maxAllowedSize, 0),
     [maxAllowedSize],
   );
+
   const handleFilesUpload = (files: File[]) => {
     const file = files[0];
 

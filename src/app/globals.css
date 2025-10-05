@@ -274,3 +274,17 @@
     background-position-x: 500px;
   }
 }
+
+@keyframes yarl-entering {
+  0% {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  100% {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+}
+
+div.yarl__container {
+  background-color: rgba(0, 0, 0, 0.8);
+  animation: yarl-entering .2s ease;
+}

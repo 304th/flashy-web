@@ -1,13 +1,21 @@
 import Image from "next/image";
+import type { MouseEvent } from "react";
+
+import "yet-another-react-lightbox/styles.css";
+import { useModals } from "@/hooks/use-modals";
 
 export const SocialPostImages = ({
   socialPost,
 }: {
   socialPost: SocialPost;
 }) => {
+  const { openModal } = useModals();
+  
   if (!socialPost.images || socialPost.images.length === 0) {
     return null;
   }
+
+  const slides = socialPost.images.map((image) => ({ src: image }));
 
   const getGridLayout = (imageCount: number) => {
     switch (imageCount) {
@@ -49,28 +57,67 @@ export const SocialPostImages = ({
     return { width: "100%", height: "200px", objectFit: "cover" };
   };
 
+  const handleImageClick = (i: number, e: MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    e.nativeEvent.stopImmediatePropagation();
+
+    openModal("ImageViewerModal", {
+      slides,
+      initialOpenIndex: i,
+    });
+  }
+
   return (
-    <div className={`grid ${getGridLayout(socialPost.images.length)} mt-2`}>
-      {socialPost.images.map((image, index) => (
-        <div
-          key={image}
-          className={
-            socialPost.images.length === 3 && index === 0
-              ? "col-span-1 row-span-2"
-              : "col-span-1"
-          }
-        >
-          <Image
-            src={image}
-            alt={`Post image ${index + 1}`}
-            width={500}
-            height={0}
-            style={getImageStyles(index, socialPost.images.length)}
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="rounded object-cover"
-          />
-        </div>
-      ))}
-    </div>
+    <>
+      <div className={`grid ${getGridLayout(socialPost.images.length)} mt-2`}>
+        {socialPost.images.map((image, i) => (
+          <div
+            key={image}
+            className={
+              socialPost.images.length === 3 && i === 0
+                ? "col-span-1 row-span-2 cursor-pointer"
+                : "col-span-1 cursor-pointer"
+            }
+            onClick={(e) => handleImageClick(i, e)}
+          >
+            <Image
+              src={image}
+              alt={`Post image ${i + 1}`}
+              width={500}
+              height={0}
+              style={getImageStyles(i, socialPost.images.length)}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="rounded object-cover"
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* {open && (
+        <Lightbox
+          open={open}
+          close={() => setOpen(false)}
+          slides={slides}
+          index={index}
+          on={{
+            view: ({ index: nextIndex }) => setIndex(nextIndex),
+          }}
+          render={{
+            backdrop: ({ close }) => (
+              <div
+                className="yarl__backdrop"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  e.nativeEvent.stopImmediatePropagation();
+                  close();
+                }}
+              />
+            ),
+          }}
+        />
+      )} */}
+    </>
   );
 };

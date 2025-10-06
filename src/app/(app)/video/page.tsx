@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { VideoSearch } from "@/features/video/components/video-search/video-search";
 

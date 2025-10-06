@@ -1,3 +1,4 @@
+import config from "@/config";
 import { initializeApp } from "firebase/app";
 import {
   getAuth,
@@ -10,6 +11,8 @@ import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
   signInWithCustomToken,
+  sendPasswordResetEmail,
+  confirmPasswordReset,
   type UserCredential,
   type User,
 } from "firebase/auth";
@@ -79,4 +82,18 @@ export const signInWithLMagicLink = async (email: string, link: string) => {
 
 export const signInWithToken = async (token: string) => {
   await signInWithCustomToken(firebaseAuth, token);
+};
+
+export const sendPasswordReset = (email: string) => {
+  return sendPasswordResetEmail(firebaseAuth, email, {
+    url: `${window.location.origin}${config.misc.passwordResetRoute}`,
+    handleCodeInApp: true,
+  });
+};
+
+export const confirmNewPassword = (params: {
+  oobCode: string;
+  newPassword: string;
+}) => {
+  return confirmPasswordReset(firebaseAuth, params.oobCode, params.newPassword);
 };

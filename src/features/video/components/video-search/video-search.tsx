@@ -5,9 +5,13 @@ import { useVideoSearch } from "@/features/video/queries/use-video-search";
 export const VideoSearch = () => {
   const { data: videos, query } = useVideoSearch();
 
-  return <Loadable queries={[query as any]} fullScreenForDefaults>
-    {() => {
-       return videos!.length > 0 ? null : <NotFound fullWidth>No videos found</NotFound>;
-    }}
-  </Loadable>;
-}
+  return (
+    <Loadable queries={[query as any]} fullScreenForDefaults>
+      {() => {
+        return videos!.length > 0 ? null : (
+          <NotFound fullWidth>No videos found</NotFound>
+        );
+      }}
+    </Loadable>
+  );
+};

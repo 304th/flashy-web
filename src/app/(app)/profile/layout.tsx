@@ -1,6 +1,6 @@
 "use client";
 
-import {type ReactNode, Suspense, useEffect} from "react";
+import { type ReactNode, Suspense, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { ProfileHeader } from "@/features/profile/components/profile-header/profile-header";

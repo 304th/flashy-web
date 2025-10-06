@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
 
-const Lightbox = dynamic(() => import("yet-another-react-lightbox"), { ssr: false });
+const Lightbox = dynamic(() => import("yet-another-react-lightbox"), {
+  ssr: false,
+});
 
 type Slide = {
   src: string;
-}
+};
 
 export interface ImageViewerModalProps {
   onClose(): void;
@@ -32,9 +34,8 @@ export const ImageViewerModal = ({
         /* start immediate closing (controlled by modal center) */
         fade: 0,
       }}
-
       /* https://github.com/igordanchenko/yet-another-react-lightbox/issues/375 */
       noScroll={{ disabled: true }}
     />
-  )
+  );
 };

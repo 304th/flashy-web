@@ -50,7 +50,10 @@ export const handleMutationError = async (error: any) => {
 
     toast.error(
       errorBody.error ||
-        errorBody.message || (typeof errorBody === 'string' ? errorBody : "Unknown error. Please try again later."),
+        errorBody.message ||
+        (typeof errorBody === "string"
+          ? errorBody
+          : "Unknown error. Please try again later."),
     );
   } catch {
     toast.error("Unknown error. Please try again later.");

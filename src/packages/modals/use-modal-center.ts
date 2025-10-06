@@ -5,9 +5,12 @@ import {
   ModalDispatchContext,
 } from "@/packages/modals/modal-center-provider";
 
-export interface ModalTypeConfig<T extends string, P extends Record<string, any> | null> {
-  type: T,
-  props?: P,
+export interface ModalTypeConfig<
+  T extends string,
+  P extends Record<string, any> | null,
+> {
+  type: T;
+  props?: P;
 }
 
 const getOptions = <T>(type: T, options?: ModalCenterStateOptions) => {
@@ -33,19 +36,21 @@ const getOptions = <T>(type: T, options?: ModalCenterStateOptions) => {
   };
 };
 
-export const useModalCenter = <T extends ModalTypeConfig<string, Record<string, any> | null>>() => {
+export const useModalCenter = <
+  T extends ModalTypeConfig<string, Record<string, any> | null>,
+>() => {
   const dispatch = useContext(ModalDispatchContext);
 
   return {
     openModal(
-      type: T['type'],
-      props?: Omit<T['props'], 'onClose'>,
+      type: T["type"],
+      props?: Omit<T["props"], "onClose">,
       options?: ModalCenterStateOptions,
     ) {
       return dispatch({
         type,
         props: props || {},
-        options: getOptions<T['type']>(type, options),
+        options: getOptions<T["type"]>(type, options),
       });
     },
     closeModal(all?: boolean) {

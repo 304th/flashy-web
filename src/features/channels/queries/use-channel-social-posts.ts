@@ -24,15 +24,20 @@ const channelPostsCollection = createCollection<
   schema: socialPostSchema,
 });
 
-export const useChannelSocialPosts = ({ channelId }: { channelId?: string }) => {
-  return usePartitionedQuery<SocialPost, { channelId: string; pageParam: number }>(
-    {
-      queryKey: ["channels", channelId, "social"],
-      collection: channelPostsCollection,
-      getParams: ({ pageParam }) => ({ pageParam, channelId: channelId! }),
-      options: {
-        enabled: Boolean(channelId),
-      },
+export const useChannelSocialPosts = ({
+  channelId,
+}: {
+  channelId?: string;
+}) => {
+  return usePartitionedQuery<
+    SocialPost,
+    { channelId: string; pageParam: number }
+  >({
+    queryKey: ["channels", channelId, "social"],
+    collection: channelPostsCollection,
+    getParams: ({ pageParam }) => ({ pageParam, channelId: channelId! }),
+    options: {
+      enabled: Boolean(channelId),
     },
-  );
+  });
 };

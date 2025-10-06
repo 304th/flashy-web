@@ -22,7 +22,6 @@ export const OtpForm = ({
   onSuccess: () => void;
 }) => {
   const signupWithEmail = useSignupWithEmail();
-  // const verifyOtp = useVerifyOtp();
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {

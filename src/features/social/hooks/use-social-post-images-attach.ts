@@ -1,5 +1,5 @@
 import type { ChangeEvent } from "react";
-import { config } from "@/services/config";
+import config from "@/config";
 import { toast } from "sonner";
 import type {
   UseFormGetValues,

@@ -24,7 +24,13 @@ const formSchema = z.object({
   password: z.string().min(8, "Must be at least 8 characters"),
 });
 
-export const LoginForm = ({ onSuccess }: { onSuccess: () => void }) => {
+export const LoginForm = ({
+  onSuccess,
+  onForgotPassword,
+}: {
+  onSuccess: () => void;
+  onForgotPassword: () => void;
+}) => {
   const [showPassword, setShowPassword] = useState(false);
   const { openModal } = useModals();
   const loginWithEmail = useSignInWithEmail();
@@ -93,7 +99,11 @@ export const LoginForm = ({ onSuccess }: { onSuccess: () => void }) => {
                   </FormControl>
                   <FormMessage />
                   <div className="flex w-full justify-end">
-                    <p className="text-sm hover:underline cursor-pointer">
+                    <p
+                      role="button"
+                      className="text-sm hover:underline cursor-pointer"
+                      onClick={onForgotPassword}
+                    >
                       Forgot password?
                     </p>
                   </div>

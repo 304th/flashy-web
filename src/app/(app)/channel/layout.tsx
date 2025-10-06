@@ -1,6 +1,11 @@
 "use client";
 
-import {type PropsWithChildren, type ReactNode, Suspense, useEffect} from "react";
+import {
+  type PropsWithChildren,
+  type ReactNode,
+  Suspense,
+  useEffect,
+} from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChannelProvider } from "@/features/profile/components/channel-context/channel-context";
@@ -35,11 +40,11 @@ export default function ChannelLayout({
 }: Readonly<{
   children: ReactNode;
 }>) {
-  return <Suspense>
-    <ChannelLayoutComponent>
-      {children}
-    </ChannelLayoutComponent>
-  </Suspense>
+  return (
+    <Suspense>
+      <ChannelLayoutComponent>{children}</ChannelLayoutComponent>
+    </Suspense>
+  );
 }
 
 const ChannelLayoutComponent = ({ children }: PropsWithChildren<{}>) => {
@@ -84,4 +89,4 @@ const ChannelLayoutComponent = ({ children }: PropsWithChildren<{}>) => {
       </div>
     </ChannelProvider>
   );
-}
+};

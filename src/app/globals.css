@@ -287,5 +287,5 @@
 
 div.yarl__container {
   background-color: rgba(0, 0, 0, 0.8);
-  animation: yarl-entering .2s ease;
+  animation: yarl-entering 0.2s ease;
 }

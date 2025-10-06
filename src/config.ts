@@ -1,4 +1,4 @@
-export const config = {
+const config = {
   api: {
     baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL,
     accessTokenKey: "access_token",
@@ -14,6 +14,7 @@ export const config = {
   },
   misc: {
     notificationCenterId: "notification-center",
+    passwordResetRoute: "/reset-password",
   },
   content: {
     social: {
@@ -27,3 +28,5 @@ export const config = {
     },
   },
 } as const;
+
+export default config;

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import type {CSSProperties, MouseEvent} from "react";
+import type { CSSProperties, MouseEvent } from "react";
 
 import "yet-another-react-lightbox/styles.css";
 import { useModals } from "@/hooks/use-modals";
@@ -10,7 +10,7 @@ export const SocialPostImages = ({
   socialPost: SocialPost;
 }) => {
   const { openModal } = useModals();
-  
+
   if (!socialPost.images || socialPost.images.length === 0) {
     return null;
   }
@@ -66,7 +66,7 @@ export const SocialPostImages = ({
       slides,
       initialOpenIndex: i,
     });
-  }
+  };
 
   return (
     <>

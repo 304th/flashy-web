@@ -1,6 +1,6 @@
 "use client";
 
-import { config } from "@/services/config";
+import config from "@/config";
 import { ReactNode } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 

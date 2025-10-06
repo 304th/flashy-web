@@ -1,5 +1,5 @@
 import ky from "ky";
-import { config } from "@/services/config";
+import config from "@/config";
 import { firebaseAuth, onAuthStateChanged } from "@/services/firebase";
 
 export const api = ky.create({

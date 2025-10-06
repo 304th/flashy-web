@@ -1,4 +1,4 @@
-import { config } from "@/services/config";
+import config from "@/config";
 import { useMemo, useState } from "react";
 import { UploadCloudIcon } from "lucide-react";
 import { FileUpload } from "@/components/ui/file-upload";

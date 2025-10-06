@@ -4,11 +4,11 @@ import { Loadable } from "@/components/ui/loadable";
 import { AnimatePresence, motion } from "framer-motion";
 import { SocialPost } from "@/features/social/components/social-post/social-post";
 import { NotFound } from "@/components/ui/not-found";
-import {useChannelSocialPosts} from "@/features/channels/queries/use-channel-social-posts";
-import {useChannelContext} from "@/features/profile/components/channel-context/channel-context";
+import { useChannelSocialPosts } from "@/features/channels/queries/use-channel-social-posts";
+import { useChannelContext } from "@/features/profile/components/channel-context/channel-context";
 
 export default function ChannelSocialPage() {
-  const { channelId } = useChannelContext()
+  const { channelId } = useChannelContext();
   const { data, query } = useChannelSocialPosts({ channelId });
 
   return (

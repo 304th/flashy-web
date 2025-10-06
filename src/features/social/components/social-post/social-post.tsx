@@ -4,7 +4,7 @@ import { SocialPostMenu } from "@/features/social/components/social-post/social-
 import { useSocialPostContext } from "@/features/social/components/social-post/social-post-context";
 import { SocialPostContent } from "@/features/social/components/social-post/social-post-content";
 import { timeAgo } from "@/lib/utils";
-import {useIsSocialPostLocked} from "@/features/social/hooks/use-is-social-post-locked";
+import { useIsSocialPostLocked } from "@/features/social/hooks/use-is-social-post-locked";
 
 export const SocialPost = ({
   socialPost,

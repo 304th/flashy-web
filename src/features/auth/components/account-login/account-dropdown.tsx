@@ -53,7 +53,7 @@ export const AccountDropdown = () => {
               inset-shadow-[0_0_4px_0_rgba(0,0,0,0.1)] inset-shadow-base-200
               rounded mb-1"
             style={{
-              backgroundImage: `url('${me!.banner ? me!.banner : "/images/channel-placeholder.png"}')`,
+              backgroundImage: `url('${me?.banner ? me?.banner : "/images/channel-placeholder.png"}')`,
             }}
           >
             <UserProfile

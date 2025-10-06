@@ -11,9 +11,9 @@ export const ChannelSubscribeButton = ({
   const isSubscribed = useIsSubscribed(channelId);
   const subscribe = useSubscribeToChannel();
 
-  if (isSubscribed) {
-    return <ChannelBuyKeyButton channelId={channelId} />
-  }
+  // if (isSubscribed) {
+  //   return <ChannelBuyKeyButton channelId={channelId} />
+  // }
 
   return (
     <Button

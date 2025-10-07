@@ -45,13 +45,19 @@ class LiveRegistry {
     if (!this.nameToEntries.has(entry.name)) {
       this.nameToEntries.set(entry.name, new Set());
     }
+
     this.nameToEntries.get(entry.name)!.add(entry);
   }
 
   unregister(entry: RegisteredAny) {
     const set = this.nameToEntries.get(entry.name);
-    if (!set) return;
+
+    if (!set) {
+      return;
+    }
+
     set.delete(entry);
+
     if (set.size === 0) {
       this.nameToEntries.delete(entry.name);
     }

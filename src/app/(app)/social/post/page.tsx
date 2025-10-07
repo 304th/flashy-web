@@ -13,7 +13,7 @@ import { SocialPostProvider } from "@/features/social/components/social-post/soc
 import { useQueryParams } from "@/hooks/use-query-params";
 import { useModals } from "@/hooks/use-modals";
 import { useMe } from "@/features/auth/queries/use-me";
-import { useSocialPostById } from "@/features/social/queries/use-social-post-by-id";
+import { useSocialPostByIdV2 } from "@/features/social/queries/use-social-post-by-id";
 import {
   addReactionToPost,
   deleteReactionFromPost,
@@ -32,7 +32,7 @@ export default function SocialPostPage() {
 
 const SocialPostByIdPage = () => {
   const id = useQueryParams("id");
-  const { data: socialPost, query } = useSocialPostById(id!);
+  const { data: socialPost, query } = useSocialPostByIdV2(id!);
   const router = useRouter();
 
   if (!id) {
@@ -68,7 +68,7 @@ const SocialPostDetails = ({
   const { openModal } = useModals();
   const { data: me } = useMe();
   const [replyComment, setReplyComment] = useState<CommentPost | null>(null);
-  const { optimisticUpdates } = useSocialPostById(socialPost._id);
+  // const { optimisticUpdates } = useSocialPostByIdV2(socialPost._id);
   const { optimisticUpdates: comments } = useComments(socialPost._id);
   const isLocked = useIsSocialPostLocked(socialPost);
 
@@ -77,16 +77,16 @@ const SocialPostDetails = ({
       <div className="flex gap-4 items-start w-full">
         <div className="flex flex-col w-full">
           <SocialPostProvider
-            likeUpdates={[
-              () => optimisticUpdates.update(addReactionToPost(me!)),
-            ]}
-            unlikeUpdates={[
-              () => optimisticUpdates.update(deleteReactionFromPost(me!)),
-            ]}
-            relightUpdates={[
-              (params) =>
-                optimisticUpdates.update(relightSocialPost(me!, params)),
-            ]}
+            // likeUpdates={[
+            //   () => optimisticUpdates.update(addReactionToPost(me!)),
+            // ]}
+            // unlikeUpdates={[
+            //   () => optimisticUpdates.update(deleteReactionFromPost(me!)),
+            // ]}
+            // relightUpdates={[
+            //   (params) =>
+            //     optimisticUpdates.update(relightSocialPost(me!, params)),
+            // ]}
             onShareOpen={() =>
               openModal("ShareModal", {
                 id: socialPost._id,
@@ -117,11 +117,11 @@ const SocialPostDetails = ({
                       async (params) => {
                         return await comments.prepend(params, { sync: true });
                       },
-                      async () => {
-                        return await optimisticUpdates.update((post) => {
-                          post.commentsCount += 1;
-                        });
-                      },
+                      // async () => {
+                      //   return await optimisticUpdates.update((post) => {
+                      //     post.commentsCount += 1;
+                      //   });
+                      // },
                     ]}
                     onCloseReply={() => setReplyComment(null)}
                   />

@@ -5,26 +5,16 @@ const isPaginatedList = <QueryData>(
 ): data is PaginatedList<QueryData> =>
   typeof data === "object" && data !== null && "pages" in data;
 
-export const useSubsetQuery = <SubsetData, QueryData>({
+export const useViewQuery = <SubsetData, QueryData>({
   queryKey,
   selectorFn,
 }: {
   queryKey: readonly unknown[];
   selectorFn: (data: QueryData) => SubsetData;
 }) => {
-  const queryClient = useQueryClient();
-
-  const query = useQuery<SubsetData>({
-    queryKey: [...queryKey, "subset", selectorFn.toString()],
-    queryFn: () => {
-      const data = queryClient.getQueryData<
-        QueryData | PaginatedList<QueryData>
-      >(queryKey);
-
-      if (!data) {
-        throw new Error("No data found for the provided query key");
-      }
-
+  const query = useQuery<QueryData, unknown, SubsetData>({
+    queryKey,
+    select: (data) => {
       if (Array.isArray(data)) {
         return selectorFn(data);
       } else if (isPaginatedList(data)) {
@@ -33,9 +23,11 @@ export const useSubsetQuery = <SubsetData, QueryData>({
 
       return selectorFn(data);
     },
-    enabled: Boolean(queryClient.getQueryData(queryKey)),
-    staleTime: 0,
+    enabled: Boolean(useQueryClient().getQueryData(queryKey)),
   });
 
-  return [query.data, query] as const;
-};
+  return {
+    data: query.data,
+    query,
+  }
+}

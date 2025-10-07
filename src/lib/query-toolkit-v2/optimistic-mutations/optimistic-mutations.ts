@@ -84,7 +84,7 @@ export class CollectionOptimisticMutations<Entity, State> {
   }
 
   async prepend(
-    item: Partial<Optimistic<Entity>>,
+    item: Optimistic<Entity>,
     options: OptimisticUpdaterOptions<Entity> = { sync: false, rollback: true },
   ): Promise<CollectionOptimisticMutations<Entity, State>> {
     const optimisticItem = this.createOptimistic(

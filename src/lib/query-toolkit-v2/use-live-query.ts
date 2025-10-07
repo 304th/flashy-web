@@ -48,7 +48,7 @@ export const useLiveQuery = <Entity, Params = undefined>({
       collection: collection as any,
     };
 
-    liveRegistry.register(entry);
+    liveRegistry.register(collection.getName(), entry);
 
     return () => {
       liveRegistry.unregister(entry);

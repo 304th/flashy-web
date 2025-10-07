@@ -30,7 +30,7 @@ export const UserProfile = ({
             ? `/profile/social`
             : `/channel/social?id=${user.fbId}`
         }
-        className={`hover:bg-accent-alpha-lightest transition rounded-md gap-2 p-[2px] ${className}`}
+        className={`hover:bg-accent-alpha-lightest transition rounded-md gap-2 p-1 ${className}`}
       >
         <BaseUserProfile
           user={user}

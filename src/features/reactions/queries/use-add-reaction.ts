@@ -8,6 +8,9 @@ import {
   createMutation as createMutationV2,
   useOptimisticMutation as useOptimisticMutationV2,
 } from "@/lib/query-toolkit-v2";
+import { useMe } from "@/features/auth/queries/use-me";
+import { socialFeedCollectionV2 } from "@/features/social/collections/social-feed";
+import { socialPostEntityV2 } from "@/features/social/queries/use-social-post-by-id";
 
 export interface AddReactionParams {
   id: string;
@@ -31,8 +34,12 @@ const addReaction = createMutation<AddReactionParams>({
   },
 });
 
+const timeout = () => new Promise(resolve => setTimeout(resolve, 1000));
+
 const addReactionV2 = createMutationV2<AddReactionParams>({
   writeToSource: async (params) => {
+    await timeout()
+    return
     return await api
       .post("reactions/addReaction", {
         json: {
@@ -58,12 +65,46 @@ export const useAddReaction = ({
 };
 
 export const useAddReactionV2 = () => {
+  const { data: author } = useMe();
+
   return useOptimisticMutationV2({
     mutation: addReactionV2,
-    onOptimistic: (channel, params) => {
-      return channel('').update(params.id, (entity) => {
+    onOptimistic: async (channel, params) => {
+      return Promise.all([
+        channel(socialFeedCollectionV2).update(params.id, (post) => {
+          post.reactions = post.reactions || { like: {} };
+          post.reactions.like = post.reactions.like || {};
 
-      })
+          post.reactions.like[author!.fbId] = {
+            fbId: author!.fbId,
+            username: author!.username,
+            userimage: author!.userimage,
+          };
+        }),
+        channel(socialPostEntityV2).update(params.id, (post) => {
+          post.reactions = post.reactions || { like: {} };
+          post.reactions.like = post.reactions.like || {};
+
+          post.reactions.like[author!.fbId] = {
+            fbId: author!.fbId,
+            username: author!.username,
+            userimage: author!.userimage,
+          };
+        })
+      ])
+
+      // return Promise.all([
+      //   channel(socialFeedCollectionV2).update(params.id, (post) => {
+      //     post.reactions = post.reactions || { like: {} };
+      //     post.reactions.like = post.reactions.like || {};
+      //
+      //     post.reactions.like[author!.fbId] = {
+      //       fbId: author!.fbId,
+      //       username: author!.username,
+      //       userimage: author!.userimage,
+      //     };
+      //   })
+      // ])
     },
   });
 };

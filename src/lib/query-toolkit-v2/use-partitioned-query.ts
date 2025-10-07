@@ -77,7 +77,7 @@ export const usePartitionedQuery = <Entity, Params>({
       collection,
     };
 
-    liveRegistry.register(entry);
+    liveRegistry.register(collection.getName(), entry);
 
     return () => {
       liveRegistry.unregister(entry);

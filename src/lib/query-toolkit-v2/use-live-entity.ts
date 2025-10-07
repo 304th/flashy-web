@@ -53,7 +53,7 @@ export const useLiveEntity = <Item, Params = undefined>({
       entity,
     };
 
-    liveRegistry.register(entry);
+    liveRegistry.register(entity.getName(), entry);
 
     return () => {
       liveRegistry.unregister(entry);

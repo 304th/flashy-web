@@ -4,7 +4,7 @@ import { CloseButton } from "@/components/ui/close-button";
 import { SocialPost } from "@/features/social/components/social-post/social-post";
 import { CommentSend } from "@/features/comments/components/comment-send/comment-send";
 import { CommentsFeed } from "@/features/comments/components/comments-feed/comments-feed";
-import { useSubsetQuery } from "@/lib/query-toolkit";
+import { useViewQuery } from "@/lib/query-toolkit-v2";
 import { useMe } from "@/features/auth/queries/use-me";
 import {
   useSocialFeedUpdatesOnReactionAdd,
@@ -32,12 +32,10 @@ export const PostCommentsModal = ({
   const { data: me } = useMe();
   const [replyComment, setReplyComment] = useState<CommentPost | null>(null);
   const { optimisticUpdates: socialFeed } = useSocialPosts();
-  const [socialPost] = useSubsetQuery<SocialPost, SocialPost[]>({
-    key: postId,
-    existingQueryKey: ["social", me?.fbId],
+  const { data: socialPost } = useViewQuery<SocialPost, SocialPost[]>({
+    queryKey: ["social", me?.fbId],
     selectorFn: (socialPosts) =>
       socialPosts.filter((post) => post._id === postId)[0],
-    deps: [postId],
   });
 
   const likeUpdates = useSocialFeedUpdatesOnReactionAdd();

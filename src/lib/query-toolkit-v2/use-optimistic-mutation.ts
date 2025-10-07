@@ -17,7 +17,7 @@ export const useOptimisticMutation = <Params, Response>({
   onOptimistic?: (
     ch: typeof channel,
     params: Params,
-  ) => Promise<OptTransaction[] | OptTransaction>;
+  ) => Promise<OptTransaction[][] | OptTransaction[]>;
   onMutate?: (params: Params) => void;
   onSuccess?: (data: Response) => void;
   onError?: (error: Error) => void;
@@ -47,8 +47,9 @@ export const useOptimisticMutation = <Params, Response>({
       try {
         if (onOptimistic) {
           const result = await onOptimistic(channel, params);
+          debugger
           const list = Array.isArray(result) ? result : [result];
-          transactions = transactions.concat(list);
+          transactions = transactions.concat(...list);
         }
 
         onMutate?.(params);

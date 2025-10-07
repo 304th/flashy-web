@@ -41,7 +41,7 @@ export type RegisteredAny = RegisteredLive | RegisteredPartitioned;
 class LiveRegistry {
   private readonly nameToEntries: Map<string, Set<RegisteredAny>> = new Map();
 
-  register(entry: RegisteredAny) {
+  register(name: string, entry: RegisteredAny) {
     if (!this.nameToEntries.has(entry.name)) {
       this.nameToEntries.set(entry.name, new Set());
     }

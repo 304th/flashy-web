@@ -71,12 +71,14 @@ export const usePartitionedQuery = <Entity, Params>({
   useEffect(() => {
     const entry = {
       kind: "partitioned" as const,
-      name: (collection as any).getName?.() ?? "collection",
+      name: collection.getName(),
       queryKey,
       queryClient,
       collection,
     };
+
     liveRegistry.register(entry);
+
     return () => {
       liveRegistry.unregister(entry);
     };

@@ -42,12 +42,14 @@ export const useLiveQuery = <Entity, Params = undefined>({
   useEffect(() => {
     const entry = {
       kind: "collection" as const,
-      name: collection.getName?.() ?? "collection",
+      name: collection.getName(),
       queryKey,
       queryClient,
       collection: collection as any,
     };
+
     liveRegistry.register(entry);
+
     return () => {
       liveRegistry.unregister(entry);
     };

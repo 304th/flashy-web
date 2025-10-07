@@ -47,12 +47,14 @@ export const useLiveEntity = <Item, Params = undefined>({
   useEffect(() => {
     const entry = {
       kind: "entity" as const,
-      name: (entity as any).getName?.() ?? "entity",
+      name: entity.getName(),
       queryKey,
       queryClient,
       entity,
     };
+
     liveRegistry.register(entry);
+
     return () => {
       liveRegistry.unregister(entry);
     };

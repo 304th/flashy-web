@@ -212,6 +212,11 @@ declare global {
     sell: number;
     sellInBlaze: number;
   }
+
+  // Augment in your app to get typed channel names in query-toolkit-v2
+  // Example:
+  // declare global { interface QueryToolkitChannels { posts: true; profile: true } }
+  interface QueryToolkitChannels {}
 }
 
 export {};

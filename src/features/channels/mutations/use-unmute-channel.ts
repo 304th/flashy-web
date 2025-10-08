@@ -1,11 +1,9 @@
 import {
   createMutation,
-  OptimisticUpdate,
   useOptimisticMutation,
-} from "@/lib/query-toolkit";
+} from "@/lib/query-toolkit-v2";
 import { api } from "@/services/api";
-import type { MuteChannelParams } from "@/features/channels/mutations/use-mute-channel";
-import { useMe } from "@/features/auth/queries/use-me";
+import { meEntity } from "@/features/auth/queries/use-me";
 
 export interface UnmuteChannelParams {
   userId: string;
@@ -21,28 +19,21 @@ const unmuteChannelMutation = createMutation<UnmuteChannelParams>({
   },
 });
 
-export const useUnmuteChannel = ({
-  optimisticUpdates,
-}: {
-  optimisticUpdates?: OptimisticUpdate<UnmuteChannelParams>[];
-} = {}) => {
-  const { optimisticUpdates: me } = useMe();
-
+export const useUnmuteChannel = () => {
   return useOptimisticMutation({
     mutation: unmuteChannelMutation,
-    optimisticUpdates: [
-      async (params: MuteChannelParams) => {
-        return await me.update((meUser) => {
-          const foundIndex = meUser?.mutedUsers?.findIndex?.(
+    onOptimistic: (ch, params) => {
+      return Promise.all([
+        ch(meEntity).update((me) => {
+          const foundIndex = me?.mutedUsers?.findIndex?.(
             (id) => id === params.userId,
           );
 
           if (typeof foundIndex === "number" && foundIndex !== -1) {
-            meUser.mutedUsers?.splice?.(foundIndex, 1);
+            me.mutedUsers?.splice?.(foundIndex, 1);
           }
-        });
-      },
-      ...(optimisticUpdates || []),
-    ],
+        })
+      ])
+    }
   });
 };

@@ -34,7 +34,7 @@ export const PostCommentsModal = ({
   const { optimisticUpdates: socialFeed } = useSocialPosts();
   const { data: socialPost } = useViewQuery<SocialPost, SocialPost[]>({
     queryKey: ["social", me?.fbId],
-    selectorFn: (socialPosts) =>
+    select: (socialPosts) =>
       socialPosts.filter((post) => post._id === postId)[0],
   });
 

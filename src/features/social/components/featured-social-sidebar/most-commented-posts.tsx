@@ -4,7 +4,7 @@ import { MiniSocialPost } from "@/features/social/components/featured-social-sid
 import { useMostCommentedSocialPosts } from "@/features/social/queries/use-most-commented-social-posts";
 
 export const MostCommentedPosts = () => {
-  const [mostCommentedPosts] = useMostCommentedSocialPosts();
+  const { data: mostCommentedPosts } = useMostCommentedSocialPosts();
 
   return (
     <AnimatePresence initial={false}>

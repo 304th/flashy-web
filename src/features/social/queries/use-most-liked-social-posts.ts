@@ -1,10 +1,9 @@
-import { useSubsetQuery } from "@/lib/query-toolkit";
 import { type FeaturedPosts } from "@/features/social/collections/featured-social-posts";
+import { useViewQuery } from "@/lib/query-toolkit-v2";
 
 export const useMostLikedSocialPosts = () => {
-  return useSubsetQuery<SocialPost[], FeaturedPosts>({
-    key: "mostLiked",
-    existingQueryKey: ["social", "featured"],
-    selectorFn: (data) => data.mostLiked,
+  return useViewQuery<SocialPost[], FeaturedPosts>({
+    queryKey: ["social", "featured"],
+    select: (data) => data.mostLiked,
   });
 };

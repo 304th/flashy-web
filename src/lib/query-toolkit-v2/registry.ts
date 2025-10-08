@@ -49,14 +49,6 @@ function areQueryKeysEqual(key1: unknown[], key2: unknown[]): boolean {
 class LiveRegistry {
   private readonly nameToEntries: Map<string, Set<RegisteredAny>> = new Map();
 
-  // register(entry: RegisteredAny) {
-  //   if (!this.nameToEntries.has(entry.name)) {
-  //     this.nameToEntries.set(entry.name, new Set());
-  //   }
-  //
-  //   this.nameToEntries.get(entry.name)!.add(entry);
-  // }
-
   register(entry: RegisteredAny) {
     if (!this.nameToEntries.has(entry.name)) {
       this.nameToEntries.set(entry.name, new Set());
@@ -70,6 +62,9 @@ class LiveRegistry {
 
     if (!existingEntry) {
       entries.add(entry);
+    } else {
+      // entries.delete(existingEntry); //FIXME: add swap logic
+      // entries.add(entry);
     }
   }
 

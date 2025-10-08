@@ -5,6 +5,7 @@ import {
 } from "@/lib/query-toolkit-v2";
 import { meEntity } from "@/features/auth/queries/use-me";
 import { socialFeedCollectionV2 } from "@/features/social/collections/social-feed";
+import {timeout} from "@/lib/utils";
 
 export interface MuteChannelParams {
   userId: string;
@@ -12,6 +13,8 @@ export interface MuteChannelParams {
 
 const muteChannelMutation = createMutation<MuteChannelParams>({
   writeToSource: async (params) => {
+    await timeout()
+    throw 'err'
     return api.post("users/mute", {
       json: {
         userId: params.userId,

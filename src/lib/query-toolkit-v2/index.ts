@@ -5,7 +5,6 @@ export * from "./registry";
 export * from "./channel";
 export * from "./use-live-query";
 export * from "./use-partitioned-query";
-export * from "./use-subset-query";
 export * from "./use-view-query";
 export * from "./use-optimistic-mutation";
 export * from "./use-live-entity";

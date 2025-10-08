@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useQueryClient, useQuery } from "@tanstack/react-query";
 
 const isPaginatedList = <QueryData>(
@@ -7,27 +8,32 @@ const isPaginatedList = <QueryData>(
 
 export const useViewQuery = <SubsetData, QueryData>({
   queryKey,
-  selectorFn,
+  select,
 }: {
   queryKey: readonly unknown[];
-  selectorFn: (data: QueryData) => SubsetData;
+  select: (data: QueryData) => SubsetData;
 }) => {
-  const query = useQuery<QueryData, unknown, SubsetData>({
-    queryKey,
-    select: (data) => {
-      if (Array.isArray(data)) {
-        return selectorFn(data);
-      } else if (isPaginatedList(data)) {
-        return selectorFn((data.pages as unknown[]).flat() as QueryData);
-      }
+  const queryClient = useQueryClient();
 
-      return selectorFn(data);
-    },
-    enabled: Boolean(useQueryClient().getQueryData(queryKey)),
+  const query = useQuery<QueryData, unknown, QueryData>({
+    queryKey,
+    enabled: Boolean(queryClient.getQueryData(queryKey)),
   });
 
+  const selectedData = useMemo(() => {
+    if (!query.data) return undefined;
+
+    if (Array.isArray(query.data)) {
+      return select(query.data);
+    } else if (isPaginatedList(query.data)) {
+      return select((query.data.pages as unknown[]).flat() as QueryData);
+    }
+
+    return select(query.data);
+  }, [query.data, select]);
+
   return {
-    data: query.data,
+    data: selectedData,
     query,
-  }
-}
+  };
+};

@@ -2,15 +2,10 @@ import { useMemo, useEffect, useState } from "react";
 import { addHours, differenceInMilliseconds } from "date-fns";
 import {
   useVotePoll,
-  VotePollParams,
 } from "@/features/social/mutations/use-vote-poll";
-import { useSocialPostContext } from "@/features/social/components/social-post/social-post-context";
 
 export const SocialPostPoll = ({ socialPost }: { socialPost: SocialPost }) => {
-  const { votePollUpdates } = useSocialPostContext();
-  const votePoll = useVotePoll({
-    optimisticUpdates: votePollUpdates,
-  });
+  const votePoll = useVotePoll();
 
   if (
     !socialPost.poll ||

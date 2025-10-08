@@ -24,11 +24,10 @@ export const SocialPostMenu = ({ socialPost }: { socialPost: SocialPost }) => {
   const { data: me } = useMe();
   const [open, setOpen] = useState(false);
   const { openModal } = useModals();
-  const { pinUpdates, muteUpdates, unmuteUpdates } = useSocialPostContext();
   const deleteSocialPost = useDeleteSocialPost();
   const pinPost = usePinSocialPost();
   const muteUser = useMuteChannel();
-  const unmuteUser = useUnmuteChannel({ optimisticUpdates: unmuteUpdates });
+  const unmuteUser = useUnmuteChannel();
   const isSuperAdmin = useIsSuperAdmin();
   const isOwned = useSocialPostOwned(socialPost);
   const hasMuted = useIsChannelMuted(socialPost.userId);

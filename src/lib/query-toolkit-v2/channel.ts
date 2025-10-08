@@ -15,16 +15,15 @@ export class Channel<T> {
   }
 
   // Overloads allowed on class methods
-  async update(id: string, updateFn: (draft: Draft<Optimistic<T>>) => void): Promise<OptTransaction | OptTransaction[]>;
-  async update(updateFn: (draft: Draft<Optimistic<T>>) => void): Promise<OptTransaction | OptTransaction[]>;
+  async update(id: string, updateFn: (draft: Draft<Optimistic<T>>) => void): Promise<OptTransaction[]>;
+  async update(updateFn: (draft: Draft<Optimistic<T>>) => void): Promise<OptTransaction[]>;
   async update(
     idOrFn: string | ((draft: Draft<Optimistic<T>>) => void),
     maybeFn?: (draft: Draft<Optimistic<T>>) => void,
-  ): Promise<OptTransaction | OptTransaction[]> {
+  ): Promise<OptTransaction[]> {
     const hasId = typeof idOrFn === "string";
     const updateFn = (hasId ? maybeFn : idOrFn) as (draft: Draft<Optimistic<T>>) => void;
 
-    //@ts-ignore //FIXME: fix types
     return await Promise.all(
       this.entries.map(async (entry) => {
         if (entry.kind === "collection") {

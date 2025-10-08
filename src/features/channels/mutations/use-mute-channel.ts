@@ -29,7 +29,7 @@ export const useMuteChannel = () => {
           me.mutedUsers = me.mutedUsers || [];
           me.mutedUsers.push(params.userId);
         }),
-        // ch(socialFeedCollectionV2).update(params.userId)
+        ch(socialFeedCollectionV2).filter((post) => post.userId !== params.userId)
       ])
     },
   });

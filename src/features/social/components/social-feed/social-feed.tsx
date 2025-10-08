@@ -37,6 +37,7 @@ export const SocialFeed = () => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
+                    layout="position"
                     layoutId={`post-${socialPost._optimisticId || socialPost.orderId}`}
                   >
                     <SocialPost socialPost={socialPost} isLinkable />

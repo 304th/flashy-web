@@ -48,7 +48,7 @@ export const CommentsFeed = ({
 
           return (
             <div className="relative flex flex-col bg-base-100">
-              <div className="flex w-full px-6 pt-6">
+              <div className="flex w-full px-4 pt-4">
                 <Separator>{commentsCount} comments</Separator>
               </div>
               <div

@@ -1,16 +1,15 @@
 'use client';
 
-import { ReactNode, Suspense } from 'react';
+import { Suspense } from 'react';
 import { ProgressBar } from '@/packages/progress-bar';
 
 const options = {
   showSpinner: false,
 };
 
-export const LoadingProvider = ({ children }: { children: ReactNode }) => {
+export const LoadingProvider = () => {
   return (
     <>
-      {children}
       <Suspense fallback={null}>
         <ProgressBar
           height="1px"

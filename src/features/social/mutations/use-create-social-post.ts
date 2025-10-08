@@ -22,12 +22,12 @@ const createSocialPostMutation = createMutation<
       uploadedImages = await Promise.all(
         params.images.map(async (image) => {
           const { uploadUrl, fileType } =
-            await createSignedUploadUrlMutation.writeData({
+            await createSignedUploadUrlMutation.write({
               fileName: image.name,
               fileType: image.type,
             });
 
-          return await uploadImage.writeData({
+          return await uploadImage.write({
             file: image,
             type: fileType,
             uploadUrl: uploadUrl,
@@ -76,6 +76,7 @@ export const useCreateSocialPost = () => {
           sync: true,
           syncFn: (socialPost) => ({
             ...socialPost,
+            reactions: {},
             poll: {
               pollVotedId: null,
               results: socialPost.poll.results,

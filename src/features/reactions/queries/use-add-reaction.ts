@@ -1,8 +1,8 @@
 import type { WritableDraft } from "immer";
 import { api } from "@/services/api";
 import {
-  createMutation as createMutationV2,
-  useOptimisticMutation as useOptimisticMutationV2,
+  createMutation,
+  useOptimisticMutation,
 } from "@/lib/query-toolkit-v2";
 import { useMe } from "@/features/auth/queries/use-me";
 import { socialFeedCollection } from "@/features/social/collections/social-feed";
@@ -15,7 +15,7 @@ export interface AddReactionParams {
   count?: number;
 }
 
-const addReaction = createMutationV2<AddReactionParams>({
+const addReaction = createMutation<AddReactionParams>({
   write: async (params) => {
     return await api
       .post("reactions/addReaction", {
@@ -45,7 +45,7 @@ export const addReactionToSocialPost =
 export const useAddReaction = () => {
   const { data: author } = useMe();
 
-  return useOptimisticMutationV2({
+  return useOptimisticMutation({
     mutation: addReaction,
     onOptimistic: async (channel, params) => {
       return Promise.all([

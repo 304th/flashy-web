@@ -90,12 +90,12 @@ export const ProfileSettingsModal = ({
             // Upload images first
             if (params.bannerUpload) {
               const { uploadUrl, fileType } =
-                await createSignedUploadUrlMutation.writeData({
+                await createSignedUploadUrlMutation.write({
                   fileName: params.bannerUpload.name,
                   fileType: params.bannerUpload.type,
                 });
 
-              const banner = await uploadImage.writeData({
+              const banner = await uploadImage.write({
                 file: params.bannerUpload,
                 type: fileType,
                 uploadUrl: uploadUrl,
@@ -108,12 +108,12 @@ export const ProfileSettingsModal = ({
 
             if (params.avatarUpload) {
               const { uploadUrl, fileType } =
-                await createSignedUploadUrlMutation.writeData({
+                await createSignedUploadUrlMutation.write({
                   fileName: params.avatarUpload.name,
                   fileType: params.avatarUpload.type,
                 });
 
-              const userimage = await uploadImage.writeData({
+              const userimage = await uploadImage.write({
                 file: params.avatarUpload,
                 type: fileType,
                 uploadUrl: uploadUrl,

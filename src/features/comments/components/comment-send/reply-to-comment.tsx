@@ -22,7 +22,7 @@ export const ReplyToComment = ({
         />
         <p>
           Replying to:{" "}
-          <span className="text-white">{comment.created_by.username}</span>
+          <span className="text-white">@{comment.created_by.username}</span>
         </p>
       </div>
       <CloseButton onClick={onClose} />

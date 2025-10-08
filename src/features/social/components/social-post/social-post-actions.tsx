@@ -8,10 +8,12 @@ import { useIsSocialPostLocked } from "@/features/social/hooks/use-is-social-pos
 
 export const SocialPostActions = ({
   socialPost,
+  className,
 }: {
   socialPost: SocialPost;
+  className?: string;
 }) => {
-  const { likeUpdates, unlikeUpdates, onCommentsOpen, onShareOpen } =
+  const { onCommentsOpen, onShareOpen } =
     useSocialPostContext();
   const isLocked = useIsSocialPostLocked(socialPost);
 
@@ -20,7 +22,7 @@ export const SocialPostActions = ({
   }
 
   return (
-    <div className="flex items-center justify-between">
+    <div className={`flex items-center justify-between ${className}`}>
       <div className="flex gap-2">
         {onCommentsOpen && (
           <CommentButton
@@ -30,8 +32,6 @@ export const SocialPostActions = ({
         )}
         <LikeButton
           post={socialPost}
-          likeUpdates={likeUpdates}
-          unlikeUpdates={unlikeUpdates}
         />
         <RelightButton post={socialPost} />
       </div>

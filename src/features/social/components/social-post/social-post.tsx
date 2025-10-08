@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { UserProfile } from "@/components/ui/user-profile";
 import { SocialPostMenu } from "@/features/social/components/social-post/social-post-menu";
-import { useSocialPostContext } from "@/features/social/components/social-post/social-post-context";
 import { SocialPostContent } from "@/features/social/components/social-post/social-post-content";
+import { SocialPostActions } from "@/features/social/components/social-post/social-post-actions";
+import { SocialPostTags } from "@/features/social/components/social-post/social-post-tags";
+import { useSocialPostContext } from "@/features/social/components/social-post/social-post-context";
 import { useIsSocialPostLocked } from "@/features/social/hooks/use-is-social-post-locked";
 import { timeAgo } from "@/lib/utils";
 
@@ -20,7 +22,7 @@ export const SocialPost = ({
 
   return (
     <article
-      className={`relative flex flex-col gap-3 h-fit w-full transition rounded
+      className={`relative flex flex-col h-fit w-full transition rounded
         bg-[linear-gradient(180deg,#151515_0%,#151515_0.01%,#19191920_100%)]
         ${isLinkable ? "hover:bg-base-200" : ""} ${className}
         ${socialPost._optimisticStatus === "pending" ? "opacity-50 pointer-events-none" : ""}`}
@@ -45,6 +47,14 @@ export const SocialPost = ({
       ) : (
         <SocialPostContent socialPost={socialPost} />
       )}
+      {
+        !isLocked && (
+          <div className="flex flex-col gap-3 px-4 pb-4 bottom-4 w-full">
+            <SocialPostActions socialPost={socialPost} />
+            <SocialPostTags socialPost={socialPost} />
+          </div>
+        )
+      }
     </article>
   );
 };

@@ -1,13 +1,13 @@
-import { createMutation, useOptimisticMutation } from "@/lib/query-toolkit";
+import { createMutation, useOptimisticMutation } from "@/lib/query-toolkit-v2";
 import { api } from "@/services/api";
-import { useMe } from "@/features/auth/queries/use-me";
+import { meEntity } from "@/features/auth/queries/use-me";
 
 export interface UpdateAvatarParams {
   userimage: string;
 }
 
 const updateBanner = createMutation<UpdateAvatarParams>({
-  writeToSource: async (params) => {
+  write: async (params) => {
     return api.put("user/userimage", {
       json: params,
     });
@@ -15,16 +15,12 @@ const updateBanner = createMutation<UpdateAvatarParams>({
 });
 
 export const useUpdateAvatar = () => {
-  const { optimisticUpdates: me } = useMe();
-
   return useOptimisticMutation({
     mutation: updateBanner,
-    optimisticUpdates: [
-      async (params) => {
-        return me.update((meUser) => {
-          meUser.userimage = params.userimage;
-        });
-      },
-    ],
+    onOptimistic: (ch, params) => {
+      return ch(meEntity).update((me) => {
+        me.userimage = params.userimage;
+      });
+    },
   });
 };

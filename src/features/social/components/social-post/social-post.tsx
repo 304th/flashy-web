@@ -20,8 +20,7 @@ export const SocialPost = ({
 
   return (
     <article
-      className={`relative flex flex-col gap-3 h-fit w-full transition
-        rounded
+      className={`relative flex flex-col gap-3 h-fit w-full transition rounded
         bg-[linear-gradient(180deg,#151515_0%,#151515_0.01%,#19191920_100%)]
         ${isLinkable ? "hover:bg-base-200" : ""} ${className}
         ${socialPost._optimisticStatus === "pending" ? "opacity-50 pointer-events-none" : ""}`}

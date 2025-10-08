@@ -1,6 +1,9 @@
 import { api } from "@/services/api";
 import { useLiveEntity } from "@/lib/query-toolkit/use-live-entity";
-import { useLiveEntity as useLiveEntityV2, createEntity as createEntityV2 } from "@/lib/query-toolkit-v2";
+import {
+  useLiveEntity as useLiveEntityV2,
+  createEntity as createEntityV2,
+} from "@/lib/query-toolkit-v2";
 import { createEntity } from "@/lib/query-toolkit/entity";
 import { decodePollResults } from "@/features/social/utils/poll";
 
@@ -34,7 +37,7 @@ export const socialPostEntityV2 = createEntityV2<SocialPost, { id: string }>({
       },
     };
   },
-  name: 'social-post'
+  name: "social-post",
 });
 
 export const useSocialPostById = (id: string) => {

@@ -1,16 +1,13 @@
 import { api } from "@/services/api";
-import { createMutation } from "@/lib/query-toolkit/mutation";
-import {
-  type OptimisticUpdate,
-  useOptimisticMutation,
-} from "@/lib/query-toolkit";
+import { createMutation, useOptimisticMutation } from "@/lib/query-toolkit-v2";
+import { commentsCollection } from "@/features/comments/collections/comments";
 
 export interface DeleteCommentParams {
   id: string;
 }
 
 const deleteComment = createMutation({
-  writeToSource: async (params: DeleteCommentParams) => {
+  write: async (params: DeleteCommentParams) => {
     return api
       .delete("comment", {
         json: {
@@ -21,13 +18,11 @@ const deleteComment = createMutation({
   },
 });
 
-export const useDeleteComment = ({
-  optimisticUpdates,
-}: {
-  optimisticUpdates?: OptimisticUpdate<DeleteCommentParams>[];
-}) => {
+export const useDeleteComment = () => {
   return useOptimisticMutation({
     mutation: deleteComment,
-    optimisticUpdates,
+    onOptimistic: (ch, params) => {
+      return Promise.all([ch(commentsCollection).delete(params.id)]);
+    },
   });
 };

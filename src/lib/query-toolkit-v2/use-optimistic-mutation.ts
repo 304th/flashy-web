@@ -1,6 +1,12 @@
 import type { Mutation } from "@/lib/query-toolkit-v2/mutation";
 import { useMutation } from "@tanstack/react-query";
-import { channel, EntityOptimisticMutations, type OptTransaction, type CollectionOptimisticMutations, handleMutationError } from "@/lib/query-toolkit-v2";
+import {
+  channel,
+  EntityOptimisticMutations,
+  type OptTransaction,
+  type CollectionOptimisticMutations,
+  handleMutationError,
+} from "@/lib/query-toolkit-v2";
 
 export const useOptimisticMutation = <Params, Response>({
   mutation,
@@ -31,7 +37,7 @@ export const useOptimisticMutation = <Params, Response>({
     }
   >({
     mutationFn: async (params: Params) => {
-      return await mutation.writeData(params);
+      return await mutation.write(params);
     },
     onMutate: async (params) => {
       let transactions: Awaited<
@@ -44,6 +50,7 @@ export const useOptimisticMutation = <Params, Response>({
         if (onOptimistic) {
           const result = await onOptimistic(channel, params);
           const list = Array.isArray(result) ? result : [result];
+
           transactions = transactions.concat(...list);
         }
 

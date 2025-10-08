@@ -1,6 +1,6 @@
-import { getQuery } from "@/lib/query-toolkit";
-import { getLinksPreview } from "@/features/social/utils/getLinksPreview";
 import { keepPreviousData } from "@tanstack/query-core";
+import { getQuery } from "@/lib/query-toolkit-v2";
+import { getLinksPreview } from "@/features/social/utils/getLinksPreview";
 
 export const useLinksPreview = (links?: string[]) =>
   getQuery<LinkPreview[]>(

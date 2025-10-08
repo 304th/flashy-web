@@ -1,12 +1,7 @@
-import type {WritableDraft} from "immer";
-import {
-  createMutation,
-  OptimisticUpdate,
-  useOptimisticMutation,
-} from "@/lib/query-toolkit-v2";
+import { createMutation, useOptimisticMutation } from "@/lib/query-toolkit-v2";
 import { useMe } from "@/features/auth/queries/use-me";
 import { api } from "@/services/api";
-import { socialFeedCollectionV2 } from "@/features/social/collections/social-feed";
+import { socialFeedCollection } from "@/features/social/collections/social-feed";
 
 export interface PinSocialPostParams {
   id: string;
@@ -14,7 +9,7 @@ export interface PinSocialPostParams {
 }
 
 const pinSocialPost = createMutation({
-  writeToSource: async (params: PinSocialPostParams) => {
+  write: async (params: PinSocialPostParams) => {
     return api.post(`social-posts/${params.id}/pinned`, {
       json: {
         pinned: params.pinned,
@@ -23,35 +18,31 @@ const pinSocialPost = createMutation({
   },
 });
 
-export const pinPost =
-  (author: Author, params: PinSocialPostParams) =>
-    (post: WritableDraft<Optimistic<SocialPost>>) => {
-      if (params.pinned) {
-        post.pinned = true;
-        post.pinnedBy = {
-          userId: author!.fbId,
-          username: author!.username,
-        };
-      } else {
-        post.pinned = false;
-        delete post.pinnedBy;
-      }
-    };
-
 export const usePinSocialPost = () => {
   const { data: author } = useMe();
 
   return useOptimisticMutation({
     mutation: pinSocialPost,
     onOptimistic: (ch, params) => {
-      return ch(socialFeedCollectionV2).update(params.id, pinPost(author!, params))
-    }
+      return ch(socialFeedCollection).update(params.id, (post) => {
+        if (params.pinned) {
+          post.pinned = true;
+          post.pinnedBy = {
+            userId: author!.fbId,
+            username: author!.username,
+          };
+        } else {
+          post.pinned = false;
+          delete post.pinnedBy;
+        }
+      });
+    },
   });
 };
 
 // import { produce } from "immer";
 // import { useQueryClient } from "@tanstack/react-query";
-// import { getMutation, handleOptimisticUpdateError } from "@/lib/query-toolkit";
+// import { getMutation, handleOptimisticUpdateError } from "@/lib/query-toolkit-v2";
 // import { optimisticUpdateSocialPosts } from "@/features/social/queries/use-social-posts";
 // import { api } from "@/services/api";
 // import { useMe } from "@/features/auth/queries/use-me";

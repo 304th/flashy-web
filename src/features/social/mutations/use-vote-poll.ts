@@ -1,10 +1,7 @@
 import type { WritableDraft } from "immer";
-import {
-  createMutation,
-  useOptimisticMutation,
-} from "@/lib/query-toolkit-v2";
+import { createMutation, useOptimisticMutation } from "@/lib/query-toolkit-v2";
 import { api } from "@/services/api";
-import { socialFeedCollectionV2 } from "@/features/social/collections/social-feed";
+import { socialFeedCollection } from "@/features/social/collections/social-feed";
 import { socialPostEntityV2 } from "@/features/social/queries/use-social-post-by-id";
 
 export interface VotePollParams {
@@ -13,7 +10,7 @@ export interface VotePollParams {
 }
 
 const votePollMutation = createMutation<VotePollParams>({
-  writeToSource: async (params) => {
+  write: async (params) => {
     return api.post("social-posts/vote", {
       json: {
         postId: params.postId,
@@ -34,9 +31,9 @@ export const useVotePoll = () => {
     mutation: votePollMutation,
     onOptimistic: (ch, params) => {
       return Promise.all([
-        ch(socialFeedCollectionV2).update(params.postId, votePoll(params)),
-        ch(socialPostEntityV2).update(votePoll(params))
-      ])
-    }
+        ch(socialFeedCollection).update(params.postId, votePoll(params)),
+        ch(socialPostEntityV2).update(votePoll(params)),
+      ]);
+    },
   });
 };

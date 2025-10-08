@@ -1,4 +1,4 @@
-import { usePartitionedQuery } from "@/lib/query-toolkit";
+import { usePartitionedQuery } from "@/lib/query-toolkit-v2";
 import {
   type VideoSearchParams,
   videoSearchCollection,

@@ -5,7 +5,7 @@ import { MiniSocialPost } from "@/features/social/components/featured-social-sid
 import { RecentAnnouncementSocialPost } from "@/features/social/components/featured-social-sidebar/recent-announcement-social-post";
 
 export const RecentAnnouncements = () => {
-  const {data: recentAnnouncements} = useRecentAnnouncements();
+  const { data: recentAnnouncements } = useRecentAnnouncements();
 
   return (
     <AnimatePresence initial={false}>

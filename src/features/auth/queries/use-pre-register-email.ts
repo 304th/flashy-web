@@ -1,5 +1,5 @@
 import { api } from "@/services/api";
-import { getMutation, handleMutationError } from "@/lib/query-toolkit";
+import { getMutation, handleMutationError } from "@/lib/query-toolkit-v2";
 
 export interface PreRegisterEmailParams {
   email: string;

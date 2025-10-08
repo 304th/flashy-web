@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Modal as ModalComponent } from "@/packages/modals";
 import { CloseButton } from "@/components/ui/close-button";
 import { SocialPost } from "@/features/social/components/social-post/social-post";
@@ -6,17 +6,9 @@ import { CommentSend } from "@/features/comments/components/comment-send/comment
 import { CommentsFeed } from "@/features/comments/components/comments-feed/comments-feed";
 import { useViewQuery } from "@/lib/query-toolkit-v2";
 import { useMe } from "@/features/auth/queries/use-me";
-import {
-  useSocialFeedUpdatesOnReactionAdd,
-  useSocialFeedUpdatesOnReactionRemove,
-} from "@/features/social/hooks/use-social-feed-reaction-updates";
-import { useSocialFeedRelightUpdates } from "@/features/social/hooks/use-social-feed-relight-updates";
 import { useComments } from "@/features/comments/queries/use-comments";
 import { useSocialPosts } from "@/features/social/queries/use-social-posts";
-import { useSocialFeedVotePollUpdates } from "../../hooks/use-social-feed-vote-poll-updates";
-import { useSocialFeedPinUpdates } from "../../hooks/use-social-feed-pin-updates";
-import { useSocialFeedMuteUpdates } from "../../hooks/use-social-feed-mute-updates";
-import { useSocialFeedUnmuteUpdates } from "../../hooks/use-social-feed-unmute-updates";
+
 import { SocialPostProvider } from "../social-post/social-post-context";
 
 export interface PostCommentsModalProps {
@@ -38,18 +30,7 @@ export const PostCommentsModal = ({
       socialPosts.filter((post) => post._id === postId)[0],
   });
 
-  const likeUpdates = useSocialFeedUpdatesOnReactionAdd();
-  const unlikeUpdates = useSocialFeedUpdatesOnReactionRemove();
-  const relightUpdates = useSocialFeedRelightUpdates();
-  const votePollUpdates = useSocialFeedVotePollUpdates();
-  const pinUpdates = useSocialFeedPinUpdates();
-  const muteUpdates = useSocialFeedMuteUpdates();
-  const unmuteUpdates = useSocialFeedUnmuteUpdates();
-
   const { optimisticUpdates: comments } = useComments(postId);
-  // const likeUpdates = useSocialFeedUpdatesOnReactionAdd();
-  // const unlikeUpdates = useSocialFeedUpdatesOnReactionRemove();
-  // const relightUpdates = useSocialFeedRelightUpdates();
 
   if (!socialPost) {
     //FIXME: put lower so that modal is not glitched out
@@ -71,15 +52,7 @@ export const PostCommentsModal = ({
           className="relative flex flex-col gap-4 w-full bg-base-200 border-b
             z-1"
         >
-          <SocialPostProvider
-            likeUpdates={likeUpdates}
-            unlikeUpdates={unlikeUpdates}
-            relightUpdates={relightUpdates}
-            votePollUpdates={votePollUpdates}
-            pinUpdates={pinUpdates}
-            muteUpdates={muteUpdates}
-            unmuteUpdates={unmuteUpdates}
-          >
+          <SocialPostProvider>
             <SocialPost socialPost={socialPost} className="rounded-b-none" />
           </SocialPostProvider>
         </div>

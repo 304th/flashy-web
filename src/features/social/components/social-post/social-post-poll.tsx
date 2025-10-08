@@ -1,8 +1,6 @@
 import { useMemo, useEffect, useState } from "react";
 import { addHours, differenceInMilliseconds } from "date-fns";
-import {
-  useVotePoll,
-} from "@/features/social/mutations/use-vote-poll";
+import { useVotePoll } from "@/features/social/mutations/use-vote-poll";
 
 export const SocialPostPoll = ({ socialPost }: { socialPost: SocialPost }) => {
   const votePoll = useVotePoll();

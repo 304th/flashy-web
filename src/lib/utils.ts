@@ -49,8 +49,9 @@ export const prune = (objectToPrune: object) => {
   );
 };
 
-export const timeout = (ms: number = 1000) => new Promise((resolve) => {
-  setTimeout(() => {
-    resolve(true);
-  }, ms)
-})
+export const timeout = (ms: number = 1000) =>
+  new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(true);
+    }, ms);
+  });

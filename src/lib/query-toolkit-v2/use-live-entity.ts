@@ -4,7 +4,12 @@ import {
   useQueryClient,
   type UseQueryOptions,
 } from "@tanstack/react-query";
-import { type Entity, EntityOptimisticMutations, EntityOptimisticUpdater, liveRegistry } from "@/lib/query-toolkit-v2";
+import {
+  type Entity,
+  EntityOptimisticMutations,
+  EntityOptimisticUpdater,
+  liveRegistry,
+} from "@/lib/query-toolkit-v2";
 
 // Define the type for the hook's parameters
 interface UseLiveEntityProps<Item, Params = undefined> {
@@ -14,7 +19,7 @@ interface UseLiveEntityProps<Item, Params = undefined> {
   getParams?: () => Params;
 }
 
-export const useLiveEntity = <Item, Params = undefined>({
+export const useLiveEntity = <Item, Params = never>({
   queryKey,
   entity,
   options,
@@ -51,7 +56,11 @@ export const useLiveEntity = <Item, Params = undefined>({
     };
 
     // Register only if query is successful and data is not nullish
-    if (query.status === "success" && query.data !== null && query.data !== undefined) {
+    if (
+      query.status === "success" &&
+      query.data !== null &&
+      query.data !== undefined
+    ) {
       liveRegistry.register(entry);
     } else {
       // Unregister if data is nullish or query is not successful

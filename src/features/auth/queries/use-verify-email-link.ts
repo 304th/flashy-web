@@ -1,4 +1,4 @@
-import { getQuery } from "@/lib/query-toolkit";
+import { getQuery } from "@/lib/query-toolkit-v2";
 import { isSignInWithLink } from "@/services/firebase";
 import { useSignInWithMagicLink } from "@/features/auth/queries/use-sign-in-with-magic-link";
 

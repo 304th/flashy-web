@@ -2,14 +2,14 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { SocialPost } from "@/features/social/components/social-post/social-post";
-import { useSocialPostsV2 } from "@/features/social/queries/use-social-posts";
+import { useSocialPosts } from "@/features/social/queries/use-social-posts";
 import { Loadable } from "@/components/ui/loadable";
 import { NotFound } from "@/components/ui/not-found";
 import { useModals } from "@/hooks/use-modals";
 import { SocialPostProvider } from "@/features/social/components/social-post/social-post-context";
 
 export const SocialFeed = () => {
-  const { data, query } = useSocialPostsV2();
+  const { data, query } = useSocialPosts();
   const { openModal } = useModals();
 
   return (

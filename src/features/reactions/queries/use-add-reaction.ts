@@ -5,7 +5,7 @@ import {
   useOptimisticMutation as useOptimisticMutationV2,
 } from "@/lib/query-toolkit-v2";
 import { useMe } from "@/features/auth/queries/use-me";
-import { socialFeedCollectionV2 } from "@/features/social/collections/social-feed";
+import { socialFeedCollection } from "@/features/social/collections/social-feed";
 import { socialPostEntityV2 } from "@/features/social/queries/use-social-post-by-id";
 
 export interface AddReactionParams {
@@ -16,7 +16,7 @@ export interface AddReactionParams {
 }
 
 const addReaction = createMutationV2<AddReactionParams>({
-  writeToSource: async (params) => {
+  write: async (params) => {
     return await api
       .post("reactions/addReaction", {
         json: {
@@ -49,9 +49,15 @@ export const useAddReaction = () => {
     mutation: addReaction,
     onOptimistic: async (channel, params) => {
       return Promise.all([
-        channel(socialFeedCollectionV2).update(params.id, addReactionToSocialPost(author!)),
-        channel(socialPostEntityV2).update(params.id, addReactionToSocialPost(author!)),
-      ])
+        channel(socialFeedCollection).update(
+          params.id,
+          addReactionToSocialPost(author!),
+        ),
+        channel(socialPostEntityV2).update(
+          params.id,
+          addReactionToSocialPost(author!),
+        ),
+      ]);
     },
   });
 };

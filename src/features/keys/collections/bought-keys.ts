@@ -1,5 +1,5 @@
 import { api } from "@/services/api";
-import { createCollection } from "@/lib/query-toolkit/collection";
+import { createCollection } from "@/lib/query-toolkit-v2";
 import { keySchema } from "@/features/keys/schemas/key.schema";
 
 export const boughtKeysCollections = createCollection<Key>({
@@ -7,4 +7,5 @@ export const boughtKeysCollections = createCollection<Key>({
     return api.get("keys/bought").json<Key[]>();
   },
   schema: keySchema,
+  name: "boughtKeys",
 });

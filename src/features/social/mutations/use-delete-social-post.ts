@@ -1,14 +1,13 @@
 import { api } from "@/services/api";
-import { createMutation } from "@/lib/query-toolkit/mutation";
-import { useOptimisticMutation } from "@/lib/query-toolkit";
-import { useSocialPosts } from "@/features/social/queries/use-social-posts";
+import { createMutation, useOptimisticMutation } from "@/lib/query-toolkit-v2";
+import { socialFeedCollection } from "@/features/social/collections/social-feed";
 
 export interface DeleteSocialPostParams {
   id: string;
 }
 
 const deleteSocialPost = createMutation<DeleteSocialPostParams>({
-  writeToSource: async (params: DeleteSocialPostParams) => {
+  write: async (params: DeleteSocialPostParams) => {
     api.delete(`social-posts`, {
       json: {
         post_id: params.id,
@@ -18,10 +17,10 @@ const deleteSocialPost = createMutation<DeleteSocialPostParams>({
 });
 
 export const useDeleteSocialPost = () => {
-  const { optimisticUpdates: socialFeed } = useSocialPosts();
-
   return useOptimisticMutation({
     mutation: deleteSocialPost,
-    optimisticUpdates: [async (params) => socialFeed.delete(params.id)],
+    onOptimistic: (ch, params) => {
+      return ch(socialFeedCollection).delete(params.id);
+    },
   });
 };

@@ -1,6 +1,6 @@
-import { createMutation, useOptimisticMutation } from "@/lib/query-toolkit";
+import { createMutation, useOptimisticMutation } from "@/lib/query-toolkit-v2";
 import { api } from "@/services/api";
-import { useMe } from "@/features/auth/queries/use-me";
+import { meEntity } from "@/features/auth/queries/use-me";
 
 export interface UpdateUserInfoParams {
   bio?: string;
@@ -14,7 +14,7 @@ export interface UpdateUserInfoParams {
 }
 
 const updateUserInfo = createMutation<UpdateUserInfoParams>({
-  writeToSource: async (params) => {
+  write: async (params) => {
     return api.put("user", {
       json: {
         user: params,
@@ -24,17 +24,13 @@ const updateUserInfo = createMutation<UpdateUserInfoParams>({
 });
 
 export const useUpdateUserInfo = () => {
-  const { optimisticUpdates: me } = useMe();
-
   return useOptimisticMutation({
     mutation: updateUserInfo,
-    optimisticUpdates: [
-      async (params) => {
-        return me.update((meUser) => {
-          meUser.bio = params.bio;
-          meUser.links = params.links;
-        });
-      },
-    ],
+    onOptimistic: (ch, params) => {
+      return ch(meEntity).update((me) => {
+        me.bio = params.bio;
+        me.links = params.links;
+      });
+    },
   });
 };

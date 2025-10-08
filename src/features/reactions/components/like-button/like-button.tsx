@@ -5,7 +5,6 @@ import {
   LikeButtonCoreProps,
 } from "@/features/reactions/components/like-button/like-button-core";
 import { LikeableLikeButton } from "@/features/reactions/components/like-button/likeable-like-button";
-import { OptimisticUpdate } from "@/lib/query-toolkit";
 
 export const isReactable = (post: any): post is Reactable => {
   return post.reactions;
@@ -15,22 +14,10 @@ export type LikeButtonButtonRender =
   | ((data: LikeButtonCoreProps) => ReactNode)
   | (() => ReactNode);
 
-export const LikeButton = ({
-  post,
-  likeUpdates,
-  unlikeUpdates,
-}: {
-  post: Reactable | Likeable;
-  likeUpdates?: OptimisticUpdate<any>[];
-  unlikeUpdates?: OptimisticUpdate<any>[];
-}) => {
+export const LikeButton = ({ post }: { post: Reactable | Likeable }) => {
   if (isReactable(post)) {
     return (
-      <ReactableLikeButton
-        post={post}
-        likeUpdates={likeUpdates}
-        unlikeUpdates={unlikeUpdates}
-      >
+      <ReactableLikeButton post={post}>
         {({ isLiked, likesCount, onLike, onUnlike }) => (
           <LikeButtonCore
             isLiked={isLiked}
@@ -44,11 +31,7 @@ export const LikeButton = ({
   }
 
   return (
-    <LikeableLikeButton
-      post={post}
-      likeUpdates={likeUpdates}
-      unlikeUpdates={unlikeUpdates}
-    >
+    <LikeableLikeButton post={post}>
       {({ isLiked, likesCount, onLike, onUnlike }) => (
         <LikeButtonCore
           isLiked={isLiked}

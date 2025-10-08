@@ -1,4 +1,4 @@
-import { createCollection, usePartitionedQuery } from "@/lib/query-toolkit";
+import { createCollection, usePartitionedQuery } from "@/lib/query-toolkit-v2";
 import { api } from "@/services/api";
 import { socialPostSchema } from "@/features/social/schemas/social-post.schema";
 import { decodePollResults } from "@/features/social/utils/poll";
@@ -22,6 +22,7 @@ const channelPostsCollection = createCollection<
     }));
   },
   schema: socialPostSchema,
+  name: "channelSocialPosts",
 });
 
 export const useChannelSocialPosts = ({

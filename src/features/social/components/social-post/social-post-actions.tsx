@@ -11,12 +11,8 @@ export const SocialPostActions = ({
 }: {
   socialPost: SocialPost;
 }) => {
-  const {
-    likeUpdates,
-    unlikeUpdates,
-    onCommentsOpen,
-    onShareOpen,
-  } = useSocialPostContext();
+  const { likeUpdates, unlikeUpdates, onCommentsOpen, onShareOpen } =
+    useSocialPostContext();
   const isLocked = useIsSocialPostLocked(socialPost);
 
   if (isLocked) {

@@ -1,23 +1,23 @@
-import { getMutation } from "@/lib/query-toolkit";
-import { api } from "@/services/api";
-
-export interface GetSignedUrlForUploadParams {
-  fileName: string;
-  fileType: string;
-}
-
-export const useGetSignedUrlForUpload = () =>
-  getMutation<
-    { fileName: string; fileType: string; uploadUrl: string },
-    any,
-    GetSignedUrlForUploadParams
-  >(["getSignedUrlForUpload"], async (params: GetSignedUrlForUploadParams) => {
-    return await api
-      .post("generate-signed-upload-params", {
-        json: {
-          fileName: params.fileName,
-          fileType: params.fileType,
-        },
-      })
-      .json();
-  });
+// import { getMutation } from "@/lib/query-toolkit-v2";
+// import { api } from "@/services/api";
+//
+// export interface GetSignedUrlForUploadParams {
+//   fileName: string;
+//   fileType: string;
+// }
+//
+// export const useGetSignedUrlForUpload = () =>
+//   getMutation<
+//     { fileName: string; fileType: string; uploadUrl: string },
+//     any,
+//     GetSignedUrlForUploadParams
+//   >(["getSignedUrlForUpload"], async (params: GetSignedUrlForUploadParams) => {
+//     return await api
+//       .post("generate-signed-upload-params", {
+//         json: {
+//           fileName: params.fileName,
+//           fileType: params.fileType,
+//         },
+//       })
+//       .json();
+//   });

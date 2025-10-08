@@ -20,14 +20,14 @@ export const CommentsFeed = ({
   onCommentReply,
 }: CommentsFeedProps) => {
   const listRef = useRef<HTMLDivElement>(null);
-  const [commentCount] = useCommentsCount(post._id);
+  const { data: commentsCount } = useCommentsCount(post._id);
   const { data: comments, query } = useComments(post._id);
 
   useEffect(() => {
-    if (commentCount) {
+    if (commentsCount) {
       listRef.current?.scrollTo?.({ top: 0, behavior: "smooth" });
     }
-  }, [commentCount]);
+  }, [commentsCount]);
 
   return (
     <div className="flex flex-col bg-base-150">
@@ -49,7 +49,7 @@ export const CommentsFeed = ({
           return (
             <div className="relative flex flex-col bg-base-100">
               <div className="flex w-full px-6 pt-6">
-                <Separator>{commentCount} comments</Separator>
+                <Separator>{commentsCount} comments</Separator>
               </div>
               <div
                 ref={listRef}

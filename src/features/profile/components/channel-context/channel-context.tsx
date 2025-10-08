@@ -1,6 +1,6 @@
 import { useContext, createContext, type PropsWithChildren } from "react";
 import type { UseQueryResult } from "@tanstack/react-query";
-import type { EntityOptimisticMutations } from "@/lib/query-toolkit";
+import type { EntityOptimisticMutations } from "@/lib/query-toolkit-v2";
 import { useChannelById } from "@/features/channels/queries/use-channel-by-id";
 
 interface ChannelContextType {

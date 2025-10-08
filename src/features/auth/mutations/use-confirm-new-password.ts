@@ -1,4 +1,4 @@
-import { getMutation } from "@/lib/query-toolkit";
+import { getMutation } from "@/lib/query-toolkit-v2";
 import { confirmNewPassword } from "@/services/firebase";
 
 export interface ConfirmNewPassword {

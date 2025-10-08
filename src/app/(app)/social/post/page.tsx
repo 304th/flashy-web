@@ -12,13 +12,7 @@ import { CommentSend } from "@/features/comments/components/comment-send/comment
 import { SocialPostProvider } from "@/features/social/components/social-post/social-post-context";
 import { useQueryParams } from "@/hooks/use-query-params";
 import { useModals } from "@/hooks/use-modals";
-import { useMe } from "@/features/auth/queries/use-me";
 import { useSocialPostByIdV2 } from "@/features/social/queries/use-social-post-by-id";
-import {
-  addReactionToPost,
-  deleteReactionFromPost,
-} from "@/features/social/hooks/use-social-feed-reaction-updates";
-import { relightSocialPost } from "@/features/social/hooks/use-social-feed-relight-updates";
 import { useComments } from "@/features/comments/queries/use-comments";
 import { useIsSocialPostLocked } from "@/features/social/hooks/use-is-social-post-locked";
 
@@ -66,9 +60,7 @@ const SocialPostDetails = ({
   socialPost: Optimistic<SocialPost>;
 }) => {
   const { openModal } = useModals();
-  const { data: me } = useMe();
   const [replyComment, setReplyComment] = useState<CommentPost | null>(null);
-  // const { optimisticUpdates } = useSocialPostByIdV2(socialPost._id);
   const { optimisticUpdates: comments } = useComments(socialPost._id);
   const isLocked = useIsSocialPostLocked(socialPost);
 
@@ -77,16 +69,6 @@ const SocialPostDetails = ({
       <div className="flex gap-4 items-start w-full">
         <div className="flex flex-col w-full">
           <SocialPostProvider
-            // likeUpdates={[
-            //   () => optimisticUpdates.update(addReactionToPost(me!)),
-            // ]}
-            // unlikeUpdates={[
-            //   () => optimisticUpdates.update(deleteReactionFromPost(me!)),
-            // ]}
-            // relightUpdates={[
-            //   (params) =>
-            //     optimisticUpdates.update(relightSocialPost(me!, params)),
-            // ]}
             onShareOpen={() =>
               openModal("ShareModal", {
                 id: socialPost._id,
@@ -113,16 +95,6 @@ const SocialPostDetails = ({
                     post={socialPost}
                     replyComment={replyComment}
                     className="rounded-br-md rounded-bl-md z-1 border"
-                    sendCommentUpdates={[
-                      async (params) => {
-                        return await comments.prepend(params, { sync: true });
-                      },
-                      // async () => {
-                      //   return await optimisticUpdates.update((post) => {
-                      //     post.commentsCount += 1;
-                      //   });
-                      // },
-                    ]}
                     onCloseReply={() => setReplyComment(null)}
                   />
                 </div>

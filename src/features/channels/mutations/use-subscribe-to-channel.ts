@@ -1,18 +1,13 @@
-import {
-  createMutation,
-  OptimisticUpdate,
-  useOptimisticMutation,
-} from "@/lib/query-toolkit";
+import { createMutation, useOptimisticMutation } from "@/lib/query-toolkit-v2";
 import { api } from "@/services/api";
-import { useSubscriptions } from "@/features/auth/queries/use-subscriptions";
-import { channel } from "node:diagnostics_channel";
+import { subscriptionsEntity } from "@/features/auth/queries/use-subscriptions";
 
 export interface SubscribeParams {
   channelId: string;
 }
 
 const subscribeMutation = createMutation<SubscribeParams>({
-  writeToSource: async (params) => {
+  write: async (params) => {
     return await api
       .post("followUser", {
         json: {
@@ -23,20 +18,13 @@ const subscribeMutation = createMutation<SubscribeParams>({
   },
 });
 
-export const useSubscribeToChannel = ({
-  optimisticUpdates,
-}: { optimisticUpdates?: OptimisticUpdate<SubscribeParams>[] } = {}) => {
-  const { optimisticUpdates: subscriptions } = useSubscriptions();
-
+export const useSubscribeToChannel = () => {
   return useOptimisticMutation({
     mutation: subscribeMutation,
-    optimisticUpdates: [
-      async (params) => {
-        return subscriptions.update((subs) => {
-          subs.push(params.channelId);
-        });
-      },
-      ...(optimisticUpdates || []),
-    ],
+    onOptimistic: (ch, params) => {
+      return ch(subscriptionsEntity).update((subs) => {
+        subs.push(params.channelId);
+      });
+    },
   });
 };

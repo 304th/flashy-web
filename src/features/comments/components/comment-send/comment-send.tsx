@@ -10,18 +10,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { SendIcon } from "@/components/ui/icons/send";
 import { ReplyToComment } from "@/features/comments/components/comment-send/reply-to-comment";
 import { MessageProgress } from "@/features/social/components/post-create/message-progress";
-import {
-  type CreateCommentParams,
-  useCreateComment,
-} from "@/features/comments/mutations/use-create-comment";
-import {
-  type CreateReplyParams,
-  useCreateReply,
-} from "@/features/comments/mutations/use-create-reply";
-import type { OptimisticUpdate } from "@/lib/query-toolkit";
+import { useCreateComment } from "@/features/comments/mutations/use-create-comment";
+import { useCreateReply } from "@/features/comments/mutations/use-create-reply";
 import { defaultVariants } from "@/lib/framer";
-import { useReplies } from "@/features/comments/queries/use-replies";
-import { useComments } from "@/features/comments/queries/use-comments";
 
 const formSchema = z.object({
   message: z.string().max(500),
@@ -31,7 +22,6 @@ export interface CommentSendProps {
   post: Reactable;
   replyComment: CommentPost | null;
   className?: string;
-  sendCommentUpdates?: OptimisticUpdate<CreateCommentParams>[];
   onCloseReply?: () => void;
 }
 
@@ -39,23 +29,10 @@ export const CommentSend = ({
   post,
   replyComment,
   className,
-  sendCommentUpdates,
   onCloseReply,
 }: CommentSendProps) => {
-  const { optimisticUpdates: replies } = useReplies(replyComment?._id);
-  const { optimisticUpdates: comments } = useComments(post._id);
-  const sendComment = useCreateComment({
-    optimisticUpdates: sendCommentUpdates,
-  });
-  const sendReply = useCreateReply({
-    optimisticUpdates: [
-      async (params) => replies.prepend(params, { sync: true }),
-      async () =>
-        comments.update(replyComment?._id!, (comment) => {
-          comment.repliesCount += 1;
-        }),
-    ],
-  });
+  const sendComment = useCreateComment();
+  const sendReply = useCreateReply();
 
   const form = useForm({
     resolver: zodResolver(formSchema),

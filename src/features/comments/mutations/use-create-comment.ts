@@ -1,9 +1,7 @@
 import { api } from "@/services/api";
-import { createMutation } from "@/lib/query-toolkit/mutation";
-import {
-  type OptimisticUpdate,
-  useOptimisticMutation,
-} from "@/lib/query-toolkit";
+import { useOptimisticMutation, createMutation } from "@/lib/query-toolkit-v2";
+import { commentsCollection } from "@/features/comments/collections/comments";
+import { socialFeedCollection } from "@/features/social/collections/social-feed";
 
 export interface CreateCommentParams {
   postId: string;
@@ -13,7 +11,7 @@ export interface CreateCommentParams {
 }
 
 const createComment = createMutation({
-  writeToSource: async (params: CreateCommentParams) => {
+  write: async (params: CreateCommentParams) => {
     const data = await api
       .post("comment", {
         json: {
@@ -30,13 +28,16 @@ const createComment = createMutation({
   },
 });
 
-export const useCreateComment = ({
-  optimisticUpdates,
-}: {
-  optimisticUpdates?: OptimisticUpdate<CreateCommentParams>[];
-}) => {
+export const useCreateComment = () => {
   return useOptimisticMutation({
     mutation: createComment,
-    optimisticUpdates,
+    onOptimistic: (ch, params) => {
+      return Promise.all([
+        ch(commentsCollection).prepend(params, { sync: true }),
+        ch(socialFeedCollection).update(params.postId, (post) => {
+          post.commentsCount += 1;
+        }),
+      ]);
+    },
   });
 };

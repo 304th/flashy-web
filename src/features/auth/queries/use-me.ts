@@ -11,7 +11,7 @@ export const meEntity = createEntity<User, Authed>({
 
     return await api.get("auth/me/logged-in").json();
   },
-  name: 'me',
+  name: "me",
 });
 
 export const useMe = () => {

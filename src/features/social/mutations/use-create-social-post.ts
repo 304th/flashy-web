@@ -1,9 +1,8 @@
 import { api } from "@/services/api";
-import { useOptimisticMutation } from "@/lib/query-toolkit";
-import { createMutation } from "@/lib/query-toolkit/mutation";
-import { useSocialPosts } from "@/features/social/queries/use-social-posts";
+import { createMutation, useOptimisticMutation } from "@/lib/query-toolkit-v2";
 import { createSignedUploadUrlMutation } from "@/features/common/mutations/use-create-signed-upload-url";
 import { uploadImage } from "@/features/common/mutations/use-upload-image";
+import { socialFeedCollection } from "@/features/social/collections/social-feed";
 
 export interface CreateSocialPostParams {
   description?: string;
@@ -16,7 +15,7 @@ const createSocialPostMutation = createMutation<
   CreateSocialPostParams,
   SocialPost
 >({
-  writeToSource: async (params) => {
+  write: async (params) => {
     let uploadedImages: string[] = [];
 
     if (params.images.length > 0) {
@@ -57,39 +56,33 @@ const createSocialPostMutation = createMutation<
 });
 
 export const useCreateSocialPost = () => {
-  const { optimisticUpdates: socialFeed } = useSocialPosts();
-
   return useOptimisticMutation<CreateSocialPostParams, SocialPost>({
     mutation: createSocialPostMutation,
-    optimisticUpdates: [
-      async (params) => {
-        return await socialFeed.prepend(
-          {
-            ...params,
-            images: params.images?.map((image) => URL.createObjectURL(image)),
+    onOptimistic: (ch, params) => {
+      return ch(socialFeedCollection).prepend(
+        {
+          ...params,
+          images: params.images?.map((image) => URL.createObjectURL(image)),
+          poll: {
+            pollVotedId: null,
+            results: params.poll.map((item, index) => ({
+              id: index + 1,
+              text: item,
+              votes: 0,
+            })),
+          },
+        },
+        {
+          sync: true,
+          syncFn: (socialPost) => ({
+            ...socialPost,
             poll: {
               pollVotedId: null,
-              results: params.poll.map((item, index) => ({
-                id: index + 1,
-                text: item,
-                votes: 0,
-              })),
+              results: socialPost.poll.results,
             },
-          },
-          {
-            sync: true,
-            syncFn: (socialPost) => {
-              return {
-                ...socialPost,
-                poll: {
-                  pollVotedId: null,
-                  results: socialPost.poll.results,
-                },
-              };
-            },
-          },
-        );
-      },
-    ],
+          }),
+        },
+      );
+    },
   });
 };

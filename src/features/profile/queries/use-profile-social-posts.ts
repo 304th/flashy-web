@@ -1,4 +1,4 @@
-import { createCollection, usePartitionedQuery } from "@/lib/query-toolkit";
+import { createCollection, usePartitionedQuery } from "@/lib/query-toolkit-v2";
 import { api } from "@/services/api";
 import { socialPostSchema } from "@/features/social/schemas/social-post.schema";
 import { decodePollResults } from "@/features/social/utils/poll";
@@ -21,6 +21,7 @@ const profilePostsCollection = createCollection<
     }));
   },
   schema: socialPostSchema,
+  name: "profilePosts",
 });
 
 export const useProfileSocialPosts = () => {

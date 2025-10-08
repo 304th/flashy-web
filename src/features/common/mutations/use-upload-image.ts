@@ -1,5 +1,5 @@
 import ky from "ky";
-import { createMutation, useOptimisticMutation } from "@/lib/query-toolkit";
+import { createMutation, useOptimisticMutation } from "@/lib/query-toolkit-v2";
 
 export interface UploadImageParams {
   file: File;
@@ -8,7 +8,7 @@ export interface UploadImageParams {
 }
 
 export const uploadImage = createMutation<UploadImageParams, string>({
-  writeToSource: async (params) => {
+  write: async (params) => {
     await ky.put(params.uploadUrl, {
       body: params.file,
       headers: {

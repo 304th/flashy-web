@@ -1,4 +1,4 @@
-import { createCollection } from "@/lib/query-toolkit/collection";
+import { createCollection } from "@/lib/query-toolkit-v2";
 import { api } from "@/services/api";
 import { videoSchema } from "@/features/video/schemas/video.schema";
 
@@ -18,5 +18,6 @@ export const videoSearchCollection = createCollection<Video, VideoSearchParams>(
         .json<Video[]>();
     },
     schema: videoSchema,
+    name: "videoSearch",
   },
 );

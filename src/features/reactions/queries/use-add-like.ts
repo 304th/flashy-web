@@ -1,9 +1,7 @@
 import { api } from "@/services/api";
-import { createMutation } from "@/lib/query-toolkit/mutation";
-import {
-  type OptimisticUpdate,
-  useOptimisticMutation,
-} from "@/lib/query-toolkit";
+import { createMutation, useOptimisticMutation } from "@/lib/query-toolkit-v2";
+import { commentsCollection } from "@/features/comments/collections/comments";
+import { repliesCollection } from "@/features/comments/collections/replies";
 
 export interface AddLikeParams {
   id: string;
@@ -11,7 +9,7 @@ export interface AddLikeParams {
 }
 
 const addLike = createMutation<AddLikeParams>({
-  writeToSource: async (params) => {
+  write: async (params) => {
     return await api
       .post("comment/like", {
         json: {
@@ -23,13 +21,20 @@ const addLike = createMutation<AddLikeParams>({
   },
 });
 
-export const useAddLike = ({
-  optimisticUpdates,
-}: {
-  optimisticUpdates?: OptimisticUpdate<AddLikeParams>[];
-}) => {
+export const useAddLike = () => {
   return useOptimisticMutation({
     mutation: addLike,
-    optimisticUpdates,
+    onOptimistic: (ch, params) => {
+      return Promise.all([
+        ch(commentsCollection).update(params.id, (comment) => {
+          comment.isLiked = params.isLiked;
+          comment.likesCount += params.isLiked ? 1 : -1;
+        }),
+        ch(repliesCollection).update(params.id, (comment) => {
+          comment.isLiked = params.isLiked;
+          comment.likesCount += params.isLiked ? 1 : -1;
+        }),
+      ]);
+    },
   });
 };

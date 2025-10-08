@@ -75,7 +75,8 @@ export const PostOptions = forwardRef((_, ref) => {
       <div className="flex justify-start items-center gap-2">
         <IconButton
           type="button"
-          className={`hover:bg-blue-700 ${images.length > 0 && "bg-blue-700 text-white"}`}
+          className={`hover:bg-blue-700
+            ${images.length > 0 && "bg-blue-700 text-white"}`}
           onClick={() => {
             const fileInput = document.getElementById("file-upload");
             fileInput?.click();
@@ -85,7 +86,8 @@ export const PostOptions = forwardRef((_, ref) => {
         </IconButton>
         <IconButton
           type="button"
-          className={`hover:bg-orange-700 ${showPoll && "bg-orange-700 text-white"}`}
+          className={`hover:bg-orange-700
+            ${showPoll && "bg-orange-700 text-white"}`}
           onClick={() => {
             if (showPoll) {
               handleClosePoll();
@@ -99,7 +101,8 @@ export const PostOptions = forwardRef((_, ref) => {
 
         <IconButton
           type="button"
-          className={`hover:bg-[#ab05a0] ${showVisibility && "bg-[#ab05a0] text-white"}`}
+          className={`hover:bg-[#ab05a0]
+            ${showVisibility && "bg-[#ab05a0] text-white"}`}
           onClick={() => {
             if (showVisibility) {
               handleCloseVisibility();

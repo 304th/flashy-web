@@ -2,16 +2,16 @@ import {
   createMutation,
   OptimisticUpdate,
   useOptimisticMutation,
-} from "@/lib/query-toolkit";
+} from "@/lib/query-toolkit-v2";
 import { api } from "@/services/api";
-import { useSubscriptions } from "@/features/auth/queries/use-subscriptions";
+import { subscriptionsEntity } from "@/features/auth/queries/use-subscriptions";
 
 export interface UnsubscribeParams {
   channelId: string;
 }
 
 const unsubscribeMutation = createMutation<UnsubscribeParams>({
-  writeToSource: async (params) => {
+  write: async (params) => {
     return await api
       .post("unfollowUser", {
         json: {
@@ -22,26 +22,17 @@ const unsubscribeMutation = createMutation<UnsubscribeParams>({
   },
 });
 
-export const useUnsubscribeFromChannel = ({
-  optimisticUpdates,
-}: { optimisticUpdates?: OptimisticUpdate<UnsubscribeParams>[] } = {}) => {
-  const { optimisticUpdates: subscriptions } = useSubscriptions();
-
+export const useUnsubscribeFromChannel = () => {
   return useOptimisticMutation({
     mutation: unsubscribeMutation,
-    optimisticUpdates: [
-      async (params) => {
-        return subscriptions.update((subs) => {
-          const foundIndex = subs.findIndex(
-            (item) => item === params.channelId,
-          );
+    onOptimistic: (ch, params) => {
+      return ch(subscriptionsEntity).update((subs) => {
+        const foundIndex = subs.findIndex((item) => item === params.channelId);
 
-          if (foundIndex !== -1) {
-            subs.splice(foundIndex, 1);
-          }
-        });
-      },
-      ...(optimisticUpdates || []),
-    ],
+        if (foundIndex !== -1) {
+          subs.splice(foundIndex, 1);
+        }
+      });
+    },
   });
 };

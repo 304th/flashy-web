@@ -3,7 +3,7 @@ import {
   getMutation,
   handleAuthSuccess,
   handleMutationError,
-} from "@/lib/query-toolkit";
+} from "@/lib/query-toolkit-v2";
 import { signInWithLMagicLink } from "@/services/firebase";
 
 export interface SignInWithMagicLinkParams {

@@ -1,10 +1,8 @@
-import { useSubsetQuery } from "@/lib/query-toolkit";
+import { useViewQuery } from "@/lib/query-toolkit-v2";
 
 export const useCommentsCount = (postId: string) => {
-  return useSubsetQuery<number, CommentPost[]>({
-    key: postId,
-    existingQueryKey: ["comments", postId],
-    selectorFn: (data) => data.length,
-    deps: [postId],
+  return useViewQuery<number, CommentPost[]>({
+    queryKey: ["comments", postId],
+    select: (data) => data.length,
   });
 };

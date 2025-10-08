@@ -1,6 +1,11 @@
 import { useEffect, useMemo } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { type Collection, CollectionOptimisticMutations, LiveOptimisticUpdater, liveRegistry } from "@/lib/query-toolkit-v2";
+import {
+  type Collection,
+  CollectionOptimisticMutations,
+  LiveOptimisticUpdater,
+  liveRegistry,
+} from "@/lib/query-toolkit-v2";
 
 export const useLiveQuery = <Entity, Params = undefined>({
   queryKey,
@@ -46,7 +51,11 @@ export const useLiveQuery = <Entity, Params = undefined>({
     };
 
     // Register only if query is successful and data is not nullish
-    if (query.status === "success" && query.data !== null && query.data !== undefined) {
+    if (
+      query.status === "success" &&
+      query.data !== null &&
+      query.data !== undefined
+    ) {
       liveRegistry.register(entry);
     } else {
       // Unregister if data is nullish or query is not successful

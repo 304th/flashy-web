@@ -2,7 +2,7 @@ import {
   createMutation,
   OptimisticUpdate,
   useOptimisticMutation,
-} from "@/lib/query-toolkit";
+} from "@/lib/query-toolkit-v2";
 import { api } from "@/services/api";
 
 export interface CreateSignedUrlForUploadParams {
@@ -14,7 +14,7 @@ export const createSignedUploadUrlMutation = createMutation<
   CreateSignedUrlForUploadParams,
   { fileName: string; fileType: string; uploadUrl: string }
 >({
-  writeToSource: async (params) => {
+  write: async (params) => {
     return await api
       .post("generate-signed-upload-params", {
         json: {
@@ -26,13 +26,8 @@ export const createSignedUploadUrlMutation = createMutation<
   },
 });
 
-export const useCreateSignedUploadUrl = ({
-  optimisticUpdates,
-}: {
-  optimisticUpdates?: OptimisticUpdate<CreateSignedUrlForUploadParams>[];
-} = {}) => {
+export const useCreateSignedUploadUrl = () => {
   return useOptimisticMutation({
     mutation: createSignedUploadUrlMutation,
-    optimisticUpdates,
   });
 };

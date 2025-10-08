@@ -1,6 +1,11 @@
 import { useEffect, useMemo } from "react";
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
-import { type Collection, liveRegistry, PartitionedOptimisticUpdater, CollectionOptimisticMutations } from "@/lib/query-toolkit-v2";
+import {
+  type Collection,
+  liveRegistry,
+  PartitionedOptimisticUpdater,
+  CollectionOptimisticMutations,
+} from "@/lib/query-toolkit-v2";
 
 type DefaultParams = { pageParam: number };
 
@@ -75,7 +80,11 @@ export const usePartitionedQuery = <Entity, Params>({
     };
 
     // Register only if query is successful and data is not nullish
-    if (query.status === "success" && query.data !== null && query.data !== undefined) {
+    if (
+      query.status === "success" &&
+      query.data !== null &&
+      query.data !== undefined
+    ) {
       liveRegistry.register(entry);
     } else {
       // Unregister if data is nullish or query is not successful

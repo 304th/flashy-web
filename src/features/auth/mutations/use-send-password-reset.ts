@@ -1,4 +1,4 @@
-import { getMutation } from "@/lib/query-toolkit";
+import { getMutation } from "@/lib/query-toolkit-v2";
 import { sendPasswordReset } from "@/services/firebase";
 
 export interface SendPasswordResetParams {

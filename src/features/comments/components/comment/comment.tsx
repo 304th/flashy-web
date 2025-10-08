@@ -5,8 +5,6 @@ import { ReplyFeed } from "@/features/comments/components/reply-feed/reply-feed"
 import { LikeButton } from "@/features/reactions/components/like-button/like-button";
 import { ReplyIcon } from "@/components/ui/icons/reply";
 import { CommentMenu } from "@/features/comments/components/comment/comment-menu";
-import type { AddLikeParams } from "@/features/reactions/queries/use-add-like";
-import { useComments } from "@/features/comments/queries/use-comments";
 import { timeAgo } from "@/lib/utils";
 
 export interface CommentProps {
@@ -26,7 +24,6 @@ export const Comment = ({
   onReply,
 }: CommentProps) => {
   const [showReplies, setShowReplies] = useState(false);
-  const { optimisticUpdates: comments } = useComments(post._id);
 
   return (
     <div
@@ -50,7 +47,7 @@ export const Comment = ({
 
         <div className="flex gap-2 items-center">
           <p>{timeAgo(comment.created_at)}</p>
-          <CommentMenu comment={comment} post={post} />
+          <CommentMenu comment={comment} />
         </div>
       </div>
       <p className="text-lg">{comment.text}</p>
@@ -66,25 +63,7 @@ export const Comment = ({
               }
             }}
           />
-          <LikeButton
-            post={comment}
-            likeUpdates={[
-              async (params: AddLikeParams) => {
-                return comments.update(params.id, (comment) => {
-                  comment.likesCount += params.isLiked ? 1 : 0;
-                  comment.isLiked = true;
-                });
-              },
-            ]}
-            unlikeUpdates={[
-              async (params: AddLikeParams) => {
-                return comments.update(params.id, (comment) => {
-                  comment.likesCount += !params.isLiked ? -1 : 0;
-                  comment.isLiked = false;
-                });
-              },
-            ]}
-          />
+          <LikeButton post={comment} />
         </div>
       </div>
       {showReplies && (

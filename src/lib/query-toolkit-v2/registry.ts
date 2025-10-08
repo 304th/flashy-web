@@ -57,7 +57,7 @@ class LiveRegistry {
     const entries = this.nameToEntries.get(entry.name)!;
 
     const existingEntry = Array.from(entries).find((e) =>
-      areQueryKeysEqual(e.queryKey, entry.queryKey)
+      areQueryKeysEqual(e.queryKey, entry.queryKey),
     );
 
     if (!existingEntry) {

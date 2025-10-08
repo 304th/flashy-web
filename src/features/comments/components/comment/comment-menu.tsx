@@ -10,28 +10,12 @@ import { IconButton } from "@/components/ui/icon-button";
 import { MeatballIcon } from "@/components/ui/icons/meatball";
 import { useModals } from "@/hooks/use-modals";
 import { useCommentOwned } from "@/features/comments/hooks/use-comment-owned";
-import {
-  type DeleteCommentParams,
-  useDeleteComment,
-} from "@/features/comments/mutations/use-delete-comment";
-import { useComments } from "@/features/comments/queries/use-comments";
-import { OptimisticUpdate } from "@/lib/query-toolkit";
+import { useDeleteComment } from "@/features/comments/mutations/use-delete-comment";
 
-export const CommentMenu = ({
-  comment,
-  post,
-  deleteCommentUpdates,
-}: {
-  comment: CommentPost | Reply;
-  post: Commentable;
-  deleteCommentUpdates?: OptimisticUpdate<DeleteCommentParams>[];
-}) => {
+export const CommentMenu = ({ comment }: { comment: CommentPost | Reply }) => {
   const [open, setOpen] = useState(false);
   const { openModal } = useModals();
-  const { optimisticUpdates: comments } = useComments(post._id);
-  const deleteComment = useDeleteComment({
-    optimisticUpdates: [async (params) => comments.delete(params.id)],
-  });
+  const deleteComment = useDeleteComment();
   const isOwned = useCommentOwned(comment);
 
   return (

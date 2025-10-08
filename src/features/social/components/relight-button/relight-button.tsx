@@ -1,18 +1,12 @@
 import Lottie from "lottie-react";
 import { RelightIcon } from "@/components/ui/icons/relight";
 import { useHasRelighted } from "@/features/social/hooks/use-has-relighted";
-import {
-  useRelightSocialPost,
-} from "@/features/social/mutations/use-relight-social-post";
+import { useRelightSocialPost } from "@/features/social/mutations/use-relight-social-post";
 import { useMe } from "@/features/auth/queries/use-me";
 import { useRelightsCount } from "@/features/social/hooks/use-relights-count";
 import relightAnimation from "@/features/social/assets/relight-animation.json";
 
-export const RelightButton = ({
-  post,
-}: {
-  post: Relightable;
-}) => {
+export const RelightButton = ({ post }: { post: Relightable }) => {
   const { data: me } = useMe();
   const isRelighted = useHasRelighted(post);
   const relitsCount = useRelightsCount(post);

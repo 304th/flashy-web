@@ -1,5 +1,5 @@
 import { api } from "@/services/api";
-import { createCollection } from "@/lib/query-toolkit/collection";
+import { createCollection } from "@/lib/query-toolkit-v2";
 import { commentSchema } from "@/features/comments/schemas/comment.schema";
 
 export interface CommentResponse {
@@ -19,4 +19,5 @@ export const commentsCollection = createCollection<
     return data?.comment || [];
   },
   schema: commentSchema,
+  name: "comments",
 });

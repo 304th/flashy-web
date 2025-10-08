@@ -3,7 +3,7 @@ import {
   getMutation,
   handleAuthSuccess,
   handleMutationError,
-} from "@/lib/query-toolkit";
+} from "@/lib/query-toolkit-v2";
 import { useQueryClient } from "@tanstack/react-query";
 import { signInWithGoogle } from "@/services/firebase";
 

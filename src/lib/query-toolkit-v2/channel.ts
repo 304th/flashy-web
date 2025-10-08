@@ -4,7 +4,8 @@ import {
   type Collection,
   type Entity,
   type EntityOptimisticMutations,
-  type OptTransaction
+  type OptTransaction,
+  type OptimisticUpdaterOptions,
 } from "@/lib/query-toolkit-v2";
 
 export class Channel<T> {
@@ -15,14 +16,21 @@ export class Channel<T> {
   }
 
   // Overloads allowed on class methods
-  async update(id: string, updateFn: (draft: Draft<Optimistic<T>>) => void): Promise<OptTransaction[]>;
-  async update(updateFn: (draft: Draft<Optimistic<T>>) => void): Promise<OptTransaction[]>;
+  async update(
+    id: string,
+    updateFn: (draft: Draft<Optimistic<T>>) => void,
+  ): Promise<OptTransaction[]>;
+  async update(
+    updateFn: (draft: Draft<Optimistic<T>>) => void,
+  ): Promise<OptTransaction[]>;
   async update(
     idOrFn: string | ((draft: Draft<Optimistic<T>>) => void),
     maybeFn?: (draft: Draft<Optimistic<T>>) => void,
   ): Promise<OptTransaction[]> {
     const hasId = typeof idOrFn === "string";
-    const updateFn = (hasId ? maybeFn : idOrFn) as (draft: Draft<Optimistic<T>>) => void;
+    const updateFn = (hasId ? maybeFn : idOrFn) as (
+      draft: Draft<Optimistic<T>>,
+    ) => void;
 
     return await Promise.all(
       this.entries.map(async (entry) => {
@@ -35,7 +43,11 @@ export class Channel<T> {
             .createPartitionedTransaction(entry)
             .update(idOrFn as string, updateFn);
         } else {
-          return (liveRegistry.createEntityTransaction(entry) as EntityOptimisticMutations<T>).update(updateFn);
+          return (
+            liveRegistry.createEntityTransaction(
+              entry,
+            ) as EntityOptimisticMutations<T>
+          ).update(updateFn);
         }
       }),
     );
@@ -47,35 +59,41 @@ export class Channel<T> {
         .filter((e) => e.kind === "collection" || e.kind === "partitioned")
         .map(async (entry) =>
           (entry.kind === "collection"
-              ? liveRegistry.createCollectionTransaction(entry)
-              : liveRegistry.createPartitionedTransaction(entry)
+            ? liveRegistry.createCollectionTransaction(entry)
+            : liveRegistry.createPartitionedTransaction(entry)
           ).delete(id),
         ),
     );
   }
 
-  async prepend(item: T) {
+  async prepend(
+    item: Partial<T>,
+    options: OptimisticUpdaterOptions<T> = { sync: false, rollback: true },
+  ) {
     return await Promise.all(
       this.entries
         .filter((e) => e.kind === "collection" || e.kind === "partitioned")
         .map(async (entry) =>
           (entry.kind === "collection"
-              ? liveRegistry.createCollectionTransaction(entry)
-              : liveRegistry.createPartitionedTransaction(entry)
-          ).prepend(item),
+            ? liveRegistry.createCollectionTransaction(entry)
+            : liveRegistry.createPartitionedTransaction(entry)
+          ).prepend(item, options),
         ),
     );
   }
 
-  async append(item: T) {
+  async append(
+    item: Partial<T>,
+    options: OptimisticUpdaterOptions<T> = { sync: false, rollback: true },
+  ) {
     return await Promise.all(
       this.entries
         .filter((e) => e.kind === "collection" || e.kind === "partitioned")
         .map(async (entry) =>
           (entry.kind === "collection"
-              ? liveRegistry.createCollectionTransaction(entry)
-              : liveRegistry.createPartitionedTransaction(entry)
-          ).append(item),
+            ? liveRegistry.createCollectionTransaction(entry)
+            : liveRegistry.createPartitionedTransaction(entry)
+          ).append(item, options),
         ),
     );
   }
@@ -86,8 +104,8 @@ export class Channel<T> {
         .filter((e) => e.kind === "collection" || e.kind === "partitioned")
         .map(async (entry) =>
           (entry.kind === "collection"
-              ? liveRegistry.createCollectionTransaction(entry)
-              : liveRegistry.createPartitionedTransaction(entry)
+            ? liveRegistry.createCollectionTransaction(entry)
+            : liveRegistry.createPartitionedTransaction(entry)
           ).move(id, position),
         ),
     );
@@ -99,8 +117,8 @@ export class Channel<T> {
         .filter((e) => e.kind === "collection" || e.kind === "partitioned")
         .map(async (entry) =>
           (entry.kind === "collection"
-              ? liveRegistry.createCollectionTransaction(entry)
-              : liveRegistry.createPartitionedTransaction(entry)
+            ? liveRegistry.createCollectionTransaction(entry)
+            : liveRegistry.createPartitionedTransaction(entry)
           ).filter(predicate),
         ),
     );

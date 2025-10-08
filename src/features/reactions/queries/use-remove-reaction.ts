@@ -3,7 +3,7 @@ import { useOptimisticMutation, createMutation } from "@/lib/query-toolkit-v2";
 import { api } from "@/services/api";
 import { useMe } from "@/features/auth/queries/use-me";
 import { socialFeedCollection } from "@/features/social/collections/social-feed";
-import { socialPostEntityV2 } from "@/features/social/queries/use-social-post-by-id";
+import { socialPostEntity } from "@/features/social/queries/use-social-post-by-id";
 
 export interface RemoveReactionParams {
   id: string;
@@ -41,7 +41,7 @@ export const useRemoveReaction = () => {
           params.id,
           deleteReactionFromSocialPost(author!),
         ),
-        ch(socialPostEntityV2).update(
+        ch(socialPostEntity).update(
           params.id,
           deleteReactionFromSocialPost(author!),
         ),

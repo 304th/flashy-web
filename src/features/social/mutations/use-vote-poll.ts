@@ -2,7 +2,7 @@ import type { WritableDraft } from "immer";
 import { createMutation, useOptimisticMutation } from "@/lib/query-toolkit-v2";
 import { api } from "@/services/api";
 import { socialFeedCollection } from "@/features/social/collections/social-feed";
-import { socialPostEntityV2 } from "@/features/social/queries/use-social-post-by-id";
+import { socialPostEntity } from "@/features/social/queries/use-social-post-by-id";
 
 export interface VotePollParams {
   postId: string;
@@ -32,7 +32,7 @@ export const useVotePoll = () => {
     onOptimistic: (ch, params) => {
       return Promise.all([
         ch(socialFeedCollection).update(params.postId, votePoll(params)),
-        ch(socialPostEntityV2).update(votePoll(params)),
+        ch(socialPostEntity).update(votePoll(params)),
       ]);
     },
   });

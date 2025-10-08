@@ -12,7 +12,7 @@ import { CommentSend } from "@/features/comments/components/comment-send/comment
 import { SocialPostProvider } from "@/features/social/components/social-post/social-post-context";
 import { useQueryParams } from "@/hooks/use-query-params";
 import { useModals } from "@/hooks/use-modals";
-import { useSocialPostByIdV2 } from "@/features/social/queries/use-social-post-by-id";
+import { useSocialPostById } from "@/features/social/queries/use-social-post-by-id";
 import { useComments } from "@/features/comments/queries/use-comments";
 import { useIsSocialPostLocked } from "@/features/social/hooks/use-is-social-post-locked";
 
@@ -26,7 +26,7 @@ export default function SocialPostPage() {
 
 const SocialPostByIdPage = () => {
   const id = useQueryParams("id");
-  const { data: socialPost, query } = useSocialPostByIdV2(id!);
+  const { data: socialPost, query } = useSocialPostById(id!);
   const router = useRouter();
 
   if (!id) {

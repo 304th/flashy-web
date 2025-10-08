@@ -6,7 +6,7 @@ import {
 } from "@/lib/query-toolkit-v2";
 import { useMe } from "@/features/auth/queries/use-me";
 import { socialFeedCollection } from "@/features/social/collections/social-feed";
-import { socialPostEntityV2 } from "@/features/social/queries/use-social-post-by-id";
+import { socialPostEntity } from "@/features/social/queries/use-social-post-by-id";
 
 export interface AddReactionParams {
   id: string;
@@ -53,7 +53,7 @@ export const useAddReaction = () => {
           params.id,
           addReactionToSocialPost(author!),
         ),
-        channel(socialPostEntityV2).update(
+        channel(socialPostEntity).update(
           params.id,
           addReactionToSocialPost(author!),
         ),

@@ -7,7 +7,7 @@ import { Layout } from "@/components/ui/layout";
 import { ApiProvider } from "@/providers/api-provider";
 import { ModalsProvider } from "@/providers/modals-provider";
 import { NotificationsProvider } from "@/providers/notifications-provider";
-// import { EmailVerificationProvider } from "@/providers/email-verification-provider";
+import { LoadingProvider } from "@/providers/loading-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,8 +39,8 @@ export default function RootLayout({
         >
           <ApiProvider>
             <ModalsProvider>
+              <LoadingProvider />
               <Layout>{children}</Layout>
-              {/*<EmailVerificationProvider />*/}
             </ModalsProvider>
           </ApiProvider>
         </GoogleOAuthProvider>

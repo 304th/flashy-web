@@ -132,8 +132,8 @@ export const ShareModal = ({
 const Modal = (props: any) => (
   <ModalComponent
     {...props}
-    className={`sm:min-w-unset min-w-[500px] !p-0 !bg-base-200 !rounded-md
-      sm:w-full overflow-hidden ${props.className}`}
+    className={`max-sm:min-w-unset min-w-[500px] !p-0 !bg-base-200 !rounded-md
+      max-sm:w-full overflow-hidden ${props.className}`}
   />
 );
 

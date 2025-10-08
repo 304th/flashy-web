@@ -281,7 +281,7 @@ const NavLink = ({
 const Modal = (props: any) => (
   <ModalComponent
     {...props}
-    className={`sm:min-w-unset min-w-[800px] !bg-base-300 !rounded-md sm:w-full
+    className={`max-sm:min-w-unset min-w-[800px] !bg-base-300 !rounded-md max-sm:w-full
       overflow-hidden ${props.className}`}
   />
 );

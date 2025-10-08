@@ -66,16 +66,6 @@ export const PostCommentsModal = ({
         replyComment={replyComment}
         className="sticky bottom-0 w-full shrink-0 rounded-br-md rounded-bl-md
           border-t z-1"
-        sendCommentUpdates={[
-          async (params) => {
-            return await comments.prepend(params, { sync: true });
-          },
-          async (params) => {
-            return await socialFeed.update(params.postId, (post) => {
-              post.commentsCount += 1;
-            });
-          },
-        ]}
         onCloseReply={() => setReplyComment(null)}
       />
     </Modal>
@@ -85,7 +75,7 @@ export const PostCommentsModal = ({
 const Modal = (props: any) => (
   <ModalComponent
     {...props}
-    className={`sm:min-w-unset min-w-[600px] overflow-hidden !bg-base-200
-      !rounded-md sm:w-full ${props.className}`}
+    className={`max-sm:min-w-unset min-w-[600px] overflow-hidden !bg-base-200
+      !rounded-md max-sm:w-full ${props.className}`}
   />
 );

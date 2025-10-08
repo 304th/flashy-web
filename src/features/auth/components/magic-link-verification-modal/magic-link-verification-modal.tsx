@@ -57,6 +57,6 @@ export const MagicLinkVerificationModal = ({
 const Modal = (props: any) => (
   <ModalComponent
     {...props}
-    className={`sm:min-w-unset min-w-[450px] sm:w-full ${props.className}`}
+    className={`max-sm:min-w-unset min-w-[450px] max-sm:w-full ${props.className}`}
   />
 );

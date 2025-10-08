@@ -87,7 +87,7 @@ export const BuyKeyModal = ({ user, onClose, ...props }: BuyKeyModalProps) => {
 const Modal = (props: any) => (
   <ModalComponent
     {...props}
-    className={`sm:min-w-unset max-w-[500px] !bg-base-300 border-none
-      !rounded-md sm:w-full overflow-hidden ${props.className}`}
+    className={`max-sm:min-w-unset max-w-[500px] !bg-base-300 border-none
+      !rounded-md max-max-sm:w-full overflow-hidden ${props.className}`}
   />
 );

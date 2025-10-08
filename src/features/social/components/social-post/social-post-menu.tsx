@@ -61,6 +61,7 @@ export const SocialPostMenu = ({ socialPost }: { socialPost: SocialPost }) => {
               <DropdownMenuItem
                 variant="destructive"
                 onClick={(e) => {
+                  setOpen(false);
                   e.preventDefault();
                   openModal("ConfirmModal", {
                     title: "Delete post",
@@ -84,6 +85,7 @@ export const SocialPostMenu = ({ socialPost }: { socialPost: SocialPost }) => {
                 <DropdownMenuItem
                   variant="destructive"
                   onClick={(e) => {
+                    setOpen(false);
                     e.preventDefault();
                     openModal("ConfirmModal", {
                       title: hasMuted ? "Unmute" : "Mute",
@@ -114,6 +116,7 @@ export const SocialPostMenu = ({ socialPost }: { socialPost: SocialPost }) => {
                 <DropdownMenuItem
                   variant={socialPost.pinned ? "destructive" : "default"}
                   onClick={(e) => {
+                    setOpen(false);
                     e.preventDefault();
                     openModal("ConfirmModal", {
                       title: socialPost.pinned ? "Unpin post" : "Pin post",

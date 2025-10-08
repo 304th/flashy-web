@@ -57,7 +57,7 @@ export const Modal = ({
     <div
       {...props}
       ref={ref}
-      className={`relative flex min-w-[400px] sm:min-w-full sm:w-full flex-col
+      className={`relative flex min-w-[400px] max-sm:min-w-full max-sm:w-full flex-col
         rounded-xl bg-background border border-base-400 p-4 ${className}`}
     >
       {header}
@@ -66,7 +66,7 @@ export const Modal = ({
       {/* Mobile-specific styling */}
       <div
         className="z-2 absolute bottom-0 -mb-[300px] h-[300px] w-full
-          bg-bg-white-0 hidden sm:flex"
+          bg-bg-white-0 hidden max-sm:flex"
       ></div>
     </div>
   );

@@ -8,8 +8,8 @@ export default function SocialLayout({
 }>) {
   return (
     <div className="relative flex gap-4 w-full">
-      <div className="w-1/2">{children}</div>
-      <div className="w-1/2">
+      <div className="w-1/2 max-xl:w-3/5">{children}</div>
+      <div className="w-1/2 max-xl:w-2/5">
         <FeaturedSocialSidebar />
       </div>
     </div>

@@ -28,7 +28,7 @@ export const SocialCreateModal = ({ onClose, ...props }: SocialCreateModal) => {
 const Modal = (props: any) => (
   <ModalComponent
     {...props}
-    className={`sm:min-w-unset min-w-[600px] overflow-hidden !bg-base-200
-      !rounded-md sm:w-full ${props.className}`}
+    className={`max-sm:min-w-unset min-w-[600px] overflow-hidden !bg-base-200
+      !rounded-md max-sm:w-full ${props.className}`}
   />
 );

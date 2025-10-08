@@ -1,7 +1,5 @@
 import { SocialPostBehindKey } from "@/features/social/components/social-post/social-post-behind-key";
 import { SocialPostDescription } from "@/features/social/components/social-post/social-post-description";
-import { SocialPostPoll } from "@/features/social/components/social-post/social-post-poll";
-import { SocialPostImages } from "@/features/social/components/social-post/social-post-images";
 
 export const SocialPostContent = ({
   socialPost,
@@ -9,11 +7,9 @@ export const SocialPostContent = ({
   socialPost: SocialPost;
 }) => {
   return (
-    <div className="flex flex-col gap-3 pt-18 px-4 pb-4">
+    <div className="flex flex-col gap-3 pt-18 px-4 pb-3">
       <SocialPostBehindKey socialPost={socialPost} />
       <SocialPostDescription socialPost={socialPost} />
-      <SocialPostPoll socialPost={socialPost} />
-      <SocialPostImages socialPost={socialPost} />
     </div>
   );
 };

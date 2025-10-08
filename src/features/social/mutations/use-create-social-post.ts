@@ -3,6 +3,7 @@ import { createMutation, useOptimisticMutation } from "@/lib/query-toolkit-v2";
 import { createSignedUploadUrlMutation } from "@/features/common/mutations/use-create-signed-upload-url";
 import { uploadImage } from "@/features/common/mutations/use-upload-image";
 import { socialFeedCollection } from "@/features/social/collections/social-feed";
+import { useMe } from "@/features/auth/queries/use-me";
 
 export interface CreateSocialPostParams {
   description?: string;
@@ -56,6 +57,8 @@ const createSocialPostMutation = createMutation<
 });
 
 export const useCreateSocialPost = () => {
+  const { data: author } = useMe();
+
   return useOptimisticMutation<CreateSocialPostParams, SocialPost>({
     mutation: createSocialPostMutation,
     onOptimistic: (ch, params) => {
@@ -71,17 +74,22 @@ export const useCreateSocialPost = () => {
               votes: 0,
             })),
           },
+          userId: author!.fbId,
+          username: author!.username,
+          userimage: author!.userimage,
         },
         {
           sync: true,
-          syncFn: (socialPost) => ({
-            ...socialPost,
-            reactions: {},
-            poll: {
-              pollVotedId: null,
-              results: socialPost.poll.results,
-            },
-          }),
+          syncFn: (socialPost) => {
+            return {
+              ...socialPost,
+              reactions: {},
+              poll: {
+                pollVotedId: null,
+                results: socialPost.poll as any,
+              },
+            }
+          }
         },
       );
     },

@@ -3,10 +3,13 @@ import { UserProfile } from "@/components/ui/user-profile";
 import { SocialPostMenu } from "@/features/social/components/social-post/social-post-menu";
 import { SocialPostContent } from "@/features/social/components/social-post/social-post-content";
 import { SocialPostActions } from "@/features/social/components/social-post/social-post-actions";
+import { SocialPostImages } from "@/features/social/components/social-post/social-post-images";
 import { SocialPostTags } from "@/features/social/components/social-post/social-post-tags";
 import { useSocialPostContext } from "@/features/social/components/social-post/social-post-context";
 import { useIsSocialPostLocked } from "@/features/social/hooks/use-is-social-post-locked";
 import { timeAgo } from "@/lib/utils";
+import {OptimisticLoader} from "@/features/common/components/optimistic-loader/optimistic-loader";
+import {SocialPostPoll} from "@/features/social/components/social-post/social-post-poll";
 
 export const SocialPost = ({
   socialPost,
@@ -24,8 +27,7 @@ export const SocialPost = ({
     <article
       className={`relative flex flex-col h-fit w-full transition rounded
         bg-[linear-gradient(180deg,#151515_0%,#151515_0.01%,#19191920_100%)]
-        ${isLinkable ? "hover:bg-base-200" : ""} ${className}
-        ${socialPost._optimisticStatus === "pending" ? "opacity-50 pointer-events-none" : ""}`}
+        ${isLinkable ? "hover:bg-base-200" : ""} ${className}`}
     >
       <UserProfile
         user={{
@@ -48,6 +50,12 @@ export const SocialPost = ({
         <SocialPostContent socialPost={socialPost} />
       )}
       {
+        !isLocked && <SocialPostPoll socialPost={socialPost} className="px-4 pb-4" />
+      }
+      {
+        !isLocked && <SocialPostImages socialPost={socialPost} className="px-4 pb-4" />
+      }
+      {
         !isLocked && (
           <div className="flex flex-col gap-3 px-4 pb-4 bottom-4 w-full">
             <SocialPostActions socialPost={socialPost} />
@@ -55,6 +63,7 @@ export const SocialPost = ({
           </div>
         )
       }
+      <OptimisticLoader entity={socialPost} />
     </article>
   );
 };

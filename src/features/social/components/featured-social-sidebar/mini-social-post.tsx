@@ -8,6 +8,7 @@ import { MiniMessageIcon } from "@/components/ui/icons/mini-message";
 import { MiniRelightIcon } from "@/components/ui/icons/mini-relight";
 import { useReactionsCount } from "@/features/reactions/hooks/useReactionsCount";
 
+//FIXME: do the same as main SocialPost (image click triggers page loading animation)
 export const MiniSocialPost = ({ socialPost }: { socialPost: SocialPost }) => {
   const reactionsCount = useReactionsCount(socialPost);
 

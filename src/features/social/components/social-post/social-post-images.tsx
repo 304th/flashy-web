@@ -6,8 +6,10 @@ import { useModals } from "@/hooks/use-modals";
 
 export const SocialPostImages = ({
   socialPost,
+  className,
 }: {
   socialPost: SocialPost;
+  className?: string;
 }) => {
   const { openModal } = useModals();
 
@@ -70,7 +72,7 @@ export const SocialPostImages = ({
 
   return (
     <>
-      <div className={`grid ${getGridLayout(socialPost.images.length)} mt-2`}>
+      <div className={`grid ${getGridLayout(socialPost.images.length)} ${className}`}>
         {socialPost.images.map((image, i) => (
           <div
             key={image}

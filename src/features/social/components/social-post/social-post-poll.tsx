@@ -2,7 +2,7 @@ import { useMemo, useEffect, useState } from "react";
 import { addHours, differenceInMilliseconds } from "date-fns";
 import { useVotePoll } from "@/features/social/mutations/use-vote-poll";
 
-export const SocialPostPoll = ({ socialPost }: { socialPost: SocialPost }) => {
+export const SocialPostPoll = ({ socialPost, className }: { socialPost: SocialPost; className?: string }) => {
   const votePoll = useVotePoll();
 
   if (
@@ -17,7 +17,7 @@ export const SocialPostPoll = ({ socialPost }: { socialPost: SocialPost }) => {
   const isVoted = Boolean(socialPost.poll.pollVotedId);
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className={`flex flex-col gap-3 ${className}`}>
       <div className="flex flex-col gap-1">
         {socialPost.poll.results.map((pollOption, index) => (
           <PollOption

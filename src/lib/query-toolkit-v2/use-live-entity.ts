@@ -4,10 +4,7 @@ import {
   useQueryClient,
   type UseQueryOptions,
 } from "@tanstack/react-query";
-import { EntityOptimisticMutations } from "@/lib/query-toolkit-v2/optimistic-mutations/optimistic-mutations";
-import type { Entity } from "@/lib/query-toolkit-v2/entity";
-import { EntityOptimisticUpdater } from "@/lib/query-toolkit-v2/optimistic-mutations/updaters";
-import { liveRegistry } from "@/lib/query-toolkit-v2/registry";
+import { type Entity, EntityOptimisticMutations, EntityOptimisticUpdater, liveRegistry } from "@/lib/query-toolkit-v2";
 
 // Define the type for the hook's parameters
 interface UseLiveEntityProps<Item, Params = undefined> {
@@ -53,11 +50,7 @@ export const useLiveEntity = <Item, Params = undefined>({
       entity,
     };
 
-    liveRegistry.register(entity.getName(), entry);
-
-    return () => {
-      liveRegistry.unregister(entry);
-    };
+    liveRegistry.register(entry);
   }, [queryKey, queryClient, entity]);
 
   return {

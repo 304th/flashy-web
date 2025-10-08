@@ -1,9 +1,6 @@
 import { useEffect, useMemo } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import type { Collection } from "@/lib/query-toolkit-v2/collection";
-import { CollectionOptimisticMutations } from "@/lib/query-toolkit-v2/optimistic-mutations/optimistic-mutations";
-import { LiveOptimisticUpdater } from "@/lib/query-toolkit-v2/optimistic-mutations/updaters";
-import { liveRegistry } from "@/lib/query-toolkit-v2/registry";
+import { type Collection, CollectionOptimisticMutations, LiveOptimisticUpdater, liveRegistry } from "@/lib/query-toolkit-v2";
 
 export const useLiveQuery = <Entity, Params = undefined>({
   queryKey,
@@ -48,11 +45,7 @@ export const useLiveQuery = <Entity, Params = undefined>({
       collection: collection as any,
     };
 
-    liveRegistry.register(collection.getName(), entry);
-
-    return () => {
-      liveRegistry.unregister(entry);
-    };
+    liveRegistry.register(entry);
   }, [queryKey, queryClient, collection]);
 
   return {

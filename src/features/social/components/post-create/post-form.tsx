@@ -12,9 +12,9 @@ import { PostLinkPreview } from "@/features/social/components/post-link-preview/
 import { PostOptions } from "@/features/social/components/post-create/post-options";
 import { useCreateSocialPost } from "@/features/social/mutations/use-create-social-post";
 import { useParsedPostLinkPreviews } from "@/features/social/hooks/use-parsed-post-preview-links";
+import { useSocialPostImagesAttach } from "@/features/social/hooks/use-social-post-images-attach";
+import { useDragAndDrop } from "@/hooks/use-drag-n-drop";
 import { defaultVariants } from "@/lib/framer";
-import { useSocialPostImagesAttach } from "../../hooks/use-social-post-images-attach";
-import { useDragAndDrop } from "../../hooks/use-drag-n-drop";
 
 const formSchema = z.object({
   description: z.string().max(config.content.social.maxLength),
@@ -149,7 +149,7 @@ export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
             <Button
               type="submit"
               className="w-[120px]"
-              disabled={!form.formState.isDirty}
+              disabled={!form.formState.isDirty || !form.formState.isValid}
             >
               Post
             </Button>

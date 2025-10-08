@@ -1,9 +1,5 @@
+import type { WritableDraft } from "immer";
 import { api } from "@/services/api";
-import { createMutation } from "@/lib/query-toolkit/mutation";
-import {
-  type OptimisticUpdate,
-  useOptimisticMutation,
-} from "@/lib/query-toolkit";
 import {
   createMutation as createMutationV2,
   useOptimisticMutation as useOptimisticMutationV2,
@@ -19,7 +15,7 @@ export interface AddReactionParams {
   count?: number;
 }
 
-const addReaction = createMutation<AddReactionParams>({
+const addReaction = createMutationV2<AddReactionParams>({
   writeToSource: async (params) => {
     return await api
       .post("reactions/addReaction", {
@@ -34,77 +30,28 @@ const addReaction = createMutation<AddReactionParams>({
   },
 });
 
-const timeout = () => new Promise(resolve => setTimeout(resolve, 1000));
+export const addReactionToSocialPost =
+  (author: Author) => (post: WritableDraft<Optimistic<SocialPost>>) => {
+    post.reactions = post.reactions || { like: {} };
+    post.reactions.like = post.reactions.like || {};
 
-const addReactionV2 = createMutationV2<AddReactionParams>({
-  writeToSource: async (params) => {
-    await timeout()
-    return
-    return await api
-      .post("reactions/addReaction", {
-        json: {
-          postId: params.id,
-          postType: params.postType,
-          reactionType: params.reactionType,
-          count: params.count ?? 1,
-        },
-      })
-      .json();
-  },
-});
+    post.reactions.like[author.fbId] = {
+      fbId: author.fbId,
+      username: author.username,
+      userimage: author.userimage,
+    };
+  };
 
-export const useAddReaction = ({
-  optimisticUpdates,
-}: {
-  optimisticUpdates?: OptimisticUpdate<AddReactionParams>[];
-}) => {
-  return useOptimisticMutation({
-    mutation: addReaction,
-    optimisticUpdates,
-  });
-};
-
-export const useAddReactionV2 = () => {
+export const useAddReaction = () => {
   const { data: author } = useMe();
 
   return useOptimisticMutationV2({
-    mutation: addReactionV2,
+    mutation: addReaction,
     onOptimistic: async (channel, params) => {
       return Promise.all([
-        channel(socialFeedCollectionV2).update(params.id, (post) => {
-          post.reactions = post.reactions || { like: {} };
-          post.reactions.like = post.reactions.like || {};
-
-          post.reactions.like[author!.fbId] = {
-            fbId: author!.fbId,
-            username: author!.username,
-            userimage: author!.userimage,
-          };
-        }),
-        channel(socialPostEntityV2).update(params.id, (post) => {
-          post.reactions = post.reactions || { like: {} };
-          post.reactions.like = post.reactions.like || {};
-
-          post.reactions.like[author!.fbId] = {
-            fbId: author!.fbId,
-            username: author!.username,
-            userimage: author!.userimage,
-          };
-        })
+        channel(socialFeedCollectionV2).update(params.id, addReactionToSocialPost(author!)),
+        channel(socialPostEntityV2).update(params.id, addReactionToSocialPost(author!)),
       ])
-
-      // return Promise.all([
-      //   channel(socialFeedCollectionV2).update(params.id, (post) => {
-      //     post.reactions = post.reactions || { like: {} };
-      //     post.reactions.like = post.reactions.like || {};
-      //
-      //     post.reactions.like[author!.fbId] = {
-      //       fbId: author!.fbId,
-      //       username: author!.username,
-      //       userimage: author!.userimage,
-      //     };
-      //   })
-      // ])
     },
   });
 };

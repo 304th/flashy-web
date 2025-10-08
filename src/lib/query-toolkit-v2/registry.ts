@@ -38,15 +38,39 @@ type RegisteredPartitioned = {
 
 export type RegisteredAny = RegisteredLive | RegisteredPartitioned;
 
+function areQueryKeysEqual(key1: unknown[], key2: unknown[]): boolean {
+  if (key1.length !== key2.length) {
+    return false;
+  }
+
+  return key1.every((value, index) => value === key2[index]);
+}
+
 class LiveRegistry {
   private readonly nameToEntries: Map<string, Set<RegisteredAny>> = new Map();
 
-  register(name: string, entry: RegisteredAny) {
+  // register(entry: RegisteredAny) {
+  //   if (!this.nameToEntries.has(entry.name)) {
+  //     this.nameToEntries.set(entry.name, new Set());
+  //   }
+  //
+  //   this.nameToEntries.get(entry.name)!.add(entry);
+  // }
+
+  register(entry: RegisteredAny) {
     if (!this.nameToEntries.has(entry.name)) {
       this.nameToEntries.set(entry.name, new Set());
     }
 
-    this.nameToEntries.get(entry.name)!.add(entry);
+    const entries = this.nameToEntries.get(entry.name)!;
+
+    const existingEntry = Array.from(entries).find((e) =>
+      areQueryKeysEqual(e.queryKey, entry.queryKey)
+    );
+
+    if (!existingEntry) {
+      entries.add(entry);
+    }
   }
 
   unregister(entry: RegisteredAny) {

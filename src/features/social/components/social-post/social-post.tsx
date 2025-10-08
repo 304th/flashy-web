@@ -20,7 +20,7 @@ export const SocialPost = ({
 
   return (
     <article
-      className={`relative flex flex-col p-4 gap-3 h-fit w-full transition
+      className={`relative flex flex-col gap-3 h-fit w-full transition
         rounded
         bg-[linear-gradient(180deg,#151515_0%,#151515_0.01%,#19191920_100%)]
         ${isLinkable ? "hover:bg-base-200" : ""} ${className}
@@ -32,9 +32,9 @@ export const SocialPost = ({
           username: socialPost.username,
           userimage: socialPost.userimage,
         }}
-        className="absolute"
+        className="absolute top-4 left-4"
       />
-      <div className="absolute right-4 flex gap-2 items-center">
+      <div className="absolute top-4 right-4 flex gap-2 items-center">
         <p>{timeAgo(socialPost.createdAt)}</p>
         {/* FIXME: fix this bullshit logic */}
         {onCommentsOpen && <SocialPostMenu socialPost={socialPost} />}

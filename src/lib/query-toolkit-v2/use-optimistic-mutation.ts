@@ -1,10 +1,6 @@
 import type { Mutation } from "@/lib/query-toolkit-v2/mutation";
-import { EntityOptimisticMutations } from "@/lib/query-toolkit-v2/optimistic-mutations/optimistic-mutations";
 import { useMutation } from "@tanstack/react-query";
-import type { CollectionOptimisticMutations } from "@/lib/query-toolkit-v2/optimistic-mutations/optimistic-mutations";
-import { handleMutationError } from "@/lib/query-toolkit";
-import type { OptTransaction } from "@/lib/query-toolkit-v2/registry";
-import { channel } from "@/lib/query-toolkit-v2/utils";
+import { channel, EntityOptimisticMutations, type OptTransaction, type CollectionOptimisticMutations, handleMutationError } from "@/lib/query-toolkit-v2";
 
 export const useOptimisticMutation = <Params, Response>({
   mutation,
@@ -47,7 +43,6 @@ export const useOptimisticMutation = <Params, Response>({
       try {
         if (onOptimistic) {
           const result = await onOptimistic(channel, params);
-          debugger
           const list = Array.isArray(result) ? result : [result];
           transactions = transactions.concat(...list);
         }

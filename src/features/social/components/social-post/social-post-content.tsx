@@ -11,7 +11,7 @@ export const SocialPostContent = ({
   socialPost: SocialPost;
 }) => {
   return (
-    <div className="flex flex-col gap-3 pt-13">
+    <div className="flex flex-col gap-3 pt-18 px-4 pb-4">
       <SocialPostBehindKey socialPost={socialPost} />
       <SocialPostDescription socialPost={socialPost} />
       <SocialPostPoll socialPost={socialPost} />

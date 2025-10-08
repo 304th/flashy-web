@@ -1,9 +1,6 @@
-import type { Collection } from "@/lib/query-toolkit-v2/collection";
-import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
-import { CollectionOptimisticMutations } from "@/lib/query-toolkit-v2/optimistic-mutations/optimistic-mutations";
-import { PartitionedOptimisticUpdater } from "@/lib/query-toolkit-v2/optimistic-mutations/updaters";
-import { liveRegistry } from "@/lib/query-toolkit-v2/registry";
+import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import { type Collection, liveRegistry, PartitionedOptimisticUpdater, CollectionOptimisticMutations } from "@/lib/query-toolkit-v2";
 
 type DefaultParams = { pageParam: number };
 
@@ -77,11 +74,7 @@ export const usePartitionedQuery = <Entity, Params>({
       collection,
     };
 
-    liveRegistry.register(collection.getName(), entry);
-
-    return () => {
-      liveRegistry.unregister(entry);
-    };
+    liveRegistry.register(entry);
   }, [queryKey, queryClient, collection]);
 
   return {

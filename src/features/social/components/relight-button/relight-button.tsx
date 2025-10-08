@@ -2,27 +2,21 @@ import Lottie from "lottie-react";
 import { RelightIcon } from "@/components/ui/icons/relight";
 import { useHasRelighted } from "@/features/social/hooks/use-has-relighted";
 import {
-  type RelightSocialPostParams,
   useRelightSocialPost,
 } from "@/features/social/mutations/use-relight-social-post";
 import { useMe } from "@/features/auth/queries/use-me";
 import { useRelightsCount } from "@/features/social/hooks/use-relights-count";
-import type { OptimisticUpdate } from "@/lib/query-toolkit";
 import relightAnimation from "@/features/social/assets/relight-animation.json";
 
 export const RelightButton = ({
   post,
-  relightUpdates,
 }: {
   post: Relightable;
-  relightUpdates?: OptimisticUpdate<RelightSocialPostParams>[];
 }) => {
   const { data: me } = useMe();
   const isRelighted = useHasRelighted(post);
   const relitsCount = useRelightsCount(post);
-  const relightPost = useRelightSocialPost({
-    optimisticUpdates: relightUpdates,
-  });
+  const relightPost = useRelightSocialPost();
 
   return (
     <div

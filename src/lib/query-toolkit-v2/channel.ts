@@ -13,7 +13,7 @@ export function channel<T>(collection: Collection<T> | Entity<T>) {
           } else if (entry.kind === "partitioned") {
             return liveRegistry.createPartitionedTransaction(entry).update(id, updateFn);
           } else {
-            return liveRegistry.createEntityTransaction(entry).update(updateFn as any); //FIXME: fix types
+            return liveRegistry.createEntityTransaction(entry).update(updateFn); //FIXME: fix types
           }
         }),
       );

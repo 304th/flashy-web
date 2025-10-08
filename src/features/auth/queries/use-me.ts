@@ -1,10 +1,9 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { Authed, useAuthed } from "@/features/auth/hooks/use-authed";
 import { api } from "@/services/api";
-import { useLiveEntity } from "@/lib/query-toolkit";
-import { createEntity } from "@/lib/query-toolkit/entity";
+import { useLiveEntity, createEntity } from "@/lib/query-toolkit-v2";
 
-const meEntity = createEntity<User, Authed>({
+export const meEntity = createEntity<User, Authed>({
   sourceFrom: async (params) => {
     if (params?.status === "pending") {
       throw new Error("pending");
@@ -12,6 +11,7 @@ const meEntity = createEntity<User, Authed>({
 
     return await api.get("auth/me/logged-in").json();
   },
+  name: 'me',
 });
 
 export const useMe = () => {

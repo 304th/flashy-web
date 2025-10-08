@@ -1,9 +1,12 @@
+import type {WritableDraft} from "immer";
 import {
   createMutation,
   OptimisticUpdate,
   useOptimisticMutation,
-} from "@/lib/query-toolkit";
+} from "@/lib/query-toolkit-v2";
+import { useMe } from "@/features/auth/queries/use-me";
 import { api } from "@/services/api";
+import { socialFeedCollectionV2 } from "@/features/social/collections/social-feed";
 
 export interface PinSocialPostParams {
   id: string;
@@ -20,12 +23,29 @@ const pinSocialPost = createMutation({
   },
 });
 
-export const usePinSocialPost = ({
-  optimisticUpdates,
-}: { optimisticUpdates?: OptimisticUpdate<PinSocialPostParams>[] } = {}) => {
+export const pinPost =
+  (author: Author, params: PinSocialPostParams) =>
+    (post: WritableDraft<Optimistic<SocialPost>>) => {
+      if (params.pinned) {
+        post.pinned = true;
+        post.pinnedBy = {
+          userId: author!.fbId,
+          username: author!.username,
+        };
+      } else {
+        post.pinned = false;
+        delete post.pinnedBy;
+      }
+    };
+
+export const usePinSocialPost = () => {
+  const { data: author } = useMe();
+
   return useOptimisticMutation({
     mutation: pinSocialPost,
-    optimisticUpdates,
+    onOptimistic: (ch, params) => {
+      return ch(socialFeedCollectionV2).update(params.id, pinPost(author!, params))
+    }
   });
 };
 

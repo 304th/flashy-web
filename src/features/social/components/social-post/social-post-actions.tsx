@@ -14,7 +14,6 @@ export const SocialPostActions = ({
   const {
     likeUpdates,
     unlikeUpdates,
-    relightUpdates,
     onCommentsOpen,
     onShareOpen,
   } = useSocialPostContext();
@@ -38,7 +37,7 @@ export const SocialPostActions = ({
           likeUpdates={likeUpdates}
           unlikeUpdates={unlikeUpdates}
         />
-        <RelightButton post={socialPost} relightUpdates={relightUpdates} />
+        <RelightButton post={socialPost} />
       </div>
       {onShareOpen && (
         <div className="flex gap-2">

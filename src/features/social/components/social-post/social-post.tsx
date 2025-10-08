@@ -3,8 +3,8 @@ import { UserProfile } from "@/components/ui/user-profile";
 import { SocialPostMenu } from "@/features/social/components/social-post/social-post-menu";
 import { useSocialPostContext } from "@/features/social/components/social-post/social-post-context";
 import { SocialPostContent } from "@/features/social/components/social-post/social-post-content";
-import { timeAgo } from "@/lib/utils";
 import { useIsSocialPostLocked } from "@/features/social/hooks/use-is-social-post-locked";
+import { timeAgo } from "@/lib/utils";
 
 export const SocialPost = ({
   socialPost,

@@ -7,7 +7,7 @@ export interface UnmuteChannelParams {
 }
 
 const unmuteChannelMutation = createMutation<UnmuteChannelParams>({
-  writeToSource: async (params) => {
+  write: async (params) => {
     return api.post("users/unmute", {
       json: {
         userId: params.userId,

@@ -47,7 +47,7 @@ export const ProfileHeaderUserBar = ({ className }: { className?: string }) => {
         >
           Edit Profile
         </Button>
-        <ChannelSubscriptions channel={me} />
+        <ChannelSubscriptions />
       </div>
     </div>
   );

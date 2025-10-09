@@ -1,17 +1,17 @@
 "use client";
 
-import { ShareIcon } from "lucide-react";
 import { Loadable } from "@/components/ui/loadable";
 import { Button } from "@/components/ui/button";
 import { UserProfile } from "@/components/ui/user-profile";
-import { useChannelContext } from "@/features/profile/components/channel-context/channel-context";
+import { ShareIcon } from "lucide-react";
 import { ChannelMenu } from "@/features/channels/components/channel-header/channel-menu";
 import { ChannelSubscribeButton } from "@/features/channels/components/channel-subscribe-button/channel-subscribe-button";
 import { ChannelSubscriptions } from "@/features/channels/components/channel-subscriptions/channel-subscriptions";
+import { useChannelContext } from "@/features/profile/components/channel-context/channel-context";
 import { useModals } from "@/hooks/use-modals";
 
 export const ChannelHeaderUserBar = ({ className }: { className?: string }) => {
-  const { channelId, channel, query } = useChannelContext();
+  const { channelId, channel, channelQuery } = useChannelContext();
   const { openModal } = useModals();
 
   return (
@@ -19,7 +19,7 @@ export const ChannelHeaderUserBar = ({ className }: { className?: string }) => {
       className={`flex w-full items-center justify-between px-5 py-2
         ${className}`}
     >
-      <Loadable queries={[query]}>
+      <Loadable queries={[channelQuery]}>
         {() =>
           channel ? (
             <UserProfile
@@ -48,8 +48,8 @@ export const ChannelHeaderUserBar = ({ className }: { className?: string }) => {
         }
       </Loadable>
       <div className="flex w-1/5 min-w-[270px] flex-col items-center gap-2">
-        <ChannelSubscribeButton channelId={channelId} />
-        <ChannelSubscriptions channel={channel} />
+        <ChannelSubscribeButton />
+        <ChannelSubscriptions />
       </div>
     </div>
   );

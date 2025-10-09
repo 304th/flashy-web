@@ -2,7 +2,13 @@ import { useMemo, useEffect, useState } from "react";
 import { addHours, differenceInMilliseconds } from "date-fns";
 import { useVotePoll } from "@/features/social/mutations/use-vote-poll";
 
-export const SocialPostPoll = ({ socialPost, className }: { socialPost: SocialPost; className?: string }) => {
+export const SocialPostPoll = ({
+  socialPost,
+  className,
+}: {
+  socialPost: SocialPost;
+  className?: string;
+}) => {
   const votePoll = useVotePoll();
 
   if (
@@ -92,9 +98,11 @@ const PollOption = ({
           style={{ width: `${percentage.toFixed(0)}%` }}
         />
       )}
-      <p className="text-white">{pollOption.text}</p>
+      <p className={`text-white ${selected ? "font-bold" : ""}`}>
+        {pollOption.text}
+      </p>
       {isVoted && (
-        <p className={`${selected ? "text-white" : ""}`}>
+        <p className={`${selected ? "text-white font-bold" : ""}`}>
           {percentage.toFixed(0)}%
         </p>
       )}

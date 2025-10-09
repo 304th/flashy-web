@@ -47,10 +47,9 @@ export const useLiveQuery = <Entity, Params = undefined>({
       name: collection.getName(),
       queryKey,
       queryClient,
-      collection: collection as any,
+      collection,
     };
 
-    // Register only if query is successful and data is not nullish
     if (
       query.status === "success" &&
       query.data !== null &&
@@ -58,7 +57,6 @@ export const useLiveQuery = <Entity, Params = undefined>({
     ) {
       liveRegistry.register(entry);
     } else {
-      // Unregister if data is nullish or query is not successful
       liveRegistry.unregister(entry);
     }
   }, [queryKey, queryClient, collection, query.status, query.data]);

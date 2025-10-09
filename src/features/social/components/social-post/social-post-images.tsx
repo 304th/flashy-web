@@ -72,7 +72,10 @@ export const SocialPostImages = ({
 
   return (
     <>
-      <div className={`grid ${getGridLayout(socialPost.images.length)} ${className}`}>
+      <div
+        className={`grid ${getGridLayout(socialPost.images.length)}
+          ${className}`}
+      >
         {socialPost.images.map((image, i) => (
           <div
             key={image}

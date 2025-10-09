@@ -1,12 +1,9 @@
-import { Button } from "@/components/ui/button";
-import { useIsSubscribed } from "@/features/auth/hooks/use-is-subscribed";
-import { useSubscribeToChannel } from "@/features/channels/mutations/use-subscribe-to-channel";
 import { KeyIcon } from "@/components/ui/icons/key";
 import { CheckIcon } from "@/components/ui/icons/check";
+import { useChannelContext } from "@/features/profile/components/channel-context/channel-context";
 
-export const ChannelBuyKeyButton = ({ channelId }: { channelId: string }) => {
-  const isSubscribed = useIsSubscribed(channelId);
-  const subscribe = useSubscribeToChannel();
+export const ChannelBuyKeyButton = () => {
+  const { channelId } = useChannelContext();
 
   return (
     <div className="flex items-center w-full rounded-md">

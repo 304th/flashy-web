@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { Suspense } from 'react';
-import { ProgressBar } from '@/packages/progress-bar';
+import { Suspense } from "react";
+import { ProgressBar } from "@/packages/progress-bar";
 
 const options = {
   showSpinner: false,

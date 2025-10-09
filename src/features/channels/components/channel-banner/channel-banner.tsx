@@ -1,18 +1,18 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useChannelContext } from "@/features/profile/components/channel-context/channel-context";
 
-export const ChannelHeaderBanner = () => {
-  const { channel, query } = useChannelContext();
+export const ChannelBanner = ({ className }: { className?: string }) => {
+  const { channel, channelQuery } = useChannelContext();
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 1000], [0, 500]);
   const scale = useTransform(scrollY, [0, 1000], [1, 0.92]);
 
   return (
     <motion.div
-      className="relative flex w-full h-full bg-cover bg-center justify-center
-        overflow-hidden"
+      className={`relative flex w-full h-full bg-cover bg-center justify-center
+        overflow-hidden ${className}`}
     >
-      {query.isPending ? (
+      {channelQuery.isPending ? (
         <div className="absolute inset-0 skeleton"></div>
       ) : (
         <motion.div

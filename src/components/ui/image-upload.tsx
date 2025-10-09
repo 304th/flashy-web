@@ -100,6 +100,7 @@ export const ImageUpload = ({
       {preview && (
         <div className="absolute top-2 right-2 z-1">
           <IconButton
+            type="button"
             variant="destructive"
             onClick={(e) => {
               e.preventDefault();

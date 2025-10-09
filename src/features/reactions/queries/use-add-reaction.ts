@@ -1,9 +1,6 @@
 import type { WritableDraft } from "immer";
 import { api } from "@/services/api";
-import {
-  createMutation,
-  useOptimisticMutation,
-} from "@/lib/query-toolkit-v2";
+import { createMutation, useOptimisticMutation } from "@/lib/query-toolkit-v2";
 import { useMe } from "@/features/auth/queries/use-me";
 import { socialFeedCollection } from "@/features/social/collections/social-feed";
 import { socialPostEntity } from "@/features/social/queries/use-social-post-by-id";

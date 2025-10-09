@@ -8,7 +8,7 @@ import {
 } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { ChannelProvider } from "@/features/profile/components/channel-context/channel-context";
+import { ChannelContextProvider } from "@/features/profile/components/channel-context/channel-context";
 import { ChannelHeader } from "@/features/channels/components/channel-header/channel-header";
 import { ChannelPageTabs } from "@/features/channels/components/channel-page-tabs/channel-page-tabs";
 import { getTabNameFromPathname } from "@/features/channels/utils/get-tab-name-from-pathname";
@@ -16,6 +16,7 @@ import { capitalize } from "media-chrome/utils/utils";
 import { useQueryParams } from "@/hooks/use-query-params";
 import { ChannelNotFound } from "@/features/channels/components/channel-not-found/channel-not-found";
 import { useMe } from "@/features/auth/queries/use-me";
+import { useChannelById } from "@/features/channels/queries/use-channel-by-id";
 
 const channelTabs = [
   {
@@ -53,6 +54,7 @@ const ChannelLayoutComponent = ({ children }: PropsWithChildren<{}>) => {
   const channelId = useQueryParams("id");
   const { data: me } = useMe();
   const tabName = getTabNameFromPathname(pathname);
+  const { data: channel, query: channelQuery } = useChannelById(channelId);
 
   useEffect(() => {
     if (me?.fbId === channelId) {
@@ -65,7 +67,11 @@ const ChannelLayoutComponent = ({ children }: PropsWithChildren<{}>) => {
   }
 
   return (
-    <ChannelProvider channelId={channelId}>
+    <ChannelContextProvider
+      channelId={channelId}
+      channel={channel}
+      channelQuery={channelQuery}
+    >
       <div className="relative flex flex-col gap-4 w-full">
         <ChannelHeader />
         <div className="relative flex w-full justify-center items-center">
@@ -87,6 +93,6 @@ const ChannelLayoutComponent = ({ children }: PropsWithChildren<{}>) => {
           </motion.div>
         </AnimatePresence>
       </div>
-    </ChannelProvider>
+    </ChannelContextProvider>
   );
 };

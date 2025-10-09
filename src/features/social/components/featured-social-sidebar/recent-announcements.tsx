@@ -1,7 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useRecentAnnouncements } from "@/features/social/queries/use-recent-announcements";
-import Link from "next/link";
-import { MiniSocialPost } from "@/features/social/components/featured-social-sidebar/mini-social-post";
 import { RecentAnnouncementSocialPost } from "@/features/social/components/featured-social-sidebar/recent-announcement-social-post";
 
 export const RecentAnnouncements = () => {
@@ -16,12 +14,7 @@ export const RecentAnnouncements = () => {
           <p className="text-sm text-base-800">Recent Announcements</p>
           <div className="flex flex-col gap-3 divide-y">
             {recentAnnouncements.map((socialPost) => (
-              <Link
-                key={socialPost._id}
-                href={`/social/post?id=${socialPost._id}`}
-              >
-                <RecentAnnouncementSocialPost socialPost={socialPost} />
-              </Link>
+              <RecentAnnouncementSocialPost socialPost={socialPost} />
             ))}
           </div>
         </motion.div>

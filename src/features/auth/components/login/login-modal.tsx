@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Modal as ModalComponent } from "@/packages/modals";
 import { LoginForm } from "@/features/auth/components/login/login-form";
@@ -60,6 +60,7 @@ export const LoginModal = ({ onClose, ...props }: LoginModalProps) => {
 const Modal = (props: any) => (
   <ModalComponent
     {...props}
-    className={`max-sm:min-w-unset min-w-[450px] max-sm:w-full ${props.className}`}
+    className={`max-sm:min-w-unset min-w-[450px] max-sm:w-full
+      ${props.className}`}
   />
 );

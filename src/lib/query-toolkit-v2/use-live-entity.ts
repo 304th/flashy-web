@@ -55,7 +55,6 @@ export const useLiveEntity = <Item, Params = never>({
       entity,
     };
 
-    // Register only if query is successful and data is not nullish
     if (
       query.status === "success" &&
       query.data !== null &&
@@ -63,7 +62,6 @@ export const useLiveEntity = <Item, Params = never>({
     ) {
       liveRegistry.register(entry);
     } else {
-      // Unregister if data is nullish or query is not successful
       liveRegistry.unregister(entry);
     }
   }, [queryKey, queryClient, entity, query.status, query.data]);

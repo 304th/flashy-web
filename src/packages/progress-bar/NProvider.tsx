@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
-import ProgressBar from './ProgressBar';
-import { NavigationEvents } from './NavigationEvents';
-import { usePathname } from 'next/navigation';
-import { Next13ProgressProps } from '.';
+import React, { useEffect } from "react";
+import ProgressBar from "./ProgressBar";
+import { NavigationEvents } from "./NavigationEvents";
+import { usePathname } from "next/navigation";
+import { Next13ProgressProps } from ".";
 
 export interface NProviderProps extends Next13ProgressProps {
   children: React.ReactNode;
@@ -28,10 +28,10 @@ export const NProvider = (props: NProviderProps) => {
   const pathname = usePathname();
 
   useEffect(() => {
-    const anchors = document.querySelectorAll('a');
+    const anchors = document.querySelectorAll("a");
     anchors.forEach((anchor) => {
-      anchor.addEventListener('click', (e) => {
-        if (anchor.target === '_blank') return;
+      anchor.addEventListener("click", (e) => {
+        if (anchor.target === "_blank") return;
         // add prev onclick
         if (anchor.onclick) {
           anchor.onclick(e);

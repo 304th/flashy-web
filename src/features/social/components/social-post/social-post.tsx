@@ -5,11 +5,11 @@ import { SocialPostContent } from "@/features/social/components/social-post/soci
 import { SocialPostActions } from "@/features/social/components/social-post/social-post-actions";
 import { SocialPostImages } from "@/features/social/components/social-post/social-post-images";
 import { SocialPostTags } from "@/features/social/components/social-post/social-post-tags";
+import { SocialPostPoll } from "@/features/social/components/social-post/social-post-poll";
+import { OptimisticLoading } from "@/features/common/components/optimistic-loading/optimistic-loading";
 import { useSocialPostContext } from "@/features/social/components/social-post/social-post-context";
 import { useIsSocialPostLocked } from "@/features/social/hooks/use-is-social-post-locked";
 import { timeAgo } from "@/lib/utils";
-import {OptimisticLoader} from "@/features/common/components/optimistic-loader/optimistic-loader";
-import {SocialPostPoll} from "@/features/social/components/social-post/social-post-poll";
 
 export const SocialPost = ({
   socialPost,
@@ -49,21 +49,19 @@ export const SocialPost = ({
       ) : (
         <SocialPostContent socialPost={socialPost} />
       )}
-      {
-        !isLocked && <SocialPostPoll socialPost={socialPost} className="px-4 pb-4" />
-      }
-      {
-        !isLocked && <SocialPostImages socialPost={socialPost} className="px-4 pb-4" />
-      }
-      {
-        !isLocked && (
-          <div className="flex flex-col gap-3 px-4 pb-4 bottom-4 w-full">
-            <SocialPostActions socialPost={socialPost} />
-            <SocialPostTags socialPost={socialPost} />
-          </div>
-        )
-      }
-      <OptimisticLoader entity={socialPost} />
+      {!isLocked && (
+        <SocialPostPoll socialPost={socialPost} className="px-4 pb-4" />
+      )}
+      {!isLocked && (
+        <SocialPostImages socialPost={socialPost} className="px-4 pb-4" />
+      )}
+      {!isLocked && (
+        <div className="flex flex-col gap-3 px-4 pb-4 bottom-4 w-full">
+          <SocialPostActions socialPost={socialPost} />
+          <SocialPostTags socialPost={socialPost} />
+        </div>
+      )}
+      <OptimisticLoading entity={socialPost} />
     </article>
   );
 };

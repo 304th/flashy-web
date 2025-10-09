@@ -1,9 +1,9 @@
 "use client";
 
 import { Suspense } from "react";
-import { ChannelHeaderBanner } from "@/features/channels/components/channel-header/channel-header-banner";
 import { ChannelHeaderUserBar } from "@/features/channels/components/channel-header/channel-header-user-bar";
 import { GradualBlurMemo as GradualBlur } from "@/components/ui/gradual-blur/gradual-blur";
+import { ChannelBanner } from "@/features/channels/components/channel-banner/channel-banner";
 
 export const ChannelHeader = () => {
   return (
@@ -11,7 +11,7 @@ export const ChannelHeader = () => {
       className="relative flex flex-col w-full h-[390px] bg-base-400 rounded-md
         overflow-hidden"
     >
-      <ChannelHeaderBanner />
+      <ChannelBanner />
       <div className="absolute w-full bottom-0">
         <Suspense>
           <GradualBlur

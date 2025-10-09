@@ -35,19 +35,21 @@ export const useCreateReply = () => {
     mutation: createReply,
     onOptimistic: (ch, params) => {
       return Promise.all([
-        ch(repliesCollection).prepend({
-          ...params,
-          created_by: {
-            _id: author!.fbId,
-            username: author!.username,
-            userimage: author!.userimage,
+        ch(repliesCollection).prepend(
+          {
+            ...params,
+            created_by: {
+              _id: author!.fbId,
+              username: author!.username,
+              userimage: author!.userimage,
+            },
           },
-        }, { sync: true }),
+          { sync: true },
+        ),
         ch(commentsCollection).update(params.commentId, (comment) => {
           comment.repliesCount += 1;
         }),
       ]);
     },
   });
-}
-
+};

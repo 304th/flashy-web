@@ -88,8 +88,8 @@ export const useCreateSocialPost = () => {
                 pollVotedId: null,
                 results: socialPost.poll as any,
               },
-            }
-          }
+            };
+          },
         },
       );
     },

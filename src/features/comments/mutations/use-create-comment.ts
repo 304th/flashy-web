@@ -36,14 +36,17 @@ export const useCreateComment = () => {
     mutation: createComment,
     onOptimistic: (ch, params) => {
       return Promise.all([
-        ch(commentsCollection).prepend({
-          ...params,
-          created_by: {
-            _id: author!.fbId,
-            username: author!.username,
-            userimage: author!.userimage,
+        ch(commentsCollection).prepend(
+          {
+            ...params,
+            created_by: {
+              _id: author!.fbId,
+              username: author!.username,
+              userimage: author!.userimage,
+            },
           },
-        }, { sync: true }),
+          { sync: true },
+        ),
         ch(socialFeedCollection).update(params.postId, (post) => {
           post.commentsCount += 1;
         }),

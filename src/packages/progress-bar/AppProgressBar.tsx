@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import React, { useEffect, memo } from 'react';
-import NProgress from 'nprogress';
+import React, { useEffect, memo } from "react";
+import NProgress from "nprogress";
 import {
   usePathname,
   useSearchParams,
   useRouter as useNextRouter,
-} from 'next/navigation';
-import { Next13ProgressProps } from '.';
-import { NavigateOptions } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+} from "next/navigation";
+import { Next13ProgressProps } from ".";
+import { NavigateOptions } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 type PushStateInput = [
   data: any,
@@ -18,8 +18,8 @@ type PushStateInput = [
 
 export const ProgressBar = memo(
   ({
-    color = '#0A2FFF',
-    height = '2px',
+    color = "#0A2FFF",
+    height = "2px",
     options,
     showOnShallow = false,
     delay = 0,
@@ -127,15 +127,15 @@ export const ProgressBar = memo(
       };
 
       const handleAnchorClick = (event: MouseEvent) => {
-        if ((event?.target as any)?.dataset?.linkType === '_blank') return;
+        if ((event?.target as any)?.dataset?.linkType === "_blank") return;
 
         const anchorElement = event.currentTarget as HTMLAnchorElement;
 
         // Skip anchors with target="_blank"
-        if (anchorElement.target === '_blank') return;
+        if (anchorElement.target === "_blank") return;
 
         // Skip anchors with download attribute
-        if (anchorElement.hasAttribute('download')) return;
+        if (anchorElement.hasAttribute("download")) return;
 
         // target url without hash removed
         const targetUrl = new URL(anchorElement.href);
@@ -161,13 +161,13 @@ export const ProgressBar = memo(
       };
 
       const handleMutation: MutationCallback = () => {
-        const anchorElements = document.querySelectorAll('a');
+        const anchorElements = document.querySelectorAll("a");
         // Skip anchors with target="_blank" and anchors without href
         const validAnchorELes = Array.from(anchorElements).filter(
           (anchor) => anchor.href,
         );
         validAnchorELes.forEach((anchor) =>
-          anchor.addEventListener('click', handleAnchorClick),
+          anchor.addEventListener("click", handleAnchorClick),
         );
       };
 
@@ -187,7 +187,7 @@ export const ProgressBar = memo(
   () => true,
 );
 
-ProgressBar.displayName = 'ProgressBar';
+ProgressBar.displayName = "ProgressBar";
 
 export function useRouter() {
   const router = useNextRouter();

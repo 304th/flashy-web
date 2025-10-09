@@ -40,9 +40,7 @@ export const Reply = ({ reply, comment, className }: ReplyProps) => {
       <p className="text-lg">{reply.text}</p>
       <div className="flex items-center justify-between">
         <div className="flex gap-2">
-          <LikeButton
-            post={reply}
-          />
+          <LikeButton post={reply} />
         </div>
       </div>
     </div>

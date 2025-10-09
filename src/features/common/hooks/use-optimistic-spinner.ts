@@ -6,16 +6,16 @@ export const useOptimisticSpinner = (entity: Optimistic<unknown>) => {
   useEffect(() => {
     let id: any;
 
-    if (entity._optimisticStatus === 'pending') {
+    if (entity._optimisticStatus === "pending") {
       id = setTimeout(() => {
         setShow(true);
-      }, 600)
+      }, 600);
     }
 
     return () => {
       clearTimeout(id);
-    }
-  }, [entity])
+    };
+  }, [entity]);
 
   return show;
-}
+};

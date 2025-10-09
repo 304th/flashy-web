@@ -233,7 +233,7 @@ export const CropImageModal = ({
 const Modal = (props: any) => (
   <ModalComponent
     {...props}
-    className={`max-sm:min-w-unset min-w-[500px] !bg-base-300 !rounded-md max-sm:w-full
-      overflow-hidden ${props.className}`}
+    className={`max-sm:min-w-unset min-w-[500px] !bg-base-300 !rounded-md
+      max-sm:w-full overflow-hidden ${props.className}`}
   />
 );

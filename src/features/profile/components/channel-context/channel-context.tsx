@@ -1,13 +1,10 @@
 import { useContext, createContext, type PropsWithChildren } from "react";
 import type { UseQueryResult } from "@tanstack/react-query";
-import type { EntityOptimisticMutations } from "@/lib/query-toolkit-v2";
-import { useChannelById } from "@/features/channels/queries/use-channel-by-id";
 
 interface ChannelContextType {
-  channelId: string;
-  query: UseQueryResult<User>;
-  optimisticUpdates: EntityOptimisticMutations<User>;
+  channelId?: string;
   channel?: User;
+  channelQuery: UseQueryResult<User>;
 }
 
 const ChannelContext = createContext<ChannelContextType>({} as any);
@@ -22,19 +19,18 @@ export const useChannelContext = () => {
   return context;
 };
 
-export const ChannelProvider = ({
+export const ChannelContextProvider = ({
   channelId,
+  channel,
+  channelQuery,
   children,
-}: PropsWithChildren<Pick<ChannelContextType, "channelId">>) => {
-  const { data: channel, query, optimisticUpdates } = useChannelById(channelId);
-
+}: PropsWithChildren<ChannelContextType>) => {
   return (
     <ChannelContext.Provider
       value={{
         channelId,
         channel,
-        query,
-        optimisticUpdates,
+        channelQuery,
       }}
     >
       {children}

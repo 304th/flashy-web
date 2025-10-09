@@ -3,11 +3,13 @@ import { SocialPostDescription } from "@/features/social/components/social-post/
 
 export const SocialPostContent = ({
   socialPost,
+  className,
 }: {
   socialPost: SocialPost;
+  className?: string;
 }) => {
   return (
-    <div className="flex flex-col gap-3 pt-18 px-4 pb-3">
+    <div className={`flex flex-col gap-3 pt-18 px-4 pb-3 ${className}`}>
       <SocialPostBehindKey socialPost={socialPost} />
       <SocialPostDescription socialPost={socialPost} />
     </div>

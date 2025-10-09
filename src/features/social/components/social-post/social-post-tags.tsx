@@ -2,7 +2,13 @@ import { MiniPinIcon } from "@/components/ui/icons/mini-pin";
 import { MiniRelightIcon } from "@/components/ui/icons/mini-relight";
 import { MiniKeyIcon } from "@/components/ui/icons/mini-key";
 
-export const SocialPostTags = ({ socialPost, className }: { socialPost: SocialPost, className?: string }) => {
+export const SocialPostTags = ({
+  socialPost,
+  className,
+}: {
+  socialPost: SocialPost;
+  className?: string;
+}) => {
   if (!socialPost.pinned && !socialPost.relightedPost && !socialPost.unlocked) {
     return null;
   }

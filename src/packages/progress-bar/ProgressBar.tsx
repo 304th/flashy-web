@@ -1,16 +1,16 @@
-'use client';
+"use client";
 /**
  *
  * NProgress
  *
  */
 
-import * as NProgress from 'nprogress';
-import * as React from 'react';
-import { Next13ProgressProps } from '.';
+import * as NProgress from "nprogress";
+import * as React from "react";
+import { Next13ProgressProps } from ".";
 
 const Next13Progress = ({
-  color = '#29D',
+  color = "#29D",
   startPosition = 0.3,
   height = 3,
   options,

@@ -5,7 +5,7 @@ const keyPriceEntity = createEntity<KeyPrice, { userId: string }>({
   sourceFrom: async (params) => {
     return await api.get(`keys/${params?.userId!}/price`).json();
   },
-  name: 'keyPrice',
+  name: "keyPrice",
 });
 
 export const useKeyPrice = (userId: string) => {

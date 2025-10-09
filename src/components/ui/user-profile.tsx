@@ -8,6 +8,7 @@ export interface UserProfileProps {
   user: User;
   isLinkable?: boolean;
   withoutUsername?: boolean;
+  truncateUsername?: boolean;
   className?: string;
   avatarClassname?: string;
 }
@@ -16,13 +17,14 @@ export const UserProfile = ({
   user,
   isLinkable = true,
   withoutUsername = false,
+  truncateUsername = false,
   className,
   avatarClassname,
   children,
 }: PropsWithChildren<UserProfileProps>) => {
   const { data: me } = useMe();
 
-  if (!me) {
+  if (!user) {
     return null;
   }
 
@@ -30,15 +32,16 @@ export const UserProfile = ({
     return (
       <Link
         href={
-          user.fbId === me?.fbId
+          user?.fbId === me?.fbId
             ? `/profile/social`
-            : `/channel/social?id=${user.fbId}`
+            : `/channel/social?id=${user?.fbId}`
         }
         className={`hover:bg-accent-alpha-lightest transition rounded-md gap-2 p-1 ${className}`}
       >
         <BaseUserProfile
           user={user}
           isLinkable={isLinkable}
+          truncateUsername={truncateUsername}
           withoutUsername={withoutUsername}
           avatarClassname={avatarClassname}
           children={children}
@@ -51,6 +54,7 @@ export const UserProfile = ({
     <BaseUserProfile
       user={user}
       isLinkable={isLinkable}
+      truncateUsername={truncateUsername}
       withoutUsername={withoutUsername}
       className={className}
       avatarClassname={avatarClassname}
@@ -62,6 +66,7 @@ export const UserProfile = ({
 const BaseUserProfile = ({
   user,
   withoutUsername,
+  truncateUsername,
   className,
   avatarClassname,
   children,
@@ -74,7 +79,12 @@ const BaseUserProfile = ({
     <div className="flex flex-col gap-1">
       {withoutUsername ? null : (
         <div className="flex items-center gap-1">
-          <p className="text-white font-bold text-base">{user.username}</p>
+          <p
+            className={`text-white font-bold text-base
+              ${truncateUsername ? "max-w-[220px] ellipsis" : ""}`}
+          >
+            {user.username}
+          </p>
           <UserBadge user={user} />
         </div>
       )}

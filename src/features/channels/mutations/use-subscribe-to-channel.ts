@@ -1,6 +1,8 @@
 import { createMutation, useOptimisticMutation } from "@/lib/query-toolkit-v2";
 import { api } from "@/services/api";
 import { subscriptionsEntity } from "@/features/auth/queries/use-subscriptions";
+import { channelEntity } from "@/features/channels/queries/use-channel-by-id";
+import { meEntity } from "@/features/auth/queries/use-me";
 
 export interface SubscribeParams {
   channelId: string;
@@ -22,9 +24,17 @@ export const useSubscribeToChannel = () => {
   return useOptimisticMutation({
     mutation: subscribeMutation,
     onOptimistic: (ch, params) => {
-      return ch(subscriptionsEntity).update((subs) => {
-        subs.push(params.channelId);
-      });
+      return Promise.all([
+        ch(subscriptionsEntity).update((subs) => {
+          subs.push(params.channelId);
+        }),
+        ch(channelEntity).update((channel) => {
+          channel.followersCount = (channel.followersCount || 0) + 1;
+        }),
+        ch(meEntity).update((me) => {
+          me.followingCount = (me.followingCount || 0) + 1;
+        }),
+      ]);
     },
   });
 };

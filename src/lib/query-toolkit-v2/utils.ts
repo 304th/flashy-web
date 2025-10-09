@@ -46,6 +46,10 @@ export const getMutation = <
 
 export const handleMutationError = async (error: any) => {
   try {
+    if (typeof error === "string") {
+      return toast.error(error);
+    }
+
     const errorBody = (await error?.response?.json()) || error.message;
 
     toast.error(

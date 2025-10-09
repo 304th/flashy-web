@@ -1,9 +1,9 @@
 "use client";
 
 import { Suspense } from "react";
-import { ProfileHeaderBanner } from "@/features/profile/components/profile-header/profile-header-banner";
 import { ProfileHeaderUserBar } from "@/features/profile/components/profile-header/profile-header-user-bar";
 import { GradualBlurMemo as GradualBlur } from "@/components/ui/gradual-blur/gradual-blur";
+import { ChannelBanner } from "@/features/channels/components/channel-banner/channel-banner";
 
 export const ProfileHeader = () => {
   return (
@@ -11,7 +11,7 @@ export const ProfileHeader = () => {
       className="relative flex flex-col w-full h-[390px] bg-base-400 rounded-md
         overflow-hidden"
     >
-      <ProfileHeaderBanner />
+      <ChannelBanner />
       <div className="absolute w-full bottom-0">
         <Suspense>
           <GradualBlur

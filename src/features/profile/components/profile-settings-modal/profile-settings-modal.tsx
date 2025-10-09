@@ -130,7 +130,7 @@ export const ProfileSettingsModal = ({
 
             if (
               (params.bio && me?.bio !== params.bio) ||
-              Object.keys(params?.links || {}).length !== 0
+              Object.values(params?.links || {}).filter(Boolean).length !== 0
             ) {
               updateUserInfo.mutate({
                 bio: params.bio,
@@ -281,7 +281,7 @@ const NavLink = ({
 const Modal = (props: any) => (
   <ModalComponent
     {...props}
-    className={`max-sm:min-w-unset min-w-[800px] !bg-base-300 !rounded-md max-sm:w-full
-      overflow-hidden ${props.className}`}
+    className={`max-sm:min-w-unset min-w-[800px] !bg-base-300 !rounded-md
+      max-sm:w-full overflow-hidden ${props.className}`}
   />
 );

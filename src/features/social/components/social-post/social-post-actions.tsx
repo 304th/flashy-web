@@ -13,8 +13,7 @@ export const SocialPostActions = ({
   socialPost: SocialPost;
   className?: string;
 }) => {
-  const { onCommentsOpen, onShareOpen } =
-    useSocialPostContext();
+  const { onCommentsOpen, onShareOpen } = useSocialPostContext();
   const isLocked = useIsSocialPostLocked(socialPost);
 
   if (isLocked) {
@@ -30,9 +29,7 @@ export const SocialPostActions = ({
             onComment={() => onCommentsOpen(socialPost._id)}
           />
         )}
-        <LikeButton
-          post={socialPost}
-        />
+        <LikeButton post={socialPost} />
         <RelightButton post={socialPost} />
       </div>
       {onShareOpen && (

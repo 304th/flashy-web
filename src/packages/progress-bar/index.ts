@@ -1,5 +1,5 @@
-export * from './NProvider';
-import * as NProgress from 'nprogress';
+export * from "./NProvider";
+import * as NProgress from "nprogress";
 
 export interface Next13ProgressProps {
   /**
@@ -52,4 +52,4 @@ export interface Next13ProgressProps {
   style?: string;
 }
 
-export { ProgressBar, useRouter } from './AppProgressBar';
+export { ProgressBar, useRouter } from "./AppProgressBar";

@@ -89,7 +89,9 @@ export const SocialPostMenu = ({ socialPost }: { socialPost: SocialPost }) => {
                     e.preventDefault();
                     openModal("ConfirmModal", {
                       title: hasMuted ? "Unmute" : "Mute",
+                      destructive: !hasMuted,
                       description: `Are you sure you want to ${hasMuted ? "unmute" : "mute"} this channel?`,
+                      actionTitle: hasMuted ? "Unmute" : "Mute",
                       onConfirm: () => {
                         if (hasMuted) {
                           unmuteUser.mutate({

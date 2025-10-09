@@ -20,7 +20,7 @@ export const ChannelMenu = () => {
   const [open, setOpen] = useState(false);
   const { openModal } = useModals();
   const hasMuted = useIsChannelMuted(channelId);
-  const isSubscribed = useIsSubscribed(channelId);
+  const [isSubscribed] = useIsSubscribed(channelId);
   const muteUser = useMuteChannel();
   const unmuteUser = useUnmuteChannel();
   const unsubscribe = useUnsubscribeFromChannel();
@@ -51,15 +51,17 @@ export const ChannelMenu = () => {
               e.preventDefault();
               openModal("ConfirmModal", {
                 title: hasMuted ? "Unmute" : "Mute",
+                destructive: !hasMuted,
                 description: `Are you sure you want to ${hasMuted ? "unmute" : "mute"} this channel?`,
+                actionTitle: hasMuted ? "Unmute" : "Mute",
                 onConfirm: () => {
                   if (hasMuted) {
                     unmuteUser.mutate({
-                      userId: channelId,
+                      userId: channelId!,
                     });
                   } else {
                     muteUser.mutate({
-                      userId: channelId,
+                      userId: channelId!,
                     });
                   }
                 },
@@ -78,6 +80,10 @@ export const ChannelMenu = () => {
                   destructive: true,
                   description: `Are you sure you want to unsubscribe from this channel?`,
                   onConfirm: () => {
+                    if (!channelId) {
+                      return;
+                    }
+
                     unsubscribe.mutate({
                       channelId,
                     });

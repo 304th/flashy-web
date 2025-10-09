@@ -23,10 +23,10 @@ import {
   ImageViewerModal,
   ImageViewerModalProps,
 } from "@/features/common/components/image-viewer-modal/image-viewer-modal";
-import {
-  MagicLinkVerificationModal,
-  MagicLinkVerificationModalProps,
-} from "@/features/auth/components/magic-link-verification-modal/magic-link-verification-modal";
+// import {
+//   MagicLinkVerificationModal,
+//   MagicLinkVerificationModalProps,
+// } from "@/features/auth/components/magic-link-verification-modal/magic-link-verification-modal";
 import {
   ShareModal,
   ShareModalProps,
@@ -47,7 +47,7 @@ const modalsConfig = {
   PostCommentsModal,
   ConfirmModal,
   ImageViewerModal,
-  MagicLinkVerificationModal,
+  // MagicLinkVerificationModal,
   ShareModal,
   SocialCreateModal,
   BuyKeyModal,
@@ -75,10 +75,10 @@ export type ModalPropsTypes =
       type: "ImageViewerModal";
       props: ImageViewerModalProps;
     }
-  | {
-      type: "MagicLinkVerificationModal";
-      props: MagicLinkVerificationModalProps;
-    }
+  // | {
+  //     type: "MagicLinkVerificationModal";
+  //     props: MagicLinkVerificationModalProps;
+  //   }
   | {
       type: "ShareModal";
       props: ShareModalProps;

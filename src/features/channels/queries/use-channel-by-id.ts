@@ -5,7 +5,7 @@ export interface ChannelEntityParams {
   id: string;
 }
 
-const channelEntity = createEntity<User, ChannelEntityParams>({
+export const channelEntity = createEntity<User, ChannelEntityParams>({
   sourceFrom: async (params) => {
     return await api.get(`users/getProfile/${params!.id}`).json();
   },

@@ -15,12 +15,7 @@ export const MostLikedPosts = () => {
           <p className="text-sm text-base-800">Top 3 Posts</p>
           <div className="flex flex-col gap-3 divide-y">
             {mostLikedPosts.map((socialPost) => (
-              <Link
-                key={socialPost._id}
-                href={`/social/post?id=${socialPost._id}`}
-              >
-                <MiniSocialPost socialPost={socialPost} />
-              </Link>
+              <MiniSocialPost socialPost={socialPost} />
             ))}
           </div>
         </motion.div>

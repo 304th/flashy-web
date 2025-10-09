@@ -22,6 +22,10 @@ export const UserProfile = ({
 }: PropsWithChildren<UserProfileProps>) => {
   const { data: me } = useMe();
 
+  if (!me) {
+    return null;
+  }
+
   if (isLinkable) {
     return (
       <Link

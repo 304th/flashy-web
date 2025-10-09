@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Modal as ModalComponent } from "@/packages/modals";
 import { LoginForm } from "@/features/auth/components/login/login-form";
 import { CloseButton } from "@/components/ui/close-button";
 import { SocialAuth } from "@/features/auth/components/login/social-auth";
 import { ForgotPasswordForm } from "@/features/auth/components/login/forgot-password-form";
+import { useMe } from "@/features/auth/queries/use-me";
 import { defaultVariants } from "@/lib/framer";
 
 export interface LoginModalProps {
@@ -13,6 +14,13 @@ export interface LoginModalProps {
 
 export const LoginModal = ({ onClose, ...props }: LoginModalProps) => {
   const [forgotPassword, setForgotPassword] = useState(false);
+  const { query } = useMe();
+
+  useEffect(() => {
+    if (query.isSuccess) {
+      onClose();
+    }
+  }, [query.isSuccess]);
 
   return (
     <Modal onClose={onClose} className="!p-0 border-0" {...props}>

@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { AccountDropdown } from "@/features/auth/components/account-login/account-dropdown";
 import { defaultVariants } from "@/lib/framer";
 import { CreateDropdown } from "@/features/auth/components/account-login/create-dropdown";
+import {BalanceButton} from "@/features/wallet/components/balance-button";
+import React from "react";
 
 export const LoggedIn = () => {
   return (
@@ -14,6 +16,9 @@ export const LoggedIn = () => {
         animate="show"
         variants={defaultVariants.container}
       >
+        <motion.div variants={defaultVariants.child}>
+          <BalanceButton />
+        </motion.div>
         <motion.div variants={defaultVariants.child}>
           <CreateDropdown />
         </motion.div>

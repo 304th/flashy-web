@@ -6,11 +6,12 @@ import { Button } from "@/components/ui/button";
 import { Loadable } from "@/components/ui/loadable";
 import { KeyLockIcon } from "@/components/ui/icons/key-lock";
 import { HelpIcon } from "@/components/ui/icons/help";
-import { UserProfile } from "@/components/ui/user-profile";
-import { useKeyPrice } from "@/features/keys/queries/useKeyPrice";
 import { KeyIcon } from "@/components/ui/icons/key";
 import { BlazeIcon } from "@/components/ui/icons/blaze";
 import { AlertIcon } from "@/components/ui/icons/alert";
+import { UserProfile } from "@/components/ui/user-profile";
+import { useKeyPrice } from "@/features/keys/queries/useKeyPrice";
+
 
 export interface BuyKeyModalProps {
   user: User;
@@ -29,6 +30,7 @@ export const BuyKeyModal = ({ user, onClose, ...props }: BuyKeyModalProps) => {
       >
         <div className="flex flex-col items-center gap-4">
           <div className="flex w-full p-4">
+
             <div className="absolute right-2 top-2" onClick={onClose}>
               <CloseButton />
             </div>

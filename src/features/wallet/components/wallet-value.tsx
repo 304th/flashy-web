@@ -19,37 +19,31 @@ export const WalletValue = () => {
       <p>Wallet Value</p>
       <p>USD</p>
       <p className="inline-flex justify-end">Price</p>
-      <div className="flex items-center gap-2 h-10">
-        <Loadable queries={[balanceQuery, meQuery]}>
-          {() => (
-            <>
+      <Loadable queries={[balanceQuery, meQuery]}>
+        {() => (
+          <>
+            <div className="flex items-center gap-2 h-10">
               <BlazeBigIcon />
               <p className="text-4xl text-white font-bold">
                 <BalanceValue balance={balance?.blaze || "0.0"} />
               </p>
-            </>
-          )}
-        </Loadable>
-      </div>
-      <div className="flex items-center gap-2 h-10">
-        <p className="text-xl text-white font-bold">
-          <Loadable queries={[balanceQuery, meQuery]}>
-            {() => <BalanceValue balance={blazeInUsd || "0.0"} prefix="$" />}
-          </Loadable>
-        </p>
-      </div>
-      <div className="flex items-center gap-2 justify-end h-10">
-        <Loadable queries={[balanceQuery, meQuery]}>
-          {() => (
-            <p
-              className={`text-xl text-white font-bold
+            </div>
+            <div className="flex items-center gap-2 h-10">
+              <p className="text-xl text-white font-bold">
+                <BalanceValue balance={blazeInUsd || "0.0"} prefix="$" />
+              </p>
+            </div>
+            <div className="flex items-center gap-2 justify-end h-10">
+              <p
+                className={`text-xl text-white font-bold
               ${blazePriceTrend === "increase" ? "!text-green-500" : blazePriceTrend === "decrease" ? "!text-red-500" : "!text-base-800"}`}
-            >
-              ${latestPrice}
-            </p>
-          )}
-        </Loadable>
-      </div>
+              >
+                ${latestPrice}
+              </p>
+            </div>
+          </>
+        )}
+      </Loadable>
     </div>
   );
 };

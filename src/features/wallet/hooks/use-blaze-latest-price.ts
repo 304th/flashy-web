@@ -3,5 +3,5 @@ import { useBlazeExchangeRates } from "@/features/wallet/queries/use-blaze-excha
 export const useBlazeLatestPrice = () => {
   const [exchangeRates] = useBlazeExchangeRates();
 
-  return exchangeRates?.rate?.price;
+  return exchangeRates?.rate?.price.toFixed(8);
 };

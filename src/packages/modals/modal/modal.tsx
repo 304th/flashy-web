@@ -5,7 +5,6 @@ import {
   PropsWithChildren,
   ReactNode,
   useLayoutEffect,
-  useEffect,
 } from "react";
 import { useOutsideAction } from "@/hooks/use-outside-action";
 

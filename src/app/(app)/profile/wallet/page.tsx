@@ -1,6 +1,6 @@
 "use client";
 
-import {WalletValue} from "@/features/wallet/components/wallet-value";
+import { WalletValue } from "@/features/wallet/components/wallet-value";
 
 export default function ProfileSocialPage() {
   return (

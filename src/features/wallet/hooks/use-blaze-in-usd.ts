@@ -9,4 +9,4 @@ export const useBlazeInUsd = (blaze?: string) => {
       return (Number(blaze) * exchangeRates?.rate.price).toString();
     }
   }, [blaze, exchangeRates?.rate]);
-}
+};

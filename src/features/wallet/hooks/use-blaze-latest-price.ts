@@ -4,4 +4,4 @@ export const useBlazeLatestPrice = () => {
   const [exchangeRates] = useBlazeExchangeRates();
 
   return exchangeRates?.rate?.price;
-}
+};

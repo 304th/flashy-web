@@ -200,6 +200,11 @@ declare global {
     videos: string[];
   }
 
+  interface BlazeBalance {
+    blaze: string;
+    allowance: string;
+  }
+
   interface Key {
     user: string;
     boughtBy: string;

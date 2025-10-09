@@ -53,8 +53,8 @@ const ChannelLayoutComponent = ({ children }: PropsWithChildren<{}>) => {
   const pathname = usePathname();
   const channelId = useQueryParams("id");
   const { data: me } = useMe();
-  const tabName = getTabNameFromPathname(pathname);
   const { data: channel, query: channelQuery } = useChannelById(channelId);
+  const tabName = getTabNameFromPathname(pathname);
 
   useEffect(() => {
     if (me?.fbId === channelId) {

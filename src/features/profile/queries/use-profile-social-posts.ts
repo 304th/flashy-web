@@ -25,7 +25,7 @@ const profilePostsCollection = createCollection<
 });
 
 export const useProfileSocialPosts = () => {
-  const authed = useAuthed();
+  const authed = useAuthed(); //FIXME: replace with useMe
 
   return usePartitionedQuery<SocialPost, { pageParam: number }>({
     queryKey: ["me", authed.user?.uid, "social"],

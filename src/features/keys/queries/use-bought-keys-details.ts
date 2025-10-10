@@ -1,4 +1,4 @@
-import {useLiveQuery} from "@/lib/query-toolkit-v2";
+import { useLiveQuery } from "@/lib/query-toolkit-v2";
 import { useAuthed } from "@/features/auth/hooks/use-authed";
 import { boughtKeysDetailsEntity } from "@/features/keys/entities/bought-keys-details.entity";
 

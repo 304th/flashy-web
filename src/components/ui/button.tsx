@@ -30,6 +30,10 @@ const buttonVariants = cva(
         xl: "h-12 rounded-md px-5 has-[>svg]:px-5",
         icon: "size-9",
       },
+      mode: {
+        default: "",
+        stroke: "bg-transparent hover:border-transparent",
+      },
       pending: {
         true: "skeleton border-base-600 pointer-events-none",
       },
@@ -45,6 +49,7 @@ function Button({
   className,
   variant,
   size,
+  mode,
   asChild = false,
   pending,
   children,
@@ -59,7 +64,7 @@ function Button({
   return (
     <Comp
       data-slot="button"
-      className={cn(buttonVariants({ variant, size, pending, className }))}
+      className={cn(buttonVariants({ variant, size, mode, pending, className }))}
       {...props}
     >
       {pending ? <Spinner /> : children}

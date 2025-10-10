@@ -12,9 +12,9 @@ export interface BuyKeyParams {
 
 const buyKeyMutation = createMutation<BuyKeyParams>({
   write: async (params) => {
-    return api.post(`keys/buy/${params.channelId}?buyToken=${params.buyToken}`)
-  }
-})
+    return api.post(`keys/buy/${params.channelId}?buyToken=${params.buyToken}`);
+  },
+});
 
 export const useBuyKey = () => {
   const queryClient = useQueryClient();
@@ -22,14 +22,25 @@ export const useBuyKey = () => {
 
   return useOptimisticMutation({
     mutation: buyKeyMutation,
-    onSuccess: (_, channel , params) => {
-      void queryClient.invalidateQueries({ queryKey: ["me", "wallet", "balance"] });
-      void queryClient.invalidateQueries({ queryKey: ["social", me?.fbId], refetchType: 'all' });
-      void queryClient.invalidateQueries({ queryKey: ["channel", params.channelId], refetchType: 'all' });
-      void queryClient.invalidateQueries({ queryKey: ["keys", params.channelId, "price"], refetchType: 'all' });
+    onSuccess: (_, channel, params) => {
+      void queryClient.invalidateQueries({
+        queryKey: ["me", "wallet", "balance"],
+      });
+      void queryClient.invalidateQueries({
+        queryKey: ["social", me?.fbId],
+        refetchType: "all",
+      });
+      void queryClient.invalidateQueries({
+        queryKey: ["channel", params.channelId],
+        refetchType: "all",
+      });
+      void queryClient.invalidateQueries({
+        queryKey: ["keys", params.channelId, "price"],
+        refetchType: "all",
+      });
       void channel(boughtKeysEntity).update((boughtKeys) => {
         boughtKeys.push(params.channelId);
       });
     },
-  })
-}
+  });
+};

@@ -20,7 +20,7 @@ export interface ImageUploadProps {
 
 export const ImageUpload = ({
   accept = "image/jpeg,image/png,image/jpg,image/gif",
-  maxAllowedSize = config.content.uploads.maxSize,
+  maxAllowedSize = config.content.uploads.image.maxSize,
   title,
   description,
   initialPreview,
@@ -83,7 +83,7 @@ export const ImageUpload = ({
         {description && (
           <div className="text-paragraph-xs text-white">{description}</div>
         )}
-        <p className="text-xs text-white">Up to {formattedSizeLimit}</p>
+        <p className="text-xs">Up to {formattedSizeLimit}</p>
       </div>
       {withBrowseButton && (
         <FileUpload.Button className="relative z-2 text-white">

@@ -7,12 +7,7 @@ export const CreateSocialIcon = () => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <rect
-      width="50"
-      height="50"
-      rx="25"
-      fill="url(#pattern1)"
-    />
+    <rect width="50" height="50" rx="25" fill="url(#pattern1)" />
     <defs>
       <pattern
         id="pattern1"
@@ -33,4 +28,4 @@ export const CreateSocialIcon = () => (
       />
     </defs>
   </svg>
-)
+);

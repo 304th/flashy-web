@@ -40,6 +40,7 @@ import {
   ProfileSettingsModal,
   ProfileSettingsModalProps,
 } from "@/features/profile/components/profile-settings-modal/profile-settings-modal";
+import { VideoCreateModal, VideoCreateModalProps } from "@/features/video/components/video-create-modal/video-create-modal";
 
 const modalsConfig = {
   LoginModal,
@@ -52,6 +53,7 @@ const modalsConfig = {
   BuyKeyModal,
   ProfileSettingsModal,
   SellKeyModal,
+  VideoCreateModal,
 };
 
 export type ModalPropsTypes =
@@ -92,8 +94,12 @@ export type ModalPropsTypes =
       props: ProfileSettingsModalProps;
     }
   | {
-    type: "SellKeyModal";
-    props: SellKeyModalProps;
+      type: "SellKeyModal";
+      props: SellKeyModalProps;
+    }
+  | {
+    type: "VideoCreateModal";
+    props: VideoCreateModalProps;
   };
 
 export const ModalsProvider = ({ children }: PropsWithChildren<object>) => (

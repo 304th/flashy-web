@@ -98,7 +98,6 @@ export const PostOptions = forwardRef((_, ref) => {
         >
           <PollIcon />
         </IconButton>
-
         <IconButton
           type="button"
           className={`hover:bg-[#ab05a0]

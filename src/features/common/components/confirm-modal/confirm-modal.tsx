@@ -37,7 +37,9 @@ export const ConfirmModal = ({
           </div>
           <div className="flex flex-col w-full justify-center">
             <p className="text-2xl font-extrabold text-white">{title}</p>
-            {description && <p dangerouslySetInnerHTML={{ __html: description }} />}
+            {description && (
+              <p dangerouslySetInnerHTML={{ __html: description }} />
+            )}
           </div>
         </div>
         <div className="flex w-full justify-end gap-2">

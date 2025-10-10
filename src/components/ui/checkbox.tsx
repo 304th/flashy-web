@@ -51,9 +51,10 @@ export const Checkbox = React.forwardRef<
       ref={forwardedRef}
       checked={checked}
       className={cn(
-        "group/checkbox relative flex size-5 shrink-0 items-center justify-center outline-none",
+        `group/checkbox relative flex size-5 shrink-0 items-center
+        justify-center outline-none`,
         "focus:outline-none",
-        className
+        className,
       )}
       {...rest}
     >
@@ -89,7 +90,7 @@ export const Checkbox = React.forwardRef<
             "group-data-[state=indeterminate]/checkbox:fill-primary-base",
             // disabled checked
             "group-disabled/checkbox:group-data-[state=checked]/checkbox:fill-bg-soft-200",
-            "group-disabled/checkbox:group-data-[state=indeterminate]/checkbox:fill-bg-soft-200"
+            "group-disabled/checkbox:group-data-[state=indeterminate]/checkbox:fill-bg-soft-200",
           )}
         />
         <g filter={`url(#${filterId})`}>
@@ -105,7 +106,7 @@ export const Checkbox = React.forwardRef<
               "group-disabled/checkbox:hidden",
               // checked
               "group-data-[state=checked]/checkbox:opacity-0",
-              "group-data-[state=indeterminate]/checkbox:opacity-0"
+              "group-data-[state=indeterminate]/checkbox:opacity-0",
             )}
           />
         </g>
@@ -148,17 +149,20 @@ export const Checkbox = React.forwardRef<
       </svg>
       <CheckboxPrimitive.Indicator
         forceMount
-        className="[&_path]:transition-all [&_path]:duration-300 [&_path]:ease-out [&_svg]:opacity-0"
+        className="[&_path]:transition-all [&_path]:duration-300
+          [&_path]:ease-out [&_svg]:opacity-0"
       >
         <IconCheck
           className={cn(
-            "absolute left-1/2 top-1/2 shrink-0 -translate-x-1/2 -translate-y-1/2",
+            `absolute left-1/2 top-1/2 shrink-0 -translate-x-1/2
+            -translate-y-1/2`,
             // checked
             "group-data-[state=checked]/checkbox:opacity-100",
             "group-data-[state=checked]/checkbox:[&>path]:[stroke-dashoffset:0]",
             // path
-            "[&>path]:[stroke-dasharray:var(--total-length)] [&>path]:[stroke-dashoffset:var(--total-length)]",
-            "group-data-[state=indeterminate]/checkbox:invisible"
+            `[&>path]:[stroke-dasharray:var(--total-length)]
+            [&>path]:[stroke-dashoffset:var(--total-length)]`,
+            "group-data-[state=indeterminate]/checkbox:invisible",
           )}
           style={{
             ["--total-length" as any]: TOTAL_LENGTH_CHECK,
@@ -166,13 +170,15 @@ export const Checkbox = React.forwardRef<
         />
         <IconIndeterminate
           className={cn(
-            "absolute left-1/2 top-1/2 shrink-0 -translate-x-1/2 -translate-y-1/2",
+            `absolute left-1/2 top-1/2 shrink-0 -translate-x-1/2
+            -translate-y-1/2`,
             // indeterminate
             "group-data-[state=indeterminate]/checkbox:opacity-100",
             "group-data-[state=indeterminate]/checkbox:[&>path]:[stroke-dashoffset:0]",
             // path
-            "[&>path]:[stroke-dasharray:var(--total-length)] [&>path]:[stroke-dashoffset:var(--total-length)]",
-            "invisible group-data-[state=indeterminate]/checkbox:visible"
+            `[&>path]:[stroke-dasharray:var(--total-length)]
+            [&>path]:[stroke-dashoffset:var(--total-length)]`,
+            "invisible group-data-[state=indeterminate]/checkbox:visible",
           )}
           style={{
             ["--total-length" as any]: TOTAL_LENGTH_INDETERMINATE,

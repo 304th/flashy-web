@@ -13,7 +13,7 @@ export const ChannelSubscribeButton = () => {
   const hasBoughtKey = useHasBoughtKey(channelId);
 
   if (hasBoughtKey) {
-    return <ChannelSellKeyButton />
+    return <ChannelSellKeyButton />;
   }
 
   if (isSubscribed) {

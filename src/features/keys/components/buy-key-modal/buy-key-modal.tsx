@@ -70,41 +70,43 @@ export const BuyKeyModal = ({ user, onClose, ...props }: BuyKeyModalProps) => {
           </div>
         </div>
         <div className="flex w-full justify-between gap-2 p-4 text-base-700">
-          {
-            hasEnoughBalance ? (
-              <div className="flex items-center gap-1 text-base-700">
-                <AlertIcon />
-                <p className="text-xs">
-                  a 10% fee will taken on top of the key price
-                </p>
-              </div>
-            ) : (
-              <div className="flex items-center gap-1 text-red-500">
-                <AlertIcon />
-                <p className="text-xs">
-                  Not enough balance available.
-                </p>
-              </div>
-            )
-          }
+          {hasEnoughBalance ? (
+            <div className="flex items-center gap-1 text-base-700">
+              <AlertIcon />
+              <p className="text-xs">
+                a 10% fee will taken on top of the key price
+              </p>
+            </div>
+          ) : (
+            <div className="flex items-center gap-1 text-red-500">
+              <AlertIcon />
+              <p className="text-xs">Not enough balance available.</p>
+            </div>
+          )}
           <Button
             disabled={!hasEnoughBalance}
             pending={buyKey.isPending}
             onClick={() => {
-              openModal('ConfirmModal', {
-                title: "Confirm Purchase",
-                description: `Are you ready to buy this key for <span style="color: white;font-weight:bold">$${keyPrice?.buy?.toFixed(2)}</span>?`,
-                actionTitle: "Buy",
-                onConfirm: () => {
-                  buyKey.mutate({
-                    channelId: user?.fbId,
-                    buyToken: 'usdc',
-                  }, {
-                    onSuccess: onClose,
-                  })
+              openModal(
+                "ConfirmModal",
+                {
+                  title: "Confirm Purchase",
+                  description: `Are you ready to buy this key for <span style="color: white;font-weight:bold">$${keyPrice?.buy?.toFixed(2)}</span>?`,
+                  actionTitle: "Buy",
+                  onConfirm: () => {
+                    buyKey.mutate(
+                      {
+                        channelId: user?.fbId,
+                        buyToken: "usdc",
+                      },
+                      {
+                        onSuccess: onClose,
+                      },
+                    );
+                  },
                 },
-              },
-              { subModal: true })
+                { subModal: true },
+              );
             }}
             className="w-[120px]"
           >

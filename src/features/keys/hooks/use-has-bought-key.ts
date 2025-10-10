@@ -9,4 +9,4 @@ export const useHasBoughtKey = (channelId?: string) => {
 
     return boughtKeys.includes(channelId);
   }, [boughtKeys, channelId]);
-}
+};

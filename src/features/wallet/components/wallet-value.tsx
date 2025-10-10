@@ -36,7 +36,7 @@ export const WalletValue = () => {
             <div className="flex items-center gap-2 justify-end h-10">
               <p
                 className={`text-xl text-white font-bold
-              ${blazePriceTrend === "increase" ? "!text-green-500" : blazePriceTrend === "decrease" ? "!text-red-500" : "!text-base-800"}`}
+                ${blazePriceTrend === "increase" ? "!text-green-500" : blazePriceTrend === "decrease" ? "!text-red-500" : "!text-base-800"}`}
               >
                 ${latestPrice}
               </p>

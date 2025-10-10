@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  useRef,
-  PropsWithChildren,
-  ReactNode,
-  useLayoutEffect,
-} from "react";
+import { useRef, PropsWithChildren, ReactNode, useLayoutEffect } from "react";
 import { useOutsideAction } from "@/hooks/use-outside-action";
 
 export interface ModalProps {

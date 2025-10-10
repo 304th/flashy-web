@@ -10,5 +10,5 @@ export const useHasEnoughBalance = (price?: string | number) => {
     }
 
     return Number(balance.blaze) >= Number(price);
-  }, [balance?.blaze, price])
-}
+  }, [balance?.blaze, price]);
+};

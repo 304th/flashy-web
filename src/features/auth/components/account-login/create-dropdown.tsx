@@ -6,10 +6,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+import { CreateVideoIcon } from "@/components/ui/icons/create-video";
+import { CreateSocialIcon } from "@/components/ui/icons/create-social";
 import { useModals } from "@/hooks/use-modals";
 import { brightenColor } from "@/lib/css";
-import {CreateVideoIcon} from "@/components/ui/icons/create-video";
-import {CreateSocialIcon} from "@/components/ui/icons/create-social";
 
 export const CreateDropdown = () => {
   const [open, setOpen] = useState(false);
@@ -38,12 +38,15 @@ export const CreateDropdown = () => {
                 <p className="text-white font-bold">Create</p>
               </div>
               <div className="flex flex-col w-full">
-                {/*<CreateOption*/}
-                {/*  key="video"*/}
-                {/*  label="Video"*/}
-                {/*  color="#08331a"*/}
-                {/*  icon={<CreateVideoIcon />}*/}
-                {/*/>*/}
+                <CreateOption
+                  key="video"
+                  label="Video"
+                  color="#08331a"
+                  icon={<CreateVideoIcon />}
+                  onClick={() => {
+                    openModal('VideoCreateModal');
+                  }}
+                />
                 <CreateOption
                   key="social"
                   label="Social"

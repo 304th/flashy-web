@@ -16,7 +16,7 @@ const RadioGroupItem = React.forwardRef<
       ref={forwardedRef}
       className={cn(
         "group/radio relative size-5 shrink-0 outline-none focus:outline-none",
-        className
+        className,
       )}
       {...rest}
     >
@@ -43,7 +43,7 @@ const RadioGroupItem = React.forwardRef<
             // disabled
             "group-disabled/radio:fill-bg-soft-200",
             // disabled chcked
-            "group-data-[state=checked]/radio:fill-bg-white-0"
+            "group-data-[state=checked]/radio:fill-bg-white-0",
           )}
         />
         <g filter={`url(#${filterId})`}>
@@ -54,7 +54,7 @@ const RadioGroupItem = React.forwardRef<
             className={cn(
               "fill-bg-white-0",
               // disabled
-              "group-disabled/radio:hidden"
+              "group-disabled/radio:hidden",
             )}
           />
         </g>
@@ -103,7 +103,8 @@ const RadioGroupItem = React.forwardRef<
           viewBox="0 0 20 20"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+          className="absolute left-1/2 top-1/2 -translate-x-1/2
+            -translate-y-1/2"
         >
           <circle
             cx="10"
@@ -117,7 +118,7 @@ const RadioGroupItem = React.forwardRef<
               // focus
               "group-focus/radio:stroke-primary-dark",
               // disabled
-              "group-disabled/radio:stroke-bg-soft-200"
+              "group-disabled/radio:stroke-bg-soft-200",
             )}
           />
         </svg>

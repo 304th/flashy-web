@@ -13,13 +13,16 @@ import { useModals } from "@/hooks/use-modals";
 import { useKeyPrice } from "@/features/keys/queries/use-key-price";
 import { useSellKey } from "@/features/keys/mutations/use-sell-key";
 
-
 export interface SellKeyModalProps {
   user: User;
   onClose(): void;
 }
 
-export const SellKeyModal = ({ user, onClose, ...props }: SellKeyModalProps) => {
+export const SellKeyModal = ({
+  user,
+  onClose,
+  ...props
+}: SellKeyModalProps) => {
   const { openModal } = useModals();
   const { data: keyPrice, query: keyPriceQuery } = useKeyPrice(user.fbId);
   const sellKey = useSellKey();
@@ -61,21 +64,27 @@ export const SellKeyModal = ({ user, onClose, ...props }: SellKeyModalProps) => 
             pending={sellKey.isPending}
             variant="destructive"
             onClick={() => {
-              openModal('ConfirmModal', {
+              openModal(
+                "ConfirmModal",
+                {
                   title: "Confirm Purchase",
                   description: `Are you sure you want to sell this key for <span style="color: white;font-weight:bold">$${keyPrice?.sell?.toFixed(2)}</span>?`,
                   actionTitle: "Sell",
                   destructive: true,
                   onConfirm: () => {
-                    sellKey.mutate({
-                      channelId: user?.fbId,
-                      buyToken: 'usdc',
-                    }, {
-                      onSuccess: onClose,
-                    })
+                    sellKey.mutate(
+                      {
+                        channelId: user?.fbId,
+                        buyToken: "usdc",
+                      },
+                      {
+                        onSuccess: onClose,
+                      },
+                    );
                   },
                 },
-                { subModal: true })
+                { subModal: true },
+              );
             }}
             className="w-[120px]"
           >

@@ -7,7 +7,7 @@ import type {
   FieldValues,
 } from "react-hook-form";
 
-export const useSocialPostImagesAttach = <T extends FieldValues>({
+export const useVideoAttach = <T extends FieldValues>({
   fieldName = "images",
   maxSize = config.content.uploads.image.maxSize,
   setValue,

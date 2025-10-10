@@ -7,12 +7,7 @@ export const CreateVideoIcon = () => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <rect
-      width="50"
-      height="50"
-      rx="25"
-      fill="url(#pattern0)"
-    />
+    <rect width="50" height="50" rx="25" fill="url(#pattern0)" />
     <defs>
       <pattern
         id="pattern0"
@@ -33,4 +28,4 @@ export const CreateVideoIcon = () => (
       />
     </defs>
   </svg>
-)
+);

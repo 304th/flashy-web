@@ -23,8 +23,21 @@ const config = {
     comments: {
       maxLength: 500,
     },
+    videos: {
+      title: {
+        maxLength: 100,
+      },
+      description: {
+        maxLength: 2500,
+      }
+    },
     uploads: {
-      maxSize: 3 * 1024 * 1024, // 3 MB
+      image: {
+        maxSize: 3 * 1024 * 1024, // 3 MB
+      },
+      video: {
+        maxSize: 2 * 1024 * 1024 * 1024, // 2 GB
+      }
     },
   },
 } as const;

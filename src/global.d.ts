@@ -219,7 +219,7 @@ declare global {
     sellInBlaze: number;
   }
 
-  type WalletToken = 'blaze' | 'usdt' | 'usdc';
+  type WalletToken = "blaze" | "usdt" | "usdc";
 
   interface KeyDetails {
     _id: string;
@@ -230,6 +230,17 @@ declare global {
     boughtPrice: string;
     sellPrice: number;
     lastPrice: number | null;
+  }
+
+  interface VideoUploadOptions {
+    token: {
+      token: string;
+      ttl: number;
+      expiresAt: string | null;
+    },
+    video: {
+      videoId: string;
+    }
   }
 
   // Augment in your app to get typed channel names in query-toolkit-v2

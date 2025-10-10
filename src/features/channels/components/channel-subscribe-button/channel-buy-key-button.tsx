@@ -23,13 +23,13 @@ export const ChannelBuyKeyButton = () => {
           border-base-400 shadow-xs items-center gap-2 whitespace-nowrap w-1/2
           cursor-pointer"
         onClick={() => {
-          openModal('BuyKeyModal', {
+          openModal("BuyKeyModal", {
             user: {
               fbId: channel?.fbId,
               username: channel?.username,
               userimage: channel?.userimage,
             },
-          })
+          });
         }}
       >
         <KeyIcon />

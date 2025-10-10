@@ -5,21 +5,22 @@ import { useModals } from "@/hooks/use-modals";
 
 export const ChannelSellKeyButton = () => {
   const { openModal } = useModals();
-  const { channel } = useChannelContext()
+  const { channel } = useChannelContext();
 
   return (
     <Button
       size="lg"
-      className="w-full justify-between border-red-500 hover:border-red-500 hover:bg-base-300"
+      className="w-full justify-between border-red-500 hover:border-red-500
+        hover:bg-base-300"
       variant="secondary"
       onClick={() => {
-        openModal('SellKeyModal', {
+        openModal("SellKeyModal", {
           user: {
             fbId: channel?.fbId,
             username: channel?.username,
             userimage: channel?.userimage,
           },
-        })
+        });
       }}
     >
       <div className="scale-150">
@@ -27,5 +28,5 @@ export const ChannelSellKeyButton = () => {
       </div>
       Sell Key
     </Button>
-  )
+  );
 };

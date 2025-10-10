@@ -24,6 +24,7 @@ export default function ChannelSocialPage() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
+                    layout="position"
                     layoutId={`channel-post-${socialPost._optimisticId || socialPost.orderId}`}
                   >
                     <SocialPost socialPost={socialPost} isLinkable />

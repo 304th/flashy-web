@@ -23,10 +23,6 @@ import {
   ImageViewerModal,
   ImageViewerModalProps,
 } from "@/features/common/components/image-viewer-modal/image-viewer-modal";
-// import {
-//   MagicLinkVerificationModal,
-//   MagicLinkVerificationModalProps,
-// } from "@/features/auth/components/magic-link-verification-modal/magic-link-verification-modal";
 import {
   ShareModal,
   ShareModalProps,
@@ -36,6 +32,10 @@ import {
   BuyKeyModal,
   BuyKeyModalProps,
 } from "@/features/keys/components/buy-key-modal/buy-key-modal";
+import {
+  SellKeyModal,
+  SellKeyModalProps,
+} from "@/features/keys/components/sell-key-modal/sell-key-modal";
 import {
   ProfileSettingsModal,
   ProfileSettingsModalProps,
@@ -47,11 +47,11 @@ const modalsConfig = {
   PostCommentsModal,
   ConfirmModal,
   ImageViewerModal,
-  // MagicLinkVerificationModal,
   ShareModal,
   SocialCreateModal,
   BuyKeyModal,
   ProfileSettingsModal,
+  SellKeyModal,
 };
 
 export type ModalPropsTypes =
@@ -75,10 +75,6 @@ export type ModalPropsTypes =
       type: "ImageViewerModal";
       props: ImageViewerModalProps;
     }
-  // | {
-  //     type: "MagicLinkVerificationModal";
-  //     props: MagicLinkVerificationModalProps;
-  //   }
   | {
       type: "ShareModal";
       props: ShareModalProps;
@@ -94,7 +90,11 @@ export type ModalPropsTypes =
   | {
       type: "ProfileSettingsModal";
       props: ProfileSettingsModalProps;
-    };
+    }
+  | {
+    type: "SellKeyModal";
+    props: SellKeyModalProps;
+  };
 
 export const ModalsProvider = ({ children }: PropsWithChildren<object>) => (
   <ModalCenterProvider config={modalsConfig}>

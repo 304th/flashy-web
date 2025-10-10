@@ -2,10 +2,10 @@ import { motion } from "framer-motion";
 import { MessageCircle, BellIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AccountDropdown } from "@/features/auth/components/account-login/account-dropdown";
-import { defaultVariants } from "@/lib/framer";
 import { CreateDropdown } from "@/features/auth/components/account-login/create-dropdown";
-import {BalanceButton} from "@/features/wallet/components/balance-button";
-import React from "react";
+// import { BalanceButton } from "@/features/wallet/components/balance-button";
+import { BalanceButton } from "@/features/wallet/components/balance-button-v2";
+import { defaultVariants } from "@/lib/framer";
 
 export const LoggedIn = () => {
   return (
@@ -22,24 +22,24 @@ export const LoggedIn = () => {
         <motion.div variants={defaultVariants.child}>
           <CreateDropdown />
         </motion.div>
-        <motion.div variants={defaultVariants.child}>
-          <Button
-            className="!w-fit p-0 aspect-square"
-            size="sm"
-            variant="secondary"
-          >
-            <MessageCircle />
-          </Button>
-        </motion.div>
-        <motion.div variants={defaultVariants.child}>
-          <Button
-            className="!w-fit p-0 aspect-square"
-            size="sm"
-            variant="secondary"
-          >
-            <BellIcon />
-          </Button>
-        </motion.div>
+        {/*<motion.div variants={defaultVariants.child}>*/}
+        {/*  <Button*/}
+        {/*    className="!w-fit p-0 aspect-square"*/}
+        {/*    size="sm"*/}
+        {/*    variant="secondary"*/}
+        {/*  >*/}
+        {/*    <MessageCircle />*/}
+        {/*  </Button>*/}
+        {/*</motion.div>*/}
+        {/*<motion.div variants={defaultVariants.child}>*/}
+        {/*  <Button*/}
+        {/*    className="!w-fit p-0 aspect-square"*/}
+        {/*    size="sm"*/}
+        {/*    variant="secondary"*/}
+        {/*  >*/}
+        {/*    <BellIcon />*/}
+        {/*  </Button>*/}
+        {/*</motion.div>*/}
       </motion.div>
       <motion.div variants={defaultVariants.child}>
         <AccountDropdown />

@@ -21,7 +21,7 @@ export const useOptimisticMutation = <Params, Response>({
     params: Params,
   ) => Promise<OptTransaction[][] | OptTransaction[]>;
   onMutate?: (params: Params) => void;
-  onSuccess?: (data: Response) => void;
+  onSuccess?: (data: Response, ch: typeof channel, params: Params) => void;
   onError?: (error: Error) => void;
 }) => {
   return useMutation<
@@ -61,14 +61,14 @@ export const useOptimisticMutation = <Params, Response>({
 
       return { transactions };
     },
-    onSuccess: async (data, _, context) => {
+    onSuccess: async (data, params, context) => {
       context!.transactions.forEach((transaction) => {
         if ((transaction as any).sync) {
           (transaction as any).sync(data);
         }
       });
 
-      onSuccess?.(data);
+      onSuccess?.(data, channel, params);
     },
     onError: async (error, _, context) => {
       context!.transactions.forEach((transaction) => {

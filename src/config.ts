@@ -29,4 +29,12 @@ const config = {
   },
 } as const;
 
+export const env = {
+  IS_BROWSER: typeof window === "object",
+  IS_LOCAL:
+    typeof window === "object" &&
+    (window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1"),
+};
+
 export default config;

@@ -37,7 +37,7 @@ export const ConfirmModal = ({
           </div>
           <div className="flex flex-col w-full justify-center">
             <p className="text-2xl font-extrabold text-white">{title}</p>
-            {description && <p>{description}</p>}
+            {description && <p dangerouslySetInnerHTML={{ __html: description }} />}
           </div>
         </div>
         <div className="flex w-full justify-end gap-2">
@@ -69,6 +69,6 @@ const Modal = (props: any) => (
   <ModalComponent
     {...props}
     className={`max-sm:min-w-unset min-w-[500px] !bg-base-300 !rounded-md
-      max-sm:w-full overflow-hidden ${props.className}`}
+      max-sm:w-full shadow-2xl overflow-hidden ${props.className}`}
   />
 );

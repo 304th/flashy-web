@@ -34,7 +34,7 @@ export const useChannelSocialPosts = ({
     SocialPost,
     { channelId: string; pageParam: number }
   >({
-    queryKey: ["channels", channelId, "social"],
+    queryKey: ["channel", channelId, "social"],
     collection: channelPostsCollection,
     getParams: ({ pageParam }) => ({ pageParam, channelId: channelId! }),
     options: {

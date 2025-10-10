@@ -14,7 +14,7 @@ export const channelEntity = createEntity<User, ChannelEntityParams>({
 
 export const useChannelById = (id?: string) => {
   return useLiveEntity<User, ChannelEntityParams>({
-    queryKey: ["channels", id],
+    queryKey: ["channel", id],
     entity: channelEntity,
     getParams: () => ({ id: id! }),
     options: {

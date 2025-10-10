@@ -1,7 +1,7 @@
 import { Loadable } from "@/components/ui/loadable";
 import { BalanceValue } from "@/features/wallet/components/balance-value";
 import { BlazeBigIcon } from "@/components/ui/icons/blaze-big";
-import { useBlazeBalance } from "@/features/wallet/queries/use-blaze-balance";
+import { useWalletBalance } from "@/features/wallet/queries/use-wallet-balance";
 import { useBlazeInUsd } from "@/features/wallet/hooks/use-blaze-in-usd";
 import { useBlazePriceTrend } from "@/features/wallet/hooks/use-blaze-price-trend";
 import { useBlazeLatestPrice } from "@/features/wallet/hooks/use-blaze-latest-price";
@@ -9,7 +9,7 @@ import { useMe } from "@/features/auth/queries/use-me";
 
 export const WalletValue = () => {
   const { query: meQuery } = useMe();
-  const { data: balance, query: balanceQuery } = useBlazeBalance();
+  const { data: balance, query: balanceQuery } = useWalletBalance();
   const blazeInUsd = useBlazeInUsd(balance?.blaze);
   const latestPrice = useBlazeLatestPrice();
   const blazePriceTrend = useBlazePriceTrend();

@@ -1,9 +1,11 @@
 import { KeyIcon } from "@/components/ui/icons/key";
 import { CheckIcon } from "@/components/ui/icons/check";
+import { useModals } from "@/hooks/use-modals";
 import { useChannelContext } from "@/features/profile/components/channel-context/channel-context";
 
 export const ChannelBuyKeyButton = () => {
-  const { channelId } = useChannelContext();
+  const { channel } = useChannelContext();
+  const { openModal } = useModals();
 
   return (
     <div className="flex items-center w-full rounded-md">
@@ -20,6 +22,15 @@ export const ChannelBuyKeyButton = () => {
           bg-[linear-gradient(to_right,#7500E9,#FD0FAC)] text-white
           border-base-400 shadow-xs items-center gap-2 whitespace-nowrap w-1/2
           cursor-pointer"
+        onClick={() => {
+          openModal('BuyKeyModal', {
+            user: {
+              fbId: channel?.fbId,
+              username: channel?.username,
+              userimage: channel?.userimage,
+            },
+          })
+        }}
       >
         <KeyIcon />
         Buy Key

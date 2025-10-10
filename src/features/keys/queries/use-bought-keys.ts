@@ -1,13 +1,13 @@
-import { useLiveQuery } from "@/lib/query-toolkit-v2";
+import { useLiveEntity } from "@/lib/query-toolkit-v2";
 import { useAuthed } from "@/features/auth/hooks/use-authed";
-import { boughtKeysCollections } from "@/features/keys/collections/bought-keys";
+import { boughtKeysEntity } from "@/features/keys/entities/bought-keys.entity";
 
 export const useBoughtKeys = () => {
   const authed = useAuthed();
 
-  return useLiveQuery({
+  return useLiveEntity({
     queryKey: ["me", authed.user?.uid, "keys", "bought"],
-    collection: boughtKeysCollections,
+    entity: boughtKeysEntity,
     options: {
       enabled: Boolean(authed.user?.uid),
     },

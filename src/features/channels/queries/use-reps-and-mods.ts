@@ -8,7 +8,7 @@ export type RepsAndMods = Pick<
 
 export const useRepsAndMods = () =>
   getQuery<Record<string, RepsAndMods>>(
-    ["channels", "repsAndMods"],
+    ["channel", "repsAndMods"],
     async () => {
       const data = await api
         .get("users/moderatorsAndVerifiedAndMasters")

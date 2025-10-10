@@ -200,9 +200,10 @@ declare global {
     videos: string[];
   }
 
-  interface BlazeBalance {
+  interface WalletBalance {
     blaze: string;
-    allowance: string;
+    usdc: string;
+    usdt: string;
   }
 
   interface Key {
@@ -216,6 +217,19 @@ declare global {
     buyInBlaze: number;
     sell: number;
     sellInBlaze: number;
+  }
+
+  type WalletToken = 'blaze' | 'usdt' | 'usdc';
+
+  interface KeyDetails {
+    _id: string;
+    user: User | null;
+    boughtBy: string;
+    holders: number;
+    buyPrice: number;
+    boughtPrice: string;
+    sellPrice: number;
+    lastPrice: number | null;
   }
 
   // Augment in your app to get typed channel names in query-toolkit-v2

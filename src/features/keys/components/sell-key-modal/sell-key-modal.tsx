@@ -1,0 +1,96 @@
+import React from "react";
+import { motion } from "framer-motion";
+import { Modal as ModalComponent } from "@/packages/modals";
+import { CloseButton } from "@/components/ui/close-button";
+import { Button } from "@/components/ui/button";
+import { Loadable } from "@/components/ui/loadable";
+import { KeyLockIcon } from "@/components/ui/icons/key-lock";
+import { HelpIcon } from "@/components/ui/icons/help";
+import { KeyIcon } from "@/components/ui/icons/key";
+import { UsdcIcon } from "@/components/ui/icons/usdc";
+import { UserProfile } from "@/components/ui/user-profile";
+import { useModals } from "@/hooks/use-modals";
+import { useKeyPrice } from "@/features/keys/queries/use-key-price";
+import { useSellKey } from "@/features/keys/mutations/use-sell-key";
+
+
+export interface SellKeyModalProps {
+  user: User;
+  onClose(): void;
+}
+
+export const SellKeyModal = ({ user, onClose, ...props }: SellKeyModalProps) => {
+  const { openModal } = useModals();
+  const { data: keyPrice, query: keyPriceQuery } = useKeyPrice(user.fbId);
+  const sellKey = useSellKey();
+
+  return (
+    <Modal onClose={onClose} className={"!p-0"} {...props}>
+      <motion.div
+        initial="hidden"
+        animate="show"
+        className="relative flex flex-col items-center rounded-md"
+      >
+        <div className="flex flex-col items-center w-full">
+          <div className="flex w-full p-4">
+            <div className="absolute right-2 top-2" onClick={onClose}>
+              <CloseButton />
+            </div>
+            <div className="flex flex-col w-full justify-center">
+              <p className="text-2xl font-extrabold text-white">Sell Key</p>
+            </div>
+          </div>
+          <div className="flex w-full gap-2 justify-between border-y p-2">
+            <UserProfile user={user} />
+            <div className="flex items-center gap-3 text-white">
+              <KeyIcon />
+              <p className="text-base-800">=</p>
+              <Loadable queries={[keyPriceQuery]}>
+                {() => (
+                  <div className="flex items-center gap-1">
+                    {keyPrice?.buy.toFixed(2)}
+                    <UsdcIcon />
+                  </div>
+                )}
+              </Loadable>
+            </div>
+          </div>
+        </div>
+        <div className="flex w-full justify-end gap-2 p-4 text-base-700">
+          <Button
+            pending={sellKey.isPending}
+            variant="destructive"
+            onClick={() => {
+              openModal('ConfirmModal', {
+                  title: "Confirm Purchase",
+                  description: `Are you sure you want to sell this key for <span style="color: white;font-weight:bold">$${keyPrice?.sell?.toFixed(2)}</span>?`,
+                  actionTitle: "Sell",
+                  destructive: true,
+                  onConfirm: () => {
+                    sellKey.mutate({
+                      channelId: user?.fbId,
+                      buyToken: 'usdc',
+                    }, {
+                      onSuccess: onClose,
+                    })
+                  },
+                },
+                { subModal: true })
+            }}
+            className="w-[120px]"
+          >
+            Sell
+          </Button>
+        </div>
+      </motion.div>
+    </Modal>
+  );
+};
+
+const Modal = (props: any) => (
+  <ModalComponent
+    {...props}
+    className={`max-sm:min-w-unset min-w-[550px] !bg-base-300 border-none
+      !rounded-md max-max-sm:w-full overflow-hidden ${props.className}`}
+  />
+);

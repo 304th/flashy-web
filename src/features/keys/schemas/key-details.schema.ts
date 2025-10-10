@@ -10,6 +10,8 @@ class KeyDetailsSchema implements StaticSchema<KeyDetails> {
       _id: nanoid(),
       holders: 0,
       user: null,
+      boughtBy: '',
+      boughtPrice: '',
       buyPrice: 0,
       sellPrice: 0,
       lastPrice: null,

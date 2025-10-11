@@ -17,7 +17,7 @@ export const InfiniteFeed = <TData, TError>({ query, children }: PropsWithChildr
       <Spinner />
     </div>}
     {!hasNextPage && !isFetchingNextPage && (data as any)?.length > 0 && <div className="flex w-full justify-center">
-      <p className="text-sm">You've reached the end of the feed!</p>
+      <p className="text-sm text-base-600">You've reached the end of your feed!</p>
     </div>}
   </>
 }

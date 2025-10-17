@@ -126,6 +126,7 @@ export const VideoUpload = ({
           <IconButton
             type="button"
             variant="destructive"
+            disabled={uploading}
             onClick={(e) => {
               e.preventDefault();
               if (preview && preview.startsWith("blob:")) {
@@ -139,7 +140,6 @@ export const VideoUpload = ({
           </IconButton>
         </div>
       )}
-
       {uploading && typeof uploadProgress === "number" && (
         <div className="absolute inset-0 z-3 flex items-center justify-center bg-black/50">
           <div className="flex flex-col items-center gap-3">

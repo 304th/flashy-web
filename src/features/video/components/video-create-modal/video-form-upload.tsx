@@ -1,10 +1,12 @@
 import React, {useState} from "react";
+import { useFormContext } from "react-hook-form";
 import { VideoUpload as VideoUploadInput } from "@/components/ui/video-upload";
 import { Button } from "@/components/ui/button";
 import {useCreateVideoOptions} from "@/features/video/mutations/use-create-video-options";
 import {useUploadVideo} from "@/features/video/mutations/use-upload-video";
 
-export const VideoUpload = ({ onSuccess, onClose }: { onSuccess: (videoId: string) => void; onClose: () => void; }) => {
+export const VideoFormUpload = ({ onClose }: { onClose: () => void; }) => {
+  const context = useFormContext()
   const [file, setFile] = useState<File | null>(null);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const createVideoOptions = useCreateVideoOptions();
@@ -21,6 +23,7 @@ export const VideoUpload = ({ onSuccess, onClose }: { onSuccess: (videoId: strin
       <VideoUploadInput
         className="w-full h-full rounded-none border-none hover:bg-base-100"
         description="Upload Video"
+        uploading={isUploading}
         onChange={(uploadedFile) => setFile(uploadedFile)}
         onError={(msg) => console.error(msg)}
       />
@@ -28,16 +31,13 @@ export const VideoUpload = ({ onSuccess, onClose }: { onSuccess: (videoId: strin
     <div className="flex w-full justify-end gap-2 p-4">
       <Button
         variant="secondary"
-        onClick={() => {
-          onClose();
-        }}
+        onClick={onClose}
       >
         Cancel
       </Button>
       <Button
         disabled={!file || isUploading}
         className="min-w-[100px]"
-        mode="light"
         onClick={async () => {
           const uploadOptions = await createVideoOptions.mutateAsync(undefined) //FIXME: see why undefined is needed at all
           const video = await uploadVideo.mutateAsync({
@@ -45,10 +45,10 @@ export const VideoUpload = ({ onSuccess, onClose }: { onSuccess: (videoId: strin
             file: file!,
           })
 
-          onSuccess(video.videoId);
+          context.setValue("videoId", video.videoId, { shouldDirty: true });
         }}
       >
-        {isUploading ? `${uploadProgress}%` : 'Upload'}
+        {isUploading ? uploadProgress === 100 ? 'Processing...' : `${uploadProgress}%` : 'Upload'}
       </Button>
     </div>
     <LoadingStrip percentage={uploadProgress} />
@@ -57,12 +57,13 @@ export const VideoUpload = ({ onSuccess, onClose }: { onSuccess: (videoId: strin
 
 const LoadingStrip = ({ percentage }: { percentage: number }) => {
   const clampedPercentage = Math.min(Math.max(percentage, 0), 100);
+  const isProcessing = clampedPercentage === 100;
 
   return <div className="absolute bottom-0 w-full">
-    <div className="relative h-[2px] rounded-full overflow-hidden">
+    <div className="relative h-[4px] rounded-full overflow-hidden">
       <div
-      className="absolute h-full bg-brand-200 transition-all duration-300 ease-in-out"
-      style={{ width: `${clampedPercentage}%` }}
+      className="absolute h-full bg-brand-200 transition-all duration-300 ease-in-out wave-animation uploading-gradient"
+      style={{ width: `${clampedPercentage}%`, ...(isProcessing ? { backgroundColor: '#1d6cff' } : {}) }}
      />
     </div>
   </div>

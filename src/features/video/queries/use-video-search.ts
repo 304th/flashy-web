@@ -5,7 +5,7 @@ import {
 } from "@/features/video/entities/video-search.collection";
 
 export const useVideoSearch = (searchParams: VideoSearchParams = {}) => {
-  return usePartitionedQuery<Video, VideoSearchParams & { pageParam: number }>({
+  return usePartitionedQuery<VideoPost, VideoSearchParams & { pageParam: number }>({
     collection: videoSearchCollection,
     queryKey: ["video"],
     getParams: ({ pageParam }) => ({ pageParam, ...searchParams }) as any,

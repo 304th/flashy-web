@@ -109,11 +109,13 @@ declare global {
     updatedAt: string;
   }
 
-  interface Video {
+  interface VideoPost {
     fbId: string;
     title: string;
     publishDate: string;
     storyImage: string;
+    videoId: string;
+    hostID: string;
     videoDuration: number;
     views: number;
     price: number;

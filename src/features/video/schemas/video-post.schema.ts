@@ -1,20 +1,22 @@
 import { nanoid } from "nanoid";
 
-class VideoSchema implements StaticSchema<Video> {
-  getId(): keyof Video {
+class VideoPostSchema implements StaticSchema<VideoPost> {
+  getId(): keyof VideoPost {
     return "fbId";
   }
 
-  createEntityFromParams(params: Partial<Video>): Video {
+  createEntityFromParams(params: Partial<VideoPost>): VideoPost {
     const id = nanoid();
 
     return {
       fbId: id,
       title: "",
       storyImage: "",
+      videoId: "",
       videoDuration: 1000,
       views: 0,
       price: 0,
+      hostID: "",
       publishDate: new Date().toISOString(),
       username: "",
       createdAt: new Date().toISOString(),
@@ -24,4 +26,4 @@ class VideoSchema implements StaticSchema<Video> {
   }
 }
 
-export const videoSchema = new VideoSchema();
+export const videoPostSchema = new VideoPostSchema();

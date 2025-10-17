@@ -4,7 +4,7 @@ import { socialPostSchema } from "@/features/social/schemas/social-post.schema";
 import { decodePollResults } from "@/features/social/utils/poll";
 import { useAuthed } from "@/features/auth/hooks/use-authed";
 
-const profilePostsCollection = createCollection<
+const profileSocialPostsCollection = createCollection<
   SocialPost,
   { pageParam?: number }
 >({
@@ -21,7 +21,7 @@ const profilePostsCollection = createCollection<
     }));
   },
   schema: socialPostSchema,
-  name: "profilePosts",
+  name: "profileSocialPosts",
 });
 
 export const useProfileSocialPosts = () => {
@@ -29,7 +29,7 @@ export const useProfileSocialPosts = () => {
 
   return usePartitionedQuery<SocialPost, { pageParam: number }>({
     queryKey: ["me", authed.user?.uid, "social"],
-    collection: profilePostsCollection,
+    collection: profileSocialPostsCollection,
     getParams: ({ pageParam }) => ({ pageParam }),
     options: {
       enabled: Boolean(authed.user?.uid),

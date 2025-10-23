@@ -32,7 +32,7 @@ export const VideoCreateModal = ({
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: '',
+      title: "",
       description: '',
     },
     mode: "all",

@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import { api } from "@/services/api";
 import { createMutation, useOptimisticMutation } from "@/lib/query-toolkit-v2";
 import { useMe } from "@/features/auth/queries/use-me";
@@ -54,5 +55,8 @@ export const useCreateVideoPost = () => {
         },
       );
     },
+    onSuccess: (_, __, params) => {
+      toast.success(`Video successfully ${params.statusweb === 'draft' ? 'created' : 'published'}!`, );
+    }
   });
 };

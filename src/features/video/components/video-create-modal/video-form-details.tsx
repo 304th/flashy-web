@@ -14,10 +14,8 @@ import { VideoCreateSubmitButton } from "@/features/video/components/video-creat
 
 export const VideoFormDetails = ({
   onClose,
-  onSuccess,
 }: {
   onClose: () => void;
-  onSuccess: () => void;
 }) => {
   const form = useFormContext();
   const title = form.watch("title");
@@ -74,7 +72,7 @@ export const VideoFormDetails = ({
         <Button variant="secondary" onClick={onClose}>
           Cancel
         </Button>
-        <VideoCreateSubmitButton onSuccess={onSuccess} />
+        <VideoCreateSubmitButton />
       </div>
     </div>
   );

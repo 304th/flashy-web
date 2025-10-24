@@ -11,6 +11,7 @@ export const useProfileVideoFeedPublished = (enabled: boolean) => {
     getParams: ({ pageParam }) => ({ pageParam }),
     options: {
       enabled: enabled && Boolean(me?.fbId),
+      staleTime: 5 * 60 * 1000, // 5 minutes
     },
   });
 };

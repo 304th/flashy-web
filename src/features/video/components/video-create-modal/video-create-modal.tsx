@@ -1,4 +1,5 @@
 import config from "@/config";
+import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,8 +12,8 @@ import { VideoFormDetails } from "@/features/video/components/video-create-modal
 import { VideoCreateSuccess } from "@/features/video/components/video-create-modal/video-create-success";
 import { useCreateVideoPost } from "@/features/video/mutations/use-create-video-post";
 import { useOpenUnsavedVideoChanges } from "@/features/video/hooks/use-open-unsaved-video-changes";
-import { useSubmitNewVideo } from "@/features/video/hooks/use-submit-new-video";
-import { useState } from "react";
+import { createSignedUploadUrlMutation } from "@/features/common/mutations/use-create-signed-upload-url";
+import { uploadImage } from "@/features/common/mutations/use-upload-image";
 
 export interface VideoCreateModalProps {
   onClose(): void;
@@ -41,11 +42,7 @@ export const VideoCreateModal = ({
   ...props
 }: VideoCreateModalProps) => {
   const [videoPublished, setVideoPublished] = useState(false);
-  const submitNewVideo = useSubmitNewVideo((params) => {
-    if (params.status === "published") {
-      setVideoPublished(true);
-    }
-  });
+  const createVideoPost = useCreateVideoPost();
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -89,7 +86,35 @@ export const VideoCreateModal = ({
           </div>
         </div>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(submitNewVideo)}>
+          <form onSubmit={form.handleSubmit(async (params) => {
+            const { uploadUrl, fileType } = await createSignedUploadUrlMutation.write({
+              fileName: params.thumbnailUpload.name,
+              fileType: params.thumbnailUpload.type,
+            });
+
+            const thumbnail = await uploadImage.write({
+              file: params.thumbnailUpload,
+              type: fileType,
+              uploadUrl: uploadUrl,
+            });
+
+            await createVideoPost.mutateAsync({
+              title: params.title,
+              description: params.description,
+              price: 0,
+              videoId: params.videoId,
+              thumbnail,
+              videoDuration: params.videoDuration,
+              statusweb: params.status as 'draft' | 'published',
+              publishDate: params.status === "published" ? Date.now() : undefined,
+            });
+
+            if (params.status === 'published') {
+              setVideoPublished(true);
+            } else {
+              onClose();
+            }
+          })}>
             <AnimatePresence>
               {!videoId && (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
@@ -100,7 +125,6 @@ export const VideoCreateModal = ({
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                   <VideoFormDetails
                     onClose={handleAccidentalClose}
-                    onSuccess={() => setVideoPublished(true)}
                   />
                 </motion.div>
               )}

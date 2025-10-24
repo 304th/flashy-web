@@ -1,4 +1,3 @@
-import type { RefObject } from "react";
 import { useFormContext } from "react-hook-form";
 import {
   FormControl,
@@ -14,11 +13,11 @@ import { ImageUpload } from "@/components/ui/image-upload";
 import { VideoCreateSubmitButton } from "@/features/video/components/video-create-modal/video-create-submit-button";
 
 export const VideoFormDetails = ({
-  submitterNameRef,
   onClose,
+  onSuccess,
 }: {
-  submitterNameRef: RefObject<"draft" | "published" | null>;
   onClose: () => void;
+  onSuccess: () => void;
 }) => {
   const form = useFormContext();
   const title = form.watch("title");
@@ -75,7 +74,7 @@ export const VideoFormDetails = ({
         <Button variant="secondary" onClick={onClose}>
           Cancel
         </Button>
-        <VideoCreateSubmitButton submitterNameRef={submitterNameRef} />
+        <VideoCreateSubmitButton onSuccess={onSuccess} />
       </div>
     </div>
   );

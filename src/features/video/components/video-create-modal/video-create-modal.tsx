@@ -1,5 +1,4 @@
 import config from "@/config";
-import { useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,11 +8,11 @@ import { Modal as ModalComponent } from "@/packages/modals";
 import { CloseButton } from "@/components/ui/close-button";
 import { VideoFormUpload } from "@/features/video/components/video-create-modal/video-form-upload";
 import { VideoFormDetails } from "@/features/video/components/video-create-modal/video-form-details";
-import { useCreateVideoPost } from "@/features/video/mutations/use-create-video-post";
-import { createSignedUploadUrlMutation } from "@/features/common/mutations/use-create-signed-upload-url";
-import { uploadImage } from "@/features/common/mutations/use-upload-image";
-import { useOpenUnsavedVideoChanges } from "@/features/video/hooks/use-open-unsaved-video-changes";
 import { VideoCreateSuccess } from "@/features/video/components/video-create-modal/video-create-success";
+import { useCreateVideoPost } from "@/features/video/mutations/use-create-video-post";
+import { useOpenUnsavedVideoChanges } from "@/features/video/hooks/use-open-unsaved-video-changes";
+import { useSubmitNewVideo } from "@/features/video/hooks/use-submit-new-video";
+import { useState } from "react";
 
 export interface VideoCreateModalProps {
   onClose(): void;
@@ -34,19 +33,25 @@ const formSchema = z.object({
     .max(config.content.videos.description.maxLength)
     .optional(),
   videoDuration: z.number().min(0),
+  status: z.string(),
 });
 
 export const VideoCreateModal = ({
   onClose,
   ...props
 }: VideoCreateModalProps) => {
-  const submitterNameRef = useRef<"draft" | "published" | null>(null);
-  const createVideoPost = useCreateVideoPost();
+  const [videoPublished, setVideoPublished] = useState(false);
+  const submitNewVideo = useSubmitNewVideo((params) => {
+    if (params.status === "published") {
+      setVideoPublished(true);
+    }
+  });
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
       description: "",
+      status: "draft",
     },
     mode: "all",
   });
@@ -58,7 +63,7 @@ export const VideoCreateModal = ({
   });
 
   const handleAccidentalClose = () => {
-    if (!videoId || createVideoPost.isSuccess) {
+    if (!videoId || form.formState.isSubmitSuccessful) {
       return onClose();
     }
 
@@ -84,59 +89,22 @@ export const VideoCreateModal = ({
           </div>
         </div>
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(async (params, event) => {
-              const submitter = (event?.nativeEvent as SubmitEvent)
-                .submitter as HTMLButtonElement | null;
-              const status =
-                submitter?.name === "draft" || submitter?.name === "published"
-                  ? submitter.name
-                  : "draft";
-              submitterNameRef.current = status;
-
-              try {
-                const { uploadUrl, fileType } =
-                  await createSignedUploadUrlMutation.write({
-                    fileName: params.thumbnailUpload.name,
-                    fileType: params.thumbnailUpload.type,
-                  });
-
-                const thumbnail = await uploadImage.write({
-                  file: params.thumbnailUpload,
-                  type: fileType,
-                  uploadUrl: uploadUrl,
-                });
-
-                await createVideoPost.mutateAsync({
-                  title: params.title,
-                  description: params.description,
-                  price: 0,
-                  videoId: params.videoId,
-                  thumbnail,
-                  videoDuration: params.videoDuration,
-                  statusweb: status,
-                  publishDate: status === "published" ? Date.now() : undefined,
-                });
-              } finally {
-                submitterNameRef.current = null;
-              }
-            })}
-          >
+          <form onSubmit={form.handleSubmit(submitNewVideo)}>
             <AnimatePresence>
               {!videoId && (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                   <VideoFormUpload onClose={handleAccidentalClose} />
                 </motion.div>
               )}
-              {videoId && !createVideoPost.isSuccess && (
+              {videoId && !videoPublished && (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                   <VideoFormDetails
-                    submitterNameRef={submitterNameRef}
                     onClose={handleAccidentalClose}
+                    onSuccess={() => setVideoPublished(true)}
                   />
                 </motion.div>
               )}
-              {createVideoPost.isSuccess && (
+              {videoPublished && (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                   <VideoCreateSuccess />
                 </motion.div>

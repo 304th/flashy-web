@@ -1,47 +1,47 @@
 import { Button } from "@/components/ui/button";
 import { useFormContext } from "react-hook-form";
-import type { RefObject } from "react";
+import { useSubmitNewVideo } from "@/features/video/hooks/use-submit-new-video";
 
 export const VideoCreateSubmitButton = ({
-  submitterNameRef,
+  onSuccess,
 }: {
-  submitterNameRef: RefObject<"draft" | "published" | null>;
+  onSuccess: () => void;
 }) => {
   const form = useFormContext();
+  const submitNewVideo = useSubmitNewVideo((params) => {
+    if (params.status === "published") {
+      onSuccess();
+    }
+  });
 
   return (
     <div className="flex items-center gap-2">
       <Button
         variant="secondary"
-        disabled={
-          !form.formState.isValid ||
-          (form.formState.isSubmitting && submitterNameRef.current !== "draft")
-        }
-        pending={
-          form.formState.isSubmitting &&
-          form.formState.isSubmitting &&
-          submitterNameRef.current === "draft"
-        }
+        disabled={!form.formState.isValid}
+        pending={form.formState.isSubmitting}
         className="w-[100px]"
-        type="submit"
-        name="draft"
+        role="button"
+        onClick={form.handleSubmit((params) =>
+          submitNewVideo({
+            ...params,
+            status: "draft",
+          }),
+        )}
       >
         Draft
       </Button>
       <Button
-        disabled={
-          !form.formState.isValid ||
-          (form.formState.isSubmitting &&
-            submitterNameRef.current !== "published")
-        }
-        pending={
-          form.formState.isSubmitting &&
-          form.formState.isSubmitting &&
-          submitterNameRef.current === "published"
-        }
+        disabled={!form.formState.isValid}
+        pending={form.formState.isSubmitting}
         className="w-[100px]"
-        type="submit"
-        name="published"
+        role="button"
+        onClick={form.handleSubmit((params) =>
+          submitNewVideo({
+            ...params,
+            status: "published",
+          }),
+        )}
       >
         Publish
       </Button>

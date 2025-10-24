@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react';
-import type {UseInfiniteQueryResult} from "@tanstack/react-query";
+import { useEffect, useRef } from "react";
+import type { UseInfiniteQueryResult } from "@tanstack/react-query";
 
 interface InfiniteScrollOptions<TData, TError> {
   query: UseInfiniteQueryResult<TData, TError>;
@@ -7,8 +7,8 @@ interface InfiniteScrollOptions<TData, TError> {
 }
 
 export const useInfiniteScroll = <TData, TError>({
- query,
- threshold = 0.7,
+  query,
+  threshold = 0.7,
 }: InfiniteScrollOptions<TData, TError>) => {
   const observerRef = useRef<IntersectionObserver | null>(null);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
@@ -24,7 +24,7 @@ export const useInfiniteScroll = <TData, TError>({
           void query.fetchNextPage();
         }
       },
-      { threshold }
+      { threshold },
     );
 
     if (loadMoreRef.current) {
@@ -39,4 +39,4 @@ export const useInfiniteScroll = <TData, TError>({
   }, [query.hasNextPage, query.isFetchingNextPage, threshold]);
 
   return loadMoreRef;
-}
+};

@@ -1,28 +1,40 @@
 import { useModals } from "@/hooks/use-modals";
-import { useDeleteVideo } from "@/features/video/mutations/use-delete-video";
+import { useDeleteUploadedVideo } from "@/features/video/mutations/use-delete-uploaded-video";
 
-export const useOpenUnsavedVideoChanges = ({ videoId, onClose }: { videoId: string; onClose: () => void; }) => {
+export const useOpenUnsavedVideoChanges = ({
+  videoId,
+  onClose,
+}: {
+  videoId: string;
+  onClose: () => void;
+}) => {
   const { openModal } = useModals();
-  const deleteVideo = useDeleteVideo();
+  const deleteUploadedVideo = useDeleteUploadedVideo();
 
-  return () => openModal(
-    'ConfirmModal',
-    {
-      title: 'Unsaved changes',
-      description:
-        'Are you sure you want to leave? Changes you made will not be saved.',
-      actionTitle: 'Leave',
-      destructive: true,
-      onConfirm: async () => {
-        if (videoId) {
-          await deleteVideo.mutateAsync({
-            videoId: videoId,
-          })
-        }
+  return () =>
+    openModal(
+      "ConfirmModal",
+      {
+        title: "Unsaved changes",
+        description:
+          "Are you sure you want to leave? Changes you made will not be saved.",
+        actionTitle: "Leave",
+        destructive: true,
+        onConfirm: () => {
+          if (videoId) {
+            deleteUploadedVideo.mutate(
+              {
+                videoId: videoId,
+              },
+              {
+                onSuccess: onClose,
+              },
+            );
+          }
 
-        onClose();
+          onClose();
+        },
       },
-    },
-    { subModal: true },
-  );
-}
+      { subModal: true },
+    );
+};

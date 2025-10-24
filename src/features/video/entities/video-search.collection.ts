@@ -8,16 +8,17 @@ export interface VideoSearchParams {
   onlyFree?: boolean;
 }
 
-export const videoSearchCollection = createCollection<VideoPost, VideoSearchParams>(
-  {
-    async sourceFrom(params) {
-      return api
-        .get("video", {
-          searchParams: params as any,
-        })
-        .json<VideoPost[]>();
-    },
-    schema: videoPostSchema,
-    name: "videoSearch",
+export const videoSearchCollection = createCollection<
+  VideoPost,
+  VideoSearchParams
+>({
+  async sourceFrom(params) {
+    return api
+      .get("video", {
+        searchParams: params as any,
+      })
+      .json<VideoPost[]>();
   },
-);
+  schema: videoPostSchema,
+  name: "videoSearch",
+});

@@ -6,30 +6,28 @@ import {
   DropdownMenuGroup,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { IconButton } from "@/components/ui/icon-button";
+import { Button } from "@/components/ui/button";
 import { MeatballIcon } from "@/components/ui/icons/meatball";
 import { Separator } from "@/components/ui/separator";
 import { useModals } from "@/hooks/use-modals";
 import { useMe } from "@/features/auth/queries/use-me";
-import { useDeleteSocialPost } from "@/features/social/mutations/use-delete-social-post";
-import { usePinSocialPost } from "@/features/social/mutations/use-pin-social-post";
-import { useSocialPostOwned } from "@/features/social/hooks/use-social-post-owned";
 import { useIsSuperAdmin } from "@/features/auth/hooks/use-is-super-admin";
 import { useIsChannelMuted } from "@/features/auth/hooks/use-is-channel-muted";
 import { useMuteChannel } from "@/features/channels/mutations/use-mute-channel";
 import { useUnmuteChannel } from "@/features/channels/mutations/use-unmute-channel";
+import { useVideoPostOwned } from "@/features/video/hooks/use-video-post-owned";
+import { useDeleteVideoPost } from "@/features/video/mutations/use-delete-video-post";
 
-export const SocialPostMenu = ({ socialPost }: { socialPost: SocialPost }) => {
+export const VideoPostMenu = ({ videoPost }: { videoPost: VideoPost }) => {
   const { data: me } = useMe();
   const [open, setOpen] = useState(false);
   const { openModal } = useModals();
-  const deleteSocialPost = useDeleteSocialPost();
-  const pinPost = usePinSocialPost();
+  const deleteVideoPost = useDeleteVideoPost();
   const muteUser = useMuteChannel();
   const unmuteUser = useUnmuteChannel();
   const isSuperAdmin = useIsSuperAdmin();
-  const isOwned = useSocialPostOwned(socialPost);
-  const hasMuted = useIsChannelMuted(socialPost.userId);
+  const isOwned = useVideoPostOwned(videoPost);
+  const hasMuted = useIsChannelMuted(videoPost.hostID);
 
   if (!me) {
     return null;
@@ -40,15 +38,17 @@ export const SocialPostMenu = ({ socialPost }: { socialPost: SocialPost }) => {
       {open && <div className="absolute w-[50px] h-8 right-0 bottom-[-8px]" />}
       <DropdownMenu modal={false} open={open}>
         <DropdownMenuTrigger asChild className="relative z-1">
-          <IconButton
+          <Button
+            className="!w-fit p-0 aspect-square"
+            variant="secondary"
+            size="sm"
             onClick={(e) => {
               e.preventDefault();
               setOpen(true);
             }}
-            className="relative z-1"
           >
             <MeatballIcon />
-          </IconButton>
+          </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent
           className="flex flex-col bg-base-300 border-base-400 p-1 gap-1"
@@ -63,12 +63,12 @@ export const SocialPostMenu = ({ socialPost }: { socialPost: SocialPost }) => {
                   setOpen(false);
                   e.preventDefault();
                   openModal("ConfirmModal", {
-                    title: "Delete post",
-                    description: "Are you sure you want to delete this post?",
+                    title: "Delete video",
+                    description: "Are you sure you want to delete this video?",
                     destructive: true,
                     onConfirm: () => {
-                      deleteSocialPost.mutate({
-                        id: socialPost._id,
+                      deleteVideoPost.mutate({
+                        fbId: videoPost.fbId,
                       });
                     },
                   });
@@ -94,11 +94,11 @@ export const SocialPostMenu = ({ socialPost }: { socialPost: SocialPost }) => {
                       onConfirm: () => {
                         if (hasMuted) {
                           unmuteUser.mutate({
-                            userId: socialPost.userId,
+                            userId: videoPost.hostID,
                           });
                         } else {
                           muteUser.mutate({
-                            userId: socialPost.userId,
+                            userId: videoPost.hostID,
                           });
                         }
                       },
@@ -106,32 +106,6 @@ export const SocialPostMenu = ({ socialPost }: { socialPost: SocialPost }) => {
                   }}
                 >
                   {hasMuted ? "Unmute" : "Mute"}
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-            </>
-          )}
-          {isSuperAdmin && (
-            <>
-              <Separator />
-              <DropdownMenuGroup>
-                <DropdownMenuItem
-                  variant={socialPost.pinned ? "destructive" : "default"}
-                  onClick={(e) => {
-                    setOpen(false);
-                    e.preventDefault();
-                    openModal("ConfirmModal", {
-                      title: socialPost.pinned ? "Unpin post" : "Pin post",
-                      description: `Are you sure you want to ${socialPost.pinned ? "unpin" : "pin"} this post?`,
-                      onConfirm: () => {
-                        pinPost.mutate({
-                          id: socialPost._id,
-                          pinned: !socialPost?.pinned,
-                        });
-                      },
-                    });
-                  }}
-                >
-                  {socialPost.pinned ? "Unpin" : "Pin"}
                 </DropdownMenuItem>
               </DropdownMenuGroup>
             </>

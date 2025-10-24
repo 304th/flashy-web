@@ -92,7 +92,10 @@ export const VideoUpload = ({
         }}
       />
       {!preview && (
-        <div className="absolute inset-0 flex flex-col justify-center items-center gap-4">
+        <div
+          className="absolute inset-0 flex flex-col justify-center items-center
+            gap-4"
+        >
           <FileUpload.Icon
             className="relative z-2 text-white size-8"
             as={UploadCloudIcon}
@@ -141,10 +144,20 @@ export const VideoUpload = ({
         </div>
       )}
       {uploading && typeof uploadProgress === "number" && (
-        <div className="absolute inset-0 z-3 flex items-center justify-center bg-black/50">
+        <div
+          className="absolute inset-0 z-3 flex items-center justify-center
+            bg-black/50"
+        >
           <div className="flex flex-col items-center gap-3">
-            <CircularProgress value={uploadProgress} diameter={56} color="#fff" strokeWidth={6} />
-            <span className="text-white text-sm">{Math.round(uploadProgress * 100)}%</span>
+            <CircularProgress
+              value={uploadProgress}
+              diameter={56}
+              color="#fff"
+              strokeWidth={6}
+            />
+            <span className="text-white text-sm">
+              {Math.round(uploadProgress * 100)}%
+            </span>
           </div>
         </div>
       )}

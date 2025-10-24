@@ -29,7 +29,7 @@ const config = {
       },
       description: {
         maxLength: 2500,
-      }
+      },
     },
     uploads: {
       image: {
@@ -37,7 +37,7 @@ const config = {
       },
       video: {
         maxSize: 2 * 1024 * 1024 * 1024, // 2 GB
-      }
+      },
     },
   },
 } as const;

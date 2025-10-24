@@ -44,7 +44,7 @@ export const CreateDropdown = () => {
                   color="#08331a"
                   icon={<CreateVideoIcon />}
                   onClick={() => {
-                    openModal('VideoCreateModal');
+                    openModal("VideoCreateModal");
                   }}
                 />
                 <CreateOption

@@ -1,18 +1,22 @@
-import {createCollection, usePartitionedQuery} from "@/lib/query-toolkit-v2";
-import {api} from "@/services/api";
-import {useMe} from "@/features/auth/queries/use-me";
-import {videoPostSchema} from "@/features/video/schemas/video-post.schema";
+import { createCollection, usePartitionedQuery } from "@/lib/query-toolkit-v2";
+import { api } from "@/services/api";
+import { useMe } from "@/features/auth/queries/use-me";
+import { videoPostSchema } from "@/features/video/schemas/video-post.schema";
 
 const profileVideoPostsCollection = createCollection<
   VideoPost,
   { pageParam?: number }
 >({
   async sourceFrom() {
-    return api.get(`myVideosDrafts`, {
-      searchParams: {
-        skip: 0,
-      }
-    }).json<VideoPost[]>();
+    const response = await api
+      .get(`myVideosDrafts`, {
+        searchParams: {
+          skip: 0,
+        },
+      })
+      .json<{ videos: VideoPost[] }>();
+
+    return response.videos;
   },
   schema: videoPostSchema,
   name: "profileSocialPosts",
@@ -29,4 +33,4 @@ export const useProfileVideoPosts = () => {
       enabled: Boolean(me?.fbId),
     },
   });
-}
+};

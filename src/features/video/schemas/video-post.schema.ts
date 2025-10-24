@@ -9,18 +9,18 @@ class VideoPostSchema implements StaticSchema<VideoPost> {
     const id = nanoid();
 
     return {
+      _id: id,
       fbId: id,
       title: "",
       storyImage: "",
       videoId: "",
-      videoDuration: 1000,
+      videoDuration: 0,
       views: 0,
       price: 0,
       hostID: "",
-      publishDate: new Date().toISOString(),
       username: "",
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+      publishDate: Date.now(),
+      createdAt: Date.now(),
       ...params,
     };
   }

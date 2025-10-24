@@ -302,8 +302,12 @@
 }
 
 @keyframes wave {
-  0% { background-position-x: -50px; }
-  100% { background-position-x: 50px; }
+  0% {
+    background-position-x: -50px;
+  }
+  100% {
+    background-position-x: 50px;
+  }
 }
 
 @keyframes yarl-entering {

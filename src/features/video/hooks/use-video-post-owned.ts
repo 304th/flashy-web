@@ -1,0 +1,12 @@
+import { useMemo } from "react";
+import { useMe } from "@/features/auth/queries/use-me";
+
+export const useVideoPostOwned = (videoPost: VideoPost) => {
+  const { data: me } = useMe();
+
+  return useMemo(() => {
+    if (!me) return false;
+
+    return me.fbId === videoPost.hostID;
+  }, [videoPost, me]);
+};

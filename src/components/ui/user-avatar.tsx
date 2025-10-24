@@ -1,4 +1,4 @@
-import { type HTMLAttributes,  useState } from "react";
+import { type HTMLAttributes, useState } from "react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 export interface UserAvatarProps {
@@ -31,9 +31,9 @@ export const UserAvatar = ({
         />
       )}
       <AvatarFallback className="bg-transparent">
-        <img 
-          src="/images/avatar.svg" 
-          alt="Default Avatar" 
+        <img
+          src="/images/avatar.svg"
+          alt="Default Avatar"
           className="aspect-square size-full object-cover"
         />
       </AvatarFallback>

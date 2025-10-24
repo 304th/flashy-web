@@ -110,9 +110,10 @@ declare global {
   }
 
   interface VideoPost {
+    _id: string;
     fbId: string;
     title: string;
-    publishDate: string;
+    publishDate: number;
     storyImage: string;
     videoId: string;
     hostID: string;
@@ -120,8 +121,7 @@ declare global {
     views: number;
     price: number;
     username: string;
-    createdAt: string;
-    updatedAt: string;
+    createdAt: number;
   }
 
   interface Reaction {
@@ -239,10 +239,10 @@ declare global {
       token: string;
       ttl: number;
       expiresAt: string | null;
-    },
+    };
     video: {
       videoId: string;
-    }
+    };
   }
 
   // Augment in your app to get typed channel names in query-toolkit-v2

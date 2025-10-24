@@ -9,28 +9,30 @@ export const VideoPostDescription = ({
   return (
     <div className="flex flex-col w-full justify-start px-2">
       <p className="text-lg font-medium text-white">{videoPost.title}</p>
-      <p>@{videoPost.username}</p>
-      <p>
-        <Views views={videoPost.views} />
-        <Timestamp createdAt={videoPost.createdAt} />
+      <p className="text-sm">@{videoPost.username}</p>
+      <p className="text-sm">
+        <VideoViews views={videoPost.views} /> -
+        <VideoTimestamp createdAt={videoPost.createdAt} />
       </p>
     </div>
   );
 };
 
-const Views = ({ views }: { views: VideoPost["views"] }) => {
-  if (!views) {
-    return null;
-  }
-
-  return <span>{views} Views - </span>;
+export const VideoViews = ({ views }: { views: VideoPost["views"] }) => {
+  return <span>{views} Views</span>;
 };
 
-const Timestamp = ({ createdAt }: { createdAt: VideoPost["createdAt"] }) => {
-  console.log("CREATED_AT: ", createdAt);
-
+export const VideoTimestamp = ({
+  createdAt,
+}: {
+  createdAt: VideoPost["createdAt"];
+}) => {
   const timeAgo = useMemo(
-    () => formatDistanceToNow(new Date(createdAt), { addSuffix: true }),
+    () =>
+      formatDistanceToNow(new Date(createdAt), { addSuffix: true }).replace(
+        "about",
+        "",
+      ),
     [createdAt],
   );
 

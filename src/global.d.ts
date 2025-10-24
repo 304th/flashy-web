@@ -113,6 +113,7 @@ declare global {
     _id: string;
     fbId: string;
     title: string;
+    description?: string;
     publishDate: number;
     storyImage: string;
     videoId: string;
@@ -121,6 +122,7 @@ declare global {
     views: number;
     price: number;
     username: string;
+    userimage: string;
     createdAt: number;
   }
 

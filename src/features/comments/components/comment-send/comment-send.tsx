@@ -19,7 +19,7 @@ const formSchema = z.object({
 });
 
 export interface CommentSendProps {
-  post: Reactable;
+  post: Reactable | any;
   replyComment: CommentPost | null;
   className?: string;
   onCloseReply?: () => void;

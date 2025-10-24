@@ -56,7 +56,9 @@ export const useCreateVideoPost = () => {
       );
     },
     onSuccess: (_, __, params) => {
-      toast.success(`Video successfully ${params.statusweb === 'draft' ? 'created' : 'published'}!`, );
-    }
+      toast.success(
+        `Video successfully ${params.statusweb === "draft" ? "created" : "published"}!`,
+      );
+    },
   });
 };

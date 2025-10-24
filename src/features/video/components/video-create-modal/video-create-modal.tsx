@@ -86,35 +86,39 @@ export const VideoCreateModal = ({
           </div>
         </div>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(async (params) => {
-            const { uploadUrl, fileType } = await createSignedUploadUrlMutation.write({
-              fileName: params.thumbnailUpload.name,
-              fileType: params.thumbnailUpload.type,
-            });
+          <form
+            onSubmit={form.handleSubmit(async (params) => {
+              const { uploadUrl, fileType } =
+                await createSignedUploadUrlMutation.write({
+                  fileName: params.thumbnailUpload.name,
+                  fileType: params.thumbnailUpload.type,
+                });
 
-            const thumbnail = await uploadImage.write({
-              file: params.thumbnailUpload,
-              type: fileType,
-              uploadUrl: uploadUrl,
-            });
+              const thumbnail = await uploadImage.write({
+                file: params.thumbnailUpload,
+                type: fileType,
+                uploadUrl: uploadUrl,
+              });
 
-            await createVideoPost.mutateAsync({
-              title: params.title,
-              description: params.description,
-              price: 0,
-              videoId: params.videoId,
-              thumbnail,
-              videoDuration: params.videoDuration,
-              statusweb: params.status as 'draft' | 'published',
-              publishDate: params.status === "published" ? Date.now() : undefined,
-            });
+              await createVideoPost.mutateAsync({
+                title: params.title,
+                description: params.description,
+                price: 0,
+                videoId: params.videoId,
+                thumbnail,
+                videoDuration: params.videoDuration,
+                statusweb: params.status as "draft" | "published",
+                publishDate:
+                  params.status === "published" ? Date.now() : undefined,
+              });
 
-            if (params.status === 'published') {
-              setVideoPublished(true);
-            } else {
-              onClose();
-            }
-          })}>
+              if (params.status === "published") {
+                setVideoPublished(true);
+              } else {
+                onClose();
+              }
+            })}
+          >
             <AnimatePresence>
               {!videoId && (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
@@ -123,9 +127,7 @@ export const VideoCreateModal = ({
               )}
               {videoId && !videoPublished && (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                  <VideoFormDetails
-                    onClose={handleAccidentalClose}
-                  />
+                  <VideoFormDetails onClose={handleAccidentalClose} />
                 </motion.div>
               )}
               {videoPublished && (

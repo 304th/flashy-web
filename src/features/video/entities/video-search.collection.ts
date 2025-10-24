@@ -1,6 +1,6 @@
 import { createCollection } from "@/lib/query-toolkit-v2";
 import { api } from "@/services/api";
-import { videoPostSchema } from "@/features/video/schemas/video.schema";
+import { videoPostSchema } from "@/features/video/schemas/video-post.schema";
 
 export interface VideoSearchParams {
   limit?: number;

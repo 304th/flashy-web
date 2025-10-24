@@ -10,7 +10,7 @@ export const useVideoSearch = (searchParams: VideoSearchParams = {}) => {
     VideoSearchParams & { pageParam: number }
   >({
     collection: videoSearchCollection,
-    queryKey: ["video"],
+    queryKey: ["video", "search"],
     getParams: ({ pageParam }) => ({ pageParam, ...searchParams }) as any,
   });
 };

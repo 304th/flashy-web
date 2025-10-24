@@ -12,11 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { ImageUpload } from "@/components/ui/image-upload";
 import { VideoCreateSubmitButton } from "@/features/video/components/video-create-modal/video-create-submit-button";
 
-export const VideoFormDetails = ({
-  onClose,
-}: {
-  onClose: () => void;
-}) => {
+export const VideoFormDetails = ({ onClose }: { onClose: () => void }) => {
   const form = useFormContext();
   const title = form.watch("title");
 

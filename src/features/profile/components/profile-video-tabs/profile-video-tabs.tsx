@@ -25,7 +25,7 @@ export const ProfileVideoTabs = ({
             value={key}
             className={`cursor-pointer z-1 hover:text-white w-full h-full
             transition px-4 flex items-center rounded-full
-            ${key === currentTab && currentTab === "published" ? "bg-green-950" : key === currentTab && currentTab === "draft" ? "bg-orange-600" : ""}`}
+            ${key === currentTab && currentTab === "published" ? "bg-green-950" : key === currentTab && currentTab === "draft" ? "bg-orange-900" : ""}`}
             onClick={() => onTabChange(key)}
           >
             {label}

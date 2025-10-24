@@ -5,24 +5,27 @@ import { VideoPostMenu } from "@/features/video/components/video-post/video-post
 
 export const VideoPost = ({
   videoPost,
-  isLinkable,
+  horizontal,
+  className,
 }: {
   videoPost: Optimistic<VideoPost>;
-  isLinkable?: boolean;
+  horizontal?: boolean;
   className?: string;
 }) => {
   return (
     <div
-      className="group relative flex flex-col gap-2 w-full items-center
-        bg-[linear-gradient(180deg,#151515_0%,#151515_0.01%,#19191920_100%)]"
+      className={`group relative flex flex-col gap-2 w-full items-center
+        bg-[linear-gradient(180deg,#151515_0%,#151515_0.01%,#19191920_100%)]
+        ${className}`}
     >
       <Link
         href={`/video/post?id=${videoPost._id}`}
-        className="flex flex-col w-full gap-2 rounded transition
-          group-hover:bg-base-200 p-2"
+        className={`flex flex-col w-full gap-2 rounded transition
+          group-hover:bg-base-200 p-2 ${horizontal ? "flex-row" : ""}`}
       >
         <div
-          className="relative w-full h-[180px] bg-cover bg-center rounded"
+          className={`relative w-full h-[180px] bg-cover bg-center rounded
+            ${horizontal ? "h-[110px]!" : ""}`}
           style={{ backgroundImage: `url(${videoPost.storyImage})` }}
           role="img"
           aria-label="Video Post Thumbnail"

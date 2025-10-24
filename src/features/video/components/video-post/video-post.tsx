@@ -13,7 +13,7 @@ export const VideoPost = ({
 }) => {
   return (
     <div
-      className="group relative flex flex-col gap-2 w-[320px] items-center
+      className="group relative flex flex-col gap-2 w-full items-center
         bg-[linear-gradient(180deg,#151515_0%,#151515_0.01%,#19191920_100%)]"
     >
       <Link

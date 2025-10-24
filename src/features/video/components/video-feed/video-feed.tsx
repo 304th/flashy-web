@@ -14,19 +14,21 @@ export const VideoFeed = ({
     <Loadable queries={[query as any]} fullScreenForDefaults>
       {() =>
         videos && videos.length > 0 ? (
-          <AnimatePresence initial={false} mode="popLayout">
-            {videos?.map((videoPost) => (
-              <motion.div
-                key={videoPost._optimisticId || videoPost._id}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                layoutId={`profile-video-${videoPost._optimisticId || videoPost._id}`}
-              >
-                <VideoPost videoPost={videoPost} isLinkable />
-              </motion.div>
-            ))}
-          </AnimatePresence>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full">
+            <AnimatePresence initial={false} mode="popLayout">
+              {videos?.map((videoPost) => (
+                <motion.div
+                  key={videoPost._optimisticId || videoPost._id}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  layoutId={`profile-video-${videoPost._optimisticId || videoPost._id}`}
+                >
+                  <VideoPost videoPost={videoPost} isLinkable />
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
         ) : (
           <NotFound fullWidth>No videos yet</NotFound>
         )

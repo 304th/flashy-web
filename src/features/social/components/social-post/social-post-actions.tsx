@@ -3,8 +3,10 @@ import { LikeButton } from "@/features/reactions/components/like-button/like-but
 import { RelightButton } from "@/features/social/components/relight-button/relight-button";
 import { IconButton } from "@/components/ui/icon-button";
 import { ShareIcon } from "@/components/ui/icons/share";
+import { BlazeTipIcon } from "@/components/ui/icons/blaze-tip";
 import { useSocialPostContext } from "@/features/social/components/social-post/social-post-context";
 import { useIsSocialPostLocked } from "@/features/social/hooks/use-is-social-post-locked";
+import { useModals } from "@/hooks/use-modals";
 
 export const SocialPostActions = ({
   socialPost,
@@ -15,6 +17,7 @@ export const SocialPostActions = ({
 }) => {
   const { onCommentsOpen, onShareOpen } = useSocialPostContext();
   const isLocked = useIsSocialPostLocked(socialPost);
+  const { openModal } = useModals();
 
   if (isLocked) {
     return null;
@@ -32,18 +35,41 @@ export const SocialPostActions = ({
         <LikeButton post={socialPost} />
         <RelightButton post={socialPost} />
       </div>
-      {onShareOpen && (
-        <div className="flex gap-2">
-          <IconButton
-            onClick={(e) => {
-              e.preventDefault();
-              onShareOpen(socialPost);
-            }}
-          >
-            <ShareIcon />
-          </IconButton>
-        </div>
-      )}
+      <div className="flex gap-2 items-center">
+        <IconButton
+          onClick={(e) => {
+            e.preventDefault();
+            openModal("TipModal", {
+              user: {
+                fbId: socialPost.userId,
+                username: socialPost.username,
+                userimage: socialPost.userimage,
+              },
+              post: {
+                type: "post",
+                id: socialPost._id,
+                title: socialPost.description || "Social Post"
+              }
+            });
+          }}
+        >
+          <div className="scale-75">
+            <BlazeTipIcon />
+          </div>
+        </IconButton>
+        {onShareOpen && (
+          <div className="flex gap-2">
+            <IconButton
+              onClick={(e) => {
+                e.preventDefault();
+                onShareOpen(socialPost);
+              }}
+            >
+              <ShareIcon />
+            </IconButton>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

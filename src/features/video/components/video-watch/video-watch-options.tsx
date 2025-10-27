@@ -4,9 +4,11 @@ import { BlazeTipIcon } from "@/components/ui/icons/blaze-tip";
 import { ShareIcon } from "@/components/ui/icons/share2";
 import { VideoPostMenu } from "@/features/video/components/video-post/video-post-menu";
 import { useModals } from "@/hooks/use-modals";
+import {useVideoPostOwned} from "@/features/video/hooks/use-video-post-owned";
 
 export const VideoWatchOptions = ({ videoPost }: { videoPost: VideoPost }) => {
-  const { openModal } = useModals()
+  const { openModal } = useModals();
+  const isVideoOwned = useVideoPostOwned(videoPost);
 
   return <div className="flex w-full items-center justify-between">
     <LikeButton post={videoPost} className="border text-white h-[36px] p-2" />
@@ -18,13 +20,27 @@ export const VideoWatchOptions = ({ videoPost }: { videoPost: VideoPost }) => {
       {/*  <MessageIcon />*/}
       {/*  Comment*/}
       {/*</Button>*/}
-      <Button
-        variant="secondary"
-        className="!w-fit"
-      >
-        <BlazeTipIcon />
-        Tip
-      </Button>
+      {!isVideoOwned && (
+        <Button
+          variant="secondary"
+          className="!w-fit"
+          onClick={() => openModal("TipModal", {
+            user: {
+              fbId: videoPost.hostID,
+              username: videoPost.username,
+              userimage: videoPost.userimage || ""
+            },
+            post: {
+              type: "story",
+              id: videoPost._id,
+              title: videoPost.title || "Video"
+            }
+          })}
+        >
+          <BlazeTipIcon />
+          Tip
+        </Button>
+      )}
       <Button
         variant="secondary"
         className="!w-fit"

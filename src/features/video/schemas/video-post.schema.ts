@@ -21,6 +21,7 @@ class VideoPostSchema implements StaticSchema<VideoPost> {
       username: "",
       publishDate: Date.now(),
       createdAt: Date.now(),
+      reactions: {},
       ...params,
     };
   }

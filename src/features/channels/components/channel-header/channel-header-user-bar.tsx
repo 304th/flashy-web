@@ -4,6 +4,7 @@ import { Loadable } from "@/components/ui/loadable";
 import { Button } from "@/components/ui/button";
 import { UserProfile } from "@/components/ui/user-profile";
 import { ShareIcon } from "@/components/ui/icons/share2";
+import { BlazeTipIcon } from "@/components/ui/icons/blaze-tip";
 import { ChannelMenu } from "@/features/channels/components/channel-header/channel-menu";
 import { ChannelSubscribeButton } from "@/features/channels/components/channel-subscribe-button/channel-subscribe-button";
 import { ChannelSubscriptions } from "@/features/channels/components/channel-subscriptions/channel-subscriptions";
@@ -28,6 +29,23 @@ export const ChannelHeaderUserBar = ({ className }: { className?: string }) => {
               avatarClassname="size-20"
             >
               <div className="flex items-center gap-2">
+                <Button
+                  variant="secondary"
+                  className="w-fit"
+                  onClick={() => {
+                    openModal("TipModal", {
+                      user: channel,
+                      post: {
+                        type: "user",
+                        id: channelId,
+                        title: `${channel.username}'s Channel`
+                      }
+                    });
+                  }}
+                >
+                  <BlazeTipIcon />
+                  Tip
+                </Button>
                 <Button
                   variant="secondary"
                   className="w-fit"

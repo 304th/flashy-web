@@ -1,9 +1,10 @@
 import { createMutation, useOptimisticMutation } from "@/lib/query-toolkit-v2";
 import {api} from "@/services/api";
+import {useQueryClient} from "@tanstack/react-query";
 
 export interface TipChannelParams {
   channelId: string;
-  amount: string;
+  amount: number;
   post: {
     type: string;
     id: string;
@@ -14,7 +15,7 @@ export interface TipChannelParams {
 const tipChannelMutation = createMutation<TipChannelParams>({
   write: async (params) => {
     return api
-      .post("/social-posts/tip", {
+      .post("social-posts/tip", {
         json: {
           user_id: params.channelId,
           value: params.amount,
@@ -26,7 +27,14 @@ const tipChannelMutation = createMutation<TipChannelParams>({
 })
 
 export const useTipChannel = () => {
+  const queryClient = useQueryClient();
+
   return useOptimisticMutation({
     mutation: tipChannelMutation,
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: ["me", "wallet", "balance"],
+      });
+    }
   })
 }

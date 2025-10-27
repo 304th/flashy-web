@@ -21,7 +21,7 @@ export const VideoPost = ({
       <Link
         href={`/video/post?id=${videoPost._id}`}
         className={`flex flex-col w-full gap-2 rounded transition
-          group-hover:bg-base-200 p-2 ${horizontal ? "flex-row" : ""}`}
+          group-hover:bg-base-300 p-2 ${horizontal ? "flex-row" : ""}`}
       >
         <div
           className={`relative w-full h-[180px] bg-cover bg-center rounded

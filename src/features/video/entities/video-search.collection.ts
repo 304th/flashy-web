@@ -6,6 +6,7 @@ export interface VideoSearchParams {
   limit?: number;
   sort?: string;
   onlyFree?: boolean;
+  categories?: string[];
 }
 
 export const videoSearchCollection = createCollection<

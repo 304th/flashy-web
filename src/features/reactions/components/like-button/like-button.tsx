@@ -14,7 +14,13 @@ export type LikeButtonButtonRender =
   | ((data: LikeButtonCoreProps) => ReactNode)
   | (() => ReactNode);
 
-export const LikeButton = ({ post, className }: { post: Reactable | Likeable; className?: string }) => {
+export const LikeButton = ({
+  post,
+  className,
+}: {
+  post: Reactable | Likeable;
+  className?: string;
+}) => {
   if (isReactable(post)) {
     return (
       <ReactableLikeButton post={post}>

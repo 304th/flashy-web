@@ -140,7 +140,12 @@ export const VideoSearchBar = ({
               />
             </div>
             <div className="flex flex-col gap-2">
-              <Select.Root defaultValue={SORT_OPTIONS[0].value} value={filters.sort} placeholder="Select your favorite fruit..." onValueChange={handleSortChange}>
+              <Select.Root
+                defaultValue={SORT_OPTIONS[0].value}
+                value={filters.sort}
+                placeholder="Select your favorite fruit..."
+                onValueChange={handleSortChange}
+              >
                 {SORT_OPTIONS.map((item) => (
                   <Select.Item key={item.value} value={item.value}>
                     {item.label}
@@ -168,7 +173,6 @@ export const VideoSearchBar = ({
               ))}
             </div>
           </div>
-
         </div>
       )}
     </div>

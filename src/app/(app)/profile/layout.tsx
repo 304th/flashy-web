@@ -23,6 +23,11 @@ const profileTabs = [
     path: "/profile/video",
   },
   {
+    key: "playlists",
+    label: "Playlists",
+    path: "/profile/playlists",
+  },
+  {
     key: "about",
     label: "About",
     path: "/profile/about",

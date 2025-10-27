@@ -1,8 +1,8 @@
 "use client";
 
-import { ShareIcon } from "lucide-react";
 import { Loadable } from "@/components/ui/loadable";
 import { Button } from "@/components/ui/button";
+import { ShareIcon } from "@/components/ui/icons/share2";
 import { UserProfile } from "@/components/ui/user-profile";
 import { useModals } from "@/hooks/use-modals";
 import { useMe } from "@/features/auth/queries/use-me";

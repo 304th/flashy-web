@@ -35,6 +35,3 @@ export const useDebouncedSearch = (delay: number = 300) => {
     clearFilters,
   };
 };
-
-
-

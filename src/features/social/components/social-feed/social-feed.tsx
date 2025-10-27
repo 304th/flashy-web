@@ -42,7 +42,7 @@ export const SocialFeed = () => {
                       layout="position"
                       layoutId={`post-${socialPost._optimisticId || socialPost.orderId}`}
                     >
-                      <SocialPost socialPost={socialPost} isLinkable />
+                      <SocialPost socialPost={socialPost} isLinkable withMenu />
                     </motion.div>
                   ))}
                 </AnimatePresence>

@@ -14,10 +14,12 @@ import { timeAgo } from "@/lib/utils";
 export const SocialPost = ({
   socialPost,
   isLinkable,
+  withMenu,
   className,
 }: {
   socialPost: Optimistic<SocialPost>;
   isLinkable?: boolean;
+  withMenu?: boolean;
   className?: string;
 }) => {
   const { onCommentsOpen } = useSocialPostContext();
@@ -39,8 +41,7 @@ export const SocialPost = ({
       />
       <div className="absolute top-4 right-4 flex gap-2 items-center">
         <p>{timeAgo(socialPost.createdAt)}</p>
-        {/* FIXME: fix this bullshit logic */}
-        {onCommentsOpen && <SocialPostMenu socialPost={socialPost} />}
+        {withMenu && <SocialPostMenu socialPost={socialPost} />}
       </div>
       {isLinkable && !isLocked ? (
         <Link href={`/social/post?id=${socialPost._id}`}>

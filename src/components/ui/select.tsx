@@ -6,11 +6,7 @@ import * as React from "react";
 import * as ScrollAreaPrimitives from "@radix-ui/react-scroll-area";
 import * as RadixSelectPrimitives from "@radix-ui/react-select";
 import { Slottable } from "@radix-ui/react-slot";
-import {
-  ChevronDown,
-  Check,
-  type LucideIcon,
-} from "lucide-react";
+import { ChevronDown, Check, type LucideIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import type { PolymorphicComponentProps } from "@/lib/polymorphic";
@@ -29,8 +25,10 @@ export const selectVariants = cva(
       variant: {
         default: "w-full",
         compact: "w-auto h-10 gap-1 rounded-[10px] pl-3 pr-2.5",
-        compactForInput: "w-auto rounded-none shadow-none ring-0 focus:bg-bg-weak-50 focus:shadow-none focus:ring-0 focus:ring-transparent pl-2.5 pr-2",
-        inline: "h-5 min-h-5 w-auto gap-0 rounded-none bg-transparent p-0 text-text-sub-600 shadow-none ring-0 hover:bg-transparent hover:text-text-strong-950 focus:shadow-none data-[state=open]:text-text-strong-950",
+        compactForInput:
+          "w-auto rounded-none shadow-none ring-0 focus:bg-bg-weak-50 focus:shadow-none focus:ring-0 focus:ring-transparent pl-2.5 pr-2",
+        inline:
+          "h-5 min-h-5 w-auto gap-0 rounded-none bg-transparent p-0 text-text-sub-600 shadow-none ring-0 hover:bg-transparent hover:text-text-strong-950 focus:shadow-none data-[state=open]:text-text-strong-950",
       },
       hasError: {
         true: "ring-error-base focus:shadow-button-error-focus focus:ring-error-base",
@@ -42,7 +40,7 @@ export const selectVariants = cva(
       size: "medium",
       hasError: false,
     },
-  }
+  },
 );
 
 type SelectContextType = {
@@ -108,7 +106,17 @@ const SelectTrigger = React.forwardRef<
     >
       <Slottable>{children}</Slottable>
       <RadixSelectPrimitives.Icon asChild>
-        <ChevronDown className="ml-auto size-5 shrink-0 transition duration-200 ease-out group-data-[placeholder]/trigger:text-text-soft-400 text-text-sub-600 group-hover/trigger:text-text-sub-600 group-data-[placeholder]/trigger:group-hover:text-text-sub-600 group-focus/trigger:text-text-strong-950 group-data-[placeholder]/trigger:group-focus/trigger:text-text-strong-950 group-disabled/trigger:text-text-disabled-300 group-data-[placeholder]/trigger:group-disabled/trigger:text-text-disabled-300 group-data-[state=open]/trigger:rotate-180" />
+        <ChevronDown
+          className="ml-auto size-5 shrink-0 transition duration-200 ease-out
+            group-data-[placeholder]/trigger:text-text-soft-400
+            text-text-sub-600 group-hover/trigger:text-text-sub-600
+            group-data-[placeholder]/trigger:group-hover:text-text-sub-600
+            group-focus/trigger:text-text-strong-950
+            group-data-[placeholder]/trigger:group-focus/trigger:text-text-strong-950
+            group-disabled/trigger:text-text-disabled-300
+            group-data-[placeholder]/trigger:group-disabled/trigger:text-text-disabled-300
+            group-data-[state=open]/trigger:rotate-180"
+        />
       </RadixSelectPrimitives.Icon>
     </RadixSelectPrimitives.Trigger>
   );
@@ -126,7 +134,22 @@ function TriggerIcon<T extends React.ElementType = "div">({
   const { size, variant, hasError } = useSelectContext();
   const variants = selectVariants({ size, variant, hasError });
 
-  return <Component className={cn("h-5 w-auto min-w-0 shrink-0 object-contain text-text-sub-600 transition duration-200 ease-out group-data-[placeholder]/trigger:text-text-soft-400 group-hover/trigger:text-text-sub-600 group-data-[placeholder]/trigger:group-hover:text-text-sub-600 group-disabled/trigger:text-text-disabled-300 group-data-[placeholder]/trigger:group-disabled/trigger:text-text-disabled-300 group-disabled/trigger:[&:not(.remixicon)]:opacity-[.48]", className)} {...rest} />;
+  return (
+    <Component
+      className={cn(
+        `h-5 w-auto min-w-0 shrink-0 object-contain text-text-sub-600 transition
+        duration-200 ease-out
+        group-data-[placeholder]/trigger:text-text-soft-400
+        group-hover/trigger:text-text-sub-600
+        group-data-[placeholder]/trigger:group-hover:text-text-sub-600
+        group-disabled/trigger:text-text-disabled-300
+        group-data-[placeholder]/trigger:group-disabled/trigger:text-text-disabled-300
+        group-disabled/trigger:[&:not(.remixicon)]:opacity-[.48]`,
+        className,
+      )}
+      {...rest}
+    />
+  );
 }
 TriggerIcon.displayName = SELECT_TRIGGER_ICON_NAME;
 
@@ -208,7 +231,8 @@ const SelectItem = React.forwardRef<
         `data-disabled:pointer-events-none
         data-[disabled]:text-text-disabled-300`,
         // hover, focus
-        "data-[highlighted]:bg-base-400 data-highlighted:outline-0 hover:border-base-600",
+        `data-[highlighted]:bg-base-400 data-highlighted:outline-0
+        hover:border-base-600`,
         {
           "gap-1.5 pr-[34px]": size === "xsmall",
         },
@@ -258,7 +282,15 @@ function SelectItemIcon<T extends React.ElementType>({
   const Component = as || "div";
 
   return (
-    <Component className={cn("size-5 shrink-0 bg-size-[1.25rem] text-text-sub-600 [[data-disabled]_&:not(.remixicon)]:opacity-[.48] [[data-disabled]_&]:text-text-disabled-300", className)} {...rest} />
+    <Component
+      className={cn(
+        `size-5 shrink-0 bg-size-[1.25rem] text-text-sub-600
+        [[data-disabled]_&:not(.remixicon)]:opacity-[.48]
+        [[data-disabled]_&]:text-text-disabled-300`,
+        className,
+      )}
+      {...rest}
+    />
   );
 }
 

@@ -38,8 +38,8 @@ export const ChannelHeaderUserBar = ({ className }: { className?: string }) => {
                       post: {
                         type: "user",
                         id: channelId,
-                        title: `${channel.username}'s Channel`
-                      }
+                        title: `${channel.username}'s Channel`,
+                      },
                     });
                   }}
                 >

@@ -48,6 +48,10 @@ import {
   TipModal,
   TipModalProps,
 } from "@/features/wallet/components/tip-modal/tip-modal";
+import {
+  PlaylistCreateModal,
+  PlaylistCreateModalProps,
+} from "@/features/video/components/playlist-create-modal/playlist-create-modal";
 
 const modalsConfig = {
   LoginModal,
@@ -62,6 +66,7 @@ const modalsConfig = {
   SellKeyModal,
   VideoCreateModal,
   TipModal,
+  PlaylistCreateModal,
 };
 
 export type ModalPropsTypes =
@@ -110,9 +115,13 @@ export type ModalPropsTypes =
       props: VideoCreateModalProps;
     }
   | {
-    type: "TipModal";
-    props: TipModalProps;
-  };
+      type: "TipModal";
+      props: TipModalProps;
+    }
+    | {
+    type: "PlaylistCreateModal",
+    props: PlaylistCreateModalProps;
+  }
 
 export const ModalsProvider = ({ children }: PropsWithChildren<object>) => (
   <ModalCenterProvider config={modalsConfig}>

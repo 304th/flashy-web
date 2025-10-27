@@ -6,11 +6,11 @@ import { useRemoveReaction } from "@/features/reactions/queries/use-remove-react
 
 // Type guard to distinguish between SocialPost and VideoPost
 const isVideoPost = (post: Reactable): post is VideoPost => {
-  return 'videoId' in post && 'hostID' in post;
+  return "videoId" in post && "hostID" in post;
 };
 
 const isSocialPost = (post: Reactable): post is SocialPost => {
-  return 'description' in post && 'images' in post;
+  return "description" in post && "images" in post;
 };
 
 export interface ReactableLikeButtonProps {

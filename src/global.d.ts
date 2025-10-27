@@ -127,6 +127,19 @@ declare global {
     createdAt: number;
   }
 
+  interface Playlist {
+    _id: string;
+    fbId: string;
+    title: string;
+    description?: string;
+    publishDate: number;
+    image: string;
+    hostID: string;
+    username: string;
+    userimage?: string;
+    createdAt: number;
+  }
+
   interface Reaction {
     _id?: string;
     username: string;

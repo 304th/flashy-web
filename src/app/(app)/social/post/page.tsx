@@ -61,7 +61,6 @@ const SocialPostDetails = ({
 }) => {
   const { openModal } = useModals();
   const [replyComment, setReplyComment] = useState<CommentPost | null>(null);
-  const { optimisticUpdates: comments } = useComments(socialPost._id);
   const isLocked = useIsSocialPostLocked(socialPost);
 
   return (
@@ -79,6 +78,7 @@ const SocialPostDetails = ({
             <SocialPost
               socialPost={socialPost}
               className="!bg-[linear-gradient(180deg,#191919_0%,#191919_0.01%,#151515_100%)]"
+              withMenu
             />
             {isLocked ? null : (
               <>

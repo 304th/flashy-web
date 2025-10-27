@@ -32,7 +32,8 @@ export const TipModal = ({ user, post, onClose, ...props }: TipModalProps) => {
   const [tipAmount, setTipAmount] = useState("");
   const [customAmount, setCustomAmount] = useState("");
 
-  const hasEnoughBalance = Number(balance?.blaze || 0) >= Number(tipAmount || 0);
+  const hasEnoughBalance =
+    Number(balance?.blaze || 0) >= Number(tipAmount || 0);
   const isValidAmount = tipAmount && Number(tipAmount) > 0;
 
   const handleAmountSelect = (amount: string) => {
@@ -41,7 +42,12 @@ export const TipModal = ({ user, post, onClose, ...props }: TipModalProps) => {
   };
 
   const handleCustomAmountChange = (value: string) => {
-    if (value === "" || (!value.includes("-") && !isNaN(parseFloat(value)) && parseFloat(value) >= 0)) {
+    if (
+      value === "" ||
+      (!value.includes("-") &&
+        !isNaN(parseFloat(value)) &&
+        parseFloat(value) >= 0)
+    ) {
       setCustomAmount(value);
       setTipAmount(value);
     }
@@ -96,11 +102,14 @@ export const TipModal = ({ user, post, onClose, ...props }: TipModalProps) => {
           <div className="flex flex-col gap-2 items-center w-full text-center">
             <BlazeTipIcon />
             <p>
-              Show your appreciation by sending a tip to <span className="text-white font-bold">@{user.username}</span>
+              Show your appreciation by sending a tip to{" "}
+              <span className="text-white font-bold">@{user.username}</span>
             </p>
             <div className="flex items-center gap-1 text-base-700">
               <AlertIcon />
-              <p className="text-xs">Tips are sent instantly and cannot be refunded</p>
+              <p className="text-xs">
+                Tips are sent instantly and cannot be refunded
+              </p>
             </div>
           </div>
           <div className="flex w-full gap-2 justify-between border-y p-4">
@@ -133,7 +142,7 @@ export const TipModal = ({ user, post, onClose, ...props }: TipModalProps) => {
                 ))}
               </div>
             </div>
-            
+
             <div className="flex flex-col gap-2">
               <p className="text-white font-semibold">Custom Amount</p>
               <Input
@@ -141,10 +150,17 @@ export const TipModal = ({ user, post, onClose, ...props }: TipModalProps) => {
                 placeholder="Enter custom amount"
                 min={0}
                 value={customAmount}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleCustomAmountChange(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  handleCustomAmountChange(e.target.value)
+                }
                 onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
                   // Prevent minus key, plus key, and 'e' key (scientific notation)
-                  if (e.key === '-' || e.key === '+' || e.key === 'e' || e.key === 'E') {
+                  if (
+                    e.key === "-" ||
+                    e.key === "+" ||
+                    e.key === "e" ||
+                    e.key === "E"
+                  ) {
                     e.preventDefault();
                   }
                 }}
@@ -156,12 +172,14 @@ export const TipModal = ({ user, post, onClose, ...props }: TipModalProps) => {
         <div className="flex w-full justify-between gap-2 p-4 text-base-700">
           <Loadable queries={[balanceQuery]}>
             {() => {
-              return hasEnoughBalance ? <div className="flex items-center gap-1 text-base-700">
-                <AlertIcon />
-                <p className="text-xs">
-                  Your balance: {balance?.blaze || "0"} BLAZE
-                </p>
-              </div> : null
+              return hasEnoughBalance ? (
+                <div className="flex items-center gap-1 text-base-700">
+                  <AlertIcon />
+                  <p className="text-xs">
+                    Your balance: {balance?.blaze || "0"} BLAZE
+                  </p>
+                </div>
+              ) : null;
             }}
           </Loadable>
           {!hasEnoughBalance && tipAmount && (
@@ -187,7 +205,8 @@ export const TipModal = ({ user, post, onClose, ...props }: TipModalProps) => {
 const Modal = (props: any) => (
   <ModalComponent
     {...props}
-    className={`max-sm:min-w-unset w-[500px] max-w-[550px] !bg-base-300 border-none
-      !rounded-md max-max-sm:w-full overflow-hidden ${props.className}`}
+    className={`max-sm:min-w-unset w-[500px] max-w-[550px] !bg-base-300
+      border-none !rounded-md max-max-sm:w-full overflow-hidden
+      ${props.className}`}
   />
 );

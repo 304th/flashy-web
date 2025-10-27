@@ -24,7 +24,7 @@ export default function ProfileSocialPage() {
                     exit={{ opacity: 0 }}
                     layoutId={`profile-post-${socialPost._optimisticId || socialPost.orderId}`}
                   >
-                    <SocialPost socialPost={socialPost} isLinkable />
+                    <SocialPost socialPost={socialPost} isLinkable withMenu />
                   </motion.div>
                 ))}
               </AnimatePresence>

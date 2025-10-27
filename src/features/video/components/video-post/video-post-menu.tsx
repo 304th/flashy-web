@@ -18,7 +18,13 @@ import { useUnmuteChannel } from "@/features/channels/mutations/use-unmute-chann
 import { useVideoPostOwned } from "@/features/video/hooks/use-video-post-owned";
 import { useDeleteVideoPost } from "@/features/video/mutations/use-delete-video-post";
 
-export const VideoPostMenu = ({ videoPost, size = 'sm' }: { videoPost: VideoPost; size?: "sm" | "default" | "xs" | "lg" | "xl" | "icon" }) => {
+export const VideoPostMenu = ({
+  videoPost,
+  size = "sm",
+}: {
+  videoPost: VideoPost;
+  size?: "sm" | "default" | "xs" | "lg" | "xl" | "icon";
+}) => {
   const { data: me } = useMe();
   const [open, setOpen] = useState(false);
   const { openModal } = useModals();

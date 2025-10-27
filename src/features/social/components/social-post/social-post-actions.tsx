@@ -38,31 +38,29 @@ export const SocialPostActions = ({
         <RelightButton post={socialPost} />
       </div>
       <div className="flex gap-2 items-center">
-        {
-          !isOwned && (
-            <IconButton
-              onClick={(e) => {
-                e.preventDefault();
-                openModal("TipModal", {
-                  user: {
-                    fbId: socialPost.userId,
-                    username: socialPost.username,
-                    userimage: socialPost.userimage,
-                  },
-                  post: {
-                    type: "post",
-                    id: socialPost._id,
-                    title: ""
-                  }
-                });
-              }}
-            >
-              <div className="scale-75">
-                <BlazeTipIcon />
-              </div>
-            </IconButton>
-          )
-        }
+        {!isOwned && (
+          <IconButton
+            onClick={(e) => {
+              e.preventDefault();
+              openModal("TipModal", {
+                user: {
+                  fbId: socialPost.userId,
+                  username: socialPost.username,
+                  userimage: socialPost.userimage,
+                },
+                post: {
+                  type: "post",
+                  id: socialPost._id,
+                  title: "",
+                },
+              });
+            }}
+          >
+            <div className="scale-75">
+              <BlazeTipIcon />
+            </div>
+          </IconButton>
+        )}
         {onShareOpen && (
           <div className="flex gap-2">
             <IconButton

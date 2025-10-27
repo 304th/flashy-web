@@ -6,6 +6,7 @@ import { ShareIcon } from "@/components/ui/icons/share";
 import { BlazeTipIcon } from "@/components/ui/icons/blaze-tip";
 import { useSocialPostContext } from "@/features/social/components/social-post/social-post-context";
 import { useIsSocialPostLocked } from "@/features/social/hooks/use-is-social-post-locked";
+import { useIsSocialPostOwned } from "@/features/social/hooks/use-is-social-post-owned";
 import { useModals } from "@/hooks/use-modals";
 
 export const SocialPostActions = ({
@@ -18,6 +19,7 @@ export const SocialPostActions = ({
   const { onCommentsOpen, onShareOpen } = useSocialPostContext();
   const isLocked = useIsSocialPostLocked(socialPost);
   const { openModal } = useModals();
+  const isOwned = useIsSocialPostOwned(socialPost);
 
   if (isLocked) {
     return null;
@@ -36,27 +38,31 @@ export const SocialPostActions = ({
         <RelightButton post={socialPost} />
       </div>
       <div className="flex gap-2 items-center">
-        <IconButton
-          onClick={(e) => {
-            e.preventDefault();
-            openModal("TipModal", {
-              user: {
-                fbId: socialPost.userId,
-                username: socialPost.username,
-                userimage: socialPost.userimage,
-              },
-              post: {
-                type: "post",
-                id: socialPost._id,
-                title: socialPost.description || "Social Post"
-              }
-            });
-          }}
-        >
-          <div className="scale-75">
-            <BlazeTipIcon />
-          </div>
-        </IconButton>
+        {
+          !isOwned && (
+            <IconButton
+              onClick={(e) => {
+                e.preventDefault();
+                openModal("TipModal", {
+                  user: {
+                    fbId: socialPost.userId,
+                    username: socialPost.username,
+                    userimage: socialPost.userimage,
+                  },
+                  post: {
+                    type: "post",
+                    id: socialPost._id,
+                    title: ""
+                  }
+                });
+              }}
+            >
+              <div className="scale-75">
+                <BlazeTipIcon />
+              </div>
+            </IconButton>
+          )
+        }
         {onShareOpen && (
           <div className="flex gap-2">
             <IconButton

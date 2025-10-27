@@ -13,6 +13,8 @@ import { useModals } from "@/hooks/use-modals";
 import { useWalletBalance } from "@/features/wallet/queries/use-wallet-balance";
 import { useTipChannel } from "@/features/wallet/mutations/use-tip-channel";
 
+const PREDEFINED_AMOUNTS = ["1", "5", "10", "25", "50", "100"];
+
 export interface TipModalProps {
   user: User;
   post: {
@@ -30,7 +32,6 @@ export const TipModal = ({ user, post, onClose, ...props }: TipModalProps) => {
   const [tipAmount, setTipAmount] = useState("");
   const [customAmount, setCustomAmount] = useState("");
 
-  const predefinedAmounts = ["1", "5", "10", "25", "50", "100"];
   const hasEnoughBalance = Number(balance?.blaze || 0) >= Number(tipAmount || 0);
   const isValidAmount = tipAmount && Number(tipAmount) > 0;
 
@@ -40,7 +41,6 @@ export const TipModal = ({ user, post, onClose, ...props }: TipModalProps) => {
   };
 
   const handleCustomAmountChange = (value: string) => {
-    // Prevent negative values and minus signs
     if (value === "" || (!value.includes("-") && !isNaN(parseFloat(value)) && parseFloat(value) >= 0)) {
       setCustomAmount(value);
       setTipAmount(value);
@@ -54,7 +54,7 @@ export const TipModal = ({ user, post, onClose, ...props }: TipModalProps) => {
       "ConfirmModal",
       {
         title: "Confirm Tip",
-        description: `Are you ready to tip <span style="color: white;font-weight:bold">@${user.username}</span> <span style="color: white;font-weight:bold">${tipAmount} BLAZE</span> for "${post.title}"?`,
+        description: `Are you ready to tip <span style="color: white;font-weight:bold">@${user.username}</span> <span style="color: white;font-weight:bold">${tipAmount} BLAZE</span>?`,
         actionTitle: "Send Tip",
         onConfirm: () => {
           tipChannel.mutate(
@@ -121,7 +121,7 @@ export const TipModal = ({ user, post, onClose, ...props }: TipModalProps) => {
             <div className="flex flex-col gap-2">
               <p className="text-white font-semibold">Select Tip Amount</p>
               <div className="grid grid-cols-3 gap-2">
-                {predefinedAmounts.map((amount) => (
+                {PREDEFINED_AMOUNTS.map((amount) => (
                   <Button
                     key={amount}
                     variant={tipAmount === amount ? "default" : "secondary"}

@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useMe } from "@/features/auth/queries/use-me";
 
-export const useSocialPostOwned = (socialPost: SocialPost) => {
+export const useIsSocialPostOwned = (socialPost: SocialPost) => {
   const { data: me, query } = useMe();
 
   return useMemo(() => {

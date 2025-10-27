@@ -13,7 +13,7 @@ import { useModals } from "@/hooks/use-modals";
 import { useMe } from "@/features/auth/queries/use-me";
 import { useDeleteSocialPost } from "@/features/social/mutations/use-delete-social-post";
 import { usePinSocialPost } from "@/features/social/mutations/use-pin-social-post";
-import { useSocialPostOwned } from "@/features/social/hooks/use-social-post-owned";
+import { useIsSocialPostOwned } from "@/features/social/hooks/use-is-social-post-owned";
 import { useIsSuperAdmin } from "@/features/auth/hooks/use-is-super-admin";
 import { useIsChannelMuted } from "@/features/auth/hooks/use-is-channel-muted";
 import { useMuteChannel } from "@/features/channels/mutations/use-mute-channel";
@@ -28,7 +28,7 @@ export const SocialPostMenu = ({ socialPost }: { socialPost: SocialPost }) => {
   const muteUser = useMuteChannel();
   const unmuteUser = useUnmuteChannel();
   const isSuperAdmin = useIsSuperAdmin();
-  const isOwned = useSocialPostOwned(socialPost);
+  const isOwned = useIsSocialPostOwned(socialPost);
   const hasMuted = useIsChannelMuted(socialPost.userId);
 
   if (!me) {

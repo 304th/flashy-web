@@ -7,228 +7,49 @@ import * as ScrollAreaPrimitives from "@radix-ui/react-scroll-area";
 import * as RadixSelectPrimitives from "@radix-ui/react-select";
 import { Slottable } from "@radix-ui/react-slot";
 import {
-  RemixiconComponentType,
-  RiArrowDownSLine,
-  RiCheckLine,
-} from "@remixicon/react";
+  ChevronDown,
+  Check,
+  type LucideIcon,
+} from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import type { PolymorphicComponentProps } from "@/lib/polymorphic";
 import { cva, type VariantProps } from "class-variance-authority";
 
-export const selectVariants = cva({
-  slots: {
-    triggerRoot: [
-      // base
-      "group/trigger min-w-0 shrink-0 bg-bg-white-0 shadow-regular-xs outline-none ring-1 ring-inset ring-stroke-soft-200",
-      "text-paragraph-sm text-text-strong-950",
-      "flex items-center text-left",
-      "transition duration-200 ease-out",
-      // hover
-      "hover:bg-bg-weak-50 hover:ring-transparent",
-      // focus
-      "focus:shadow-button-important-focus focus:outline-none focus:ring-stroke-strong-950",
-      "focus:text-text-strong-950 data-[placeholder]:focus:text-text-strong-950",
-      // disabled
-      "disabled:pointer-events-none disabled:bg-bg-weak-50 disabled:text-text-disabled-300 disabled:shadow-none disabled:ring-transparent data-[placeholder]:disabled:text-text-disabled-300",
-      // placeholder state
-      "data-[placeholder]:text-text-sub-600",
-    ],
-    triggerArrow: [
-      // base
-      "ml-auto size-5 shrink-0",
-      "transition duration-200 ease-out",
-      // placeholder state
-      "group-data-[placeholder]/trigger:text-text-soft-400",
-      // filled state
-      "text-text-sub-600",
-      // hover
-      "group-hover/trigger:text-text-sub-600 group-data-[placeholder]/trigger:group-hover:text-text-sub-600",
-      // focus
-      "group-focus/trigger:text-text-strong-950 group-data-[placeholder]/trigger:group-focus/trigger:text-text-strong-950",
-      // disabled
-      "group-disabled/trigger:text-text-disabled-300 group-data-[placeholder]/trigger:group-disabled/trigger:text-text-disabled-300",
-      // open
-      "group-data-[state=open]/trigger:rotate-180",
-    ],
-    triggerIcon: [
-      // base
-      "h-5 w-auto min-w-0 shrink-0 object-contain text-text-sub-600",
-      "transition duration-200 ease-out",
-      // placeholder state
-      "group-data-[placeholder]/trigger:text-text-soft-400",
-      // hover
-      "group-hover/trigger:text-text-sub-600 group-data-[placeholder]/trigger:group-hover:text-text-sub-600",
-      // disabled
-      "group-disabled/trigger:text-text-disabled-300 group-data-[placeholder]/trigger:group-disabled/trigger:text-text-disabled-300",
-      "group-disabled/trigger:[&:not(.remixicon)]:opacity-[.48]",
-    ],
-    selectItemIcon: [
-      "size-5 shrink-0 bg-size-[1.25rem] text-text-sub-600",
-      // 'group-has-[&]-ml-0.5',
-      // disabled
-      "[[data-disabled]_&:not(.remixicon)]:opacity-[.48] [[data-disabled]_&]:text-text-disabled-300",
-    ],
-  },
-  variants: {
-    size: {
-      medium: {},
-      small: {},
-      xsmall: {},
-    },
-    variant: {
-      default: {
-        triggerRoot: "w-full",
+export const selectVariants = cva(
+  // base styles
+  "group/trigger cursor-pointer min-w-0 shrink-0 bg-base-200 shadow-regular-xs outline-none ring-1 ring-base-400 text-paragraph-sm flex items-center text-left transition duration-200 ease-out hover:bg-base-300 hover:ring-base-600 focus:shadow-button-important-focus focus:outline-none focus:ring-stroke-strong-950 focus:text-text-strong-950 data-[placeholder]:focus:text-text-strong-950 disabled:pointer-events-none disabled:bg-bg-weak-50 disabled:text-text-disabled-300 disabled:shadow-none disabled:ring-transparent data-[placeholder]:disabled:text-text-disabled-300 data-[placeholder]:text-text-sub-600",
+  {
+    variants: {
+      size: {
+        medium: "h-10 min-h-10 gap-2 rounded-[10px] pl-3 pr-2.5",
+        small: "h-9 min-h-9 gap-2 rounded-lg pl-2.5 pr-2",
+        xsmall: "h-8 min-h-8 gap-1.5 rounded-lg pl-2 pr-1.5",
       },
-      compact: {
-        triggerRoot: "w-auto",
+      variant: {
+        default: "w-full",
+        compact: "w-auto h-10 gap-1 rounded-[10px] pl-3 pr-2.5",
+        compactForInput: "w-auto rounded-none shadow-none ring-0 focus:bg-bg-weak-50 focus:shadow-none focus:ring-0 focus:ring-transparent pl-2.5 pr-2",
+        inline: "h-5 min-h-5 w-auto gap-0 rounded-none bg-transparent p-0 text-text-sub-600 shadow-none ring-0 hover:bg-transparent hover:text-text-strong-950 focus:shadow-none data-[state=open]:text-text-strong-950",
       },
-      compactForInput: {
-        triggerRoot: [
-          // base
-          "w-auto rounded-none shadow-none ring-0",
-          // focus
-          "focus:bg-bg-weak-50 focus:shadow-none focus:ring-0 focus:ring-transparent",
-        ],
-      },
-      inline: {
-        triggerRoot: [
-          // base
-          "h-5 min-h-5 w-auto gap-0 rounded-none bg-transparent p-0 text-text-sub-600 shadow-none ring-0",
-          // hover
-          "hover:bg-transparent hover:text-text-strong-950",
-          // focus
-          "focus:shadow-none",
-          // open
-          "data-[state=open]:text-text-strong-950",
-        ],
-        triggerIcon: [
-          // base
-          "mr-1.5 text-text-soft-400",
-          // hover
-          "group-hover/trigger:text-text-sub-600",
-          // open
-          "group-data-[state=open]/trigger:text-text-sub-600",
-        ],
-        triggerArrow: [
-          // base
-          "ml-0.5",
-          // hover
-          "group-hover/trigger:text-text-strong-950",
-          // open
-          "group-data-[state=open]/trigger:text-text-strong-950",
-        ],
-        selectItemIcon:
-          "text-text-soft-400 group-hover/trigger:text-text-sub-600",
+      hasError: {
+        true: "ring-error-base focus:shadow-button-error-focus focus:ring-error-base",
+        false: "",
       },
     },
-    hasError: {
-      true: {
-        triggerRoot: [
-          // base
-          "ring-error-base",
-          // focus
-          "focus:shadow-button-error-focus focus:ring-error-base",
-        ],
-      },
-    },
-  },
-  compoundVariants: [
-    //#region default
-    {
-      size: "medium",
+    defaultVariants: {
       variant: "default",
-      class: {
-        triggerRoot: "h-10 min-h-10 gap-2 rounded-[10px] pl-3 pr-2.5",
-      },
-    },
-    {
-      size: "small",
-      variant: "default",
-      class: {
-        triggerRoot: "h-9 min-h-9 gap-2 rounded-lg pl-2.5 pr-2",
-      },
-    },
-    {
-      size: "xsmall",
-      variant: "default",
-      class: {
-        triggerRoot: "h-8 min-h-8 gap-1.5 rounded-lg pl-2 pr-1.5",
-      },
-    },
-    //#endregion
-
-    //#region compact
-    {
       size: "medium",
-      variant: "compact",
-      class: {
-        triggerRoot: "h-10 gap-1 rounded-[10px] pl-3 pr-2.5",
-        triggerIcon: "-ml-0.5",
-        selectItemIcon: "group-has-[&]/trigger:-ml-0.5",
-      },
+      hasError: false,
     },
-    {
-      size: "small",
-      variant: "compact",
-      class: {
-        triggerRoot: "h-9 gap-1 rounded-lg pl-3 pr-2",
-        triggerIcon: "-ml-0.5",
-        selectItemIcon: "group-has-[&]/trigger:-ml-0.5",
-      },
-    },
-    {
-      size: "xsmall",
-      variant: "compact",
-      class: {
-        triggerRoot: "h-8 gap-0.5 rounded-lg pl-2.5 pr-1.5",
-        triggerIcon: "-ml-0.5 size-4",
-        selectItemIcon: "size-4 bg-size-[1rem] group-has-[&]/trigger:-ml-0.5",
-      },
-    },
-    //#endregion
+  }
+);
 
-    //#region compactForInput
-    {
-      size: "medium",
-      variant: "compactForInput",
-      class: {
-        triggerRoot: "pl-2.5 pr-2",
-        triggerIcon: "mr-2",
-        triggerArrow: "ml-0.5",
-      },
-    },
-    {
-      size: "small",
-      variant: "compactForInput",
-      class: {
-        triggerRoot: "px-2",
-        triggerIcon: "mr-2",
-        triggerArrow: "ml-0.5",
-      },
-    },
-    {
-      size: "xsmall",
-      variant: "compactForInput",
-      class: {
-        triggerRoot: "pl-2 pr-1.5",
-        triggerIcon: "mr-1.5 size-4",
-        triggerArrow: "ml-0.5",
-        selectItemIcon: "size-4 bg-size-[1rem]",
-      },
-    },
-    //#endregion
-  ],
-  defaultVariants: {
-    variant: "default",
-    size: "medium",
-  },
-});
-
-type SelectContextType = Pick<
-  VariantProps<typeof selectVariants>,
-  "variant" | "size" | "hasError"
->;
+type SelectContextType = {
+  size?: "medium" | "small" | "xsmall";
+  variant?: "default" | "compact" | "compactForInput" | "inline";
+  hasError?: boolean;
+};
 
 const SelectContext = React.createContext<SelectContextType>({
   size: "medium",
@@ -273,7 +94,7 @@ const SelectTrigger = React.forwardRef<
 >(({ className, children, ...rest }, forwardedRef) => {
   const { size, variant, hasError } = useSelectContext();
 
-  const { triggerRoot, triggerArrow } = selectVariants({
+  const triggerClassName = selectVariants({
     size,
     variant,
     hasError,
@@ -282,12 +103,12 @@ const SelectTrigger = React.forwardRef<
   return (
     <RadixSelectPrimitives.Trigger
       ref={forwardedRef}
-      className={triggerRoot({ class: className })}
+      className={cn(triggerClassName, className)}
       {...rest}
     >
       <Slottable>{children}</Slottable>
       <RadixSelectPrimitives.Icon asChild>
-        <RiArrowDownSLine className={triggerArrow()} />
+        <ChevronDown className="ml-auto size-5 shrink-0 transition duration-200 ease-out group-data-[placeholder]/trigger:text-text-soft-400 text-text-sub-600 group-hover/trigger:text-text-sub-600 group-data-[placeholder]/trigger:group-hover:text-text-sub-600 group-focus/trigger:text-text-strong-950 group-data-[placeholder]/trigger:group-focus/trigger:text-text-strong-950 group-disabled/trigger:text-text-disabled-300 group-data-[placeholder]/trigger:group-disabled/trigger:text-text-disabled-300 group-data-[state=open]/trigger:rotate-180" />
       </RadixSelectPrimitives.Icon>
     </RadixSelectPrimitives.Trigger>
   );
@@ -303,9 +124,9 @@ function TriggerIcon<T extends React.ElementType = "div">({
   const Component = as || "div";
 
   const { size, variant, hasError } = useSelectContext();
-  const { triggerIcon } = selectVariants({ size, variant, hasError });
+  const variants = selectVariants({ size, variant, hasError });
 
-  return <Component className={triggerIcon({ class: className })} {...rest} />;
+  return <Component className={cn("h-5 w-auto min-w-0 shrink-0 object-contain text-text-sub-600 transition duration-200 ease-out group-data-[placeholder]/trigger:text-text-soft-400 group-hover/trigger:text-text-sub-600 group-data-[placeholder]/trigger:group-hover:text-text-sub-600 group-disabled/trigger:text-text-disabled-300 group-data-[placeholder]/trigger:group-disabled/trigger:text-text-disabled-300 group-disabled/trigger:[&:not(.remixicon)]:opacity-[.48]", className)} {...rest} />;
 }
 TriggerIcon.displayName = SELECT_TRIGGER_ICON_NAME;
 
@@ -329,8 +150,8 @@ const SelectContent = React.forwardRef<
         ref={forwardedRef}
         className={cn(
           // base
-          `relative z-50 overflow-hidden rounded-2xl bg-bg-white-0
-          shadow-regular-md ring-1 ring-inset ring-stroke-soft-200`,
+          `relative z-50 overflow-hidden rounded-2xl bg-base-200
+          shadow-regular-md ring-1 ring-inset ring-base-600`,
           // widths
           `min-w-(--radix-select-trigger-width)
           max-w-[max(var(--radix-select-trigger-width),320px)]`,
@@ -387,7 +208,7 @@ const SelectItem = React.forwardRef<
         `data-disabled:pointer-events-none
         data-[disabled]:text-text-disabled-300`,
         // hover, focus
-        "data-[highlighted]:bg-bg-weak-50 data-highlighted:outline-0",
+        "data-[highlighted]:bg-base-400 data-highlighted:outline-0 hover:border-base-600",
         {
           "gap-1.5 pr-[34px]": size === "xsmall",
         },
@@ -415,7 +236,7 @@ const SelectItem = React.forwardRef<
         </span>
       </RadixSelectPrimitives.ItemText>
       <RadixSelectPrimitives.ItemIndicator asChild>
-        <RiCheckLine
+        <Check
           className="absolute right-2 top-1/2 size-5 shrink-0 -translate-y-1/2
             text-text-sub-600"
         />
@@ -432,12 +253,12 @@ function SelectItemIcon<T extends React.ElementType>({
   ...rest
 }: PolymorphicComponentProps<T>) {
   const { size, variant } = useSelectContext();
-  const { selectItemIcon } = selectVariants({ size, variant });
+  const variants = selectVariants({ size, variant });
 
   const Component = as || "div";
 
   return (
-    <Component className={selectItemIcon({ class: className })} {...rest} />
+    <Component className={cn("size-5 shrink-0 bg-size-[1.25rem] text-text-sub-600 [[data-disabled]_&:not(.remixicon)]:opacity-[.48] [[data-disabled]_&]:text-text-disabled-300", className)} {...rest} />
   );
 }
 
@@ -464,7 +285,7 @@ function SelectRoot({
 }: React.ComponentPropsWithoutRef<typeof SelectPrimitives.Root> & {
   className?: string;
   id?: string;
-  triggerIcon?: RemixiconComponentType;
+  triggerIcon?: LucideIcon;
   placeholder?: React.ReactNode;
 }) {
   return (

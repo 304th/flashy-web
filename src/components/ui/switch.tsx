@@ -9,7 +9,7 @@ const SwitchRoot = React.forwardRef<
   return (
     <SwitchPrimitives.Root
       className={cn(
-        `group/switch block h-6 w-10 shrink-0 p-0.5 outline-none
+        `group/switch block h-8 w-10 shrink-0 p-0.5 outline-none
         focus:outline-none`,
         className,
       )}

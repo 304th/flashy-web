@@ -3,6 +3,7 @@ import { api } from "@/services/api";
 import { videoPostSchema } from "@/features/video/schemas/video-post.schema";
 
 export interface VideoSearchParams {
+  search?: string;
   limit?: number;
   sort?: string;
   onlyFree?: boolean;

@@ -122,7 +122,7 @@ declare global {
     views: number;
     price: number;
     username: string;
-    userimage: string;
+    userimage?: string;
     createdAt: number;
   }
 

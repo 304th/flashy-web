@@ -4,10 +4,30 @@ import type { LikeButtonButtonRender } from "@/features/reactions/components/lik
 import { useAddReaction } from "@/features/reactions/queries/use-add-reaction";
 import { useRemoveReaction } from "@/features/reactions/queries/use-remove-reaction";
 
+// Type guard to distinguish between SocialPost and VideoPost
+const isVideoPost = (post: Reactable): post is VideoPost => {
+  return 'videoId' in post && 'hostID' in post;
+};
+
+const isSocialPost = (post: Reactable): post is SocialPost => {
+  return 'description' in post && 'images' in post;
+};
+
 export interface ReactableLikeButtonProps {
   post: Reactable;
   children: LikeButtonButtonRender;
 }
+
+const getPostType = (post: Reactable): PostType => {
+  if (isVideoPost(post)) {
+    return "video";
+  }
+  if (isSocialPost(post)) {
+    return "social";
+  }
+
+  return "social";
+};
 
 export const ReactableLikeButton = ({
   post,
@@ -17,6 +37,7 @@ export const ReactableLikeButton = ({
   const reactionsCount = useReactionsCount(post);
   const addReaction = useAddReaction();
   const removeReaction = useRemoveReaction();
+  const postType = getPostType(post);
 
   return (
     <>
@@ -26,14 +47,14 @@ export const ReactableLikeButton = ({
         onLike: () => {
           addReaction.mutate({
             id: post._id,
-            postType: "social", // FIXME: add logic for other post types
+            postType,
             reactionType: "like",
           });
         },
         onUnlike: () => {
           removeReaction.mutate({
             id: post._id,
-            postType: "social", // FIXME: add logic for other post types
+            postType,
             reactionType: "like",
           });
         },

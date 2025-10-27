@@ -19,7 +19,7 @@ export const VideoPostDescription = ({
 };
 
 export const VideoViews = ({ views }: { views: VideoPost["views"] }) => {
-  return <span>{views} Views</span>;
+  return <span>{views || 0} Views</span>;
 };
 
 export const VideoTimestamp = ({

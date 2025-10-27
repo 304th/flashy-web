@@ -14,7 +14,7 @@ export type LikeButtonButtonRender =
   | ((data: LikeButtonCoreProps) => ReactNode)
   | (() => ReactNode);
 
-export const LikeButton = ({ post }: { post: Reactable | Likeable }) => {
+export const LikeButton = ({ post, className }: { post: Reactable | Likeable; className?: string }) => {
   if (isReactable(post)) {
     return (
       <ReactableLikeButton post={post}>
@@ -22,6 +22,7 @@ export const LikeButton = ({ post }: { post: Reactable | Likeable }) => {
           <LikeButtonCore
             isLiked={isLiked}
             likesCount={likesCount}
+            className={className}
             onLike={onLike}
             onUnlike={onUnlike}
           />
@@ -36,6 +37,7 @@ export const LikeButton = ({ post }: { post: Reactable | Likeable }) => {
         <LikeButtonCore
           isLiked={isLiked}
           likesCount={likesCount}
+          className={className}
           onLike={onLike}
           onUnlike={onUnlike}
         />

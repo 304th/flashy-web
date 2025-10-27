@@ -44,6 +44,10 @@ import {
   VideoCreateModal,
   VideoCreateModalProps,
 } from "@/features/video/components/video-create-modal/video-create-modal";
+import {
+  TipModal,
+  TipModalProps,
+} from "@/features/wallet/components/tip-modal/tip-modal";
 
 const modalsConfig = {
   LoginModal,
@@ -57,6 +61,7 @@ const modalsConfig = {
   ProfileSettingsModal,
   SellKeyModal,
   VideoCreateModal,
+  TipModal,
 };
 
 export type ModalPropsTypes =
@@ -103,7 +108,11 @@ export type ModalPropsTypes =
   | {
       type: "VideoCreateModal";
       props: VideoCreateModalProps;
-    };
+    }
+  | {
+    type: "TipModal";
+    props: TipModalProps;
+  };
 
 export const ModalsProvider = ({ children }: PropsWithChildren<object>) => (
   <ModalCenterProvider config={modalsConfig}>

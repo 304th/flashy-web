@@ -1,11 +1,12 @@
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import { VideoPlayer } from "@/features/video/components/video-player/video-player";
 import { VideoTimestamp } from "@/features/video/components/video-post/video-post-description";
 import { CommentsFeed } from "@/features/comments/components/comments-feed/comments-feed";
 import { CommentSend } from "@/features/comments/components/comment-send/comment-send";
 import { UserProfile } from "@/components/ui/user-profile";
 import { useVideoPostOwned } from "@/features/video/hooks/use-video-post-owned";
-import { Button } from "@/components/ui/button";
+import { VideoWatchOptions } from "@/features/video/components/video-watch/video-watch-options";
 
 export const VideoWatch = ({ videoPost }: { videoPost: VideoPost }) => {
   const [replyComment, setReplyComment] = useState<CommentPost | null>(null);
@@ -26,6 +27,7 @@ export const VideoWatch = ({ videoPost }: { videoPost: VideoPost }) => {
           <VideoTimestamp createdAt={videoPost.createdAt} />
         </p>
       </div>
+      <VideoWatchOptions videoPost={videoPost} />
       <div className="flex w-full justify-between items-center">
         <UserProfile
           user={{

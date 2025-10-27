@@ -3,7 +3,7 @@
 import { Loadable } from "@/components/ui/loadable";
 import { Button } from "@/components/ui/button";
 import { UserProfile } from "@/components/ui/user-profile";
-import { ShareIcon } from "lucide-react";
+import { ShareIcon } from "@/components/ui/icons/share2";
 import { ChannelMenu } from "@/features/channels/components/channel-header/channel-menu";
 import { ChannelSubscribeButton } from "@/features/channels/components/channel-subscribe-button/channel-subscribe-button";
 import { ChannelSubscriptions } from "@/features/channels/components/channel-subscriptions/channel-subscriptions";

@@ -123,6 +123,7 @@ declare global {
     price: number;
     username: string;
     userimage?: string;
+    reactions: Record<string, Record<string, Reaction>>;
     createdAt: number;
   }
 
@@ -171,10 +172,12 @@ declare global {
     _id: string;
   }
 
-  interface Reactable {
-    _id: string;
-    reactions: Record<string, Record<string, Reaction>>;
-  }
+  // interface Reactable {
+  //   _id: string;
+  //   reactions: Record<string, Record<string, Reaction>>;
+  // }
+
+  type Reactable = SocialPost | VideoPost;
 
   interface Likeable {
     _id: string;

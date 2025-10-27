@@ -4,6 +4,9 @@ import { createMutation, useOptimisticMutation } from "@/lib/query-toolkit-v2";
 import { useMe } from "@/features/auth/queries/use-me";
 import { socialFeedCollection } from "@/features/social/collections/social-feed";
 import { socialPostEntity } from "@/features/social/queries/use-social-post-by-id";
+import { videoPostEntity } from "@/features/video/entities/video-post.entity";
+import { videoSearchCollection } from "@/features/video/entities/video-search.collection";
+import { topVideosCollection } from "@/features/video/entities/top-videos.collection";
 
 export interface AddReactionParams {
   id: string;
@@ -39,22 +42,55 @@ export const addReactionToSocialPost =
     };
   };
 
+export const addReactionToVideoPost =
+  (author: Author) => (post: WritableDraft<Optimistic<VideoPost>>) => {
+    post.reactions = post.reactions || { like: {} };
+    post.reactions.like = post.reactions.like || {};
+
+    post.reactions.like[author.fbId] = {
+      fbId: author.fbId,
+      username: author.username,
+      userimage: author.userimage,
+    };
+  };
+
 export const useAddReaction = () => {
   const { data: author } = useMe();
 
   return useOptimisticMutation({
     mutation: addReaction,
     onOptimistic: async (channel, params) => {
-      return Promise.all([
-        channel(socialFeedCollection).update(
-          params.id,
-          addReactionToSocialPost(author!),
-        ),
-        channel(socialPostEntity).update(
-          params.id,
-          addReactionToSocialPost(author!),
-        ),
-      ]);
+      const updates = [];
+
+      if (params.postType === "social") {
+        updates.push(
+          channel(socialFeedCollection).update(
+            params.id,
+            addReactionToSocialPost(author!),
+          ),
+          channel(socialPostEntity).update(
+            params.id,
+            addReactionToSocialPost(author!),
+          ),
+        );
+      } else if (params.postType === "video") {
+        updates.push(
+          channel(videoPostEntity).update(
+            params.id,
+            addReactionToVideoPost(author!),
+          ),
+          channel(videoSearchCollection).update(
+            params.id,
+            addReactionToVideoPost(author!),
+          ),
+          channel(topVideosCollection).update(
+            params.id,
+            addReactionToVideoPost(author!),
+          ),
+        );
+      }
+
+      return Promise.all(updates);
     },
   });
 };

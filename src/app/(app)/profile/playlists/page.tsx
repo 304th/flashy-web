@@ -35,7 +35,7 @@ export default function ProfileVideoPage() {
         </Button>
       </div>
       <div className="flex gap-4 w-full justify-center">
-        <div className="flex gap-4 w-full  flex-wrap">
+        <div className="flex gap-4 w-full flex-wrap">
           <Loadable queries={[query as any]}>
             {() =>
               !playlists || playlists?.length > 0 ? (

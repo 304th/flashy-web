@@ -132,7 +132,7 @@ declare global {
     fbId: string;
     title: string;
     description?: string;
-    publishDate: number;
+    publishedDate: string;
     image: string;
     hostID: string;
     username: string;

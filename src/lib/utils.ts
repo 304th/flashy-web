@@ -13,15 +13,19 @@ export const notEmpty = <T>(obj: T | undefined): obj is T =>
       ? Object.keys(obj).length > 0 || (Array.isArray(obj) && obj.length > 0)
       : false;
 
-export const timeAgo = (timestamp: string) => {
-  const date = new Date(timestamp);
+export const timeAgo = (timestamp?: string | number) => {
+  if (!timestamp) {
+    return "";
+  }
+
+  const date = new Date(Number(timestamp));
   const secondsDiff = Math.floor((Date.now() - date.getTime()) / 1000);
 
   if (secondsDiff < 60 * 3) {
     return "Now";
   }
 
-  return formatDistanceToNow(new Date(timestamp), { addSuffix: true });
+  return formatDistanceToNow(new Date(Number(timestamp)), { addSuffix: true });
 };
 
 export const parseDomainName = (link: `http${string}`) =>

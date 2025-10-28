@@ -5,6 +5,7 @@ export const useVideosInPlaylist = (playlistId: string) => {
   return useLiveQuery({
     queryKey: ["videos", "playlist", playlistId],
     collection: videosInPlaylist,
+    getParams: () => ({ playlistId }),
     options: {
       enabled: Boolean(playlistId),
     },

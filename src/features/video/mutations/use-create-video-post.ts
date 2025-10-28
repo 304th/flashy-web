@@ -16,7 +16,7 @@ export interface CreateVideoPostParams {
   publishDate?: number;
 }
 
-const videoCreateMutation = createMutation<CreateVideoPostParams>({
+const videoCreateMutation = createMutation<CreateVideoPostParams, VideoPost>({
   write: async (params) => {
     return api
       .post("v2/story", {

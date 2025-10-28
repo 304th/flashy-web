@@ -124,6 +124,7 @@ declare global {
     username: string;
     userimage?: string;
     reactions: Record<string, Record<string, Reaction>>;
+    playlist?: Playlist;
     createdAt: number;
   }
 

@@ -7,14 +7,28 @@ import { CommentSend } from "@/features/comments/components/comment-send/comment
 import { UserProfile } from "@/components/ui/user-profile";
 import { useVideoPostOwned } from "@/features/video/hooks/use-video-post-owned";
 import { VideoWatchOptions } from "@/features/video/components/video-watch/video-watch-options";
+import { usePlaylistContext } from "@/features/video/components/video-playlist-context";
+import { useVideosInPlaylist } from "@/features/video/queries/use-videos-in-playlist";
 
 export const VideoWatch = ({ videoPost }: { videoPost: VideoPost }) => {
   const [replyComment, setReplyComment] = useState<CommentPost | null>(null);
   const isVideoOwned = useVideoPostOwned(videoPost);
+  const { autoplay, playNextVideo } = usePlaylistContext();
+  const { data: playlistVideos } = useVideosInPlaylist(videoPost.playlist?.fbId);
+
+  const handleVideoEnd = () => {
+    if (autoplay && videoPost.playlist?.fbId && playlistVideos) {
+      playNextVideo(videoPost._id, playlistVideos);
+    }
+  };
 
   return (
     <div className="flex flex-col w-full gap-4">
-      <VideoPlayer videoPost={videoPost} />
+      <VideoPlayer
+        key={videoPost._id}
+        videoPost={videoPost} 
+        onEnded={handleVideoEnd}
+      />
       <div className="flex flex-col w-full gap-2">
         <p className="text-white font-medium text-2xl">{videoPost.title}</p>
         {videoPost.description && (
@@ -23,7 +37,7 @@ export const VideoWatch = ({ videoPost }: { videoPost: VideoPost }) => {
           </p>
         )}
         <p className="text-white">
-          {videoPost.views || 0} views •
+          {videoPost.views || 0} views • {' '}
           <VideoTimestamp createdAt={videoPost.createdAt} />
         </p>
       </div>

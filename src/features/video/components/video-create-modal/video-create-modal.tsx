@@ -41,7 +41,7 @@ export const VideoCreateModal = ({
   onClose,
   ...props
 }: VideoCreateModalProps) => {
-  const [videoPublished, setVideoPublished] = useState(false);
+  const [publishedVideo, setPublishedVideo] = useState<VideoPost | null>(null);
   const createVideoPost = useCreateVideoPost();
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -100,7 +100,7 @@ export const VideoCreateModal = ({
                 uploadUrl: uploadUrl,
               });
 
-              await createVideoPost.mutateAsync({
+              const newVideo = await createVideoPost.mutateAsync({
                 title: params.title,
                 description: params.description,
                 price: 0,
@@ -113,7 +113,7 @@ export const VideoCreateModal = ({
               });
 
               if (params.status === "published") {
-                setVideoPublished(true);
+                setPublishedVideo(newVideo);
               } else {
                 onClose();
               }
@@ -125,14 +125,14 @@ export const VideoCreateModal = ({
                   <VideoFormUpload onClose={handleAccidentalClose} />
                 </motion.div>
               )}
-              {videoId && !videoPublished && (
+              {videoId && !publishedVideo && (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                   <VideoFormDetails onClose={handleAccidentalClose} />
                 </motion.div>
               )}
-              {videoPublished && (
+              {publishedVideo && (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                  <VideoCreateSuccess />
+                  <VideoCreateSuccess video={publishedVideo} />
                 </motion.div>
               )}
             </AnimatePresence>

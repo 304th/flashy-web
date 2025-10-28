@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
 import { motion } from "framer-motion";
+import { PlusIcon, EyeIcon, PlayIcon } from "lucide-react";
 import { Modal as ModalComponent } from "@/packages/modals";
 import { CloseButton } from "@/components/ui/close-button";
 import { useVideosInPlaylist } from "@/features/video/queries/use-videos-in-playlist";
@@ -7,7 +8,6 @@ import { Loadable } from "@/components/ui/loadable";
 import { VideoFeed } from "@/features/video/components/video-feed/video-feed";
 import { Button } from "@/components/ui/button";
 import { useModals } from "@/hooks/use-modals";
-import { PlusIcon } from "lucide-react";
 
 export interface PlaylistViewModalProps {
   playlist: Playlist;
@@ -37,7 +37,7 @@ export const PlaylistViewModal = ({
       <motion.div
         initial="hidden"
         animate="show"
-        className="relative flex flex-col gap-4 rounded-md"
+        className="relative flex flex-col gap-4 rounded-md bg-base-250"
       >
         <div
           className="relative w-full h-[200px] rounded-t-md overflow-hidden
@@ -65,17 +65,23 @@ export const PlaylistViewModal = ({
         <div
           className="grid grid-cols-1 sm:grid-cols-2 gap-4 px-4 items-stretch"
         >
-          <div className="flex flex-col gap-1 p-4 rounded-md bg-base-200 border">
+          <div className="relative flex flex-col gap-1 p-4 rounded-md bg-base-200 border">
             <p className="text-sm text-white/70">Views</p>
             <p className="text-3xl font-semibold text-white">
               {stats.totalViews.toLocaleString()}
             </p>
+            <div className="absolute top-3 right-3">
+              <EyeIcon size={18} />
+            </div>
           </div>
-          <div className="flex flex-col gap-1 p-4 rounded-md bg-base-200 border">
+          <div className="relative flex flex-col gap-1 p-4 rounded-md bg-base-200 border">
             <p className="text-sm text-white/70">Videos</p>
             <p className="text-3xl font-semibold text-white">
               {stats.videosCount.toLocaleString()}
             </p>
+            <div className="absolute top-3 right-3">
+              <PlayIcon size={18} />
+            </div>
           </div>
         </div>
         <div className="flex items-center justify-end px-4">

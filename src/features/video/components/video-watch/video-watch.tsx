@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { VideoPlayer } from "@/features/video/components/video-player/video-player";
 import { VideoTimestamp } from "@/features/video/components/video-post/video-post-description";
@@ -9,26 +9,51 @@ import { useVideoPostOwned } from "@/features/video/hooks/use-video-post-owned";
 import { VideoWatchOptions } from "@/features/video/components/video-watch/video-watch-options";
 import { usePlaylistContext } from "@/features/video/components/video-playlist-context";
 import { useVideosInPlaylist } from "@/features/video/queries/use-videos-in-playlist";
+import { useQueryParams } from "@/hooks/use-query-params";
+import {useWatchVideo} from "@/features/video/mutations/use-watch-video";
 
 export const VideoWatch = ({ videoPost }: { videoPost: VideoPost }) => {
   const [replyComment, setReplyComment] = useState<CommentPost | null>(null);
   const isVideoOwned = useVideoPostOwned(videoPost);
   const { autoplay, playNextVideo } = usePlaylistContext();
-  const { data: playlistVideos } = useVideosInPlaylist(videoPost.playlist?.fbId);
+  const currentPlaylistId = useQueryParams("playlistId");
+  const { data: playlistVideos } = useVideosInPlaylist(
+    currentPlaylistId || videoPost.playlist?.fbId,
+  );
+  const watchVideo = useWatchVideo();
 
+  const onEnded = useRef<any>(null);
+  const onFirstPlay = useRef<any>(null);
+
+  useEffect(() => {
+    onEnded.current = () => {
+      if (autoplay && videoPost.playlist?.fbId && playlistVideos) {
+        playNextVideo(videoPost._id, playlistVideos, videoPost.playlist?.fbId);
+      }
+    };
+  }, [videoPost, playlistVideos, playNextVideo]);
+
+  useEffect(() => {
+    onFirstPlay.current = () => {
+      watchVideo.mutate({ id: videoPost._id });
+    }
+  }, [videoPost, watchVideo]);
 
   const handleVideoEnd = () => {
-    if (autoplay && videoPost.playlist?.fbId && playlistVideos) {
-      playNextVideo(videoPost._id, playlistVideos);
-    }
+    onEnded.current?.();
   };
+
+  const handleVideoFirstPlay = () => {
+    onFirstPlay.current?.();
+  }
 
   return (
     <div className="flex flex-col w-full gap-4">
       <VideoPlayer
         key={videoPost._id}
-        videoPost={videoPost} 
-        onEnded={() => handleVideoEnd()}
+        videoPost={videoPost}
+        onEnded={handleVideoEnd}
+        onFirstPlay={handleVideoFirstPlay}
       />
       <div className="flex flex-col w-full gap-2">
         <p className="text-white font-medium text-2xl">{videoPost.title}</p>
@@ -38,7 +63,7 @@ export const VideoWatch = ({ videoPost }: { videoPost: VideoPost }) => {
           </p>
         )}
         <p className="text-white">
-          {videoPost.views || 0} views • {' '}
+          {videoPost.views || 0} views •{" "}
           <VideoTimestamp createdAt={videoPost.createdAt} />
         </p>
       </div>

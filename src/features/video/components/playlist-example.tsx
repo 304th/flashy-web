@@ -14,12 +14,18 @@ interface PlaylistExampleProps {
  * Example component showing how to navigate to a video with playlist context
  * This would typically be used in playlist cards or playlist view modals
  */
-export const PlaylistExample = ({ playlistId, playlistTitle, firstVideoId }: PlaylistExampleProps) => {
+export const PlaylistExample = ({
+  playlistId,
+  playlistTitle,
+  firstVideoId,
+}: PlaylistExampleProps) => {
   const router = useRouter();
 
   const playPlaylist = () => {
     // Navigate to the first video with playlist context
-    router.push(`/video/post?id=${firstVideoId}&playlist=${playlistId}&playlistTitle=${encodeURIComponent(playlistTitle)}`);
+    router.push(
+      `/video/post?id=${firstVideoId}&playlist=${playlistId}&playlistTitle=${encodeURIComponent(playlistTitle)}`,
+    );
   };
 
   return (

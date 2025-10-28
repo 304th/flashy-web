@@ -4,10 +4,17 @@ interface VideoPlayerProps {
   videoPost: VideoPost;
   onEnded?: () => void;
   onPlay?: () => void;
+  onFirstPlay?: () => void;
   onPause?: () => void;
 }
 
-export const VideoPlayer = ({ videoPost, onEnded, onPlay, onPause }: VideoPlayerProps) => {
+export const VideoPlayer = ({
+  videoPost,
+  onEnded,
+  onPlay,
+  onFirstPlay,
+  onPause,
+}: VideoPlayerProps) => {
   return (
     <div className="aspect-video bg-base-150">
       <ApiVideoPlayer
@@ -15,7 +22,7 @@ export const VideoPlayer = ({ videoPost, onEnded, onPlay, onPause }: VideoPlayer
         video={{ id: videoPost.videoId }}
         style={{ width: "100%", height: "100%" }}
         onEnded={onEnded}
-        onFirstPlay={() => {}}
+        onFirstPlay={onFirstPlay}
         onPlay={onPlay}
         onPause={onPause}
         autoplay={false}

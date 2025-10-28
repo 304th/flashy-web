@@ -296,7 +296,7 @@ export class LiveOptimisticUpdater<Entity>
 
   replaceAll(items: Entity[], state: Entity[]): Entity[] {
     return produce(state, (draft) => {
-      draft.splice(0, draft.length, ...items as Draft<Entity>[]);
+      draft.splice(0, draft.length, ...(items as Draft<Entity>[]));
     });
   }
 

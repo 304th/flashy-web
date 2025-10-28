@@ -6,7 +6,6 @@ import { Spinner } from "@/components/ui/spinner/spinner";
 import { Comment } from "@/features/comments/components/comment/comment";
 import { CommentFeedEmpty } from "@/features/comments/components/comments-feed/comment-feed-empty";
 import { useComments } from "@/features/comments/queries/use-comments";
-import { useCommentsCount } from "@/features/comments/queries/use-comments-count";
 
 export interface CommentsFeedProps {
   post: Commentable;
@@ -20,14 +19,13 @@ export const CommentsFeed = ({
   onCommentReply,
 }: CommentsFeedProps) => {
   const listRef = useRef<HTMLDivElement>(null);
-  const { data: commentsCount } = useCommentsCount(post._id);
   const { data: comments, query } = useComments(post._id);
 
   useEffect(() => {
-    if (commentsCount) {
+    if (comments?.length) {
       listRef.current?.scrollTo?.({ top: 0, behavior: "smooth" });
     }
-  }, [commentsCount]);
+  }, [comments?.length]);
 
   return (
     <div className="flex flex-col bg-base-150">
@@ -49,7 +47,7 @@ export const CommentsFeed = ({
           return (
             <div className="relative flex flex-col bg-base-100">
               <div className="flex w-full px-4 pt-4">
-                <Separator>{commentsCount} comments</Separator>
+                <Separator>{comments?.length} comments</Separator>
               </div>
               <div
                 ref={listRef}

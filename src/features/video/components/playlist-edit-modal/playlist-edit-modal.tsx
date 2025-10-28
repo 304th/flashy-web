@@ -58,9 +58,7 @@ export const PlaylistEditModal = ({
             <CloseButton />
           </div>
           <div className="flex flex-col w-full justify-center">
-            <p className="text-2xl font-extrabold text-white">
-              Edit playlist
-            </p>
+            <p className="text-2xl font-extrabold text-white">Edit playlist</p>
           </div>
         </div>
         <Form {...form}>

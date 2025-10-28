@@ -13,7 +13,7 @@ const updatePlaylistVideosMutation = createMutation<UpdatePlaylistVideosParams>(
       return api
         .put(`v2/series/updateVideos/${params.playlistId}`, {
           json: {
-            videoIds: params.videos.map(video => video.fbId),
+            videoIds: params.videos.map((video) => video.fbId),
           },
         })
         .json();

@@ -28,7 +28,9 @@ export const timeAgo = (timestamp?: string | number) => {
   try {
     return formatDistanceToNow(new Date(timestamp), { addSuffix: true });
   } catch {
-    return formatDistanceToNow(new Date(Number(timestamp)), { addSuffix: true }); //TODO: fix this
+    return formatDistanceToNow(new Date(Number(timestamp)), {
+      addSuffix: true,
+    }); //TODO: fix this
   }
 };
 

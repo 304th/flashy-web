@@ -11,12 +11,12 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ImageUpload } from "@/components/ui/image-upload";
 
-export const PlaylistEditFormDetails = ({ 
-  playlist, 
-  onClose 
-}: { 
-  playlist: Playlist; 
-  onClose: () => void; 
+export const PlaylistEditFormDetails = ({
+  playlist,
+  onClose,
+}: {
+  playlist: Playlist;
+  onClose: () => void;
 }) => {
   const form = useFormContext();
   const title = form.watch("title");

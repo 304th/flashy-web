@@ -27,11 +27,14 @@ export const useUpdatePlaylist = () => {
   return useOptimisticMutation({
     mutation: playlistCreateMutation,
     onOptimistic: async (ch, params) => {
-      return ch(profilePlaylistsCollection).update(params.playlistId, (playlist) => {
-        playlist.title = params.title;
-        playlist.description = params.description;
-        playlist.image = params.thumbnail;
-      });
+      return ch(profilePlaylistsCollection).update(
+        params.playlistId,
+        (playlist) => {
+          playlist.title = params.title;
+          playlist.description = params.description;
+          playlist.image = params.thumbnail;
+        },
+      );
     },
   });
 };

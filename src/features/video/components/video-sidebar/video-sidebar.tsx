@@ -9,11 +9,15 @@ interface VideoSidebarProps {
   onClose?: () => void;
 }
 
-export const VideoSidebar = ({ playlistId, playlistTitle, onClose }: VideoSidebarProps) => {
+export const VideoSidebar = ({
+  playlistId,
+  playlistTitle,
+  onClose,
+}: VideoSidebarProps) => {
   return (
     <div className="sticky top-4 flex flex-col gap-6">
       {playlistId ? (
-        <VideoPlaylist 
+        <VideoPlaylist
           playlistId={playlistId}
           playlistTitle={playlistTitle}
           onClose={onClose}

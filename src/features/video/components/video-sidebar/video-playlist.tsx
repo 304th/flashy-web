@@ -17,9 +17,10 @@ interface VideoPlaylistProps {
 }
 
 export const VideoPlaylist = ({ playlistId, playlistTitle, onClose }: VideoPlaylistProps) => {
-  const { data: playlistVideos, query } = useVideosInPlaylist(playlistId);
   const { autoplay, setAutoplay } = usePlaylistContext();
   const currentVideoId = useQueryParams("id");
+  const currentPlaylistId = useQueryParams("playlistId");
+  const { data: playlistVideos, query } = useVideosInPlaylist(currentPlaylistId || playlistId);
 
   return (
     <div className="flex flex-col gap-3 border p-2 rounded-md overflow-y-scroll max-h-[700px]">
@@ -65,7 +66,7 @@ export const VideoPlaylist = ({ playlistId, playlistTitle, onClose }: VideoPlayl
                     horizontal 
                     className={video._id === currentVideoId ? 'opacity-100' : 'opacity-90 hover:opacity-100'}
                   />
-                  <div className="absolute top-3 left-3 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                  <div className="absolute flex items-center justify-center top-3 left-3 w-6 h-6 bg-black/70 text-white text-xs px-2 py-1 rounded">
                     {index + 1}
                   </div>
                 </div>

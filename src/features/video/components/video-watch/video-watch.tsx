@@ -16,6 +16,7 @@ export const VideoWatch = ({ videoPost }: { videoPost: VideoPost }) => {
   const { autoplay, playNextVideo } = usePlaylistContext();
   const { data: playlistVideos } = useVideosInPlaylist(videoPost.playlist?.fbId);
 
+
   const handleVideoEnd = () => {
     if (autoplay && videoPost.playlist?.fbId && playlistVideos) {
       playNextVideo(videoPost._id, playlistVideos);
@@ -27,7 +28,7 @@ export const VideoWatch = ({ videoPost }: { videoPost: VideoPost }) => {
       <VideoPlayer
         key={videoPost._id}
         videoPost={videoPost} 
-        onEnded={handleVideoEnd}
+        onEnded={() => handleVideoEnd()}
       />
       <div className="flex flex-col w-full gap-2">
         <p className="text-white font-medium text-2xl">{videoPost.title}</p>

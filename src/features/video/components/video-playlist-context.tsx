@@ -42,7 +42,7 @@ export const PlaylistProvider = ({ children }: PlaylistProviderProps) => {
     const currentIndex = videos.findIndex(video => video._id === currentVideoId);
     if (currentIndex !== -1 && currentIndex < videos.length - 1) {
       const nextVideo = videos[currentIndex + 1];
-      router.push(`/video/post?id=${nextVideo._id}`);
+      router.push(`/video/post?id=${nextVideo._id}&playlistId=${playlistId}`);
     }
   }, [router]);
 
@@ -50,7 +50,7 @@ export const PlaylistProvider = ({ children }: PlaylistProviderProps) => {
     const currentIndex = videos.findIndex(video => video._id === currentVideoId);
     if (currentIndex > 0) {
       const previousVideo = videos[currentIndex - 1];
-      router.push(`/video/post?id=${previousVideo._id}`);
+      router.push(`/video/post?id=${previousVideo._id}&playlistId=${playlistId}`);
     }
   }, [router]);
 

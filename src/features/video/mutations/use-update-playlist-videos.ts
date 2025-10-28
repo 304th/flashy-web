@@ -4,11 +4,16 @@ import { profilePlaylistsCollection } from "@/features/profile/queries/use-profi
 
 export interface UpdatePlaylistVideosParams {
   playlistId: string;
+  videoIds: string[];
 }
 
 const updatePlaylistVideosMutation = createMutation<UpdatePlaylistVideosParams>({
   write: async (params) => {
-    return api.delete(`v2/series/updateVideos/${params.playlistId}`).json();
+    return api.put(`v2/series/updateVideos/${params.playlistId}`, {
+      json: {
+        videoIds: params.videoIds,
+      }
+    }).json();
   },
 });
 

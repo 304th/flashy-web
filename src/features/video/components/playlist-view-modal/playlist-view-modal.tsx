@@ -5,6 +5,9 @@ import { CloseButton } from "@/components/ui/close-button";
 import { useVideosInPlaylist } from "@/features/video/queries/use-videos-in-playlist";
 import { Loadable } from "@/components/ui/loadable";
 import { VideoFeed } from "@/features/video/components/video-feed/video-feed";
+import { Button } from "@/components/ui/button";
+import { useModals } from "@/hooks/use-modals";
+import {PlusIcon} from "lucide-react";
 
 export interface PlaylistViewModalProps {
   playlist: Playlist;
@@ -17,6 +20,7 @@ export const PlaylistViewModal = ({
   ...props
 }: PlaylistViewModalProps) => {
   const { data: videos, query } = useVideosInPlaylist(playlist.fbId);
+  const { openModal } = useModals();
 
   const stats = useMemo(() => {
     const totalViews = (videos || []).reduce(
@@ -55,7 +59,7 @@ export const PlaylistViewModal = ({
             <CloseButton />
           </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 px-4 items-stretch">
           <div className="flex flex-col gap-1 p-4 rounded-md bg-base-200 border">
             <p className="text-sm text-white/70">Views</p>
             <p className="text-3xl font-semibold text-white">
@@ -69,9 +73,20 @@ export const PlaylistViewModal = ({
             </p>
           </div>
         </div>
-        <div className="flex flex-col gap-4 p-4">
+        <div className="flex items-center justify-end px-4">
+          <Button
+            variant="secondary"
+            onClick={() =>
+              openModal("PlaylistUpdateVideosModal", { playlist }, { subModal: true })
+            }
+          >
+            <PlusIcon />
+            Add videos
+          </Button>
+        </div>
+        <div className="flex flex-col gap-4 px-4 pb-4">
           <Loadable queries={[query as any]} fullScreenForDefaults>
-            {() => <VideoFeed query={query} videos={videos as any} />}
+            {() => <VideoFeed query={query} videos={videos} horizontal className="flex! flex-col! overflow-y-scroll h-[200px]" />}
           </Loadable>
         </div>
       </motion.div>

@@ -16,7 +16,7 @@ export const VideoPost = ({
     <div
       className={`group relative flex flex-col gap-2 w-full items-center
         bg-[linear-gradient(180deg,#151515_0%,#151515_0.01%,#33333320_100%)]
-        ${className}`}
+        ${className} rounded`}
     >
       <Link
         href={`/video/post?id=${videoPost._id}`}

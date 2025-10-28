@@ -6,17 +6,21 @@ import { VideoPost } from "@/features/video/components/video-post/video-post";
 export const VideoFeed = ({
   query,
   videos,
+  horizontal,
+  className,
 }: {
   query: any;
   videos?: Optimistic<VideoPost>[];
+  horizontal?: boolean;
+  className?: string;
 }) => {
   return (
     <Loadable queries={[query as any]} fullScreenForDefaults>
       {() =>
         videos && videos.length > 0 ? (
           <div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3
-              xl:grid-cols-4 gap-4 w-full"
+            className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3
+              xl:grid-cols-4 gap-4 w-full ${className}`}
           >
             <AnimatePresence initial={false} mode="popLayout">
               {!videos?.length ? (
@@ -30,7 +34,7 @@ export const VideoFeed = ({
                     exit={{ opacity: 0 }}
                     layoutId={`profile-video-${videoPost._optimisticId || videoPost._id}`}
                   >
-                    <VideoPost videoPost={videoPost} />
+                    <VideoPost videoPost={videoPost} horizontal={horizontal} />
                   </motion.div>
                 ))
               )}

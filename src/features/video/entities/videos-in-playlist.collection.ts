@@ -11,13 +11,9 @@ export const videosInPlaylist = createCollection<
   VideosInPlaylistParams
 >({
   async sourceFrom(params) {
-    debugger
-    const s = await api
+    return api
       .get(`v2/seriesStories/${params.playlistId}/list`)
       .json<VideoPost[]>();
-
-    debugger
-    return s
   },
   schema: videoPostSchema,
   name: "videosInPlaylist",

@@ -118,10 +118,10 @@ export type ModalPropsTypes =
       type: "TipModal";
       props: TipModalProps;
     }
-    | {
-    type: "PlaylistCreateModal",
-    props: PlaylistCreateModalProps;
-  }
+  | {
+      type: "PlaylistCreateModal";
+      props: PlaylistCreateModalProps;
+    };
 
 export const ModalsProvider = ({ children }: PropsWithChildren<object>) => (
   <ModalCenterProvider config={modalsConfig}>

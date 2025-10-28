@@ -137,7 +137,6 @@ declare global {
     hostID: string;
     username: string;
     userimage?: string;
-    createdAt: number;
   }
 
   interface Reaction {

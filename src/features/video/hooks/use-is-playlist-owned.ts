@@ -1,12 +1,12 @@
 import { useMemo } from "react";
 import { useMe } from "@/features/auth/queries/use-me";
 
-export const useIsSocialPostOwned = (socialPost: SocialPost) => {
+export const useIsPlaylistOwned = (playlist: Playlist) => {
   const { data: me } = useMe();
 
   return useMemo(() => {
     if (!me) return false;
 
-    return me.fbId === socialPost.userId;
-  }, [socialPost, me]);
+    return me.fbId === playlist.hostID;
+  }, [playlist, me]);
 };

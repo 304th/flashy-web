@@ -8,8 +8,8 @@ import { Modal as ModalComponent } from "@/packages/modals";
 import { CloseButton } from "@/components/ui/close-button";
 import { createSignedUploadUrlMutation } from "@/features/common/mutations/use-create-signed-upload-url";
 import { uploadImage } from "@/features/common/mutations/use-upload-image";
-import {useCreatePlaylist} from "@/features/video/mutations/use-create-playlist";
-import {PlaylistFormDetails} from "@/features/video/components/playlist-create-modal/playlist-form-details";
+import { useCreatePlaylist } from "@/features/video/mutations/use-create-playlist";
+import { PlaylistFormDetails } from "@/features/video/components/playlist-create-modal/playlist-form-details";
 
 export interface PlaylistCreateModalProps {
   onClose(): void;
@@ -52,14 +52,13 @@ export const PlaylistCreateModal = ({
         className="relative flex flex-col rounded-md"
       >
         <div className="flex w-full p-4">
-          <div
-            className="absolute right-2 top-2"
-            onClick={onClose}
-          >
+          <div className="absolute right-2 top-2" onClick={onClose}>
             <CloseButton />
           </div>
           <div className="flex flex-col w-full justify-center">
-            <p className="text-2xl font-extrabold text-white">Create playlist</p>
+            <p className="text-2xl font-extrabold text-white">
+              Create playlist
+            </p>
           </div>
         </div>
         <Form {...form}>

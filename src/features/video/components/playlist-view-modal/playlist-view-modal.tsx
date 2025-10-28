@@ -7,7 +7,7 @@ import { Loadable } from "@/components/ui/loadable";
 import { VideoFeed } from "@/features/video/components/video-feed/video-feed";
 import { Button } from "@/components/ui/button";
 import { useModals } from "@/hooks/use-modals";
-import {PlusIcon} from "lucide-react";
+import { PlusIcon } from "lucide-react";
 
 export interface PlaylistViewModalProps {
   playlist: Playlist;
@@ -40,7 +40,7 @@ export const PlaylistViewModal = ({
         className="relative flex flex-col gap-4 rounded-md"
       >
         <div
-          className="relative w-full h-[250px] rounded-t-md overflow-hidden
+          className="relative w-full h-[200px] rounded-t-md overflow-hidden
             bg-center bg-cover"
           style={{ backgroundImage: `url(${playlist.image})` }}
           role="img"
@@ -55,11 +55,16 @@ export const PlaylistViewModal = ({
               {playlist.title}
             </p>
           </div>
-          <div className="absolute right-2 top-2 bg-base-250 rounded-md" onClick={onClose}>
+          <div
+            className="absolute right-2 top-2 bg-base-250 rounded-md"
+            onClick={onClose}
+          >
             <CloseButton />
           </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 px-4 items-stretch">
+        <div
+          className="grid grid-cols-1 sm:grid-cols-2 gap-4 px-4 items-stretch"
+        >
           <div className="flex flex-col gap-1 p-4 rounded-md bg-base-200 border">
             <p className="text-sm text-white/70">Views</p>
             <p className="text-3xl font-semibold text-white">
@@ -77,7 +82,11 @@ export const PlaylistViewModal = ({
           <Button
             variant="secondary"
             onClick={() =>
-              openModal("PlaylistUpdateVideosModal", { playlist }, { subModal: true })
+              openModal(
+                "PlaylistUpdateVideosModal",
+                { playlist },
+                { subModal: true },
+              )
             }
           >
             <PlusIcon />
@@ -86,7 +95,14 @@ export const PlaylistViewModal = ({
         </div>
         <div className="flex flex-col gap-4 px-4 pb-4">
           <Loadable queries={[query as any]} fullScreenForDefaults>
-            {() => <VideoFeed query={query} videos={videos} horizontal className="flex! flex-col! overflow-y-scroll h-[200px]" />}
+            {() => (
+              <VideoFeed
+                query={query}
+                videos={videos}
+                horizontal
+                className="flex! flex-col! overflow-y-scroll max-h-[300px]"
+              />
+            )}
           </Loadable>
         </div>
       </motion.div>

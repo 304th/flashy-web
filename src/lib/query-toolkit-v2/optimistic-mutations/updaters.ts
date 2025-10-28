@@ -19,6 +19,7 @@ export interface OptimisticUpdater<Entity, State> {
   replace: (id: string, item: Optimistic<Entity>, state: State) => State;
   replaceAt: (index: number, item: Optimistic<Entity>, state: State) => State;
   replaceLast: (item: Optimistic<Entity>, state: State) => State;
+  replaceAll: (items: Entity[], state: State) => State;
   move: (id: string, position: number, state: State) => State;
   filter: (
     updateFn: (item: Optimistic<Entity>) => boolean,
@@ -149,6 +150,12 @@ export class PartitionedOptimisticUpdater<Entity>
       } else {
         draft.pages.push([item as Draft<Optimistic<Entity>>]);
       }
+    });
+  }
+
+  replaceAll(items: Entity[], state: Paginated<Entity[]>): Paginated<Entity[]> {
+    return produce(state, (draft) => {
+      draft.pages = [items as Draft<Entity>[]];
     });
   }
 
@@ -284,6 +291,12 @@ export class LiveOptimisticUpdater<Entity>
       } else {
         draft.push(item as Draft<Optimistic<Entity>>);
       }
+    });
+  }
+
+  replaceAll(items: Entity[], state: Entity[]): Entity[] {
+    return produce(state, (draft) => {
+      draft.splice(0, draft.length, ...items as Draft<Entity>[]);
     });
   }
 

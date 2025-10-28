@@ -174,6 +174,16 @@ export class CollectionOptimisticMutations<Entity, State> {
     });
   }
 
+  async replaceAll(
+    items: Entity[],
+    options: OptimisticUpdaterOptions<Entity> = { sync: false, rollback: true },
+  ) {
+    return this.execute({
+      update: (state: State): State => this.updater.replaceAll(items, state),
+      options,
+    });
+  }
+
   public rollback() {
     const runRollback = this.rollbacks.pop();
 

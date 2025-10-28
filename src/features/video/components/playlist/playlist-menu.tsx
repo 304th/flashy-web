@@ -55,6 +55,9 @@ export const PlaylistMenu = ({ playlist }: { playlist: Playlist }) => {
                 onClick={(e) => {
                   setOpen(false);
                   e.preventDefault();
+                  openModal("PlaylistEditModal", {
+                    playlist,
+                  });
                 }}
               >
                 Edit

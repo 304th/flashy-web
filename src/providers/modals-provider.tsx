@@ -60,6 +60,10 @@ import {
   PlaylistUpdateVideosModal,
   PlaylistUpdateVideosModalProps,
 } from "@/features/video/components/playlist-update-videos-modal/playlist-update-videos-modal";
+import {
+  PlaylistEditModal,
+  PlaylistEditModalProps,
+} from "@/features/video/components/playlist-edit-modal/playlist-edit-modal";
 
 const modalsConfig = {
   LoginModal,
@@ -77,6 +81,7 @@ const modalsConfig = {
   PlaylistCreateModal,
   PlaylistViewModal,
   PlaylistUpdateVideosModal,
+  PlaylistEditModal,
 };
 
 export type ModalPropsTypes =
@@ -141,8 +146,8 @@ export type ModalPropsTypes =
       props: PlaylistUpdateVideosModalProps;
     }
   | {
-      type: "PlaylistViewModal";
-      props: PlaylistViewModalProps;
+      type: "PlaylistEditModal";
+      props: PlaylistEditModalProps;
     };
 
 export const ModalsProvider = ({ children }: PropsWithChildren<object>) => (

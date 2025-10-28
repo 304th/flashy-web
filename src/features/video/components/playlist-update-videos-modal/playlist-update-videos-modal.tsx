@@ -36,7 +36,8 @@ export const PlaylistUpdateVideosModal = ({
   }, [publishedVideos]);
 
   const orderedSelection = useMemo(
-    () => selection.map((id) => videosMap.get(id)).filter(Boolean) as VideoPost[],
+    () =>
+      selection.map((id) => videosMap.get(id)).filter(Boolean) as VideoPost[],
     [selection, videosMap],
   );
 
@@ -77,9 +78,16 @@ export const PlaylistUpdateVideosModal = ({
         animate="show"
         className="relative flex flex-col gap-4 rounded-md"
       >
-        <div className="relative w-full h-[70px] rounded-t-md overflow-hidden bg-base-200">
-          <div className="absolute inset-0 flex items-center justify-between px-4">
-            <p className="text-xl text-white font-semibold">Update playlist videos</p>
+        <div
+          className="relative w-full h-[70px] rounded-t-md overflow-hidden
+            bg-base-200"
+        >
+          <div
+            className="absolute inset-0 flex items-center justify-between px-4"
+          >
+            <p className="text-xl text-white font-semibold">
+              Update playlist videos
+            </p>
             <div className="bg-base-250 rounded-md" onClick={onClose}>
               <CloseButton />
             </div>
@@ -90,16 +98,21 @@ export const PlaylistUpdateVideosModal = ({
             <p className="text-sm text-white/70">Your published videos</p>
             <Loadable queries={[publishedQuery as any]}>
               {() => (
-                <div className="flex flex-col gap-2 max-h-[50vh] overflow-y-scroll h-[350px] pr-1">
+                <div
+                  className="flex flex-col gap-2 max-h-[50vh] overflow-y-scroll
+                    h-[350px] pr-1"
+                >
                   {(publishedVideos || [])
                     .filter((v) => Boolean(v.publishDate))
                     .map((v) => (
                       <div
                         key={v.fbId}
-                        className="flex items-center gap-3 p-2 rounded bg-base-200 border"
+                        className="flex items-center gap-3 p-2 rounded
+                          bg-base-200 border"
                       >
                         <div
-                          className="w-[72px] h-[48px] rounded bg-cover bg-center"
+                          className="w-[72px] h-[48px] rounded bg-cover
+                            bg-center"
                           style={{ backgroundImage: `url(${v.storyImage})` }}
                         />
                         <div className="flex flex-col min-w-0 grow">
@@ -108,7 +121,11 @@ export const PlaylistUpdateVideosModal = ({
                         </div>
                         <Button
                           size="sm"
-                          variant={selection.includes(v.fbId) ? "destructive" : "secondary"}
+                          variant={
+                            selection.includes(v.fbId)
+                              ? "destructive"
+                              : "secondary"
+                          }
                           onClick={() => toggle(v.fbId)}
                         >
                           {selection.includes(v.fbId) ? "Remove" : "Add"}
@@ -121,11 +138,15 @@ export const PlaylistUpdateVideosModal = ({
           </div>
           <div className="flex flex-col gap-2">
             <p className="text-sm text-white/70">Videos in playlist</p>
-            <div className="flex flex-col gap-2 max-h-[50vh] overflow-y-scroll h-[350px] pr-1">
+            <div
+              className="flex flex-col gap-2 max-h-[50vh] overflow-y-scroll
+                h-[350px] pr-1"
+            >
               {orderedSelection.map((v) => (
                 <div
                   key={v._id}
-                  className="flex items-center gap-3 p-2 rounded bg-base-200 border"
+                  className="flex items-center gap-3 p-2 rounded bg-base-200
+                    border"
                 >
                   <div
                     className="w-[72px] h-[48px] rounded bg-cover bg-center"
@@ -136,13 +157,25 @@ export const PlaylistUpdateVideosModal = ({
                     <p className="text-xs opacity-70">@{v.username}</p>
                   </div>
                   <div className="flex gap-2">
-                    <Button size="icon" variant="secondary" onClick={() => move(v.fbId, -1)}>
+                    <Button
+                      size="icon"
+                      variant="secondary"
+                      onClick={() => move(v.fbId, -1)}
+                    >
                       ↑
                     </Button>
-                    <Button size="icon" variant="secondary" onClick={() => move(v.fbId, 1)}>
+                    <Button
+                      size="icon"
+                      variant="secondary"
+                      onClick={() => move(v.fbId, 1)}
+                    >
                       ↓
                     </Button>
-                    <Button size="sm" variant="destructive" onClick={() => toggle(v.fbId)}>
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      onClick={() => toggle(v.fbId)}
+                    >
                       Remove
                     </Button>
                   </div>
@@ -157,7 +190,10 @@ export const PlaylistUpdateVideosModal = ({
           </Button>
           <Button
             onClick={() => {
-              updateVideosInPlaylist.mutate({ playlistId: playlist.fbId, videoIds: selection });
+              updateVideosInPlaylist.mutate({
+                playlistId: playlist.fbId,
+                videos: orderedSelection,
+              });
               onClose();
             }}
           >
@@ -176,5 +212,3 @@ const Modal = (props: any) => (
       max-sm:w-full shadow-2xl overflow-hidden ${props.className}`}
   />
 );
-
-

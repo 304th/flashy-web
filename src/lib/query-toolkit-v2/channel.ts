@@ -123,6 +123,19 @@ export class Channel<T> {
         ),
     );
   }
+
+  async replaceAll(items: T[]) {
+    return await Promise.all(
+      this.entries
+        .filter((e) => e.kind === "collection" || e.kind === "partitioned")
+        .map(async (entry) =>
+          (entry.kind === "collection"
+            ? liveRegistry.createCollectionTransaction(entry)
+            : liveRegistry.createPartitionedTransaction(entry)
+          ).replaceAll(items),
+        ),
+    );
+  }
 }
 
 export function channel<T>(collection: Collection<T> | Entity<T>) {

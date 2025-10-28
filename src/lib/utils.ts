@@ -18,14 +18,18 @@ export const timeAgo = (timestamp?: string | number) => {
     return "";
   }
 
-  const date = new Date(Number(timestamp));
+  const date = new Date(timestamp);
   const secondsDiff = Math.floor((Date.now() - date.getTime()) / 1000);
 
   if (secondsDiff < 60 * 3) {
     return "Now";
   }
 
-  return formatDistanceToNow(new Date(Number(timestamp)), { addSuffix: true });
+  try {
+    return formatDistanceToNow(new Date(timestamp), { addSuffix: true });
+  } catch {
+    return formatDistanceToNow(new Date(Number(timestamp)), { addSuffix: true }); //TODO: fix this
+  }
 };
 
 export const parseDomainName = (link: `http${string}`) =>

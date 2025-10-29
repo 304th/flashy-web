@@ -15,7 +15,7 @@ class PlaylistSchema implements StaticSchema<Playlist> {
       image: "",
       hostID: "",
       username: "",
-      publishDate: Date.now(),
+      publishedDate: Date.now().toString(),
       ...params,
     };
   }

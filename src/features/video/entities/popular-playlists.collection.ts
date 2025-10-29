@@ -6,9 +6,9 @@ export const popularPlaylistsCollection = createCollection<Playlist>({
   async sourceFrom() {
     const response = await api
       .get('generic/carouselById/popularSeries')
-      .json<{ data: { list: Playlist[] } }>();
+      .json<{ list: Playlist[] }>();
 
-    return response.data.list;
+    return [...response.list, ...response.list, ...response.list, ...response.list];
   },
   schema: playlistSchema,
   name: "popularPlaylists",

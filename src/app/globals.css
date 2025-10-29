@@ -255,6 +255,15 @@
   }
 }
 
+@utility scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/*@utility scrollbar-hide::-webkit-scrollbar {*/
+/*  display: none;*/
+/*}*/
+
 @utility max-w-content {
   padding: 0 16px;
   margin: 0 auto;

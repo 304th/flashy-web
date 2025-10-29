@@ -1,9 +1,6 @@
 "use client";
 
-import {useState, useRef, useEffect, useLayoutEffect} from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { useState, useRef, useEffect, useLayoutEffect } from "react";
 import { Loadable } from "@/components/ui/loadable";
 import { CarouselCard } from "@/features/video/components/playlists-popular-carousel/carousel-card";
 import { CarouselNavigation } from "@/features/video/components/playlists-popular-carousel/carousel-navigation";

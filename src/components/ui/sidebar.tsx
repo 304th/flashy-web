@@ -50,7 +50,7 @@ const NavItem = ({
           ${pathname === route ? "bg-base-300 text-white" : "hover:bg-base-300"}`}
       >
         {icon}
-        <p className="font-extralight text-sm">{children}</p>
+        <p className="font-medium">{children}</p>
       </div>
     </Link>
   );

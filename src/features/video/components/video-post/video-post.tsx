@@ -22,7 +22,7 @@ export const VideoPost = ({
     >
       <Link
         href={`/video/post?id=${videoPost._id}${includePlaylist ? `&playlistId=${includePlaylist}` : ""}`}
-        className={`flex flex-col w-full gap-2 rounded transition
+        className={`flex flex-col w-full gap-2 rounded-md transition
           group-hover:bg-base-300 p-2 ${horizontal ? "flex-row" : ""}`}
       >
         <div

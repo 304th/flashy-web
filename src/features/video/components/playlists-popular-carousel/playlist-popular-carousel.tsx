@@ -11,7 +11,7 @@ import { usePopularPlaylists } from "@/features/video/queries/use-popular-playli
 
 export const PlaylistPopularCarousel = () => {
   const { data: popularPlaylists, query } = usePopularPlaylists();
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(1);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   // Create extended array with duplicates for seamless centering
@@ -84,7 +84,7 @@ export const PlaylistPopularCarousel = () => {
               className="flex gap-4 overflow-x-hidden scrollbar-hide px-8"
               style={{
                 scrollSnapType: "x mandatory",
-                scrollBehavior: "smooth",
+                // scrollBehavior: "smooth",
                 pointerEvents: "none",
               }}
             >

@@ -5,6 +5,7 @@ import {
   LikeButtonCoreProps,
 } from "@/features/reactions/components/like-button/like-button-core";
 import { LikeableLikeButton } from "@/features/reactions/components/like-button/likeable-like-button";
+import { useProtectedAction } from "@/features/auth/hooks/use-protected-action";
 
 export const isReactable = (post: any): post is Reactable => {
   return post.reactions;
@@ -21,6 +22,8 @@ export const LikeButton = ({
   post: Reactable | Likeable;
   className?: string;
 }) => {
+  const { requireAuth } = useProtectedAction();
+
   if (isReactable(post)) {
     return (
       <ReactableLikeButton post={post}>
@@ -29,8 +32,8 @@ export const LikeButton = ({
             isLiked={isLiked}
             likesCount={likesCount}
             className={className}
-            onLike={onLike}
-            onUnlike={onUnlike}
+            onLike={requireAuth(onLike)}
+            onUnlike={requireAuth(onUnlike)}
           />
         )}
       </ReactableLikeButton>
@@ -44,8 +47,8 @@ export const LikeButton = ({
           isLiked={isLiked}
           likesCount={likesCount}
           className={className}
-          onLike={onLike}
-          onUnlike={onUnlike}
+          onLike={requireAuth(onLike)}
+          onUnlike={requireAuth(onUnlike)}
         />
       )}
     </LikeableLikeButton>

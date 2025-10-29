@@ -14,8 +14,10 @@ import { useMuteChannel } from "@/features/channels/mutations/use-mute-channel";
 import { useUnmuteChannel } from "@/features/channels/mutations/use-unmute-channel";
 import { useIsSubscribed } from "@/features/auth/hooks/use-is-subscribed";
 import { useUnsubscribeFromChannel } from "@/features/channels/mutations/use-unsubscribe-from-channel";
+import { useMe } from "@/features/auth/queries/use-me";
 
 export const ChannelMenu = () => {
+  const { data: me } = useMe();
   const { channelId } = useChannelContext();
   const [open, setOpen] = useState(false);
   const { openModal } = useModals();
@@ -24,6 +26,10 @@ export const ChannelMenu = () => {
   const muteUser = useMuteChannel();
   const unmuteUser = useUnmuteChannel();
   const unsubscribe = useUnsubscribeFromChannel();
+
+  if (!me) {
+    return null;
+  }
 
   return (
     <div className="relative flex" onMouseLeave={() => setOpen(false)}>

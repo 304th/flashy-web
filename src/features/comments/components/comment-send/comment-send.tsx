@@ -13,6 +13,8 @@ import { MessageProgress } from "@/features/social/components/post-create/messag
 import { useCreateComment } from "@/features/comments/mutations/use-create-comment";
 import { useCreateReply } from "@/features/comments/mutations/use-create-reply";
 import { defaultVariants } from "@/lib/framer";
+import { useMe } from "@/features/auth/queries/use-me";
+import { useProtectedAction } from "@/features/auth/hooks/use-protected-action";
 
 const formSchema = z.object({
   message: z.string().max(500),
@@ -33,6 +35,7 @@ export const CommentSend = ({
   className,
   onCloseReply,
 }: CommentSendProps) => {
+  const { requireAuth } = useProtectedAction();
   const sendComment = useCreateComment();
   const sendReply = useCreateReply();
 
@@ -58,7 +61,7 @@ export const CommentSend = ({
 
   const message = form.watch("message");
 
-  const onSubmit = (params: { message: string }) => {
+  const onSubmit = requireAuth((params: { message: string }) => {
     if (replyComment) {
       sendReply.mutate(
         {
@@ -87,7 +90,7 @@ export const CommentSend = ({
         },
       );
     }
-  };
+  });
 
   return (
     <div className={`relative flex flex-col w-full bg-base-200 ${className}`}>

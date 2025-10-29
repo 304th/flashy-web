@@ -8,6 +8,7 @@ import { useSocialPostContext } from "@/features/social/components/social-post/s
 import { useIsSocialPostLocked } from "@/features/social/hooks/use-is-social-post-locked";
 import { useIsSocialPostOwned } from "@/features/social/hooks/use-is-social-post-owned";
 import { useModals } from "@/hooks/use-modals";
+import { useProtectedAction } from "@/features/auth/hooks/use-protected-action";
 
 export const SocialPostActions = ({
   socialPost,
@@ -20,6 +21,7 @@ export const SocialPostActions = ({
   const isLocked = useIsSocialPostLocked(socialPost);
   const { openModal } = useModals();
   const isOwned = useIsSocialPostOwned(socialPost);
+  const { requireAuth } = useProtectedAction();
 
   if (isLocked) {
     return null;
@@ -40,7 +42,7 @@ export const SocialPostActions = ({
       <div className="flex gap-2 items-center">
         {!isOwned && (
           <IconButton
-            onClick={(e) => {
+            onClick={requireAuth((e) => {
               e.preventDefault();
               openModal("TipModal", {
                 user: {
@@ -54,7 +56,7 @@ export const SocialPostActions = ({
                   title: "",
                 },
               });
-            }}
+            })}
           >
             <div className="scale-75">
               <BlazeTipIcon />

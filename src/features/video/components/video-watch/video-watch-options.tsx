@@ -5,10 +5,12 @@ import { ShareIcon } from "@/components/ui/icons/share2";
 import { VideoPostMenu } from "@/features/video/components/video-post/video-post-menu";
 import { useModals } from "@/hooks/use-modals";
 import { useVideoPostOwned } from "@/features/video/hooks/use-video-post-owned";
+import { useProtectedAction } from "@/features/auth/hooks/use-protected-action";
 
 export const VideoWatchOptions = ({ videoPost }: { videoPost: VideoPost }) => {
   const { openModal } = useModals();
   const isVideoOwned = useVideoPostOwned(videoPost);
+  const { requireAuth } = useProtectedAction();
 
   return (
     <div className="flex w-full items-center justify-between">
@@ -25,7 +27,7 @@ export const VideoWatchOptions = ({ videoPost }: { videoPost: VideoPost }) => {
           <Button
             variant="secondary"
             className="!w-fit"
-            onClick={() =>
+            onClick={requireAuth(() =>
               openModal("TipModal", {
                 user: {
                   fbId: videoPost.hostID,
@@ -37,8 +39,8 @@ export const VideoWatchOptions = ({ videoPost }: { videoPost: VideoPost }) => {
                   id: videoPost._id,
                   title: videoPost.title || "Video",
                 },
-              })
-            }
+              }),
+            )}
           >
             <BlazeTipIcon />
             Tip

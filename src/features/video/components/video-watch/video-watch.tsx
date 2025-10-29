@@ -78,11 +78,16 @@ export const VideoWatch = ({ videoPost }: { videoPost: VideoPost }) => {
             userimage: videoPost.userimage!,
           }}
         />
-        {!isVideoOwned && <ChannelSubscribeButton channel={{
-          fbId: videoPost.hostID,
-          username: videoPost.username,
-          userimage: videoPost.userimage!,
-        }} className="!w-fit" />}
+        {!isVideoOwned && (
+          <ChannelSubscribeButton
+            channel={{
+              fbId: videoPost.hostID,
+              username: videoPost.username,
+              userimage: videoPost.userimage!,
+            }}
+            className="!w-fit"
+          />
+        )}
       </div>
       <CommentsFeed
         post={videoPost}

@@ -2,7 +2,13 @@ import { KeyIcon } from "@/components/ui/icons/key";
 import { CheckIcon } from "@/components/ui/icons/check";
 import { useModals } from "@/hooks/use-modals";
 
-export const ChannelBuyKeyButton = ({ channel, className }: { channel?: Author; className?: string; }) => {
+export const ChannelBuyKeyButton = ({
+  channel,
+  className,
+}: {
+  channel?: Author;
+  className?: string;
+}) => {
   const { openModal } = useModals();
 
   return (

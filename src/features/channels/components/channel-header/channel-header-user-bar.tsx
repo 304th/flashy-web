@@ -10,10 +10,12 @@ import { ChannelSubscribeButton } from "@/features/channels/components/channel-s
 import { ChannelSubscriptions } from "@/features/channels/components/channel-subscriptions/channel-subscriptions";
 import { useChannelContext } from "@/features/profile/components/channel-context/channel-context";
 import { useModals } from "@/hooks/use-modals";
+import { useProtectedAction } from "@/features/auth/hooks/use-protected-action";
 
 export const ChannelHeaderUserBar = ({ className }: { className?: string }) => {
   const { channelId, channel, channelQuery } = useChannelContext();
   const { openModal } = useModals();
+  const { requireAuth } = useProtectedAction();
 
   return (
     <div
@@ -32,7 +34,7 @@ export const ChannelHeaderUserBar = ({ className }: { className?: string }) => {
                 <Button
                   variant="secondary"
                   className="w-fit"
-                  onClick={() => {
+                  onClick={requireAuth(() => {
                     openModal("TipModal", {
                       user: channel,
                       post: {
@@ -41,7 +43,7 @@ export const ChannelHeaderUserBar = ({ className }: { className?: string }) => {
                         title: `${channel.username}'s Channel`,
                       },
                     });
-                  }}
+                  })}
                 >
                   <BlazeTipIcon />
                   Tip
@@ -66,11 +68,14 @@ export const ChannelHeaderUserBar = ({ className }: { className?: string }) => {
         }
       </Loadable>
       <div className="flex w-1/5 min-w-[270px] flex-col items-center gap-2">
-        <ChannelSubscribeButton channel={{
-          fbId: channel?.fbId!,
-          username: channel?.username!,
-          userimage: channel?.userimage!,
-        }} loading={channelQuery.isLoading} />
+        <ChannelSubscribeButton
+          channel={{
+            fbId: channel?.fbId!,
+            username: channel?.username!,
+            userimage: channel?.userimage!,
+          }}
+          loading={channelQuery.isLoading}
+        />
         <ChannelSubscriptions />
       </div>
     </div>

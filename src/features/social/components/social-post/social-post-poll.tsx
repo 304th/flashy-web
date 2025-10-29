@@ -1,6 +1,7 @@
 import { useMemo, useEffect, useState } from "react";
 import { addHours, differenceInMilliseconds } from "date-fns";
 import { useVotePoll } from "@/features/social/mutations/use-vote-poll";
+import { useProtectedAction } from "@/features/auth/hooks/use-protected-action";
 
 export const SocialPostPoll = ({
   socialPost,
@@ -10,6 +11,7 @@ export const SocialPostPoll = ({
   className?: string;
 }) => {
   const votePoll = useVotePoll();
+  const { requireAuth } = useProtectedAction();
 
   if (
     !socialPost.poll ||
@@ -37,12 +39,12 @@ export const SocialPostPoll = ({
                 0,
               ) || 0
             }
-            onVote={() =>
+            onVote={requireAuth(() =>
               votePoll.mutate({
                 postId: socialPost._id,
                 choiceId: pollOption.id,
-              })
-            }
+              }),
+            )}
           />
         ))}
       </div>

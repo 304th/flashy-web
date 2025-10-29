@@ -2,6 +2,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { useModals } from "@/hooks/use-modals";
 import { useIsSocialPostLocked } from "@/features/social/hooks/use-is-social-post-locked";
+import { useProtectedAction } from "@/features/auth/hooks/use-protected-action";
 
 export const SocialPostBehindKey = ({
   socialPost,
@@ -10,6 +11,7 @@ export const SocialPostBehindKey = ({
 }) => {
   const isLocked = useIsSocialPostLocked(socialPost);
   const { openModal } = useModals();
+  const { requireAuth } = useProtectedAction();
 
   if (!isLocked) {
     return null;
@@ -18,7 +20,7 @@ export const SocialPostBehindKey = ({
   return (
     <div
       className="relative aspect-video max-h-[200px] rounded-md cursor-pointer"
-      onClick={(e) => {
+      onClick={requireAuth((e) => {
         e.preventDefault();
         openModal("BuyKeyModal", {
           user: {
@@ -27,7 +29,7 @@ export const SocialPostBehindKey = ({
             userimage: socialPost.userimage,
           },
         });
-      }}
+      })}
     >
       <div
         className="absolute inset-0 rounded-md bg-cover bg-center"

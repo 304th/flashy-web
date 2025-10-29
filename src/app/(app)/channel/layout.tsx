@@ -30,6 +30,11 @@ const channelTabs = [
     path: "/channel/video",
   },
   {
+    key: "playlists",
+    label: "Playlists",
+    path: "/channel/playlists",
+  },
+  {
     key: "about",
     label: "About",
     path: "/channel/about",

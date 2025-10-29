@@ -1,28 +1,17 @@
 "use client";
 
-import { PlusIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useModals } from "@/hooks/use-modals";
-import { useProfilePlaylists } from "@/features/profile/queries/use-profile-playlists";
 import { Loadable } from "@/components/ui/loadable";
 import { Playlist } from "@/features/video/components/playlist/playlist";
 import { NotFound } from "@/components/ui/not-found";
+import { useChannelPlaylists } from "@/features/channels/queries/use-channel-playlists";
+import { useChannelContext } from "@/features/profile/components/channel-context/channel-context";
 
-export default function ProfilePlaylistsPage() {
-  const { openModal } = useModals();
-  const { data: playlists, query } = useProfilePlaylists();
+export default function ChannelPlaylistsPage() {
+  const { channelId } = useChannelContext();
+  const { data: playlists, query } = useChannelPlaylists({ channelId });
 
   return (
     <div className="flex flex-col gap-4 justify-center w-full">
-      <div className="flex w-full justify-start gap-2">
-        <Button
-          variant="secondary"
-          onClick={() => openModal("PlaylistCreateModal")}
-        >
-          <PlusIcon />
-          Create a playlist
-        </Button>
-      </div>
       <div className="flex gap-4 w-full justify-center">
         <div className="flex gap-4 w-full flex-wrap">
           <Loadable queries={[query as any]}>

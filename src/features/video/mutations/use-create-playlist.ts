@@ -1,6 +1,6 @@
 import { createMutation, useOptimisticMutation } from "@/lib/query-toolkit-v2";
 import { api } from "@/services/api";
-import { profilePlaylistsCollection } from "@/features/profile/queries/use-profile-playlists";
+import { profilePlaylistsCollection } from "@/features/profile/entities/profile-playlists.collection";
 import { useMe } from "@/features/auth/queries/use-me";
 
 export interface CreatePlaylistParams {

@@ -1,17 +1,17 @@
 import { usePartitionedQuery } from "@/lib/query-toolkit-v2";
-import { channelSocialFeedCollection } from "@/features/channels/entities/channel-social-feed.collection";
+import { channelVideoFeedPublishedCollection } from "@/features/channels/entities/channel-video-feed-published.collection";
 
-export const useChannelSocialPosts = ({
+export const useChannelVideoFeedPublished = ({
   channelId,
 }: {
   channelId?: string;
 }) => {
   return usePartitionedQuery<
-    SocialPost,
+    VideoPost,
     { channelId: string; pageParam: number }
   >({
-    queryKey: ["channel", channelId, "social"],
-    collection: channelSocialFeedCollection,
+    queryKey: ["channel", channelId, "videos", "published"],
+    collection: channelVideoFeedPublishedCollection,
     getParams: ({ pageParam }) => ({ pageParam, channelId: channelId! }),
     options: {
       enabled: Boolean(channelId),

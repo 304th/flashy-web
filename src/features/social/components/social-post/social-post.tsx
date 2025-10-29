@@ -7,7 +7,6 @@ import { SocialPostImages } from "@/features/social/components/social-post/socia
 import { SocialPostTags } from "@/features/social/components/social-post/social-post-tags";
 import { SocialPostPoll } from "@/features/social/components/social-post/social-post-poll";
 import { OptimisticLoading } from "@/features/common/components/optimistic-loading/optimistic-loading";
-import { useSocialPostContext } from "@/features/social/components/social-post/social-post-context";
 import { useIsSocialPostLocked } from "@/features/social/hooks/use-is-social-post-locked";
 import { timeAgo } from "@/lib/utils";
 
@@ -22,7 +21,6 @@ export const SocialPost = ({
   withMenu?: boolean;
   className?: string;
 }) => {
-  const { onCommentsOpen } = useSocialPostContext();
   const isLocked = useIsSocialPostLocked(socialPost);
 
   return (

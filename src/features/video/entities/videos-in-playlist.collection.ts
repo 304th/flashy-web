@@ -12,7 +12,7 @@ export const videosInPlaylist = createCollection<
 >({
   async sourceFrom(params) {
     return api
-      .get(`v2/seriesStories/${params.playlistId}/list`)
+      .get(`publicSeries/${params.playlistId}/videos`)
       .json<VideoPost[]>();
   },
   schema: videoPostSchema,

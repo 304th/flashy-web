@@ -8,6 +8,7 @@ import { Loadable } from "@/components/ui/loadable";
 import { VideoFeed } from "@/features/video/components/video-feed/video-feed";
 import { Button } from "@/components/ui/button";
 import { useModals } from "@/hooks/use-modals";
+import {useIsPlaylistOwned} from "@/features/video/hooks/use-is-playlist-owned";
 
 export interface PlaylistViewModalProps {
   playlist: Playlist;
@@ -21,6 +22,7 @@ export const PlaylistViewModal = ({
 }: PlaylistViewModalProps) => {
   const { data: videos, query } = useVideosInPlaylist(playlist.fbId);
   const { openModal } = useModals();
+  const isOwned = useIsPlaylistOwned(playlist);
 
   const stats = useMemo(() => {
     const totalViews = (videos || []).reduce(
@@ -62,48 +64,54 @@ export const PlaylistViewModal = ({
             <CloseButton />
           </div>
         </div>
-        <div
-          className="grid grid-cols-1 sm:grid-cols-2 gap-4 px-4 items-stretch"
-        >
-          <div
-            className="relative flex flex-col gap-1 p-4 rounded-md bg-base-200
+        {
+          isOwned && (
+            <div
+              className="grid grid-cols-1 sm:grid-cols-2 gap-4 px-4 items-stretch"
+            >
+              <div
+                className="relative flex flex-col gap-1 p-4 rounded-md bg-base-200
               border"
-          >
-            <p className="text-sm text-white/70">Views</p>
-            <p className="text-3xl font-semibold text-white">
-              {stats.totalViews.toLocaleString()}
-            </p>
-            <div className="absolute top-3 right-3">
-              <EyeIcon size={18} />
-            </div>
-          </div>
-          <div
-            className="relative flex flex-col gap-1 p-4 rounded-md bg-base-200
+              >
+                <p className="text-sm text-white/70">Views</p>
+                <p className="text-3xl font-semibold text-white">
+                  {stats.totalViews.toLocaleString()}
+                </p>
+                <div className="absolute top-3 right-3">
+                  <EyeIcon size={18} />
+                </div>
+              </div>
+              <div
+                className="relative flex flex-col gap-1 p-4 rounded-md bg-base-200
               border"
-          >
-            <p className="text-sm text-white/70">Videos</p>
-            <p className="text-3xl font-semibold text-white">
-              {stats.videosCount.toLocaleString()}
-            </p>
-            <div className="absolute top-3 right-3">
-              <PlayIcon size={18} />
+              >
+                <p className="text-sm text-white/70">Videos</p>
+                <p className="text-3xl font-semibold text-white">
+                  {stats.videosCount.toLocaleString()}
+                </p>
+                <div className="absolute top-3 right-3">
+                  <PlayIcon size={18} />
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          )
+        }
         <div className="flex items-center justify-end px-4">
-          <Button
-            variant="secondary"
-            onClick={() =>
-              openModal(
-                "PlaylistUpdateVideosModal",
-                { playlist },
-                { subModal: true },
-              )
-            }
-          >
-            <PlusIcon />
-            Add videos
-          </Button>
+          {isOwned && (
+            <Button
+              variant="secondary"
+              onClick={() =>
+                openModal(
+                  "PlaylistUpdateVideosModal",
+                  { playlist },
+                  { subModal: true },
+                )
+              }
+            >
+              <PlusIcon />
+              Add videos
+            </Button>
+          )}
         </div>
         <div className="flex flex-col gap-4 px-4 pb-4">
           <Loadable queries={[query as any]} fullScreenForDefaults>

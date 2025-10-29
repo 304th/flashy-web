@@ -21,6 +21,7 @@ export const ImageViewerModal = ({
   initialOpenIndex = 0,
 }: ImageViewerModalProps) => {
   const [index, setIndex] = useState(initialOpenIndex);
+
   return (
     <Lightbox
       open={true}

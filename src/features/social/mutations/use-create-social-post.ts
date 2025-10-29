@@ -83,6 +83,7 @@ export const useCreateSocialPost = () => {
           syncFn: (socialPost) => {
             return {
               ...socialPost,
+              images: params.images?.map((image) => URL.createObjectURL(image)),
               reactions: {},
               poll: {
                 pollVotedId: null,

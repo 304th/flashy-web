@@ -1,6 +1,6 @@
-import {createCollection} from "@/lib/query-toolkit-v2";
-import {api} from "@/services/api";
-import {playlistSchema} from "@/features/video/schemas/playlist.schema";
+import { createCollection } from "@/lib/query-toolkit-v2";
+import { api } from "@/services/api";
+import { playlistSchema } from "@/features/video/schemas/playlist.schema";
 
 export const channelPlaylistsCollection = createCollection<
   Playlist,

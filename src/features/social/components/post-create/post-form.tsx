@@ -1,5 +1,6 @@
 import config from "@/config";
-import React, { useRef } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -7,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormField, FormItem } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { MessageProgress } from "@/features/social/components/post-create/message-progress";
 import { PostLinkPreview } from "@/features/social/components/post-link-preview/post-link-preview";
 import { PostOptions } from "@/features/social/components/post-create/post-options";
@@ -15,6 +17,8 @@ import { useParsedPostLinkPreviews } from "@/features/social/hooks/use-parsed-po
 import { useSocialPostImagesAttach } from "@/features/social/hooks/use-social-post-images-attach";
 import { useDragAndDrop } from "@/hooks/use-drag-n-drop";
 import { defaultVariants } from "@/lib/framer";
+import { UserAvatar } from "@/components/ui/user-avatar";
+import { api } from "@/services/api";
 
 const formSchema = z.object({
   description: z.string().max(config.content.social.maxLength),
@@ -26,6 +30,8 @@ const formSchema = z.object({
 export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
   const optionsMenuRef = useRef<{ reset: () => void } | null>(null);
   const createSocialPost = useCreateSocialPost();
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const mentionContainerRef = useRef<HTMLDivElement | null>(null);
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -39,6 +45,19 @@ export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
   });
 
   const description = form.watch("description");
+  const highlightedDescription = useMemo(() => {
+    const text = description || "";
+    const parts = text.split(/(@[a-zA-Z0-9_]{1,20})/g);
+    return parts.map((part, idx) =>
+      part.startsWith("@") ? (
+        <span key={idx} className="text-blue-400">
+          {part}
+        </span>
+      ) : (
+        <span key={idx}>{part}</span>
+      ),
+    );
+  }, [description]);
   const [parsedUrls, previewLinks] = useParsedPostLinkPreviews(
     description,
     500,
@@ -51,6 +70,173 @@ export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
   });
 
   const { isDragActive, dragHandlers } = useDragAndDrop(handleFilesUpload);
+
+  // mention state
+  const [mentionOpen, setMentionOpen] = useState(false);
+  const [mentionQuery, setMentionQuery] = useState("");
+  const [mentionResults, setMentionResults] = useState<User[]>([]);
+  const [mentionLoading, setMentionLoading] = useState(false);
+  const mentionDebounceRef = useRef<NodeJS.Timeout | null>(null);
+  const [mentionPosition, setMentionPosition] = useState<{ left: number; top: number }>({ left: 0, top: 0 });
+  const [portalReady, setPortalReady] = useState(false);
+  const mentionDropdownRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    setPortalReady(true);
+  }, []);
+
+  const computeCaretPosition = () => {
+    const ta = textareaRef.current;
+    if (!ta) return { left: 8, top: 28 };
+
+    const style = window.getComputedStyle(ta);
+    const div = document.createElement("div");
+    const span = document.createElement("span");
+    const caret = document.createElement("span");
+    const value = ta.value;
+    const caretIndex = ta.selectionStart ?? value.length;
+
+    const properties = [
+      "boxSizing","width","height","overflow","borderTopWidth","borderRightWidth","borderBottomWidth","borderLeftWidth",
+      "paddingTop","paddingRight","paddingBottom","paddingLeft","fontStyle","fontVariant","fontWeight","fontStretch",
+      "fontSize","fontFamily","lineHeight","letterSpacing","textTransform","textAlign","textIndent","whiteSpace","wordBreak"
+    ];
+    div.style.position = "absolute";
+    div.style.visibility = "hidden";
+    div.style.whiteSpace = "pre-wrap";
+    div.style.wordWrap = "break-word";
+    properties.forEach((prop) => {
+      // @ts-ignore
+      div.style[prop] = style.getPropertyValue(prop as any);
+    });
+    // ensure same width for wrapping calc
+    div.style.width = ta.clientWidth + "px";
+
+    const before = value.substring(0, caretIndex);
+    const after = value.substring(caretIndex) || "."; // ensure height
+
+    span.textContent = before;
+    caret.textContent = "\u200b"; // zero-width space as caret marker
+
+    div.appendChild(span);
+    div.appendChild(caret);
+
+    document.body.appendChild(div);
+    const caretRect = caret.getBoundingClientRect();
+    const lineHeight = parseFloat(style.lineHeight || "20");
+    const left = caretRect.left;
+    const top = caretRect.top + (isFinite(lineHeight) ? lineHeight : 20);
+    document.body.removeChild(div);
+    return { left, top };
+  };
+
+  const currentMention = useMemo(() => {
+    const el = textareaRef.current;
+    const value = description || "";
+    if (!el) return null;
+    const caret = el.selectionStart ?? value.length;
+    const before = value.substring(0, caret);
+    const lastSpace = Math.max(before.lastIndexOf(" "), before.lastIndexOf("\n"), before.lastIndexOf("\t"));
+    const segment = before.substring(lastSpace + 1);
+    const match = segment.match(/^@([a-zA-Z0-9_]{1,20})$/);
+    if (!match) return null;
+    const start = caret - segment.length;
+    const end = caret;
+    return { query: match[1], start, end } as const;
+  }, [description]);
+
+  const closeMentions = () => {
+    setMentionOpen(false);
+    setMentionQuery("");
+    setMentionResults([]);
+    setMentionLoading(false);
+  };
+
+  useEffect(() => {
+    const mention = currentMention;
+    if (mention && mention.query.length >= 1) {
+      setMentionOpen(true);
+      setMentionQuery(mention.query);
+      const pos = computeCaretPosition();
+      setMentionPosition({ left: Math.max(0, pos.left), top: Math.max(0, pos.top) });
+    } else {
+      closeMentions();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentMention]);
+
+  useEffect(() => {
+    if (!mentionOpen) return;
+    const listener = () => {
+      const pos = computeCaretPosition();
+      setMentionPosition({ left: Math.max(0, pos.left), top: Math.max(0, pos.top) });
+    };
+    window.addEventListener("resize", listener);
+    return () => window.removeEventListener("resize", listener);
+  }, [mentionOpen]);
+
+  useEffect(() => {
+    if (!mentionOpen) return;
+    const handleDocumentMouseDown = (e: MouseEvent) => {
+      const dropdownEl = mentionDropdownRef.current;
+      const containerEl = mentionContainerRef.current;
+      if (!dropdownEl || !containerEl) return;
+      const target = e.target as Node;
+      if (!dropdownEl.contains(target) && !containerEl.contains(target)) {
+        closeMentions();
+      }
+    };
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        closeMentions();
+      }
+    };
+    document.addEventListener("mousedown", handleDocumentMouseDown, true);
+    document.addEventListener("keydown", handleKeyDown, true);
+    return () => {
+      document.removeEventListener("mousedown", handleDocumentMouseDown, true);
+      document.removeEventListener("keydown", handleKeyDown, true);
+    };
+  }, [mentionOpen]);
+
+  useEffect(() => {
+    if (!mentionOpen) return;
+    if (mentionDebounceRef.current) clearTimeout(mentionDebounceRef.current);
+    mentionDebounceRef.current = setTimeout(async () => {
+      try {
+        setMentionLoading(true);
+        const users = await api
+          .get("users/search", { searchParams: { username: mentionQuery } })
+          .json<User[]>();
+        setMentionResults(users || []);
+      } catch (e) {
+        setMentionResults([]);
+      } finally {
+        setMentionLoading(false);
+      }
+    }, 250);
+  }, [mentionQuery, mentionOpen]);
+
+  const handleSelectUser = (user: User) => {
+    const el = textareaRef.current;
+    const value = form.getValues("description") || "";
+    if (!el) return;
+    const caret = el.selectionStart ?? value.length;
+    const before = value.substring(0, caret);
+    const lastSpace = Math.max(before.lastIndexOf(" "), before.lastIndexOf("\n"), before.lastIndexOf("\t"));
+    const segment = before.substring(lastSpace + 1);
+    const match = segment.match(/^@([a-zA-Z0-9_]{1,20})$/);
+    const start = match ? caret - segment.length : caret;
+    const end = caret;
+    const nextValue = value.slice(0, start) + `@${user.username} ` + value.slice(end);
+    form.setValue("description", nextValue, { shouldDirty: true, shouldValidate: true });
+    const newCaret = (value.slice(0, start) + `@${user.username} `).length;
+    requestAnimationFrame(() => {
+      el.focus();
+      el.setSelectionRange(newCaret, newCaret);
+    });
+    closeMentions();
+  };
 
   return (
     <Form {...form}>
@@ -101,19 +287,81 @@ export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
             render={(props) => (
               <motion.div variants={defaultVariants.child}>
                 <FormItem className="m-0 p-0">
-                  <Textarea
+                  <div className="relative" ref={mentionContainerRef}>
+                    {/* highlight backdrop */}
+                    <div
+                      aria-hidden
+                      className={`pointer-events-none absolute inset-0 rounded-md px-3 py-2 whitespace-pre-wrap break-words
+                      text-[inherit] leading-[inherit] font-[inherit]`}
+                    >
+                      {highlightedDescription}
+                    </div>
+                    <Textarea
                     maxLength={config.content.social.maxLength}
                     placeholder="What ya thinking..."
                     noHover={isDragActive}
                     {...props.field}
-                    className={`min-h-[120px] shadow-none focus-visible:ring-0
+                    ref={(el) => {
+                      textareaRef.current = el;
+                        // react-hook-form ref
+                        // @ts-ignore - RHF uses a callback ref
+                        if (props.field && typeof props.field.ref === "function") {
+                          // @ts-ignore
+                          props.field.ref(el);
+                        }
+                    }}
+                    onChange={(e) => {
+                      props.field.onChange(e);
+                    }}
+                      className={`min-h-[120px] shadow-none focus-visible:ring-0
                     focus-visible:ring-offset-0 transition-colors duration-150
                     ${
                       isDragActive
                         ? "pointer-events-none"
-                        : "border-base-400 bg-base-200"
+                        : "border-base-400 bg-transparent"
                     }`}
-                  />
+                      style={{ color: "transparent", caretColor: "white" }}
+                    />
+                    {mentionOpen && portalReady &&
+                      createPortal(
+                        <div
+                          className="z-[1000] w-[min(420px,100%)] rounded-2xl bg-base-200 ring-1 ring-inset ring-base-600 shadow-regular-md p-2 fixed"
+                          ref={mentionDropdownRef}
+                          style={{ left: mentionPosition.left, top: mentionPosition.top }}
+                        >
+                          <div className="flex items-center gap-2 p-1">
+                            <Input
+                              value={mentionQuery}
+                              onChange={(e) => setMentionQuery(e.target.value)}
+                              placeholder="Search users..."
+                              className="h-9"
+                            />
+                          </div>
+                          <div className="max-h-60 overflow-auto">
+                            {mentionLoading && (
+                              <div className="px-2 py-3 text-sm text-muted-foreground">Searching...</div>
+                            )}
+                            {!mentionLoading && mentionResults.length === 0 && (
+                              <div className="px-2 py-3 text-sm text-muted-foreground">No users found</div>
+                            )}
+                            {!mentionLoading && mentionResults.map((u) => (
+                              <button
+                                type="button"
+                                key={u.fbId}
+                                className="w-full flex items-center gap-3 px-2 py-2 rounded-md hover:bg-base-300 text-left"
+                                onClick={() => handleSelectUser(u)}
+                              >
+                                <UserAvatar avatar={u.userimage} className="size-7" />
+                                <div className="flex flex-col">
+                                  <span className="text-sm font-medium">@{u.username}</span>
+                                </div>
+                              </button>
+                            ))}
+                          </div>
+                        </div>,
+                        document.body,
+                      )}
+                  </div>
                 </FormItem>
               </motion.div>
             )}

@@ -1,14 +1,12 @@
 import { KeyIcon } from "@/components/ui/icons/key";
 import { CheckIcon } from "@/components/ui/icons/check";
 import { useModals } from "@/hooks/use-modals";
-import { useChannelContext } from "@/features/profile/components/channel-context/channel-context";
 
-export const ChannelBuyKeyButton = () => {
-  const { channel } = useChannelContext();
+export const ChannelBuyKeyButton = ({ channel, className }: { channel?: Author; className?: string; }) => {
   const { openModal } = useModals();
 
   return (
-    <div className="flex items-center w-full rounded-md">
+    <div className={`flex items-center w-full rounded-md border ${className}`}>
       <div
         className="inline-flex justify-between h-10 rounded-l-md text-base-800
           px-3 bg-background border-base-400 shadow-xs items-center gap-2

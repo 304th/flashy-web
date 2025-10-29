@@ -1,17 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { KeyIcon } from "@/components/ui/icons/key";
-import { useChannelContext } from "@/features/profile/components/channel-context/channel-context";
 import { useModals } from "@/hooks/use-modals";
 
-export const ChannelSellKeyButton = () => {
+export const ChannelSellKeyButton = ({ channel, className }: { channel?: Author, className?: string }) => {
   const { openModal } = useModals();
-  const { channel } = useChannelContext();
 
   return (
     <Button
       size="lg"
-      className="w-full justify-between border-red-500 hover:border-red-500
-        hover:bg-base-300"
+      className={`w-full justify-between border-red-500 hover:border-red-500
+        hover:bg-base-300 ${className}`}
       variant="secondary"
       onClick={() => {
         openModal("SellKeyModal", {

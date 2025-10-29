@@ -66,7 +66,11 @@ export const ChannelHeaderUserBar = ({ className }: { className?: string }) => {
         }
       </Loadable>
       <div className="flex w-1/5 min-w-[270px] flex-col items-center gap-2">
-        <ChannelSubscribeButton />
+        <ChannelSubscribeButton channel={{
+          fbId: channel?.fbId!,
+          username: channel?.username!,
+          userimage: channel?.userimage!,
+        }} loading={channelQuery.isLoading} />
         <ChannelSubscriptions />
       </div>
     </div>

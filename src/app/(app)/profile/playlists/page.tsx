@@ -24,7 +24,7 @@ export default function ProfilePlaylistsPage() {
         </Button>
       </div>
       <div className="flex gap-4 w-full justify-center">
-        <div className="flex gap-4 w-full flex-wrap">
+        <div className="flex gap-4 w-full">
           <Loadable queries={[query as any]} fullScreenForDefaults>
             {() =>
               !playlists || playlists?.length > 0 ? (

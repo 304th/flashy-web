@@ -129,7 +129,7 @@ export const PlaylistPopularCarousel = () => {
             {/* Carousel Container */}
             <div
               ref={scrollContainerRef}
-              className="flex gap-4 overflow-x-hidden scrollbar-hide pb-4 px-8"
+              className="flex gap-4 overflow-x-hidden scrollbar-hide px-8"
               style={{
                 scrollSnapType: "x mandatory",
                 scrollBehavior: "smooth",
@@ -162,20 +162,20 @@ export const PlaylistPopularCarousel = () => {
             </div>
             {/* Pagination Dots */}
             {popularPlaylists && popularPlaylists.length > 1 && (
-              <div className="flex justify-center gap-1">
+              <div className="flex justify-center gap-2">
                 {popularPlaylists.map((_, index) => (
                   <button
                     key={index}
                     onClick={() => scrollToIndex(index)}
-                    className="py-2 rounded transition-all cursor-pointer
+                    className="group py-4 rounded transition-all cursor-pointer
                       duration-200"
                   >
                     <div
                       className={`h-[2px] rounded transition-all duration-300
                       ease-in-out ${
                         index === currentIndex
-                          ? "bg-white w-12"
-                          : "bg-white/40 w-6"
+                          ? "bg-white w-14"
+                          : "bg-white/40 w-8 group-hover:bg-white/80"
                       }`}
                     />
                   </button>

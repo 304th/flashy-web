@@ -8,12 +8,7 @@ export const popularPlaylistsCollection = createCollection<Playlist>({
       .get("generic/carouselById/popularSeries")
       .json<{ list: Playlist[] }>();
 
-    return [
-      ...response.list,
-      ...response.list,
-      ...response.list,
-      ...response.list,
-    ];
+    return response.list;
   },
   schema: playlistSchema,
   name: "popularPlaylists",

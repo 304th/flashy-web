@@ -75,7 +75,7 @@ export const VideoWatch = ({ videoPost }: { videoPost: VideoPost }) => {
           user={{
             fbId: videoPost.hostID,
             username: videoPost.username,
-            userimage: videoPost.userimage!,
+            userimage: videoPost.userimage || (videoPost as any).userImage,
           }}
         />
         {!isVideoOwned && (

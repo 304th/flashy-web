@@ -3,6 +3,7 @@ import Link from "next/link";
 import {
   UserIcon,
   VideoIcon,
+  PlayIcon,
   WalletIcon,
   SettingsIcon,
   LogOutIcon,
@@ -76,6 +77,14 @@ export const AccountDropdown = () => {
                 <div className="flex items-center gap-2 p-1">
                   <VideoIcon />
                   <p>My Videos</p>
+                </div>
+              </DropdownMenuItem>
+            </Link>
+            <Link href="/profile/playlists">
+              <DropdownMenuItem>
+                <div className="flex items-center gap-2 p-1">
+                  <PlayIcon />
+                  <p>My Playlists</p>
                 </div>
               </DropdownMenuItem>
             </Link>

@@ -2,11 +2,10 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Loadable } from '@/components/ui/loadable';
 import { usePopularPlaylists } from '@/features/video/queries/use-popular-playlists';
-import { PlayIcon } from '@/components/ui/icons/play-icon';
-import { TrophyIcon } from '@/components/ui/icons/trophy-icon';
 
 interface CarouselCardProps {
   playlist: Playlist;
@@ -16,7 +15,7 @@ interface CarouselCardProps {
 const CarouselCard = ({ playlist, isActive, onClick }: CarouselCardProps & { onClick: () => void }) => {
   return (
     <div 
-      className={`relative flex-shrink-0 w-[450px] md:w-[500px] h-[280px] md:h-[320px] rounded-lg overflow-hidden cursor-pointer transition ${isActive ? '' : 'opacity-70'}`}
+      className={`relative flex-shrink-0 w-[450px] md:w-[600px] h-[280px] md:h-[340px] rounded-lg overflow-hidden cursor-pointer transition ${isActive ? '' : 'opacity-70'}`}
       onClick={onClick}
     >
       {/* Background Image */}
@@ -27,44 +26,19 @@ const CarouselCard = ({ playlist, isActive, onClick }: CarouselCardProps & { onC
           fill
           className="object-cover"
         />
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
       </div>
-
-      {/* Content */}
-      <div className="relative z-10 h-full flex flex-col justify-between p-4 md:p-6">
-        {/* Top section with icon and title */}
-        <div className="flex flex-col items-center text-center">
-          <div className="mb-3 md:mb-4">
-            <TrophyIcon className="w-6 h-6 md:w-8 md:h-8 text-blue-400" />
-          </div>
-          <div className="flex items-center gap-2 mb-2">
-            <h3 className="text-white text-sm md:text-lg font-bold truncate max-w-[250px] md:max-w-[280px]">
-              {playlist.title}
-            </h3>
-            <PlayIcon className="w-4 h-4 md:w-5 md:h-5 text-white flex-shrink-0" />
-          </div>
-          
-          {/* Tags */}
-          <div className="flex gap-2 mb-3 md:mb-4">
-            <span className="px-2 py-1 text-xs font-medium bg-blue-500/20 border border-blue-400 text-blue-300 rounded">
-              New
-            </span>
-            <span className="px-2 py-1 text-xs font-medium bg-green-500/20 border border-green-400 text-green-300 rounded">
-              Winner
-            </span>
-          </div>
-        </div>
-
-        {/* Bottom section with action button */}
+      <div className="absolute bottom-0 w-full flex justify-between items-center p-4 md:p-6">
+        <h3 className=" text-white text-2xl font-medium truncate max-w-[250px] md:max-w-[280px]">
+          {playlist.title}
+        </h3>
         <div className="flex justify-end">
-          <Button 
-            variant="default" 
-            size="sm"
-            className="bg-green-600 hover:bg-green-700 text-white border-0 text-xs md:text-sm"
-          >
-            Watch Now
-          </Button>
+          <Link href={`/video/post?id=${playlist.order?.[0]}&playlistId=${playlist.fbId}`}>
+            <Button>
+              Watch Now
+            </Button>
+          </Link>
+
         </div>
       </div>
     </div>
@@ -169,21 +143,22 @@ export const PlaylistPopularCarousel = () => {
                 );
               })}
             </div>
-
             {/* Pagination Dots */}
             {popularPlaylists && popularPlaylists.length > 1 && (
-              <div className="flex justify-center gap-2">
-                {popularPlaylists.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => scrollToIndex(index)}
-                    className={`w-6 h-[2px] rounded transition-all cursor-pointer duration-200 ${
-                      index === currentIndex 
-                        ? 'bg-white w-12 h-1' 
-                        : 'bg-white/40 hover:bg-white/60'
-                    }`}
-                  />
-                ))}
+              <div className="flex justify-center gap-1">
+                  {popularPlaylists.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => scrollToIndex(index)}
+                      className="py-2 rounded transition-all cursor-pointer duration-200"
+                    >
+                      <div className={`h-[2px] rounded transition-all duration-300 ease-in-out ${
+                        index === currentIndex 
+                          ? 'bg-white w-12' 
+                          : 'bg-white/40 w-6'
+                      }`} />
+                    </button>
+                  ))}
               </div>
             )}
           </div>

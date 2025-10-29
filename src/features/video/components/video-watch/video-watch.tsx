@@ -10,7 +10,7 @@ import { VideoWatchOptions } from "@/features/video/components/video-watch/video
 import { usePlaylistContext } from "@/features/video/components/video-playlist-context";
 import { useVideosInPlaylist } from "@/features/video/queries/use-videos-in-playlist";
 import { useQueryParams } from "@/hooks/use-query-params";
-import {useWatchVideo} from "@/features/video/mutations/use-watch-video";
+import { useWatchVideo } from "@/features/video/mutations/use-watch-video";
 
 export const VideoWatch = ({ videoPost }: { videoPost: VideoPost }) => {
   const [replyComment, setReplyComment] = useState<CommentPost | null>(null);

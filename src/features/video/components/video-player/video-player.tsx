@@ -1,4 +1,6 @@
-import ApiVideoPlayer from "@api.video/react-player";
+import MuxPlayer from "@mux/mux-player-react/lazy";
+import { Loadable } from "@/components/ui/loadable";
+import {useUploadedVideoConfig} from "@/features/video/queries/use-uploaded-video-config";
 
 interface VideoPlayerProps {
   videoPost: VideoPost;
@@ -15,18 +17,43 @@ export const VideoPlayer = ({
   onFirstPlay,
   onPause,
 }: VideoPlayerProps) => {
+  const [videoConfig, query] = useUploadedVideoConfig(videoPost.videoId);
+
   return (
-    <div className="aspect-video bg-base-150">
-      <ApiVideoPlayer
-        key={videoPost.videoId}
-        video={{ id: videoPost.videoId }}
-        style={{ width: "100%", height: "100%" }}
-        onEnded={onEnded}
-        onFirstPlay={onFirstPlay}
-        onPlay={onPlay}
-        onPause={onPause}
-        autoplay={false}
-      />
+    <div className="relative aspect-video bg-base-150 rounded overflow-hidden">
+      <Loadable queries={[query]} fallback={<VideoThumbnail thumbnail={videoPost.storyImage} />}>
+        {() => (
+          <MuxPlayer
+            streamType="on-demand"
+            src={videoConfig?.video?.src}
+            accentColor="#0f8259"
+            style={{ display: 'relative', width: "100%", height: "100%", border: 'none' }}
+          >
+            <VideoThumbnail thumbnail={videoPost.storyImage} />
+          </MuxPlayer>
+        )}
+      </Loadable>
+
+      {/*<ApiVideoPlayer*/}
+      {/*  key={videoPost.videoId}*/}
+      {/*  video={{ id: videoPost.videoId }}*/}
+      {/*  style={{ width: "100%", height: "100%" }}*/}
+      {/*  onEnded={onEnded}*/}
+      {/*  onFirstPlay={onFirstPlay}*/}
+      {/*  onPlay={onPlay}*/}
+      {/*  onPause={onPause}*/}
+      {/*  autoplay={false}*/}
+      {/*/>*/}
     </div>
   );
 };
+
+const VideoThumbnail = ({ thumbnail }: { thumbnail: string }) => {
+  return <div
+    className={`w-full h-full bg-cover bg-center rounded`}
+    slot="poster"
+    style={{ backgroundImage: `url(${thumbnail})` }}
+    role="img"
+    aria-label="Video Post Thumbnail"
+  />
+}

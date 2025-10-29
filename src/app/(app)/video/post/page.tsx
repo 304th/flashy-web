@@ -15,7 +15,10 @@ export default function VideoPostPage() {
   }
 
   return (
-    <Loadable queries={[query]} fallback={<div className="relative aspect-video skeleton rounded"></div>}>
+    <Loadable
+      queries={[query]}
+      fallback={<div className="relative aspect-video skeleton rounded"></div>}
+    >
       {() =>
         videoPost ? (
           <VideoWatch key={videoPost._id} videoPost={videoPost} />

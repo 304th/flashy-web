@@ -5,10 +5,15 @@ import { playlistSchema } from "@/features/video/schemas/playlist.schema";
 export const popularPlaylistsCollection = createCollection<Playlist>({
   async sourceFrom() {
     const response = await api
-      .get('generic/carouselById/popularSeries')
+      .get("generic/carouselById/popularSeries")
       .json<{ list: Playlist[] }>();
 
-    return [...response.list, ...response.list, ...response.list, ...response.list];
+    return [
+      ...response.list,
+      ...response.list,
+      ...response.list,
+      ...response.list,
+    ];
   },
   schema: playlistSchema,
   name: "popularPlaylists",

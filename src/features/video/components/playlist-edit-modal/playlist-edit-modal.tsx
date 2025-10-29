@@ -106,4 +106,3 @@ const Modal = (props: any) => (
       shadow-2xl overflow-hidden ${props.className}`}
   />
 );
-

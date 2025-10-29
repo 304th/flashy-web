@@ -21,7 +21,7 @@ export const VideoPost = ({
         ${className} rounded`}
     >
       <Link
-        href={`/video/post?id=${videoPost._id}${includePlaylist ? `&playlistId=${includePlaylist}` : ''}`}
+        href={`/video/post?id=${videoPost._id}${includePlaylist ? `&playlistId=${includePlaylist}` : ""}`}
         className={`flex flex-col w-full gap-2 rounded transition
           group-hover:bg-base-300 p-2 ${horizontal ? "flex-row" : ""}`}
       >

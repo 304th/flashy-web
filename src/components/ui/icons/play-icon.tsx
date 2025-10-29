@@ -7,10 +7,6 @@ export const PlayIcon = ({ className }: { className?: string }) => (
     xmlns="http://www.w3.org/2000/svg"
     className={className}
   >
-    <path
-      d="M8 5V19L19 12L8 5Z"
-      fill="currentColor"
-    />
+    <path d="M8 5V19L19 12L8 5Z" fill="currentColor" />
   </svg>
 );
-

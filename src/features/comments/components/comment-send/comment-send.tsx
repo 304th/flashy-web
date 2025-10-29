@@ -21,6 +21,7 @@ const formSchema = z.object({
 export interface CommentSendProps {
   post: Reactable | any;
   replyComment: CommentPost | null;
+  autoFocus?: boolean;
   className?: string;
   onCloseReply?: () => void;
 }
@@ -28,6 +29,7 @@ export interface CommentSendProps {
 export const CommentSend = ({
   post,
   replyComment,
+  autoFocus = true,
   className,
   onCloseReply,
 }: CommentSendProps) => {
@@ -43,10 +45,10 @@ export const CommentSend = ({
   });
 
   useEffect(() => {
-    if (post._id) {
+    if (post._id && autoFocus) {
       form.setFocus("message");
     }
-  }, [post._id]);
+  }, [post._id, autoFocus]);
 
   useEffect(() => {
     if (replyComment) {

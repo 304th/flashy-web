@@ -65,7 +65,10 @@ export const PlaylistViewModal = ({
         <div
           className="grid grid-cols-1 sm:grid-cols-2 gap-4 px-4 items-stretch"
         >
-          <div className="relative flex flex-col gap-1 p-4 rounded-md bg-base-200 border">
+          <div
+            className="relative flex flex-col gap-1 p-4 rounded-md bg-base-200
+              border"
+          >
             <p className="text-sm text-white/70">Views</p>
             <p className="text-3xl font-semibold text-white">
               {stats.totalViews.toLocaleString()}
@@ -74,7 +77,10 @@ export const PlaylistViewModal = ({
               <EyeIcon size={18} />
             </div>
           </div>
-          <div className="relative flex flex-col gap-1 p-4 rounded-md bg-base-200 border">
+          <div
+            className="relative flex flex-col gap-1 p-4 rounded-md bg-base-200
+              border"
+          >
             <p className="text-sm text-white/70">Videos</p>
             <p className="text-3xl font-semibold text-white">
               {stats.videosCount.toLocaleString()}

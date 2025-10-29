@@ -34,17 +34,17 @@ export const VideoWatch = ({ videoPost }: { videoPost: VideoPost }) => {
         nextVideoButton.current?.show(5);
       }
     }
-  }
+  };
 
   const handleNext = () => {
     if (videoPost.playlist?.fbId && playlistVideos) {
       playNextVideo(videoPost._id, playlistVideos, videoPost.playlist?.fbId);
     }
-  }
+  };
 
   const handleFirstPlay = () => {
     watchVideo.mutate({ id: videoPost._id });
-  }
+  };
 
   return (
     <div className="flex flex-col w-full gap-4">
@@ -92,6 +92,7 @@ export const VideoWatch = ({ videoPost }: { videoPost: VideoPost }) => {
         <CommentSend
           post={videoPost}
           replyComment={replyComment}
+          autoFocus={false}
           className="rounded-br-md rounded-bl-md z-1 border"
           onCloseReply={() => setReplyComment(null)}
         />

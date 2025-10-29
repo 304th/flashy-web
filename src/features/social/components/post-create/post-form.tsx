@@ -80,12 +80,15 @@ export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
   const [mentionPosition, setMentionPosition] = useState<{ left: number; top: number }>({ left: 0, top: 0 });
   const [portalReady, setPortalReady] = useState(false);
   const mentionDropdownRef = useRef<HTMLDivElement | null>(null);
+  const [mentionAnchorStart, setMentionAnchorStart] = useState<number | null>(null);
+  const [isTextareaFocused, setIsTextareaFocused] = useState(false);
+  const suppressNextOpenRef = useRef(false);
 
   useEffect(() => {
     setPortalReady(true);
   }, []);
 
-  const computeCaretPosition = () => {
+  const computeCaretPosition = (index?: number) => {
     const ta = textareaRef.current;
     if (!ta) return { left: 8, top: 28 };
 
@@ -94,7 +97,7 @@ export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
     const span = document.createElement("span");
     const caret = document.createElement("span");
     const value = ta.value;
-    const caretIndex = ta.selectionStart ?? value.length;
+    const caretIndex = index ?? (ta.selectionStart ?? value.length);
 
     const properties = [
       "boxSizing","width","height","overflow","borderTopWidth","borderRightWidth","borderBottomWidth","borderLeftWidth",
@@ -123,9 +126,13 @@ export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
 
     document.body.appendChild(div);
     const caretRect = caret.getBoundingClientRect();
+    const mirrorRect = div.getBoundingClientRect();
+    const taRect = ta.getBoundingClientRect();
     const lineHeight = parseFloat(style.lineHeight || "20");
-    const left = caretRect.left;
-    const top = caretRect.top + (isFinite(lineHeight) ? lineHeight : 20);
+    const offsetX = caretRect.left - mirrorRect.left;
+    const offsetY = caretRect.top - mirrorRect.top;
+    const left = taRect.left + offsetX;
+    const top = taRect.top + offsetY + (isFinite(lineHeight) ? lineHeight : 20);
     document.body.removeChild(div);
     return { left, top };
   };
@@ -154,26 +161,59 @@ export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
 
   useEffect(() => {
     const mention = currentMention;
-    if (mention && mention.query.length >= 1) {
-      setMentionOpen(true);
-      setMentionQuery(mention.query);
-      const pos = computeCaretPosition();
-      setMentionPosition({ left: Math.max(0, pos.left), top: Math.max(0, pos.top) });
+    if (!mentionOpen) {
+      if (suppressNextOpenRef.current) {
+        // consume the suppression and skip opening once
+        suppressNextOpenRef.current = false;
+        return;
+      }
+      if (mention && mention.query.length >= 1) {
+        if (!isTextareaFocused) return; // only open when typing/focused
+        setMentionOpen(true);
+        setMentionAnchorStart(mention.start);
+        setMentionQuery(mention.query);
+        const pos = computeCaretPosition(mention.start);
+        setMentionPosition({ left: Math.max(0, pos.left), top: Math.max(0, pos.top) });
+      } else {
+        closeMentions();
+      }
     } else {
-      closeMentions();
+      // When open, keep position fixed to anchor and just update query while typing
+      const el = textareaRef.current;
+      const value = form.getValues("description") || "";
+      if (!el || mentionAnchorStart == null) return;
+      const caret = el.selectionStart ?? value.length;
+      if (mentionAnchorStart >= value.length || value[mentionAnchorStart] !== "@" || caret < mentionAnchorStart) {
+        closeMentions();
+        setMentionAnchorStart(null);
+        return;
+      }
+      const token = value.slice(mentionAnchorStart, caret);
+      const tokenBody = token.slice(1); // without '@'
+      if (/^[a-zA-Z0-9_]{0,20}$/.test(tokenBody)) {
+        setMentionQuery(tokenBody);
+      } else {
+        closeMentions();
+        setMentionAnchorStart(null);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentMention]);
+  }, [description, currentMention, mentionOpen, mentionAnchorStart, isTextareaFocused]);
 
   useEffect(() => {
     if (!mentionOpen) return;
     const listener = () => {
-      const pos = computeCaretPosition();
+      // recompute using the last known start index if possible
+      const pos = computeCaretPosition(mentionAnchorStart == null ? undefined : mentionAnchorStart);
       setMentionPosition({ left: Math.max(0, pos.left), top: Math.max(0, pos.top) });
     };
     window.addEventListener("resize", listener);
-    return () => window.removeEventListener("resize", listener);
-  }, [mentionOpen]);
+    window.addEventListener("scroll", listener, true);
+    return () => {
+      window.removeEventListener("resize", listener);
+      window.removeEventListener("scroll", listener, true);
+    };
+  }, [mentionOpen, mentionAnchorStart]);
 
   useEffect(() => {
     if (!mentionOpen) return;
@@ -183,6 +223,9 @@ export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
       if (!dropdownEl || !containerEl) return;
       const target = e.target as Node;
       if (!dropdownEl.contains(target) && !containerEl.contains(target)) {
+        // ensure we don't immediately reopen due to focus state
+        setIsTextareaFocused(false);
+        suppressNextOpenRef.current = true;
         closeMentions();
       }
     };
@@ -313,6 +356,16 @@ export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
                     onChange={(e) => {
                       props.field.onChange(e);
                     }}
+                      onMouseDown={() => {
+                        if (mentionOpen) {
+                          closeMentions();
+                          setMentionAnchorStart(null);
+                        }
+                        // prevent an immediate reopen on focus
+                        suppressNextOpenRef.current = true;
+                      }}
+                      onFocus={() => setIsTextareaFocused(true)}
+                      onBlur={() => setIsTextareaFocused(false)}
                       className={`min-h-[120px] shadow-none focus-visible:ring-0
                     focus-visible:ring-offset-0 transition-colors duration-150
                     ${

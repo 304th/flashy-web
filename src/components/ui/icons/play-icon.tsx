@@ -13,3 +13,4 @@ export const PlayIcon = ({ className }: { className?: string }) => (
     />
   </svg>
 );
+

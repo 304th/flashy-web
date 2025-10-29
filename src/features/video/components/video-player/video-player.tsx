@@ -1,6 +1,7 @@
 import MuxPlayer from "@mux/mux-player-react/lazy";
 import { Loadable } from "@/components/ui/loadable";
 import {useUploadedVideoConfig} from "@/features/video/queries/use-uploaded-video-config";
+import {useRef} from "react";
 
 interface VideoPlayerProps {
   videoPost: VideoPost;
@@ -17,6 +18,7 @@ export const VideoPlayer = ({
   onFirstPlay,
   onPause,
 }: VideoPlayerProps) => {
+  const firstPlayed = useRef<boolean>(false);
   const [videoConfig, query] = useUploadedVideoConfig(videoPost.videoId);
 
   return (
@@ -28,6 +30,16 @@ export const VideoPlayer = ({
             src={videoConfig?.video?.src}
             accentColor="#0f8259"
             style={{ display: 'relative', width: "100%", height: "100%", border: 'none' }}
+            onEnded={onEnded}
+            onPlay={() => {
+              if (!firstPlayed.current) {
+                firstPlayed.current = true;
+                onFirstPlay?.();
+              }
+
+              onPlay?.();
+            }}
+            onPause={onPause}
           >
             <VideoThumbnail thumbnail={videoPost.storyImage} />
           </MuxPlayer>

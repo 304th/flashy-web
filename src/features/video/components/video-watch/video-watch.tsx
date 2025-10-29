@@ -5,14 +5,16 @@ import { VideoTimestamp } from "@/features/video/components/video-post/video-pos
 import { CommentsFeed } from "@/features/comments/components/comments-feed/comments-feed";
 import { CommentSend } from "@/features/comments/components/comment-send/comment-send";
 import { UserProfile } from "@/components/ui/user-profile";
-import { useVideoPostOwned } from "@/features/video/hooks/use-video-post-owned";
+import { VideoWatchNextButton } from "@/features/video/components/video-watch/video-watch-next-button";
 import { VideoWatchOptions } from "@/features/video/components/video-watch/video-watch-options";
 import { usePlaylistContext } from "@/features/video/components/video-playlist-context";
 import { useVideosInPlaylist } from "@/features/video/queries/use-videos-in-playlist";
 import { useQueryParams } from "@/hooks/use-query-params";
 import { useWatchVideo } from "@/features/video/mutations/use-watch-video";
+import { useVideoPostOwned } from "@/features/video/hooks/use-video-post-owned";
 
 export const VideoWatch = ({ videoPost }: { videoPost: VideoPost }) => {
+  const nextVideoButton = useRef<any>(null);
   const [replyComment, setReplyComment] = useState<CommentPost | null>(null);
   const isVideoOwned = useVideoPostOwned(videoPost);
   const { autoplay, playNextVideo } = usePlaylistContext();
@@ -22,39 +24,39 @@ export const VideoWatch = ({ videoPost }: { videoPost: VideoPost }) => {
   );
   const watchVideo = useWatchVideo();
 
-  const onEnded = useRef<any>(null);
-  const onFirstPlay = useRef<any>(null);
+  const handleEnded = () => {
+    if (autoplay && playlistVideos) {
+      const currentVideoIndex = playlistVideos.findIndex(
+        (video) => video._id === videoPost._id,
+      );
 
-  useEffect(() => {
-    onEnded.current = () => {
-      if (autoplay && videoPost.playlist?.fbId && playlistVideos) {
-        playNextVideo(videoPost._id, playlistVideos, videoPost.playlist?.fbId);
+      if (currentVideoIndex !== playlistVideos.length - 1) {
+        nextVideoButton.current?.show(5);
       }
-    };
-  }, [videoPost, playlistVideos, playNextVideo]);
-
-  useEffect(() => {
-    onFirstPlay.current = () => {
-      watchVideo.mutate({ id: videoPost._id });
     }
-  }, [videoPost, watchVideo]);
+  }
 
-  const handleVideoEnd = () => {
-    onEnded.current?.();
-  };
+  const handleNext = () => {
+    if (videoPost.playlist?.fbId && playlistVideos) {
+      playNextVideo(videoPost._id, playlistVideos, videoPost.playlist?.fbId);
+    }
+  }
 
-  const handleVideoFirstPlay = () => {
-    onFirstPlay.current?.();
+  const handleFirstPlay = () => {
+    watchVideo.mutate({ id: videoPost._id });
   }
 
   return (
     <div className="flex flex-col w-full gap-4">
-      <VideoPlayer
-        key={videoPost._id}
-        videoPost={videoPost}
-        onEnded={handleVideoEnd}
-        onFirstPlay={handleVideoFirstPlay}
-      />
+      <div className="relative">
+        <VideoPlayer
+          key={videoPost._id}
+          videoPost={videoPost}
+          onEnded={handleEnded}
+          onFirstPlay={handleFirstPlay}
+        />
+        <VideoWatchNextButton ref={nextVideoButton} onNext={handleNext} />
+      </div>
       <div className="flex flex-col w-full gap-2">
         <p className="text-white font-medium text-2xl">{videoPost.title}</p>
         {videoPost.description && (

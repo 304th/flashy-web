@@ -56,3 +56,4 @@ export const useProtectedAction = (options?: ProtectedActionOptions) => {
     requireAuth,
   } as const;
 };
+

@@ -197,7 +197,7 @@ declare global {
 
   interface Conversation {
     _id: string;
-    type: 'chat' | 'groupChat' | 'channel';
+    type: "chat" | "groupChat" | "channel";
     channelMode: string;
     thumbnail: string;
     hostID: string;

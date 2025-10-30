@@ -5,10 +5,7 @@ import { conversationsCollection } from "@/features/messaging/entities/conversat
 export const useProfileConversations = () => {
   const { data: me } = useMe();
 
-  return usePartitionedQuery<
-    Conversation,
-    { pageParam: number }
-  >({
+  return usePartitionedQuery<Conversation, { pageParam: number }>({
     queryKey: ["me", me?.fbId, "conversations"],
     collection: conversationsCollection,
     getParams: ({ pageParam }) => ({ pageParam }) as any,

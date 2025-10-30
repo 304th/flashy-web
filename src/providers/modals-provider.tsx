@@ -64,6 +64,10 @@ import {
   PlaylistEditModal,
   PlaylistEditModalProps,
 } from "@/features/video/components/playlist-edit-modal/playlist-edit-modal";
+import {
+  ChatCreateModal,
+  ChatCreateModalProps,
+} from "@/features/messaging/components/chat-create-modal/chat-create-modal";
 
 const modalsConfig = {
   LoginModal,
@@ -82,6 +86,7 @@ const modalsConfig = {
   PlaylistViewModal,
   PlaylistUpdateVideosModal,
   PlaylistEditModal,
+  ChatCreateModal,
 };
 
 export type ModalPropsTypes =
@@ -148,6 +153,10 @@ export type ModalPropsTypes =
   | {
       type: "PlaylistEditModal";
       props: PlaylistEditModalProps;
+    }
+  | {
+      type: "ChatCreateModal";
+      props: ChatCreateModalProps;
     };
 
 export const ModalsProvider = ({ children }: PropsWithChildren<object>) => (

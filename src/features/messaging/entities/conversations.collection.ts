@@ -4,7 +4,7 @@ import { conversationSchema } from "@/features/messaging/schemas/conversation.sc
 
 export const conversationsCollection = createCollection<
   Conversation,
-  { pageParam?: number; }
+  { pageParam?: number }
 >({
   async sourceFrom() {
     const response = await api

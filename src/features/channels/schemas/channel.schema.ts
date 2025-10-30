@@ -10,9 +10,9 @@ class ChannelSchema implements StaticSchema<User> {
 
     return {
       fbId: id,
-      email: '',
-      username: '',
-      userimage: '',
+      email: "",
+      username: "",
+      userimage: "",
       verified: false,
       moderator: false,
       representative: false,

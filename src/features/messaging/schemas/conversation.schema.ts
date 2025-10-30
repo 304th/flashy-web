@@ -10,10 +10,10 @@ class ConversationSchema implements StaticSchema<Conversation> {
 
     return {
       _id: id,
-      type: 'chat',
-      channelMode: '',
-      thumbnail: '',
-      hostID: '',
+      type: "chat",
+      channelMode: "",
+      thumbnail: "",
+      hostID: "",
       members: {},
       lastMessage: null,
       mutedBy: [],

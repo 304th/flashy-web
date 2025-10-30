@@ -7,9 +7,7 @@ export const profileFollowingsCollection = createCollection<
   { pageParam: number }
 >({
   async sourceFrom() {
-    return api
-      .get(`users/followingListFull`)
-      .json();
+    return api.get(`users/followingListFull`).json();
   },
   schema: channelSchema,
   name: "profileFollowings",

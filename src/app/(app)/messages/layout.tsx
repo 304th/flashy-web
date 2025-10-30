@@ -11,9 +11,7 @@ export default function MessagesLayout({
       <div className="w-2/6">
         <MessagesSidebar />
       </div>
-      <div className="w-4/6">
-        {children}
-      </div>
+      <div className="w-4/6">{children}</div>
     </div>
   );
 }

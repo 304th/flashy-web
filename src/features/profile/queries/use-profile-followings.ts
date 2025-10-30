@@ -5,10 +5,7 @@ import { profileFollowingsCollection } from "@/features/profile/entities/profile
 export const useProfileFollowings = () => {
   const { data: me } = useMe();
 
-  return usePartitionedQuery<
-    User,
-    { pageParam: number }
-  >({
+  return usePartitionedQuery<User, { pageParam: number }>({
     queryKey: ["me", me?.fbId, "followings"],
     collection: profileFollowingsCollection,
     getParams: ({ pageParam }) => ({ pageParam }) as any,

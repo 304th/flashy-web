@@ -13,7 +13,7 @@ export const notEmpty = <T>(obj: T | undefined): obj is T =>
       ? Object.keys(obj).length > 0 || (Array.isArray(obj) && obj.length > 0)
       : false;
 
-export const timeAgo = (timestamp?: string | number) => {
+export const timeAgo = (timestamp?: string | number, addSuffix = true) => {
   if (!timestamp) {
     return "";
   }
@@ -26,10 +26,10 @@ export const timeAgo = (timestamp?: string | number) => {
   }
 
   try {
-    return formatDistanceToNow(new Date(timestamp), { addSuffix: true });
+    return formatDistanceToNow(new Date(timestamp), { addSuffix });
   } catch {
     return formatDistanceToNow(new Date(Number(timestamp)), {
-      addSuffix: true,
+      addSuffix,
     }); //TODO: fix this
   }
 };

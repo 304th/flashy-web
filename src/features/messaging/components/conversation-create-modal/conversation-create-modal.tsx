@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+// import { useForm } from 'react-hook-form'
 import { motion } from "framer-motion";
-
 import { Modal as ModalComponent } from "@/packages/modals";
 import { CloseButton } from "@/components/ui/close-button";
 import { Input } from "@/components/ui/input";
@@ -12,24 +12,28 @@ import { PlusIcon, CheckIcon, SearchIcon } from "lucide-react";
 import { useProfileFollowings } from "@/features/profile/queries/use-profile-followings";
 import { Loadable } from "@/components/ui/loadable";
 import { NotFound } from "@/components/ui/not-found";
+import { useCreateConversation } from "@/features/messaging/mutations/use-create-conversation";
 import { api } from "@/services/api";
 
-export interface ChatCreateModalProps {
+export interface ConversationCreateModalProps {
   onClose(): void;
   onCreateChat?: (user: User) => void;
 }
 
-export const ChatCreateModal = ({
+export const ConversationCreateModal = ({
   onClose,
   onCreateChat,
   ...props
-}: ChatCreateModalProps) => {
+}: ConversationCreateModalProps) => {
   const { data: followings, query } = useProfileFollowings();
 
   const [search, setSearch] = useState("");
   const [debounced, setDebounced] = useState("");
   const [searchResults, setSearchResults] = useState<User[] | null>(null);
   const [searchLoading, setSearchLoading] = useState(false);
+  const [pinnedUsers, setPinnedUsers] = useState<User[]>([]);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const createConversation = useCreateConversation();
 
   useEffect(() => {
     const t = setTimeout(() => setDebounced(search.trim()), 300);
@@ -58,18 +62,26 @@ export const ChatCreateModal = ({
   }, [debounced]);
 
   const list: User[] | null = useMemo(() => {
-    if (searchResults) return searchResults;
-    return followings ?? null;
-  }, [followings, searchResults]);
+    const base = searchResults ?? followings ?? null;
+    if (!base && pinnedUsers.length === 0) return base;
+
+    // Merge pinned users at the top, then the rest without duplicates
+    const dedupe = new Map<string, User>();
+    for (const u of pinnedUsers) dedupe.set(u.fbId, u);
+    if (base) {
+      for (const u of base) if (!dedupe.has(u.fbId)) dedupe.set(u.fbId, u);
+    }
+    return Array.from(dedupe.values());
+  }, [followings, searchResults, pinnedUsers]);
 
   return (
     <Modal onClose={onClose} className={"!p-0"} {...props}>
       <motion.div
         initial="hidden"
         animate="show"
-        className="relative flex flex-col rounded-md gap-4"
+        className="relative flex flex-col rounded-md"
       >
-        <div className="flex w-full px-4 pt-4 pb-2 gap-4 items-center">
+        <div className="flex w-full p-4 gap-4 items-center">
           <div className="absolute right-2 top-2" onClick={onClose}>
             <CloseButton />
           </div>
@@ -87,7 +99,7 @@ export const ChatCreateModal = ({
             }
             containerClassname="w-full"
           />
-          <div className="flex flex-col py-4 w-full">
+          <div className="flex flex-col w-full">
             <Loadable queries={[query] as any} fullScreenForDefaults>
               {() => (
                 <div
@@ -107,9 +119,28 @@ export const ChatCreateModal = ({
                       <UserRow
                         key={user.fbId}
                         user={user}
-                        onSelect={(u) => {
-                          onCreateChat?.(u);
-                          onClose();
+                        selected={selectedIds.has(user.fbId)}
+                        onSelect={(u, isSelected) => {
+                          if (isSelected) {
+                            // Unselect and unpin
+                            setSelectedIds((prev) => {
+                              const next = new Set(prev);
+                              next.delete(u.fbId);
+                              return next;
+                            });
+                            setPinnedUsers((prev) =>
+                              prev.filter((p) => p.fbId !== u.fbId),
+                            );
+                          } else {
+                            // Select and pin
+                            setSelectedIds((prev) => new Set(prev).add(u.fbId));
+                            setPinnedUsers((prev) => {
+                              if (prev.find((p) => p.fbId === u.fbId))
+                                return prev;
+                              return [u, ...prev];
+                            });
+                            onCreateChat?.(u);
+                          }
                         }}
                       />
                     ))
@@ -119,6 +150,25 @@ export const ChatCreateModal = ({
             </Loadable>
           </div>
         </div>
+        <div className="flex justify-end w-full p-4 border-t">
+          <Button
+            disabled={selectedIds.size === 0}
+            pending={createConversation.isPending}
+            className="w-[80px]"
+            onClick={() => {
+              createConversation.mutate(
+                {
+                  members: [...selectedIds],
+                },
+                {
+                  onSuccess: onClose,
+                },
+              );
+            }}
+          >
+            Create
+          </Button>
+        </div>
       </motion.div>
     </Modal>
   );
@@ -127,9 +177,11 @@ export const ChatCreateModal = ({
 const UserRow = ({
   user,
   onSelect,
+  selected,
 }: {
   user: User;
-  onSelect: (u: User) => void;
+  onSelect: (u: User, selected: boolean) => void;
+  selected?: boolean;
 }) => {
   return (
     <div className="flex items-center justify-between py-3">
@@ -145,11 +197,11 @@ const UserRow = ({
       <div className="flex items-center">
         <Button
           size="icon"
-          variant="ghost"
+          variant={selected ? "secondary" : "ghost"}
           aria-label={`Start chat with ${user?.username}`}
-          onClick={() => onSelect(user)}
+          onClick={() => onSelect(user, Boolean(selected))}
         >
-          <PlusIcon />
+          {selected ? <CheckIcon /> : <PlusIcon />}
         </Button>
       </div>
     </div>

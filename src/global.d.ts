@@ -201,7 +201,9 @@ declare global {
     channelMode: string;
     thumbnail: string;
     hostID: string;
-    members?: Record<string, string>;
+    members: (Pick<User, "fbId" | "username" | "userimage"> & {
+      online: boolean;
+    })[];
     lastMessage: Message | null;
     mutedBy: string[];
     hideFor: string[];

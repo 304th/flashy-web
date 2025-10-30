@@ -13,7 +13,6 @@ import { SocialPostProvider } from "@/features/social/components/social-post/soc
 import { useQueryParams } from "@/hooks/use-query-params";
 import { useModals } from "@/hooks/use-modals";
 import { useSocialPostById } from "@/features/social/queries/use-social-post-by-id";
-import { useComments } from "@/features/comments/queries/use-comments";
 import { useIsSocialPostLocked } from "@/features/social/hooks/use-is-social-post-locked";
 
 export default function SocialPostPage() {

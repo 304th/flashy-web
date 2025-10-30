@@ -57,8 +57,9 @@ const ChannelLayoutComponent = ({ children }: PropsWithChildren<{}>) => {
   const router = useRouter();
   const pathname = usePathname();
   const channelId = useQueryParams("id");
+  const channelUsername = useQueryParams("username");
   const { data: me } = useMe();
-  const { data: channel, query: channelQuery } = useChannelById(channelId);
+  const { data: channel, query: channelQuery } = useChannelById(channelId ?? channelUsername);
   const tabName = getTabNameFromPathname(pathname);
 
   useEffect(() => {

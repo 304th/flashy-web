@@ -9,7 +9,7 @@ export const SocialPostDescription = ({
 }: {
   socialPost: SocialPost;
 }) => {
-  const description = useLinkify(socialPost.description);
+  const description = useLinkifyAndMention(socialPost.description, socialPost.mentionedUsers);
   const [, linkPreviews] = useParsedPostLinkPreviews(socialPost.description);
 
   if (description) {
@@ -36,10 +36,15 @@ export const SocialPostDescription = ({
   return null;
 };
 
-const useLinkify = (description: SocialPost["description"]) => {
+// Enhanced: also links user mentions (e.g., @username)
+const useLinkifyAndMention = (
+  description: SocialPost["description"],
+  mentionedUsers: Array<{ username: string; [k: string]: any }>
+) => {
+  // 1. Replace URLs with links as before
   const urlRegex = /(https?:\/\/[^\s<>"']+)/g;
 
-  return replace(description, urlRegex, (match, i) => (
+  let replaced = replace(description, urlRegex, (match, i) => (
     <Link
       key={`replaced-link-${i}`}
       href={match}
@@ -50,4 +55,31 @@ const useLinkify = (description: SocialPost["description"]) => {
       {parseDomainName(match as `http${string}`)}
     </Link>
   ));
+
+  // 2. Replace @mentions with profile links, but only if the username is in mentionedUsers
+  const mentionRegex = /@([a-zA-Z0-9_]{1,20})/g;
+  // Create a Set for quick lookup
+  const userSet = new Set(
+    Array.isArray(mentionedUsers)
+      ? mentionedUsers.map(u => u.username?.toLowerCase()).filter(Boolean)
+      : []
+  );
+
+  replaced = replace(replaced, mentionRegex, (username, i) => {
+    if (userSet.has(username.toLowerCase())) {
+      return (
+        <Link
+          key={`mention-link-${username}-${i}`}
+          href={`/channel/social?username=${username}`}
+          className="text-blue-500 hover:underline font-medium"
+        >
+          @{username}
+        </Link>
+      );
+    }
+
+    return username;
+  });
+
+  return replaced;
 };

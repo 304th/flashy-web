@@ -1,10 +1,10 @@
 import React, { useRef } from "react";
 import { createPortal } from "react-dom";
+import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { UserAvatar } from "@/components/ui/user-avatar";
+import { Separator } from "@/components/ui/separator";
 import { useMentions } from "@/features/social/hooks/use-mentions";
-import {Separator} from "@/components/ui/separator";
-import {Search} from "lucide-react";
 
 /* -------------------------------------------------------------------------- */
 /*                              Types & Interfaces                            */
@@ -85,23 +85,26 @@ export const MentionsWrapper: React.FC<MentionsWrapperProps> = ({
           textareaRef.current = el;
         },
         onMouseDown: apiForTextarea.onMouseDown as (
-          e: React.MouseEvent<TextElement>
+          e: React.MouseEvent<TextElement>,
         ) => void,
         onFocus: apiForTextarea.onFocus as (
-          e: React.FocusEvent<TextElement>
+          e: React.FocusEvent<TextElement>,
         ) => void,
         onBlur: apiForTextarea.onBlur as (
-          e: React.FocusEvent<TextElement>
+          e: React.FocusEvent<TextElement>,
         ) => void,
       })}
       {/* ---------------------------------------------------------------- */}
       {/*                     Mention dropdown portal                      */}
       {/* ---------------------------------------------------------------- */}
-      {mentionOpen && portalReady && (
+      {mentionOpen &&
+        portalReady &&
         createPortal(
           <div
             ref={mentionDropdownRef}
-            className="z-[1000] flex flex-col gap-2 w-full max-w-full md:max-w-[min(420px,100%)] rounded-2xl bg-base-200 ring-1 ring-inset ring-base-600 shadow-regular-md p-2 fixed"
+            className="z-[1000] flex flex-col gap-2 w-full max-w-full
+              md:max-w-[min(420px,100%)] rounded-2xl bg-base-200 ring-1
+              ring-inset ring-base-600 shadow-regular-md p-2 fixed"
             style={{
               left: mentionPosition.left,
               top: mentionPosition.top,
@@ -118,8 +121,8 @@ export const MentionsWrapper: React.FC<MentionsWrapperProps> = ({
                 containerClassname="w-full"
               />
               <Search
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 h-4
-              w-4 text-muted-foreground"
+                className="absolute right-4 top-1/2 transform -translate-y-1/2
+                  h-4 w-4 text-muted-foreground"
               />
             </div>
             <Separator>Found users:</Separator>
@@ -139,13 +142,12 @@ export const MentionsWrapper: React.FC<MentionsWrapperProps> = ({
                   <button
                     type="button"
                     key={user.fbId ?? user.username}
-                    className="w-full flex items-center gap-3 px-2 py-2 rounded-md hover:bg-base-300 text-left transition cursor-pointer"
+                    className="w-full flex items-center gap-3 px-2 py-2
+                      rounded-md hover:bg-base-300 text-left transition
+                      cursor-pointer"
                     onClick={() => handleSelectUser(user)}
                   >
-                    <UserAvatar
-                      avatar={user.userimage}
-                      className="size-7"
-                    />
+                    <UserAvatar avatar={user.userimage} className="size-7" />
                     <div className="flex flex-col">
                       <span className="text-sm font-medium">
                         @{user.username}
@@ -155,9 +157,8 @@ export const MentionsWrapper: React.FC<MentionsWrapperProps> = ({
                 ))}
             </div>
           </div>,
-          document.body
-        )
-      )}
+          document.body,
+        )}
     </div>
   );
 };

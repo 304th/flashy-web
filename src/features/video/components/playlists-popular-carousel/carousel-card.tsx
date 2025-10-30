@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import {Button} from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 
 interface CarouselCardProps {
   playlist: Playlist;
@@ -8,10 +8,10 @@ interface CarouselCardProps {
 }
 
 export const CarouselCard = ({
-                        playlist,
-                        isActive,
-                        onClick,
-                      }: CarouselCardProps & { onClick: () => void }) => {
+  playlist,
+  isActive,
+  onClick,
+}: CarouselCardProps & { onClick: () => void }) => {
   return (
     <div
       className={`relative flex-shrink-0 w-[450px] md:w-[600px] h-[280px]

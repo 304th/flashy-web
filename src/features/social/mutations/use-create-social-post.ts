@@ -10,6 +10,7 @@ export interface CreateSocialPostParams {
   poll: string[];
   images: File[];
   behindKey: boolean;
+  mentionedUsers: Partial<User>[];
 }
 
 const createSocialPostMutation = createMutation<
@@ -50,6 +51,7 @@ const createSocialPostMutation = createMutation<
             })),
           ),
           behindKey: params.behindKey,
+          mentionedUsers: JSON.stringify(params.mentionedUsers),
         },
       })
       .json<SocialPost>();

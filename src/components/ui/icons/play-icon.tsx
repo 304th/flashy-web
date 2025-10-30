@@ -10,8 +10,3 @@ export const PlayIcon = ({ className }: { className?: string }) => (
     <path d="M8 5V19L19 12L8 5Z" fill="currentColor" />
   </svg>
 );
-
-
-
-
-

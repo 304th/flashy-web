@@ -1,6 +1,5 @@
 import config from "@/config";
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { createPortal } from "react-dom";
+import React, { useMemo, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -16,6 +15,7 @@ import { useCreateSocialPost } from "@/features/social/mutations/use-create-soci
 import { useParsedPostLinkPreviews } from "@/features/social/hooks/use-parsed-post-preview-links";
 import { useSocialPostImagesAttach } from "@/features/social/hooks/use-social-post-images-attach";
 import { useDragAndDrop } from "@/hooks/use-drag-n-drop";
+import { useExtractedMentions } from "@/features/common/hooks/use-extracted-mentions";
 import { defaultVariants } from "@/lib/framer";
 
 const formSchema = z.object({
@@ -42,6 +42,24 @@ export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
   });
 
   const description = form.watch("description");
+
+  useExtractedMentions(description, (mentions) => {
+    form.setValue("mentionedUsers", mentions.map(username => ({ username })));
+  });
+
+  const [parsedUrls, previewLinks] = useParsedPostLinkPreviews(
+    description,
+    500,
+  );
+
+  const { handleFilesUpload, handleFileChange } = useSocialPostImagesAttach({
+    setValue: form.setValue,
+    getValues: form.getValues,
+    fieldName: "images",
+  });
+
+  const { isDragActive, dragHandlers } = useDragAndDrop(handleFilesUpload);
+
   const highlightedDescription = useMemo(() => {
     const text = description || "";
     const parts = text.split(/(@[a-zA-Z0-9_]{1,20})/g);
@@ -57,19 +75,6 @@ export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
     );
   }, [description]);
 
-  const [parsedUrls, previewLinks] = useParsedPostLinkPreviews(
-    description,
-    500,
-  );
-
-  const { handleFilesUpload, handleFileChange } = useSocialPostImagesAttach({
-    setValue: form.setValue,
-    getValues: form.getValues,
-    fieldName: "images",
-  });
-
-  const { isDragActive, dragHandlers } = useDragAndDrop(handleFilesUpload);
-
   return (
     <Form {...form}>
       <form
@@ -79,6 +84,7 @@ export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
             poll: params.poll?.map((poll) => poll.value) || [],
             images: params.images || [],
             behindKey: params.behindKey || false,
+            mentionedUsers: params.mentionedUsers || [],
           });
           form.reset();
           optionsMenuRef.current?.reset();
@@ -104,7 +110,9 @@ export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className="absolute inset-0 flex items-center justify-center bg-[url(/images/forest.png)] bg-contain bg-opacity-50 rounded-lg z-10 pointer-events-none"
+                className="absolute inset-0 flex items-center justify-center
+                  bg-[url(/images/forest.png)] bg-contain bg-opacity-50
+                  rounded-lg z-10 pointer-events-none"
               >
                 <p className="text-white text-lg font-semibold">
                   Upload Images here (up to 3mb)
@@ -118,40 +126,48 @@ export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
               <motion.div variants={defaultVariants.child}>
                 <FormItem className="m-0 p-0">
                   <div className="relative">
-                    {/* highlight backdrop */}
                     <div
                       aria-hidden
-                      className={`pointer-events-none absolute inset-0 z-1 rounded-md px-3 py-2 whitespace-pre-wrap break-words text-[inherit] leading-[inherit] font-[inherit]`}
+                      className={`pointer-events-none absolute inset-0 z-1
+                      rounded-md px-3 py-2 whitespace-pre-wrap break-words
+                      text-[inherit] leading-[inherit] font-[inherit]`}
                     >
                       {highlightedDescription}
                     </div>
                     <MentionsWrapper
                       value={props.field.value ?? ""}
-                      onChange={val => props.field.onChange(val)}
+                      onChange={(val) => props.field.onChange(val)}
                       containerClassName=""
                     >
-                      {mentionsProps => (
+                      {(mentionsProps) => (
                         <Textarea
                           maxLength={config.content.social.maxLength}
                           placeholder="What ya thinking..."
                           noHover={isDragActive}
                           {...props.field}
-                          ref={el => {
+                          ref={(el) => {
                             // Forward both Mention ref and RHF ref
                             mentionsProps.ref(el);
-                            if (props.field && typeof props.field.ref === "function") {
+                            if (
+                              props.field &&
+                              typeof props.field.ref === "function"
+                            ) {
                               // @ts-ignore
                               props.field.ref(el);
                             }
                           }}
-                          onChange={e => {
+                          onChange={(e) => {
                             props.field.onChange(e);
                           }}
                           onMouseDown={mentionsProps.onMouseDown}
                           onFocus={mentionsProps.onFocus}
                           onBlur={mentionsProps.onBlur}
-                          className={`min-h-[120px] shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors duration-150 ${
-                            isDragActive ? "pointer-events-none" : "border-base-400 bg-transparent"
+                          className={`min-h-[120px] shadow-none
+                          focus-visible:ring-0 focus-visible:ring-offset-0
+                          transition-colors duration-150 ${
+                            isDragActive
+                              ? "pointer-events-none"
+                              : "border-base-400 bg-transparent"
                           }`}
                           style={{ color: "transparent", caretColor: "white" }}
                         />

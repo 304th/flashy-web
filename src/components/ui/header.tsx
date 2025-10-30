@@ -10,7 +10,13 @@ export const Header = () => {
       >
         <Link href="/" className="inline-flex items-center">
           <img src="/logo.svg" alt="Logo" height={36} width={90} />
-          <img src="/app.svg" alt="App" height={36} width={90} className="relative scale-90 top-[1px]" />
+          <img
+            src="/app.svg"
+            alt="App"
+            height={36}
+            width={90}
+            className="relative scale-90 top-[1px]"
+          />
         </Link>
         <AccountLogin />
       </div>

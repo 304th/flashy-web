@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
-import {ReactNode} from "react";
+import { ReactNode } from "react";
 
 function Input({
   trailingIcon,
@@ -9,7 +9,10 @@ function Input({
   containerClassname,
   type,
   ...props
-}: React.ComponentProps<"input"> & { containerClassname?: string; trailingIcon?: ReactNode  }) {
+}: React.ComponentProps<"input"> & {
+  containerClassname?: string;
+  trailingIcon?: ReactNode;
+}) {
   return (
     <div className={`relative ${containerClassname}`}>
       <input

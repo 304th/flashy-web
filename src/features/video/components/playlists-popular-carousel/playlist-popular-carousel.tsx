@@ -17,15 +17,15 @@ export const PlaylistPopularCarousel = () => {
     : [];
 
   // Safely extend array with wrap-around
-  const extendedPlaylists: Playlist[] = playlists.length >= 2
-    ? [
-        ...playlists.slice(-2),
-        ...playlists,
-        ...playlists.slice(0, 2),
-      ]
-    : playlists;
+  const extendedPlaylists: Playlist[] =
+    playlists.length >= 2
+      ? [...playlists.slice(-2), ...playlists, ...playlists.slice(0, 2)]
+      : playlists;
 
-  const scrollToIndex = (index: number, behavior: "auto" | "smooth" = "smooth") => {
+  const scrollToIndex = (
+    index: number,
+    behavior: "auto" | "smooth" = "smooth",
+  ) => {
     if (scrollContainerRef.current && playlists.length > 0) {
       const container = scrollContainerRef.current;
       const firstCard = container.querySelector("[data-card]") as HTMLElement;
@@ -39,7 +39,11 @@ export const PlaylistPopularCarousel = () => {
       const containerCenterOffset = containerWidth / 2;
       // Adjust index for the extended array (add offset for duplicated cards at beginning)
       const extendedIndex = index + 2; // Offset by 2 for the duplicated cards at the beginning
-      const scrollPosition = extendedIndex * stepWidth + cardCenterOffset - containerCenterOffset + paddingLeft;
+      const scrollPosition =
+        extendedIndex * stepWidth +
+        cardCenterOffset -
+        containerCenterOffset +
+        paddingLeft;
       if (behavior === "auto") {
         container.scrollLeft = scrollPosition;
       } else {
@@ -93,7 +97,8 @@ export const PlaylistPopularCarousel = () => {
                       : index - extendedPlaylists.length + 2;
 
                 // Defensive key: prefer fbId, then _id, then index
-                const key = playlist.fbId || playlist._id || `playlist-${index}`;
+                const key =
+                  playlist.fbId || playlist._id || `playlist-${index}`;
 
                 return (
                   <div
@@ -112,7 +117,11 @@ export const PlaylistPopularCarousel = () => {
             </div>
             {/* Pagination Dots */}
             {playlists.length > 1 && (
-              <CarouselNavigation items={playlists} currentIndex={currentIndex} onScroll={scrollToIndex} />
+              <CarouselNavigation
+                items={playlists}
+                currentIndex={currentIndex}
+                onScroll={scrollToIndex}
+              />
             )}
           </div>
         )}

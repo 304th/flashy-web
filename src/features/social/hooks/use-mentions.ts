@@ -22,7 +22,10 @@ export const useMentions = ({
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
-  const [position, setPosition] = useState<{ left: number; top: number }>({ left: 0, top: 0 });
+  const [position, setPosition] = useState<{ left: number; top: number }>({
+    left: 0,
+    top: 0,
+  });
   const [portalReady, setPortalReady] = useState(false);
   const [anchorStart, setAnchorStart] = useState<number | null>(null);
   const [isFocused, setIsFocused] = useState(false);
@@ -38,7 +41,11 @@ export const useMentions = ({
     if (!el) return null;
     const caret = el.selectionStart ?? value.length;
     const before = value.substring(0, caret);
-    const lastSpace = Math.max(before.lastIndexOf(" "), before.lastIndexOf("\n"), before.lastIndexOf("\t"));
+    const lastSpace = Math.max(
+      before.lastIndexOf(" "),
+      before.lastIndexOf("\n"),
+      before.lastIndexOf("\t"),
+    );
     const segment = before.substring(lastSpace + 1);
     const match = segment.match(/^@([a-zA-Z0-9_]{1,20})$/);
     if (!match) return null;
@@ -56,12 +63,34 @@ export const useMentions = ({
     const span = document.createElement("span");
     const caret = document.createElement("span");
     const value = ta.value;
-    const caretIndex = index ?? (ta.selectionStart ?? value.length);
+    const caretIndex = index ?? ta.selectionStart ?? value.length;
 
     const properties = [
-      "boxSizing","width","height","overflow","borderTopWidth","borderRightWidth","borderBottomWidth","borderLeftWidth",
-      "paddingTop","paddingRight","paddingBottom","paddingLeft","fontStyle","fontVariant","fontWeight","fontStretch",
-      "fontSize","fontFamily","lineHeight","letterSpacing","textTransform","textAlign","textIndent","whiteSpace","wordBreak"
+      "boxSizing",
+      "width",
+      "height",
+      "overflow",
+      "borderTopWidth",
+      "borderRightWidth",
+      "borderBottomWidth",
+      "borderLeftWidth",
+      "paddingTop",
+      "paddingRight",
+      "paddingBottom",
+      "paddingLeft",
+      "fontStyle",
+      "fontVariant",
+      "fontWeight",
+      "fontStretch",
+      "fontSize",
+      "fontFamily",
+      "lineHeight",
+      "letterSpacing",
+      "textTransform",
+      "textAlign",
+      "textIndent",
+      "whiteSpace",
+      "wordBreak",
     ];
     div.style.position = "absolute";
     div.style.visibility = "hidden";
@@ -97,33 +126,49 @@ export const useMentions = ({
 
   useEffect(() => {
     const mention = currentMention;
+
     if (!open) {
       if (suppressNextOpenRef.current) {
         suppressNextOpenRef.current = false;
         return;
       }
+
       if (mention && mention.query.length >= 1) {
         if (!isFocused) return;
         setOpen(true);
         setAnchorStart(mention.start);
         setQuery(mention.query);
         const pos = computeCaretPosition(mention.start);
-        setPosition({ left: Math.max(0, pos.left), top: Math.max(0, pos.top + 12) });
+        setPosition({
+          left: Math.max(0, pos.left),
+          top: Math.max(0, pos.top + 12),
+        });
       } else {
         close();
       }
     } else {
       const el = textareaRef.current;
       const value = getValue() || "";
-      if (!el || anchorStart == null) return;
+
+      if (!el || anchorStart == null) {
+        return;
+      }
+
       const caret = el.selectionStart ?? value.length;
-      if (anchorStart >= value.length || value[anchorStart] !== "@" || caret < anchorStart) {
+
+      if (
+        anchorStart >= value.length ||
+        value[anchorStart] !== "@" ||
+        caret < anchorStart
+      ) {
         close();
         setAnchorStart(null);
         return;
       }
+
       const token = value.slice(anchorStart, caret);
       const tokenBody = token.slice(1);
+
       if (/^[a-zA-Z0-9_]{0,20}$/.test(tokenBody)) {
         setQuery(tokenBody);
       } else {
@@ -135,13 +180,23 @@ export const useMentions = ({
   }, [getValue(), textareaRef.current?.selectionStart, isFocused]);
 
   useEffect(() => {
-    if (!open) return;
+    if (!open) {
+      return;
+    }
+
     const listener = () => {
-      const pos = computeCaretPosition(anchorStart == null ? undefined : anchorStart);
-      setPosition({ left: Math.max(0, pos.left), top: Math.max(0, pos.top + 12) });
+      const pos = computeCaretPosition(
+        anchorStart == null ? undefined : anchorStart,
+      );
+      setPosition({
+        left: Math.max(0, pos.left),
+        top: Math.max(0, pos.top + 12),
+      });
     };
+
     window.addEventListener("resize", listener);
     window.addEventListener("scroll", listener, true);
+
     return () => {
       window.removeEventListener("resize", listener);
       window.removeEventListener("scroll", listener, true);
@@ -149,8 +204,14 @@ export const useMentions = ({
   }, [open, anchorStart]);
 
   useEffect(() => {
-    if (!open) return;
-    if (debounceRef.current) clearTimeout(debounceRef.current);
+    if (!open) {
+      return;
+    }
+
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
+
     debounceRef.current = setTimeout(async () => {
       try {
         setLoading(true);
@@ -167,12 +228,20 @@ export const useMentions = ({
   }, [open, query]);
 
   useEffect(() => {
-    if (!open) return;
+    if (!open) {
+      return;
+    }
+
     const handleDocumentMouseDown = (e: MouseEvent) => {
       const dropdownEl = dropdownRef.current;
       const containerEl = containerRef.current;
-      if (!dropdownEl || !containerEl) return;
+
+      if (!dropdownEl || !containerEl) {
+        return;
+      }
+
       const target = e.target as Node;
+
       if (!dropdownEl.contains(target) && !containerEl.contains(target)) {
         setIsFocused(false);
         suppressNextOpenRef.current = true;
@@ -184,8 +253,10 @@ export const useMentions = ({
         close();
       }
     };
+
     document.addEventListener("mousedown", handleDocumentMouseDown, true);
     document.addEventListener("keydown", handleKeyDown, true);
+
     return () => {
       document.removeEventListener("mousedown", handleDocumentMouseDown, true);
       document.removeEventListener("keydown", handleKeyDown, true);
@@ -202,14 +273,18 @@ export const useMentions = ({
   const handleSelect = (user: Partial<User>) => {
     const el = textareaRef.current;
     const value = getValue() || "";
-    if (!el) return;
+
+    if (!el) {
+      return;
+    }
+
     const caret = el.selectionStart ?? value.length;
-    const before = value.substring(0, caret);
     const start = anchorStart ?? caret;
-    const end = caret;
-    const nextValue = value.slice(0, start) + `@${user.username} ` + value.slice(end);
+    const nextValue =
+      value.slice(0, start) + `@${user.username} ` + value.slice(caret);
     setValue(nextValue);
     const newCaret = (value.slice(0, start) + `@${user.username} `).length;
+
     requestAnimationFrame(() => {
       el.focus();
       el.setSelectionRange(newCaret, newCaret);
@@ -224,6 +299,7 @@ export const useMentions = ({
         close();
         setAnchorStart(null);
       }
+
       suppressNextOpenRef.current = true;
     },
     onFocus: () => setIsFocused(true),
@@ -243,8 +319,3 @@ export const useMentions = ({
     handleSelect,
   } as const;
 };
-
-
-
-
-

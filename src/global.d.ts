@@ -182,6 +182,34 @@ declare global {
     isLiked: boolean;
   }
 
+  interface Message {
+    _id: string;
+    conversationId: string;
+    author: Author;
+    body: string;
+    attachmentURL: string;
+    tipAmount: number;
+    mentionedUsers: any[];
+    deletedBy: string[];
+    createdAt: string;
+    replyToMessage: string;
+  }
+
+  interface Conversation {
+    _id: string;
+    type: 'chat' | 'groupChat' | 'channel';
+    channelMode: string;
+    thumbnail: string;
+    hostID: string;
+    members?: Record<string, string>;
+    lastMessage: Message | null;
+    mutedBy: string[];
+    hideFor: string[];
+    readBy: string[];
+    createdAt: string;
+    updatedAt: string;
+  }
+
   interface Commentable {
     _id: string;
   }

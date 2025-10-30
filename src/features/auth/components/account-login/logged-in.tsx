@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { MessageCircle, BellIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -21,15 +22,17 @@ export const LoggedIn = () => {
         <motion.div variants={defaultVariants.child}>
           <CreateDropdown />
         </motion.div>
-        {/*<motion.div variants={defaultVariants.child}>*/}
-        {/*  <Button*/}
-        {/*    className="!w-fit p-0 aspect-square"*/}
-        {/*    size="sm"*/}
-        {/*    variant="secondary"*/}
-        {/*  >*/}
-        {/*    <MessageCircle />*/}
-        {/*  </Button>*/}
-        {/*</motion.div>*/}
+        <motion.div variants={defaultVariants.child}>
+          <Link href="/messages">
+            <Button
+              className="!w-fit p-0 aspect-square"
+              size="sm"
+              variant="secondary"
+            >
+              <MessageCircle />
+            </Button>
+          </Link>
+        </motion.div>
         {/*<motion.div variants={defaultVariants.child}>*/}
         {/*  <Button*/}
         {/*    className="!w-fit p-0 aspect-square"*/}

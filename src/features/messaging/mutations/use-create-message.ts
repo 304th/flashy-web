@@ -1,5 +1,6 @@
 import { createMutation, useOptimisticMutation } from "@/lib/query-toolkit-v2";
 import { api } from "@/services/api";
+import { conversationMessagesCollection } from "@/features/messaging/entities/conversation-message.collection";
 
 export interface CreateMessageParams {
   conversationId: string;
@@ -31,5 +32,8 @@ const createMessage = createMutation<CreateMessageParams>({
 export const useCreateMessage = () => {
   return useOptimisticMutation({
     mutation: createMessage,
+    onOptimistic: async (ch, params) => {
+      return ch(conversationMessagesCollection).prepend(params);
+    }
   });
 };

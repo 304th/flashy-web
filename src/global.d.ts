@@ -208,6 +208,7 @@ declare global {
     mutedBy: string[];
     hideFor: string[];
     readBy: string[];
+    title?: string;
     createdAt: string;
     updatedAt: string;
   }

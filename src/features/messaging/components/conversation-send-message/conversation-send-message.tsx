@@ -7,7 +7,6 @@ import { Form, FormField, FormItem } from "@/components/ui/form";
 import { IconButton } from "@/components/ui/icon-button";
 import { Textarea } from "@/components/ui/textarea";
 import { SendIcon } from "@/components/ui/icons/send";
-import { MessageProgress } from "@/features/social/components/post-create/message-progress";
 import { useCreateMessage } from "@/features/messaging/mutations/use-create-message";
 import { useQueryParams } from "@/hooks/use-query-params";
 import { defaultVariants } from "@/lib/framer";

@@ -14,7 +14,7 @@ class ConversationSchema implements StaticSchema<Conversation> {
       channelMode: "",
       thumbnail: "",
       hostID: "",
-      members: {},
+      members: [],
       lastMessage: null,
       mutedBy: [],
       hideFor: [],

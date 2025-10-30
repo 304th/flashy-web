@@ -7,8 +7,10 @@ import { NotFound } from "@/components/ui/not-found";
 import { ConversationPreview } from "@/features/messaging/components/conversations-sidebar/conversation-preview";
 import { useModals } from "@/hooks/use-modals";
 import { useProfileConversations } from "@/features/profile/queries/use-profile-conversations";
+import { useQueryParams } from "@/hooks/use-query-params";
 
 export const ConversationsSidebar = () => {
+  const activeConversationId = useQueryParams("id");
   const { data: conversations, query } = useProfileConversations();
   const { openModal } = useModals();
 
@@ -40,6 +42,7 @@ export const ConversationsSidebar = () => {
                 <ConversationPreview
                   key={conversation._id}
                   conversation={conversation}
+                  isActive={activeConversationId === conversation._id}
                 />
               ))
             )

@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormField, FormItem } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { MentionsWrapper } from "@/components/ui/mentions-wrapper";
 import { MessageProgress } from "@/features/social/components/post-create/message-progress";
 import { PostLinkPreview } from "@/features/social/components/post-link-preview/post-link-preview";
 import { PostOptions } from "@/features/social/components/post-create/post-options";
@@ -17,15 +17,13 @@ import { useParsedPostLinkPreviews } from "@/features/social/hooks/use-parsed-po
 import { useSocialPostImagesAttach } from "@/features/social/hooks/use-social-post-images-attach";
 import { useDragAndDrop } from "@/hooks/use-drag-n-drop";
 import { defaultVariants } from "@/lib/framer";
-import { UserAvatar } from "@/components/ui/user-avatar";
-import { useMentions } from "@/features/social/hooks/use-mentions";
-import { MentionsWrapper } from "@/components/ui/mentions-wrapper";
 
 const formSchema = z.object({
   description: z.string().max(config.content.social.maxLength),
   poll: z.array(z.object({ value: z.string() })).optional(),
   images: z.array(z.custom<File>()).optional(),
   behindKey: z.boolean().optional(),
+  mentionedUsers: z.array(z.custom<Partial<User>>()).optional(),
 });
 
 export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
@@ -38,6 +36,7 @@ export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
       poll: [],
       images: [],
       behindKey: false,
+      mentionedUsers: [],
     },
     mode: "all",
   });
@@ -46,6 +45,7 @@ export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
   const highlightedDescription = useMemo(() => {
     const text = description || "";
     const parts = text.split(/(@[a-zA-Z0-9_]{1,20})/g);
+
     return parts.map((part, idx) =>
       part.startsWith("@") ? (
         <span key={idx} className="text-blue-500 font-medium">
@@ -56,6 +56,7 @@ export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
       ),
     );
   }, [description]);
+
   const [parsedUrls, previewLinks] = useParsedPostLinkPreviews(
     description,
     500,

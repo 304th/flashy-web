@@ -44,7 +44,10 @@ export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
   const description = form.watch("description");
 
   useExtractedMentions(description, (mentions) => {
-    form.setValue("mentionedUsers", mentions.map(username => ({ username })));
+    form.setValue(
+      "mentionedUsers",
+      mentions.map((username) => ({ username })),
+    );
   });
 
   const [parsedUrls, previewLinks] = useParsedPostLinkPreviews(

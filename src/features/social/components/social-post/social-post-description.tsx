@@ -9,7 +9,10 @@ export const SocialPostDescription = ({
 }: {
   socialPost: SocialPost;
 }) => {
-  const description = useLinkifyAndMention(socialPost.description, socialPost.mentionedUsers);
+  const description = useLinkifyAndMention(
+    socialPost.description,
+    socialPost.mentionedUsers,
+  );
   const [, linkPreviews] = useParsedPostLinkPreviews(socialPost.description);
 
   if (description) {
@@ -39,7 +42,7 @@ export const SocialPostDescription = ({
 // Enhanced: also links user mentions (e.g., @username)
 const useLinkifyAndMention = (
   description: SocialPost["description"],
-  mentionedUsers: Array<{ username: string; [k: string]: any }>
+  mentionedUsers: Array<{ username: string; [k: string]: any }>,
 ) => {
   // 1. Replace URLs with links as before
   const urlRegex = /(https?:\/\/[^\s<>"']+)/g;
@@ -61,8 +64,8 @@ const useLinkifyAndMention = (
   // Create a Set for quick lookup
   const userSet = new Set(
     Array.isArray(mentionedUsers)
-      ? mentionedUsers.map(u => u.username?.toLowerCase()).filter(Boolean)
-      : []
+      ? mentionedUsers.map((u) => u.username?.toLowerCase()).filter(Boolean)
+      : [],
   );
 
   replaced = replace(replaced, mentionRegex, (username, i) => {

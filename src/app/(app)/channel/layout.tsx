@@ -5,6 +5,7 @@ import {
   type ReactNode,
   Suspense,
   useEffect,
+  useState,
 } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
@@ -59,22 +60,39 @@ const ChannelLayoutComponent = ({ children }: PropsWithChildren<{}>) => {
   const channelId = useQueryParams("id");
   const channelUsername = useQueryParams("username");
   const { data: me } = useMe();
-  const { data: channel, query: channelQuery } = useChannelById(channelId ?? channelUsername);
+  const { data: channel, query: channelQuery } = useChannelById(
+    channelId ?? channelUsername,
+  );
   const tabName = getTabNameFromPathname(pathname);
+  const [effectiveChannelId, setEffectiveChannelId] = useState<
+    string | undefined
+  >(channelId ?? channelUsername);
+
+  // Only update effectiveChannelId if channelId not in query, username exists, and fetched channel has fbId
+  useEffect(() => {
+    if (
+      !channelId &&
+      channelUsername &&
+      channel?.fbId &&
+      effectiveChannelId !== channel.fbId
+    ) {
+      setEffectiveChannelId(channel.fbId);
+    }
+  }, [channelId, channelUsername, channel?.fbId, effectiveChannelId]);
 
   useEffect(() => {
-    if (me?.fbId === channelId) {
+    if (me?.fbId && effectiveChannelId && me.fbId === effectiveChannelId) {
       router.push(`/profile/social`);
     }
-  }, [me, channelId]);
+  }, [me, effectiveChannelId]);
 
-  if (!channelId) {
+  if (!effectiveChannelId && !channelUsername) {
     return <ChannelNotFound />;
   }
 
   return (
     <ChannelContextProvider
-      channelId={channelId}
+      channelId={effectiveChannelId}
       channel={channel}
       channelQuery={channelQuery}
     >

@@ -5,6 +5,7 @@ import { useChannelById } from "@/features/channels/queries/use-channel-by-id";
 import { useQueryParams } from "@/hooks/use-query-params";
 import { ChannelNotFound } from "@/features/channels/components/channel-not-found/channel-not-found";
 import { ChannelAboutInfo } from "@/features/channels/components/channel-about-info/channel-about-info";
+import { useChannelContext } from "@/features/profile/components/channel-context/channel-context";
 
 export default function ChannelAboutPage() {
   return (
@@ -15,12 +16,7 @@ export default function ChannelAboutPage() {
 }
 
 const ChannelByIdAboutPage = () => {
-  const id = useQueryParams("id");
-  const { data: channel } = useChannelById(id);
-
-  if (!id) {
-    return <ChannelNotFound />;
-  }
+  const { channel } = useChannelContext();
 
   if (!channel) {
     return null;

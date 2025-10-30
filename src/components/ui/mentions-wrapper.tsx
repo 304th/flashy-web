@@ -3,6 +3,8 @@ import { createPortal } from "react-dom";
 import { Input } from "@/components/ui/input";
 import { UserAvatar } from "@/components/ui/user-avatar";
 import { useMentions } from "@/features/social/hooks/use-mentions";
+import {Separator} from "@/components/ui/separator";
+import {Search} from "lucide-react";
 
 /* -------------------------------------------------------------------------- */
 /*                              Types & Interfaces                            */
@@ -73,7 +75,7 @@ export const MentionsWrapper: React.FC<MentionsWrapperProps> = ({
     <div
       className={containerClassName}
       ref={containerRef}
-      style={{ position: "relative" }}
+      style={{ position: "relative", width: "100%" }}
     >
       {/* ---------------------------------------------------------------- */}
       {/*   Pass ref + event handlers to the wrapped input/textarea        */}
@@ -92,7 +94,6 @@ export const MentionsWrapper: React.FC<MentionsWrapperProps> = ({
           e: React.FocusEvent<TextElement>
         ) => void,
       })}
-
       {/* ---------------------------------------------------------------- */}
       {/*                     Mention dropdown portal                      */}
       {/* ---------------------------------------------------------------- */}
@@ -100,7 +101,7 @@ export const MentionsWrapper: React.FC<MentionsWrapperProps> = ({
         createPortal(
           <div
             ref={mentionDropdownRef}
-            className="z-[1000] w-full max-w-full md:max-w-[min(420px,100%)] rounded-2xl bg-base-200 ring-1 ring-inset ring-base-600 shadow-regular-md p-2 fixed"
+            className="z-[1000] flex flex-col gap-2 w-full max-w-full md:max-w-[min(420px,100%)] rounded-2xl bg-base-200 ring-1 ring-inset ring-base-600 shadow-regular-md p-2 fixed"
             style={{
               left: mentionPosition.left,
               top: mentionPosition.top,
@@ -108,35 +109,37 @@ export const MentionsWrapper: React.FC<MentionsWrapperProps> = ({
             }}
           >
             {/* Search input */}
-            <div className="flex items-center gap-2 p-1">
+            <div className="relative flex items-center gap-4 p-1 w-full">
               <Input
                 value={mentionQuery}
                 onChange={(e: any) => setMentionQuery(e.target.value)}
                 placeholder={mentionPlaceholder}
-                className="h-9"
+                className="w-full"
+                containerClassname="w-full"
+              />
+              <Search
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 h-4
+              w-4 text-muted-foreground"
               />
             </div>
-
-            {/* Results list */}
-            <div className="max-h-60 overflow-auto">
+            <Separator>Found users:</Separator>
+            <div className="max-h-60 flex flex-col overflow-auto gap-1">
               {mentionLoading && (
                 <div className="px-2 py-3 text-sm text-muted-foreground">
                   Searching...
                 </div>
               )}
-
               {!mentionLoading && mentionResults.length === 0 && (
                 <div className="px-2 py-3 text-sm text-muted-foreground">
                   No users found
                 </div>
               )}
-
               {!mentionLoading &&
                 mentionResults.map((user: MentionUser) => (
                   <button
                     type="button"
                     key={user.fbId ?? user.username}
-                    className="w-full flex items-center gap-3 px-2 py-2 rounded-md hover:bg-base-300 text-left"
+                    className="w-full flex items-center gap-3 px-2 py-2 rounded-md hover:bg-base-300 text-left transition cursor-pointer"
                     onClick={() => handleSelectUser(user)}
                   >
                     <UserAvatar

@@ -108,7 +108,7 @@ export const useMentions = ({
         setAnchorStart(mention.start);
         setQuery(mention.query);
         const pos = computeCaretPosition(mention.start);
-        setPosition({ left: Math.max(0, pos.left), top: Math.max(0, pos.top) });
+        setPosition({ left: Math.max(0, pos.left), top: Math.max(0, pos.top + 12) });
       } else {
         close();
       }
@@ -138,7 +138,7 @@ export const useMentions = ({
     if (!open) return;
     const listener = () => {
       const pos = computeCaretPosition(anchorStart == null ? undefined : anchorStart);
-      setPosition({ left: Math.max(0, pos.left), top: Math.max(0, pos.top) });
+      setPosition({ left: Math.max(0, pos.left), top: Math.max(0, pos.top + 12) });
     };
     window.addEventListener("resize", listener);
     window.addEventListener("scroll", listener, true);

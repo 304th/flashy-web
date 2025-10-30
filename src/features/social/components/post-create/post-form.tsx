@@ -48,7 +48,7 @@ export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
     const parts = text.split(/(@[a-zA-Z0-9_]{1,20})/g);
     return parts.map((part, idx) =>
       part.startsWith("@") ? (
-        <span key={idx} className="text-blue-400">
+        <span key={idx} className="text-blue-500 font-medium">
           {part}
         </span>
       ) : (
@@ -120,7 +120,7 @@ export const PostForm = ({ onSuccess }: { onSuccess?: () => void }) => {
                     {/* highlight backdrop */}
                     <div
                       aria-hidden
-                      className={`pointer-events-none absolute inset-0 rounded-md px-3 py-2 whitespace-pre-wrap break-words text-[inherit] leading-[inherit] font-[inherit]`}
+                      className={`pointer-events-none absolute inset-0 z-1 rounded-md px-3 py-2 whitespace-pre-wrap break-words text-[inherit] leading-[inherit] font-[inherit]`}
                     >
                       {highlightedDescription}
                     </div>

@@ -1,15 +1,17 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
+import {ReactNode} from "react";
 
 function Input({
   trailingIcon,
   className,
+  containerClassname,
   type,
   ...props
-}: React.ComponentProps<"input"> & any) {
+}: React.ComponentProps<"input"> & { containerClassname?: string; trailingIcon?: ReactNode  }) {
   return (
-    <div className="relative">
+    <div className={`relative ${containerClassname}`}>
       <input
         type={type}
         data-slot="input"

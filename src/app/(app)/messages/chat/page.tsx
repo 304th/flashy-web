@@ -2,11 +2,10 @@
 
 import { Suspense } from "react";
 import { Loadable } from "@/components/ui/loadable";
+import { ChatMessage } from "@/features/messaging/components/chat-message/chat-message";
 import { useQueryParams } from "@/hooks/use-query-params";
 import { useConversationMessages } from "@/features/messaging/queries/use-conversation-messages";
-import {
-  ConversationEmptyMessages
-} from "@/features/messaging/components/conversation-empty-messages/conversation-empty-messages";
+import { ConversationEmptyMessages } from "@/features/messaging/components/conversation-empty-messages/conversation-empty-messages";
 import { useConversationById } from "@/features/messaging/queries/use-conversation-by-id";
 
 export default function ChatMessagesPage() {
@@ -19,12 +18,26 @@ export default function ChatMessagesPage() {
 
 const ChatMessagesByIdPage = () => {
   const id = useQueryParams("id");
-  const { data: conversation, query: conversationQuery } = useConversationById(id);
+  const { data: conversation, query: conversationQuery } =
+    useConversationById(id);
   const { data: messages, query: messagesQuery } = useConversationMessages(id);
 
-  return <div className="flex flex-col justify-end items-center h-full mt-[72px] mb-[88px] pb-8">
-    <Loadable queries={[conversationQuery, messagesQuery] as any}>
-      {() => !messages || !messages.length ? <ConversationEmptyMessages conversation={conversation!} /> : null}
-    </Loadable>
-  </div>
+  return (
+    <div
+      className="flex flex-col justify-end gap-2 items-center h-full mt-[72px]
+        mb-[88px] pb-8"
+    >
+      <Loadable queries={[conversationQuery, messagesQuery] as any}>
+        {() =>
+          !messages || !messages.length ? (
+            <ConversationEmptyMessages conversation={conversation!} />
+          ) : (
+            messages.map((message) => (
+              <ChatMessage key={message._id} message={message} />
+            ))
+          )
+        }
+      </Loadable>
+    </div>
+  );
 };

@@ -26,7 +26,7 @@ export const ConversationSendMessage = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       message: "",
-      mentionedUsers: []
+      mentionedUsers: [],
     },
     mode: "all",
   });
@@ -39,11 +39,11 @@ export const ConversationSendMessage = () => {
       body: params.message,
       tipAmount: params.tipAmount,
       mentionedUsers: params.mentionedUsers,
-    })
-  }
+    });
+  };
 
   return (
-    <div className={`relative flex flex-col w-full bg-base-300 rounded-md`}>
+    <div className={"relative flex flex-col w-full bg-base-300 rounded-md"}>
       {/*{replyComment && (*/}
       {/*  <ReplyToComment comment={replyComment} onClose={onCloseReply} />*/}
       {/*)}*/}

@@ -1,6 +1,6 @@
 import Link from "next/link";
-import {ConversationTitle} from "@/features/messaging/components/conversation-title/conversation-title";
-import {ConversationThumbnail} from "@/features/messaging/components/conversation-thumbnail/conversation-thumbnail";
+import { ConversationTitle } from "@/features/messaging/components/conversation-title/conversation-title";
+import { ConversationThumbnail } from "@/features/messaging/components/conversation-thumbnail/conversation-thumbnail";
 import { timeAgo } from "@/lib/utils";
 
 export const ConversationPreview = ({
@@ -13,8 +13,8 @@ export const ConversationPreview = ({
   return (
     <Link href={`/messages/chat?id=${conversation._id}`}>
       <div
-        className={`flex w-full p-4 justify-between transition
-        cursor-pointer ${isActive ? "bg-base-400" : "hover:bg-base-300"}`}
+        className={`flex w-full p-4 justify-between transition cursor-pointer
+          ${isActive ? "bg-base-400" : "hover:bg-base-300"}`}
       >
         <div className="flex items-center gap-3">
           <ConversationThumbnail conversation={conversation} />

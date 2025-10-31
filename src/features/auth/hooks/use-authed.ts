@@ -29,6 +29,15 @@ export const useAuthed = () => {
           user: firebaseAuth.currentUser,
           status: "pending",
         };
+      } else if (
+        !firebaseAuth.currentUser &&
+        !authed.user &&
+        authed.status === "pending"
+      ) {
+        authed = {
+          user: null,
+          status: "resolved",
+        };
       }
 
       return authed;

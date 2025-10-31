@@ -19,8 +19,8 @@ export const MessagesIcon = () => (
         y2="156"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#242424" />
-        <stop offset="1" stop-color="#111111" />
+        <stop stopColor="#242424" />
+        <stop offset="1" stopColor="#111111" />
       </linearGradient>
     </defs>
   </svg>

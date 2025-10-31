@@ -19,8 +19,8 @@ export const BlazeBigIcon = () => (
         y2="35.3241"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#E90021" />
-        <stop offset="1" stop-color="#FD980F" />
+        <stop stopColor="#E90021" />
+        <stop offset="1" stopColor="#FD980F" />
       </linearGradient>
     </defs>
   </svg>

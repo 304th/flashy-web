@@ -1,16 +1,17 @@
-'use client';
+"use client";
 
 import { type ReactNode, Suspense } from "react";
 import { ConversationsSidebar } from "@/features/messaging/components/conversations-sidebar/conversations-sidebar";
-import {
-  ConversationMessagesLayout
-} from "@/features/messaging/components/conversation-messages-layout/conversation-messages-layout";
+import { ConversationMessagesLayout } from "@/features/messaging/components/conversation-messages-layout/conversation-messages-layout";
+import { useProtectedRedirect } from "@/features/auth/hooks/use-protected-redirect";
 
 export default function MessagesLayout({
   children,
 }: Readonly<{
   children: ReactNode;
 }>) {
+  useProtectedRedirect();
+
   return (
     <div className="relative flex gap-4 w-full">
       <div className="w-2/6">
@@ -19,9 +20,7 @@ export default function MessagesLayout({
         </Suspense>
       </div>
       <div className="w-4/6">
-        <ConversationMessagesLayout>
-          {children}
-        </ConversationMessagesLayout>
+        <ConversationMessagesLayout>{children}</ConversationMessagesLayout>
       </div>
     </div>
   );

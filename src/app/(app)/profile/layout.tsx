@@ -1,7 +1,7 @@
 "use client";
 
-import { type ReactNode, Suspense, useEffect } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { type ReactNode, Suspense } from "react";
+import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { ProfileHeader } from "@/features/profile/components/profile-header/profile-header";
 import { ChannelPageTabs } from "@/features/channels/components/channel-page-tabs/channel-page-tabs";
@@ -10,6 +10,7 @@ import { useAuthed } from "@/features/auth/hooks/use-authed";
 import { useMe } from "@/features/auth/queries/use-me";
 import { getTabNameFromPathname } from "@/features/channels/utils/get-tab-name-from-pathname";
 import { capitalize } from "media-chrome/utils/utils";
+import { useProtectedRedirect } from "@/features/auth/hooks/use-protected-redirect";
 
 const profileTabs = [
   {
@@ -44,17 +45,11 @@ export default function ProfileLayout({
 }: Readonly<{
   children: ReactNode;
 }>) {
-  const router = useRouter();
+  useProtectedRedirect();
   const pathname = usePathname();
   const tabName = getTabNameFromPathname(pathname);
   const authed = useAuthed();
   const { data: channel, query: channelQuery } = useMe();
-
-  useEffect(() => {
-    if (authed.status === "resolved" && !authed.user) {
-      router.push("/");
-    }
-  }, [authed]);
 
   return (
     <ChannelContextProvider

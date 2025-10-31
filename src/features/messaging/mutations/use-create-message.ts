@@ -34,6 +34,6 @@ export const useCreateMessage = () => {
     mutation: createMessage,
     onOptimistic: async (ch, params) => {
       return ch(conversationMessagesCollection).prepend(params);
-    }
+    },
   });
 };

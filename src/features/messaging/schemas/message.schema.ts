@@ -18,8 +18,8 @@ class MessageSchema implements StaticSchema<Message> {
       mentionedUsers: [],
       deletedBy: [],
       replyToMessage: "",
-      createdAt: Date.now().toString(),
-      updatedAt: Date.now().toString(),
+      createdAt: new Date().toString(),
+      updatedAt: new Date().toString(),
       ...params,
     };
   }

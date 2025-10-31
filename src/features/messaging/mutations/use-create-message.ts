@@ -1,6 +1,6 @@
 import { createMutation, useOptimisticMutation } from "@/lib/query-toolkit-v2";
 import { api } from "@/services/api";
-import { conversationMessagesCollection } from "@/features/messaging/entities/conversation-message.collection";
+import { conversationMessagesCollection } from "@/features/messaging/entities/conversation-messages.collection";
 
 export interface CreateMessageParams {
   conversationId: string;
@@ -11,8 +11,9 @@ export interface CreateMessageParams {
   replyToMessageId?: string;
 }
 
-const createMessage = createMutation<CreateMessageParams>({
+export const createMessage = createMutation<CreateMessageParams, Message>({
   write: async (params) => {
+    return
     const data = await api
       .post(`conversations/${params.conversationId}/messages`, {
         json: {
@@ -23,9 +24,9 @@ const createMessage = createMutation<CreateMessageParams>({
           replyToMessageId: params.replyToMessageId,
         },
       })
-      .json<{ response: CommentPost }>();
+      .json<{ data: Message }>();
 
-    return data.response;
+    return data.data;
   },
 });
 

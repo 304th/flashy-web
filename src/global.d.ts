@@ -202,7 +202,7 @@ declare global {
     thumbnail: string;
     hostID: string;
     members: (Pick<User, "fbId" | "username" | "userimage"> & {
-      online: boolean;
+      online?: boolean;
     })[];
     lastMessage: Message | null;
     mutedBy: string[];

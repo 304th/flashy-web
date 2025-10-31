@@ -14,5 +14,5 @@ export const conversationMessagesCollection = createCollection<
     return response.data;
   },
   schema: messageSchema,
-  name: "conversations",
+  name: "conversationsMessages",
 });

@@ -6,17 +6,21 @@ export interface CreateConversationParams {
   members: string[];
 }
 
-const createConversation = createMutation({
-  write: async (params: CreateConversationParams) => {
+export const createConversation = createMutation<
+  CreateConversationParams,
+  Conversation
+>({
+  write: async (params) => {
+    return {_id: '123xsssss'}
     const data = await api
       .post("conversations", {
         json: {
           members: params.members,
         },
       })
-      .json<{ response: any }>();
+      .json<{ data: Conversation }>();
 
-    return data.response;
+    return data.data;
   },
 });
 

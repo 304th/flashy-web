@@ -19,7 +19,6 @@ export const meEntity = createEntity<User, Authed>({
 export const useMe = () => {
   const authed = useAuthed();
   const queryClient = useQueryClient();
-  console.log(authed.status === "pending" || authed.user?.uid, authed.status, authed.user?.uid)
 
   return useLiveEntity<User, Authed>({
     entity: meEntity,
@@ -32,7 +31,10 @@ export const useMe = () => {
           return true;
         }
 
-        if (error.message === "not authorized" || (authed.status === "resolved" && !authed.user?.uid)) {
+        if (
+          error.message === "not authorized" ||
+          (authed.status === "resolved" && !authed.user?.uid)
+        ) {
           void queryClient.cancelQueries({
             queryKey: ["me"],
           });

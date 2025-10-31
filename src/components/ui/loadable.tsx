@@ -13,6 +13,7 @@ interface Query<T> {
 interface LoadableProps<TData extends any[]> {
   queries: { [K in keyof TData]: Query<TData[K]> };
   fallback?: ReactNode | null;
+  noFallback?: boolean;
   error?: ReactNode;
   fullScreenForDefaults?: boolean;
   children: ((data: TData) => ReactNode) | (() => ReactNode);
@@ -22,6 +23,7 @@ export const Loadable = <TData extends any[]>({
   queries,
   fallback,
   fullScreenForDefaults = false,
+  noFallback = false,
   error = "Network Error",
   children,
 }: LoadableProps<TData>) => {
@@ -36,6 +38,10 @@ export const Loadable = <TData extends any[]>({
   }
 
   if (isLoading || empty) {
+    if (noFallback) {
+      return null
+    }
+
     if (fallback) {
       return fallback;
     }

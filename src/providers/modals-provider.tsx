@@ -67,7 +67,7 @@ import {
 import {
   ConversationCreateModal,
   ConversationCreateModalProps,
-} from "@/features/messaging/components/conversation-create-modal/conversation-create-modal";
+} from "@/features/messaging/components/conversation-create-modal/conversation-create-modal-v2";
 
 const modalsConfig = {
   LoginModal,

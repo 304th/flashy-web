@@ -3,7 +3,7 @@ import {
   type MutationFunction,
   type UseMutationOptions,
   useQuery,
-  useMutation,
+  useMutation, UseQueryOptions,
 } from "@tanstack/react-query";
 import { toast } from "sonner";
 
@@ -43,6 +43,31 @@ export const getMutation = <
     ...options,
   });
 };
+
+export const getLocalStorageQuery = <T,>(queryKey: unknown[], options?: Omit<UseQueryOptions<unknown, unknown, T>, 'queryKey' | 'queryFn'>) => {
+  const query = useQuery<any, any, T>({
+    queryKey,
+    queryFn: () => {
+      const data = localStorage.getItem(JSON.stringify(queryKey));
+
+      if (data) {
+        try {
+          return JSON.parse(data);
+        } catch {
+          return data;
+        }
+      }
+    },
+    ...options,
+  });
+
+  return [
+    query.data,
+    (data: T) => {
+      localStorage.setItem(JSON.stringify(queryKey), JSON.stringify(data));
+    }
+  ] as const;
+}
 
 export const handleMutationError = async (error: any) => {
   try {

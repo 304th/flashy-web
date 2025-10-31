@@ -1,5 +1,5 @@
 import { usePartitionedQuery } from "@/lib/query-toolkit-v2";
-import { conversationMessagesCollection } from "@/features/messaging/entities/conversation-message.collection";
+import { conversationMessagesCollection } from "@/features/messaging/entities/conversation-messages.collection";
 
 export const useConversationMessages = (conversationId?: string) => {
   return usePartitionedQuery<Message, { conversationId?: string }>({

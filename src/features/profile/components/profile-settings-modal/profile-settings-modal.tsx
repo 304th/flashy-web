@@ -9,8 +9,10 @@ import { CloseButton } from "@/components/ui/close-button";
 import { Button } from "@/components/ui/button";
 import { PersonIcon } from "@/components/ui/icons/person";
 import { LinkIcon } from "@/components/ui/icons/link";
+import { MessageIcon } from "@/components/ui/icons/message";
 import { ProfileSettingsProfile } from "@/features/profile/components/profile-settings-modal/profile-settings-profile";
 import { ProfileSettingsSocialLinks } from "@/features/profile/components/profile-settings-modal/profile-settings-social-links";
+import { ProfileSettingsMessaging } from "@/features/profile/components/profile-settings-modal/profile-settings-messaging";
 import { HelpIcon } from "@/components/ui/icons/help";
 import { useMe } from "@/features/auth/queries/use-me";
 import { useUpdateUsername } from "@/features/profile/mutations/use-update-username";
@@ -25,7 +27,7 @@ export interface ProfileSettingsModalProps {
   onClose(): void;
 }
 
-export type ProfileSettingsTab = "profile" | "social-links";
+export type ProfileSettingsTab = "profile" | "social-links" | "messaging";
 
 const formSchema = z.object({
   username: z
@@ -42,6 +44,7 @@ const formSchema = z.object({
   avatar: z.string().optional().nullable(),
   bannerUpload: z.instanceof(File).optional(),
   avatarUpload: z.instanceof(File).optional(),
+  receivesMessagesFromAnyone: z.boolean().optional(),
   links: z
     .object({
       x: z.string().url().optional(),
@@ -66,6 +69,7 @@ export const ProfileSettingsModal = ({
       bio: me?.bio,
       banner: me?.banner,
       avatar: me?.userimage,
+      receivesMessagesFromAnyone: me?.receivesMessagesFromAnyone ?? false,
       links: {
         x: me?.links?.x,
         youtube: me?.links?.youtube,
@@ -130,10 +134,13 @@ export const ProfileSettingsModal = ({
 
             if (
               (params.bio && me?.bio !== params.bio) ||
+              (params.receivesMessagesFromAnyone !== undefined &&
+                params.receivesMessagesFromAnyone !== me?.receivesMessagesFromAnyone) ||
               Object.values(params?.links || {}).filter(Boolean).length !== 0
             ) {
               updateUserInfo.mutate({
                 bio: params.bio,
+                receivesMessagesFromAnyone: params.receivesMessagesFromAnyone,
                 links: prune(params.links || {}),
               });
             }
@@ -186,6 +193,14 @@ export const ProfileSettingsModal = ({
                   selected={curTab === "social-links"}
                   onChange={setCurTab}
                 />
+                <NavLink
+                  value="messaging"
+                  title="Messaging"
+                  description="Control who can send you messages"
+                  icon={<MessageIcon />}
+                  selected={curTab === "messaging"}
+                  onChange={setCurTab}
+                />
               </div>
               <div className="flex flex-col grow w-2/3">
                 <AnimatePresence initial={false}>
@@ -207,6 +222,16 @@ export const ProfileSettingsModal = ({
                       className="flex grow"
                     >
                       <ProfileSettingsSocialLinks />
+                    </motion.div>
+                  )}
+                  {curTab === "messaging" && (
+                    <motion.div
+                      key="messaging"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="flex grow"
+                    >
+                      <ProfileSettingsMessaging />
                     </motion.div>
                   )}
                 </AnimatePresence>

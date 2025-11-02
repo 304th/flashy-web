@@ -60,7 +60,7 @@ export const AccountDropdown = () => {
             <UserProfile
               user={me!}
               truncateUsername
-              className="w-full flex backdrop-blur-md items-center"
+              className="w-full flex backdrop-blur-xs items-center"
             />
           </div>
           <DropdownMenuGroup>

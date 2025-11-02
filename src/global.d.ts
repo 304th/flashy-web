@@ -57,6 +57,7 @@ declare global {
     links?: Record<string, string>;
     followersCount?: number;
     followingCount?: number;
+    receivesMessagesFromAnyone?: boolean;
   }
 
   interface Author {

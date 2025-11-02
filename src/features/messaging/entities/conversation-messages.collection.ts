@@ -4,11 +4,13 @@ import { messageSchema } from "@/features/messaging/schemas/message.schema";
 
 export const conversationMessagesCollection = createCollection<
   Message,
-  { pageParam?: number; conversationId?: string }
+  { conversationId?: string; offset: number; limit: number }
 >({
   async sourceFrom(params) {
     const response = await api
-      .get(`conversations/${params.conversationId}/messages?offset=0&limit=10`)
+      .get(
+        `conversations/${params.conversationId}/messages?offset=${params.offset}&limit=${params.limit}`,
+      )
       .json<{ data: Message[] }>();
 
     return response.data;

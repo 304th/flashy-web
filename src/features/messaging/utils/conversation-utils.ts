@@ -1,4 +1,4 @@
-import {format, isToday, isYesterday, differenceInSeconds} from "date-fns";
+import { format, isToday, isYesterday, differenceInSeconds } from "date-fns";
 
 export const extractChatIdFromMembers = (members: (Author | string)[]) =>
   [
@@ -45,29 +45,32 @@ export const formatDateLabel = (date: Date): string => {
  * - Both are "Now" (within 60 seconds), or
  * - Both have the same minute (format "h:mm a")
  */
-export const hasSameTimestamp = (message1: Message, message2: Message): boolean => {
+export const hasSameTimestamp = (
+  message1: Message,
+  message2: Message,
+): boolean => {
   const date1 = new Date(message1.createdAt);
   const date2 = new Date(message2.createdAt);
-  
+
   const secondsSinceCreated1 = differenceInSeconds(new Date(), date1);
   const secondsSinceCreated2 = differenceInSeconds(new Date(), date2);
-  
+
   const isNow1 = secondsSinceCreated1 < 60;
   const isNow2 = secondsSinceCreated2 < 60;
-  
+
   // Both are "Now"
   if (isNow1 && isNow2) {
     return true;
   }
-  
+
   // One is "Now" and the other is not - different timestamps
   if (isNow1 !== isNow2) {
     return false;
   }
-  
+
   // Both are not "Now" - check if they have the same minute
   const time1 = format(date1, "h:mm a");
   const time2 = format(date2, "h:mm a");
-  
+
   return time1 === time2;
 };

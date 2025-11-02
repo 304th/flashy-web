@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { AccountDropdown } from "@/features/auth/components/account-login/account-dropdown";
 import { CreateDropdown } from "@/features/auth/components/account-login/create-dropdown";
 import { BalanceButton } from "@/features/wallet/components/balance-button";
+import { MessagesButton } from "@/features/auth/components/account-login/messages-button";
 import { defaultVariants } from "@/lib/framer";
 
 export const LoggedIn = () => {
@@ -20,15 +21,7 @@ export const LoggedIn = () => {
           <CreateDropdown />
         </motion.div>
         <motion.div variants={defaultVariants.child}>
-          <Link href="/messages">
-            <Button
-              className="!w-fit p-0 aspect-square"
-              size="sm"
-              variant="secondary"
-            >
-              <MessageCircle />
-            </Button>
-          </Link>
+          <MessagesButton />
         </motion.div>
         <motion.div variants={defaultVariants.child}>
           <BalanceButton />

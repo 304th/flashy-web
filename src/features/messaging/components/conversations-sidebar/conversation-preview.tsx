@@ -3,8 +3,9 @@ import { TriangleAlertIcon } from "lucide-react";
 import { Spinner } from "@/components/ui/spinner/spinner";
 import { ConversationTitle } from "@/features/messaging/components/conversation-title/conversation-title";
 import { ConversationThumbnail } from "@/features/messaging/components/conversation-thumbnail/conversation-thumbnail";
-import { isTimeWithinSeconds, timeAgo } from "@/lib/utils";
 import { useIsChatMessageOwned } from "@/features/messaging/hooks/use-is-chat-message-owned";
+import { useIsChatUnread } from "@/features/messaging/hooks/use-is-chat-unread";
+import { isTimeWithinSeconds, timeAgo } from "@/lib/utils";
 
 export const ConversationPreview = ({
   conversation,
@@ -19,6 +20,7 @@ export const ConversationPreview = ({
   const isPending = conversation._optimisticStatus === "pending";
   const isError = conversation._optimisticStatus === "error";
   const isLastMessageOwned = useIsChatMessageOwned(conversation.lastMessage);
+  const isChatUnread = useIsChatUnread(conversation);
 
   return (
     <Link
@@ -26,7 +28,7 @@ export const ConversationPreview = ({
     >
       <div
         className={`flex w-full p-4 justify-between transition cursor-pointer
-          ${isError ? "bg-red-400/20" : isNew ? "bg-blue-400/20" : isActive ? "bg-base-400" : "hover:bg-base-300"}`}
+          ${isError ? "bg-red-400/20" : isNew || isChatUnread ? "bg-blue-500/20" : isActive ? "bg-base-400" : "hover:bg-base-300"}`}
       >
         <div className="flex items-center gap-3">
           <ConversationThumbnail conversation={conversation} />

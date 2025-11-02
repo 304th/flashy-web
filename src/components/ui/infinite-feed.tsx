@@ -5,8 +5,12 @@ import { useInfiniteScroll } from "@/hooks/use-infinite-scroll";
 
 export const InfiniteFeed = <TData, TError>({
   query,
+  className,
   children,
-}: PropsWithChildren<{ query: UseInfiniteQueryResult<TData, TError> }>) => {
+}: PropsWithChildren<{
+  query: UseInfiniteQueryResult<TData, TError>;
+  className?: string;
+}>) => {
   const { hasNextPage, isFetchingNextPage, data } = query;
 
   const scrollRef = useInfiniteScroll({
@@ -16,7 +20,10 @@ export const InfiniteFeed = <TData, TError>({
   return (
     <>
       {children}
-      <div ref={scrollRef} className="absolute bottom-1/6" />
+      <div
+        ref={scrollRef}
+        className={`relative top-0 h-1 w-full bg-red-900 ${className}`}
+      />
       {hasNextPage && isFetchingNextPage && (
         <div className="flex w-full justify-center">
           <Spinner />

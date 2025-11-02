@@ -1,21 +1,39 @@
-import {useMemo} from "react";
-import {format } from "date-fns";
-import {motion} from "framer-motion";
-import {useConversationById} from "@/features/messaging/queries/use-conversation-by-id";
-import {useConversationMessages} from "@/features/messaging/queries/use-conversation-messages";
-import {Loadable} from "@/components/ui/loadable";
-import {Separator} from "@/components/ui/separator";
-import {ChatMessage} from "@/features/messaging/components/chat-message/chat-message";
+import { useEffect, useMemo, useRef } from "react";
+import { format } from "date-fns";
+import { motion } from "framer-motion";
+import { useConversationById } from "@/features/messaging/queries/use-conversation-by-id";
+import { useConversationMessages } from "@/features/messaging/queries/use-conversation-messages";
+import { Loadable } from "@/components/ui/loadable";
+import { Separator } from "@/components/ui/separator";
+import { ChatMessage } from "@/features/messaging/components/chat-message/chat-message";
+import { ConversationEmptyMessages } from "@/features/messaging/components/conversation-empty-messages/conversation-empty-messages";
+import { Spinner } from "@/components/ui/spinner/spinner";
 import {
-  ConversationEmptyMessages
-} from "@/features/messaging/components/conversation-empty-messages/conversation-empty-messages";
-import { formatDateLabel, hasSameTimestamp} from "@/features/messaging/utils/conversation-utils";
+  formatDateLabel,
+  hasSameTimestamp,
+} from "@/features/messaging/utils/conversation-utils";
 import { chatFeedAnimation } from "@/features/messaging/utils/chat-feed-animations";
+import { useInfiniteScroll } from "@/hooks/use-infinite-scroll";
+import { useQueryClient } from "@tanstack/react-query";
+import { useMe } from "@/features/auth/queries/use-me";
 
 export const ChatFeed = ({ chatId }: { chatId: string }) => {
+  const unread = useRef<boolean>(false);
+  const { data: me } = useMe();
+  const queryClient = useQueryClient();
+
   const { data: conversation, query: chatQuery } = useConversationById(chatId);
   const { data: messages, query: messagesQuery } =
     useConversationMessages(chatId);
+
+  useEffect(() => {
+    if (messages) {
+      queryClient.setQueryData<Conversation[]>(
+        ["me", me?.fbId, "unread", "conversations"],
+        (unreadChats) => unreadChats?.filter((chat) => chat._id !== chatId),
+      );
+    }
+  }, [messages]);
 
   const messagesWithSeparators = useMemo(() => {
     if (!messages) {
@@ -64,29 +82,38 @@ export const ChatFeed = ({ chatId }: { chatId: string }) => {
     return result;
   }, [messages]);
 
+  const scrollRef = useInfiniteScroll({
+    query: messagesQuery,
+    threshold: 0.01,
+  });
+
   return (
     <div
-      className="relative flex flex-col-reverse items-centent mt-[72px]
-        mb-[88px] h-[calc(100vh-264px)]"
+      className="relative flex flex-col items-centent mt-[72px] mb-[88px]
+        h-[calc(100vh-264px)]"
     >
       <div
-        className="absolute top-0 left-0 right-0 h-6 pointer-events-none z-10 bg-gradient-to-b from-base-150 to-transparent"
+        className="absolute top-0 left-0 right-0 h-6 pointer-events-none z-10
+          bg-gradient-to-b from-base-150 to-transparent"
       />
       <div
-        className="absolute bottom-0 left-0 right-0 h-6 pointer-events-none z-10 bg-gradient-to-t from-base-150 to-transparent"
+        className="absolute bottom-0 left-0 right-0 h-6 pointer-events-none z-10
+          bg-gradient-to-t from-base-150 to-transparent"
       />
-      <Loadable queries={[messagesQuery, chatQuery] as any} fullScreenForDefaults>
+      <Loadable
+        queries={[messagesQuery, chatQuery] as any}
+        fullScreenForDefaults
+      >
         {() =>
           messagesWithSeparators && messagesWithSeparators.length ? (
-            // <div className="relative w-full bg-red-900" style={{ height: "calc(100vh - 200px - 96px)" }}>
-            <div className="relative w-full h-full">
-              <motion.div
-                className="flex flex-col-reverse gap-2 items-center w-full h-full overflow-y-auto py-4"
-                initial="hidden"
-                animate="show"
-                variants={chatFeedAnimation.container}
-              >
-                {messagesWithSeparators.map((item, index) => {
+            <motion.div
+              className="flex flex-col-reverse gap-2 items-center w-full h-full
+                overflow-y-auto py-4"
+              initial="hidden"
+              animate="show"
+              variants={chatFeedAnimation.container}
+            >
+              {messagesWithSeparators.map((item, index) => {
                 if ("type" in item && item.type === "separator") {
                   return (
                     <Separator
@@ -104,11 +131,11 @@ export const ChatFeed = ({ chatId }: { chatId: string }) => {
                 // With flex-col-reverse, older messages appear higher visually
                 let showTimestamp = true;
                 const prevMessageIndex = index - 1;
-                
+
                 // If there's a previous item, check it
                 if (prevMessageIndex >= 0) {
                   const prevItem = messagesWithSeparators[prevMessageIndex];
-                  
+
                   // If previous item is a separator, this is the first message of a new day group
                   // Show its timestamp (it's the first in the group)
                   if ("type" in prevItem && prevItem.type === "separator") {
@@ -139,8 +166,14 @@ export const ChatFeed = ({ chatId }: { chatId: string }) => {
                   />
                 );
               })}
-              </motion.div>
-            </div>
+              <div ref={scrollRef} />
+              {messagesQuery.hasNextPage &&
+                messagesQuery.isFetchingNextPage && (
+                  <div className="flex w-full justify-center">
+                    <Spinner />
+                  </div>
+                )}
+            </motion.div>
           ) : conversation ? (
             <ConversationEmptyMessages conversation={conversation} />
           ) : null

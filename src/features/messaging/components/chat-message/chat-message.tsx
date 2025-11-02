@@ -3,7 +3,10 @@ import { format, differenceInSeconds } from "date-fns";
 import { motion } from "framer-motion";
 import { UserAvatar } from "@/components/ui/user-avatar";
 import { useIsChatMessageOwned } from "@/features/messaging/hooks/use-is-chat-message-owned";
-import {chatFeedAnimation, getChatFeedMessagesAnimation} from "@/features/messaging/utils/chat-feed-animations";
+import {
+  chatFeedAnimation,
+  getChatFeedMessagesAnimation,
+} from "@/features/messaging/utils/chat-feed-animations";
 
 const BRIGHT_COLORS = [
   { bg: "bg-blue-900", border: "border-blue-500" },
@@ -32,11 +35,11 @@ const hashString = (str: string): number => {
   return Math.abs(hash);
 };
 
-export const ChatMessage = ({ 
-  message, 
-  showTimestamp = true 
-}: { 
-  message: Message; 
+export const ChatMessage = ({
+  message,
+  showTimestamp = true,
+}: {
+  message: Message;
   showTimestamp?: boolean;
 }) => {
   const isOwned = useIsChatMessageOwned(message);
@@ -79,7 +82,7 @@ export const ChatMessage = ({
           ${isOwned ? "items-end" : "items-start"}`}
       >
         <div
-          className={`flex w-full min-w-[40px] p-2 border-2 rounded-2xl whitespace-pre-wrap
+          className={`flex w-fit p-2 border-2 rounded-2xl whitespace-pre-wrap
             text-wrap text-white ${
               isOwned
                 ? "bg-orange-900 border-orange-500"

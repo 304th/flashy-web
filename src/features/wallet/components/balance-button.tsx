@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { WalletTokenIcon } from "@/features/wallet/components/wallet-token-icon/wallet-token-icon";
 import { useWalletBalance } from "@/features/wallet/queries/use-wallet-balance";
 import { usePathnameChangedEffect } from "@/hooks/use-pathname-changed-effect";
-import {Spinner} from "@/components/ui/spinner/spinner";
+import { Spinner } from "@/components/ui/spinner/spinner";
 
 export const BalanceButton = () => {
   const { data: balance, query } = useWalletBalance();

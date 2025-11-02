@@ -1,6 +1,12 @@
 import React, { ReactNode } from "react";
 
-export const Separator = ({ children, className }: { children?: ReactNode; className?: string; }) => {
+export const Separator = ({
+  children,
+  className,
+}: {
+  children?: ReactNode;
+  className?: string;
+}) => {
   if (!children) {
     return (
       <div className={`flex w-full items-center gap-4 ${className}`}>

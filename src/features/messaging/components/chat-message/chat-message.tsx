@@ -1,7 +1,9 @@
 import { useMemo } from "react";
 import { format, differenceInSeconds } from "date-fns";
-import { useIsChatMessageOwned } from "@/features/messaging/hooks/use-is-chat-message-owned";
+import { motion } from "framer-motion";
 import { UserAvatar } from "@/components/ui/user-avatar";
+import { useIsChatMessageOwned } from "@/features/messaging/hooks/use-is-chat-message-owned";
+import {chatFeedAnimation, getChatFeedMessagesAnimation} from "@/features/messaging/utils/chat-feed-animations";
 
 const BRIGHT_COLORS = [
   { bg: "bg-blue-900", border: "border-blue-500" },
@@ -35,12 +37,11 @@ export const ChatMessage = ({ message }: { message: Message }) => {
   const messageTime = useMemo(() => {
     const messageDate = new Date(message.createdAt);
     const secondsSinceCreated = differenceInSeconds(new Date(), messageDate);
-    
-    // Show "Now" if message is less than 60 seconds old
+
     if (secondsSinceCreated < 60) {
       return "Now";
     }
-    
+
     return format(messageDate, "h:mm a");
   }, [message.createdAt]);
 
@@ -57,7 +58,10 @@ export const ChatMessage = ({ message }: { message: Message }) => {
   }, [isOwned, message._id, message.author.fbId]);
 
   return (
-    <div className={`flex w-full ${isOwned ? "justify-end" : "justify-start"}`}>
+    <motion.div
+      variants={getChatFeedMessagesAnimation(isOwned ? 1 : -1).child}
+      className={`flex w-full ${isOwned ? "justify-end" : "justify-start"}`}
+    >
       {!isOwned && (
         <UserAvatar
           avatar={message.author.userimage}
@@ -69,16 +73,17 @@ export const ChatMessage = ({ message }: { message: Message }) => {
           ${isOwned ? "items-end" : "items-start"}`}
       >
         <div
-          className={`flex w-full p-2 border-2 rounded-2xl text-white ${
-            isOwned
-              ? "bg-orange-900 border-orange-500"
-              : `${nonOwnedColors?.bg} ${nonOwnedColors?.border}`
+          className={`flex w-full min-w-[40px] p-2 border-2 rounded-2xl whitespace-pre-wrap
+            text-wrap text-white ${
+              isOwned
+                ? "bg-orange-900 border-orange-500"
+                : `${nonOwnedColors?.bg} ${nonOwnedColors?.border}`
             }`}
         >
           {message.body}
         </div>
         <p className="text-sm">{messageTime}</p>
       </div>
-    </div>
+    </motion.div>
   );
 };

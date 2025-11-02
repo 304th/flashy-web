@@ -54,7 +54,7 @@ export const ConversationErrorIcon = () => (
         y2="136.194"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#242424" />
+        <stop stopColor="#242424" />
         <stop offset="1" stopColor="#111111" />
       </linearGradient>
       <linearGradient
@@ -65,7 +65,7 @@ export const ConversationErrorIcon = () => (
         y2="136.194"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#242424" />
+        <stop stopColor="#242424" />
         <stop offset="1" stopColor="#111111" />
       </linearGradient>
       <linearGradient
@@ -76,7 +76,7 @@ export const ConversationErrorIcon = () => (
         y2="136.194"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#242424" />
+        <stop stopColor="#242424" />
         <stop offset="1" stopColor="#111111" />
       </linearGradient>
       <linearGradient
@@ -87,7 +87,7 @@ export const ConversationErrorIcon = () => (
         y2="136.194"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#242424" />
+        <stop stopColor="#242424" />
         <stop offset="1" stopColor="#111111" />
       </linearGradient>
       <linearGradient
@@ -98,7 +98,7 @@ export const ConversationErrorIcon = () => (
         y2="83.0001"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#242424" />
+        <stop stopColor="#242424" />
         <stop offset="1" stopColor="#181818" />
       </linearGradient>
       <linearGradient
@@ -109,7 +109,7 @@ export const ConversationErrorIcon = () => (
         y2="73"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#F83030" />
+        <stop stopColor="#F83030" />
         <stop offset="1" stopColor="#7A1313" />
       </linearGradient>
       <linearGradient
@@ -120,7 +120,7 @@ export const ConversationErrorIcon = () => (
         y2="73"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#F83030" />
+        <stop stopColor="#F83030" />
         <stop offset="1" stopColor="#7A1313" />
       </linearGradient>
       <linearGradient
@@ -131,7 +131,7 @@ export const ConversationErrorIcon = () => (
         y2="73"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#F83030" />
+        <stop stopColor="#F83030" />
         <stop offset="1" stopColor="#7A1313" />
       </linearGradient>
     </defs>

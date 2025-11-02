@@ -1,10 +1,9 @@
-import { useRef } from "react";
 import { useRouter } from "next/navigation";
 import { api } from "@/services/api";
 import { useOptimisticMutation, createMutation } from "@/lib/query-toolkit-v2";
 import { profileConversationsCollection } from "@/features/profile/entities/profile-conversations.collection";
 import { useMe } from "@/features/auth/queries/use-me";
-import { nonce, timeout } from "@/lib/utils";
+import { timeout } from "@/lib/utils";
 import { extractChatIdFromMembers } from "@/features/messaging/utils/conversation-utils";
 
 export interface CreateConversationParams {
@@ -16,7 +15,6 @@ export const createConversation = createMutation<
   Conversation
 >({
   write: async (params) => {
-    await timeout(2000);
     const data = await api
       .post("conversations", {
         json: {
@@ -33,7 +31,6 @@ export const createConversation = createMutation<
 export const useCreateConversation = () => {
   const { data: author } = useMe();
   const router = useRouter();
-  const temporaryId = useRef<string>("");
 
   return useOptimisticMutation({
     mutation: createConversation,
@@ -44,13 +41,16 @@ export const useCreateConversation = () => {
           members: params.members,
           hostID: author!.fbId,
         },
-        { rollback: false },
+        { rollback: false, sync: true },
       );
     },
     onMutate: (params) => {
       router.push(
         `/messages/chat?id=${extractChatIdFromMembers(params.members)}&new=true`,
       );
+    },
+    onSuccess: (conversation) => {
+      router.push(`/messages/chat?id=${conversation._id}`);
     },
   });
 };

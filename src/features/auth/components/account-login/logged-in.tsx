@@ -20,9 +20,6 @@ export const LoggedIn = () => {
           <CreateDropdown />
         </motion.div>
         <motion.div variants={defaultVariants.child}>
-          <BalanceButton />
-        </motion.div>
-        <motion.div variants={defaultVariants.child}>
           <Link href="/messages">
             <Button
               className="!w-fit p-0 aspect-square"
@@ -33,6 +30,10 @@ export const LoggedIn = () => {
             </Button>
           </Link>
         </motion.div>
+        <motion.div variants={defaultVariants.child}>
+          <BalanceButton />
+        </motion.div>
+
         {/*<motion.div variants={defaultVariants.child}>*/}
         {/*  <Button*/}
         {/*    className="!w-fit p-0 aspect-square"*/}

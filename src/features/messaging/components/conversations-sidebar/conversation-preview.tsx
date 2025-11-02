@@ -4,7 +4,7 @@ import { Spinner } from "@/components/ui/spinner/spinner";
 import { ConversationTitle } from "@/features/messaging/components/conversation-title/conversation-title";
 import { ConversationThumbnail } from "@/features/messaging/components/conversation-thumbnail/conversation-thumbnail";
 import { isTimeWithinSeconds, timeAgo } from "@/lib/utils";
-import {useIsChatMessageOwned} from "@/features/messaging/hooks/use-is-chat-message-owned";
+import { useIsChatMessageOwned } from "@/features/messaging/hooks/use-is-chat-message-owned";
 
 export const ConversationPreview = ({
   conversation,
@@ -21,7 +21,9 @@ export const ConversationPreview = ({
   const isLastMessageOwned = useIsChatMessageOwned(conversation.lastMessage);
 
   return (
-    <Link href={`/messages/chat?id=${conversation._id}`}>
+    <Link
+      href={`/messages/chat?id=${conversation._id}${conversation._optimisticId ? "&new=true" : ""}`}
+    >
       <div
         className={`flex w-full p-4 justify-between transition cursor-pointer
           ${isError ? "bg-red-400/20" : isNew ? "bg-blue-400/20" : isActive ? "bg-base-400" : "hover:bg-base-300"}`}
@@ -30,10 +32,15 @@ export const ConversationPreview = ({
           <ConversationThumbnail conversation={conversation} />
           <div className="flex flex-col">
             <ConversationTitle conversation={conversation} />
-            <p className="text-sm">
-              {
-                isLastMessageOwned ? <><span className="text-orange-500">You: </span>{conversation.lastMessage?.body}</>  : conversation.lastMessage?.body ?? "No messages"
-              }
+            <p className="text-sm ellipsis max-w-[250px]">
+              {isLastMessageOwned ? (
+                <>
+                  <span className="text-orange-500">You: </span>
+                  {conversation.lastMessage?.body}
+                </>
+              ) : (
+                (conversation.lastMessage?.body ?? "No messages")
+              )}
             </p>
           </div>
         </div>

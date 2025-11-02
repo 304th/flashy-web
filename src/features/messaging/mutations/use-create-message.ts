@@ -3,7 +3,7 @@ import { api } from "@/services/api";
 import { profileConversationsCollection } from "@/features/profile/entities/profile-conversations.collection";
 import { conversationMessagesCollection } from "@/features/messaging/entities/conversation-messages.collection";
 import { messageSchema } from "@/features/messaging/schemas/message.schema";
-import {useMe} from "@/features/auth/queries/use-me";
+import { useMe } from "@/features/auth/queries/use-me";
 
 export interface CreateMessageParams {
   conversationId: string;
@@ -45,14 +45,17 @@ export const useCreateMessage = () => {
           userimage: author!.userimage,
         },
         ...params,
-      })
+      });
 
       return Promise.all([
-        ch(profileConversationsCollection).update(params.conversationId, (conversation) => {
-          conversation.lastMessage = message;
-        }),
+        ch(profileConversationsCollection).update(
+          params.conversationId,
+          (conversation) => {
+            conversation.lastMessage = message;
+          },
+        ),
         ch(conversationMessagesCollection).prepend(message),
-      ])
+      ]);
     },
   });
 };

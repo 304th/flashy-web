@@ -37,7 +37,11 @@ export const ConversationsSidebar = () => {
         </Button>
       </div>
       <div className="flex flex-col w-full">
-        <Loadable queries={[query, meQuery] as any} fullScreenForDefaults defaultFallbackClassname="m-8">
+        <Loadable
+          queries={[query, meQuery] as any}
+          fullScreenForDefaults
+          defaultFallbackClassname="m-8"
+        >
           {() =>
             !conversations || !conversations.length ? (
               <NotFound className="p-4">Chats not found</NotFound>

@@ -8,6 +8,7 @@ export const useConversationMessages = (conversationId?: string) => {
     getParams: ({ pageParam }) => ({ pageParam, conversationId }),
     options: {
       enabled: Boolean(conversationId),
+      staleTime: 5 * 60 * 1000, // 5 minutes
     },
   });
 };

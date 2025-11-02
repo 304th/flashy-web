@@ -11,6 +11,7 @@ export const useConversationById = (conversationId?: string) => {
     getParams: () => ({ conversationId: conversationId! }),
     options: {
       enabled: Boolean(conversationId),
+      staleTime: 5 * 60 * 1000,
     },
   });
 };

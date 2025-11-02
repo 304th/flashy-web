@@ -75,7 +75,7 @@ export const ChatFeed = ({ chatId }: { chatId: string }) => {
       <div
         className="absolute bottom-0 left-0 right-0 h-6 pointer-events-none z-10 bg-gradient-to-t from-base-150 to-transparent"
       />
-      <Loadable queries={[messagesQuery, chatQuery] as any}>
+      <Loadable queries={[messagesQuery, chatQuery] as any} fullScreenForDefaults>
         {() =>
           messagesWithSeparators && messagesWithSeparators.length ? (
             // <div className="relative w-full bg-red-900" style={{ height: "calc(100vh - 200px - 96px)" }}>

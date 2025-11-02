@@ -8,7 +8,7 @@ export const conversationMessagesCollection = createCollection<
 >({
   async sourceFrom(params) {
     const response = await api
-      .get(`conversations/${params.conversationId}/messages?offset=0&limit=50`)
+      .get(`conversations/${params.conversationId}/messages?offset=0&limit=10`)
       .json<{ data: Message[] }>();
 
     return response.data;

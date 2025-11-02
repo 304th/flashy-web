@@ -1,6 +1,7 @@
 import { useMemo } from "react";
-import { format } from "date-fns";
+import { format, differenceInSeconds } from "date-fns";
 import { useIsChatMessageOwned } from "@/features/messaging/hooks/use-is-chat-message-owned";
+import { UserAvatar } from "@/components/ui/user-avatar";
 
 const BRIGHT_COLORS = [
   { bg: "bg-blue-900", border: "border-blue-500" },
@@ -31,10 +32,17 @@ const hashString = (str: string): number => {
 
 export const ChatMessage = ({ message }: { message: Message }) => {
   const isOwned = useIsChatMessageOwned(message);
-  const messageTime = useMemo(
-    () => format(message.createdAt, "h:mm a"),
-    [message.createdAt],
-  );
+  const messageTime = useMemo(() => {
+    const messageDate = new Date(message.createdAt);
+    const secondsSinceCreated = differenceInSeconds(new Date(), messageDate);
+    
+    // Show "Now" if message is less than 60 seconds old
+    if (secondsSinceCreated < 60) {
+      return "Now";
+    }
+    
+    return format(messageDate, "h:mm a");
+  }, [message.createdAt]);
 
   const nonOwnedColors = useMemo(() => {
     if (isOwned) {
@@ -48,10 +56,14 @@ export const ChatMessage = ({ message }: { message: Message }) => {
     return BRIGHT_COLORS[colorIndex];
   }, [isOwned, message._id, message.author.fbId]);
 
-  console.log(isOwned)
-
   return (
     <div className={`flex w-full ${isOwned ? "justify-end" : "justify-start"}`}>
+      {!isOwned && (
+        <UserAvatar
+          avatar={message.author.userimage}
+          className="size-8 shrink-0 mr-2"
+        />
+      )}
       <div
         className={`flex flex-col max-w-2/3 gap-1
           ${isOwned ? "items-end" : "items-start"}`}

@@ -4,6 +4,7 @@ import { Spinner } from "@/components/ui/spinner/spinner";
 import { ConversationTitle } from "@/features/messaging/components/conversation-title/conversation-title";
 import { ConversationThumbnail } from "@/features/messaging/components/conversation-thumbnail/conversation-thumbnail";
 import { isTimeWithinSeconds, timeAgo } from "@/lib/utils";
+import {useIsChatMessageOwned} from "@/features/messaging/hooks/use-is-chat-message-owned";
 
 export const ConversationPreview = ({
   conversation,
@@ -17,6 +18,7 @@ export const ConversationPreview = ({
   });
   const isPending = conversation._optimisticStatus === "pending";
   const isError = conversation._optimisticStatus === "error";
+  const isLastMessageOwned = useIsChatMessageOwned(conversation.lastMessage);
 
   return (
     <Link href={`/messages/chat?id=${conversation._id}`}>
@@ -29,7 +31,9 @@ export const ConversationPreview = ({
           <div className="flex flex-col">
             <ConversationTitle conversation={conversation} />
             <p className="text-sm">
-              {conversation.lastMessage?.body ?? "No messages"}
+              {
+                isLastMessageOwned ? <><span className="text-orange-500">You: </span>{conversation.lastMessage?.body}</>  : conversation.lastMessage?.body ?? "No messages"
+              }
             </p>
           </div>
         </div>

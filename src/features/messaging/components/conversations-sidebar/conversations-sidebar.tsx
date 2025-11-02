@@ -8,9 +8,11 @@ import { ConversationPreview } from "@/features/messaging/components/conversatio
 import { useModals } from "@/hooks/use-modals";
 import { useProfileConversations } from "@/features/profile/queries/use-profile-conversations";
 import { useQueryParams } from "@/hooks/use-query-params";
+import { useMe } from "@/features/auth/queries/use-me";
 
 export const ConversationsSidebar = () => {
   const activeConversationId = useQueryParams("id");
+  const { query: meQuery } = useMe();
   const { data: conversations, query } = useProfileConversations();
   const { openModal } = useModals();
 
@@ -35,7 +37,7 @@ export const ConversationsSidebar = () => {
         </Button>
       </div>
       <div className="flex flex-col w-full">
-        <Loadable queries={[query] as any} fullScreenForDefaults>
+        <Loadable queries={[query, meQuery] as any} fullScreenForDefaults defaultFallbackClassname="m-8">
           {() =>
             !conversations || !conversations.length ? (
               <NotFound className="p-4">Chats not found</NotFound>

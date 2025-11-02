@@ -63,7 +63,7 @@ export const LoginForm = ({
                   <FormControl>
                     <Input
                       {...field}
-                      onChange={(e: Event) => {
+                      onChange={(e: TODO) => {
                         field.onChange(e);
                       }}
                     />
@@ -92,7 +92,7 @@ export const LoginForm = ({
                           {showPassword ? <EyeIcon /> : <EyeClosedIcon />}
                         </IconButton>
                       }
-                      onChange={(e: Event) => {
+                      onChange={(e: TODO) => {
                         field.onChange(e);
                       }}
                     />

@@ -55,7 +55,7 @@ export const ForgotPasswordForm = () => {
                 <FormControl>
                   <Input
                     {...field}
-                    onChange={(e: Event) => {
+                    onChange={(e: TODO) => {
                       field.onChange(e);
                     }}
                   />

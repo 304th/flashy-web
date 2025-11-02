@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useMemo } from "react";
+import { Suspense } from "react";
 import { Spinner } from "@/components/ui/spinner/spinner";
 import { useQueryParams } from "@/hooks/use-query-params";
 import { useActiveConversation } from "@/features/messaging/hooks/use-active-conversation";

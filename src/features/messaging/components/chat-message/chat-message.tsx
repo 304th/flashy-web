@@ -32,7 +32,13 @@ const hashString = (str: string): number => {
   return Math.abs(hash);
 };
 
-export const ChatMessage = ({ message }: { message: Message }) => {
+export const ChatMessage = ({ 
+  message, 
+  showTimestamp = true 
+}: { 
+  message: Message; 
+  showTimestamp?: boolean;
+}) => {
   const isOwned = useIsChatMessageOwned(message);
   const messageTime = useMemo(() => {
     const messageDate = new Date(message.createdAt);
@@ -82,7 +88,7 @@ export const ChatMessage = ({ message }: { message: Message }) => {
         >
           {message.body}
         </div>
-        <p className="text-sm">{messageTime}</p>
+        {showTimestamp && <p className="text-sm">{messageTime}</p>}
       </div>
     </motion.div>
   );

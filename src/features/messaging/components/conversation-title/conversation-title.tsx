@@ -7,5 +7,5 @@ export const ConversationTitle = ({
 }) => {
   const title = useConversationTitle(conversation);
 
-  return <p className="text-white text-lg font-medium">{title}</p>;
+  return <p className="text-white text-lg font-medium ellipsis max-w-4/5">{title}</p>;
 };

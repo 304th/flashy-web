@@ -38,7 +38,10 @@ export type OptimisticUpdate<Params> = (
 >;
 
 export class CollectionOptimisticMutations<Entity, State> {
-  private readonly rollbacks: ((state: State, errorMessage?: string) => State)[];
+  private readonly rollbacks: ((
+    state: State,
+    errorMessage?: string,
+  ) => State)[];
   private readonly pendingSyncs: ((
     state: State,
     params: Optimistic<Entity>,

@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { QueryKey } from "@tanstack/react-query";
 
 const isPaginatedList = <T>(
-  data: T | PaginatedList<T>
+  data: T | PaginatedList<T>,
 ): data is PaginatedList<T> =>
   typeof data === "object" &&
   data !== null &&
@@ -14,19 +14,13 @@ export interface PaginatedList<T> {
   pageParams: unknown[];
 }
 
-export const useViewQuery = <
-  ViewData,
-  CachedData,
-  TError = unknown
->(
-  {
-    queryKey,
-    select,
-  }: {
-    queryKey: QueryKey;
-    select: (data: CachedData) => ViewData;
-  }
-) => {
+export const useViewQuery = <ViewData, CachedData, TError = unknown>({
+  queryKey,
+  select,
+}: {
+  queryKey: QueryKey;
+  select: (data: CachedData) => ViewData;
+}) => {
   return useQuery<CachedData, TError, ViewData>({
     queryKey,
     queryFn: () => Promise.reject("View query never fetches"),

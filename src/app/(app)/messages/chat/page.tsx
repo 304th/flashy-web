@@ -7,10 +7,8 @@ import { ChatMessage } from "@/features/messaging/components/chat-message/chat-m
 import { useQueryParams } from "@/hooks/use-query-params";
 import { useConversationMessages } from "@/features/messaging/queries/use-conversation-messages";
 import { useConversationById } from "@/features/messaging/queries/use-conversation-by-id";
-import {useActiveConversation} from "@/features/messaging/hooks/use-active-conversation";
-import {
-  ConversationNotAllowedError
-} from "@/features/messaging/components/conversation-not-allowed-error/conversation-not-allowed-error";
+import { useActiveConversation } from "@/features/messaging/hooks/use-active-conversation";
+import { ConversationNotAllowedError } from "@/features/messaging/components/conversation-not-allowed-error/conversation-not-allowed-error";
 
 export default function ChatMessagesPage() {
   return (
@@ -29,10 +27,10 @@ const ChatMessages = () => {
   }
 
   if (newChat) {
-    return <NewlyCreatedChatMessages chatId={id} />
+    return <NewlyCreatedChatMessages chatId={id} />;
   }
 
-  return <ExistingChatMessages chatId={id} />
+  return <ExistingChatMessages chatId={id} />;
 };
 
 const ExistingChatMessages = ({ chatId }: { chatId: string }) => {
@@ -57,11 +55,7 @@ const ExistingChatMessages = ({ chatId }: { chatId: string }) => {
   );
 };
 
-const NewlyCreatedChatMessages = ({
-  chatId,
-}: {
-  chatId: string;
-}) => {
+const NewlyCreatedChatMessages = ({ chatId }: { chatId: string }) => {
   const { data: conversation } = useActiveConversation();
 
   return (
@@ -69,7 +63,11 @@ const NewlyCreatedChatMessages = ({
       className="flex flex-col justify-end gap-2 items-center h-full mt-[72px]
         mb-[88px] pb-8"
     >
-      {conversation?._optimisticStatus === 'pending' ? <Spinner /> : conversation?._optimisticError ? <ConversationNotAllowedError error={conversation._optimisticError} /> : null}
+      {conversation?._optimisticStatus === "pending" ? (
+        <Spinner />
+      ) : conversation?._optimisticError ? (
+        <ConversationNotAllowedError error={conversation._optimisticError} />
+      ) : null}
     </div>
   );
 };

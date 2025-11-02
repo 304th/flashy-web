@@ -16,7 +16,9 @@ export const ProfileSettingsMessaging = () => {
       <FormField
         name="receivesMessagesFromAnyone"
         render={(props) => (
-          <FormItem className="w-full flex flex-row items-center justify-between">
+          <FormItem
+            className="w-full flex flex-row items-center justify-between"
+          >
             <div className="flex flex-col">
               <FormLabel>Receive Messages from Anyone</FormLabel>
               <p className="text-sm text-base-800 mt-1">
@@ -36,4 +38,3 @@ export const ProfileSettingsMessaging = () => {
     </div>
   );
 };
-

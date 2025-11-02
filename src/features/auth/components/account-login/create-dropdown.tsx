@@ -21,11 +21,12 @@ export const CreateDropdown = () => {
       <DropdownMenu modal={false} open={open}>
         <DropdownMenuTrigger asChild>
           <Button
-            className="!w-fit p-0 aspect-square"
+            className="!w-fit"
             size="sm"
             onMouseEnter={() => setOpen(true)}
           >
             <PlusIcon />
+            Create
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent

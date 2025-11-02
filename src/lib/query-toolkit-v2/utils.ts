@@ -80,7 +80,7 @@ export const handleMutationError = async (error: any) => {
     }
 
     const errorBody = (await error?.response?.json()) || error.message;
-    debugger
+    debugger;
 
     toast.error(
       errorBody.error ||

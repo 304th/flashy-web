@@ -17,10 +17,10 @@ export const LoggedIn = () => {
         variants={defaultVariants.container}
       >
         <motion.div variants={defaultVariants.child}>
-          <BalanceButton />
+          <CreateDropdown />
         </motion.div>
         <motion.div variants={defaultVariants.child}>
-          <CreateDropdown />
+          <BalanceButton />
         </motion.div>
         <motion.div variants={defaultVariants.child}>
           <Link href="/messages">

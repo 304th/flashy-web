@@ -20,9 +20,11 @@ export const ConversationHeader = () => {
         z-1"
     >
       <div className="flex items-center gap-3">
-        {
-          isNewConversation ? <NewlyCreatedConversationHeader conversationId={conversationId} /> : <ExistingConversationHeader conversationId={conversationId} />
-        }
+        {isNewConversation ? (
+          <NewlyCreatedConversationHeader conversationId={conversationId} />
+        ) : (
+          <ExistingConversationHeader conversationId={conversationId} />
+        )}
       </div>
     </div>
   );
@@ -44,7 +46,7 @@ const NewlyCreatedConversationHeader = ({
       <ConversationThumbnail conversation={conversation} />
       <ConversationTitle conversation={conversation} />
     </>
-  )
+  );
 };
 
 const ExistingConversationHeader = ({

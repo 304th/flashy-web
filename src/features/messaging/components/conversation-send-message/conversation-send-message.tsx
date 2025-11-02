@@ -7,7 +7,7 @@ import { Form, FormField, FormItem } from "@/components/ui/form";
 import { IconButton } from "@/components/ui/icon-button";
 import { Textarea } from "@/components/ui/textarea";
 import { SendIcon } from "@/components/ui/icons/send";
-import {useActiveConversation} from "@/features/messaging/hooks/use-active-conversation";
+import { useActiveConversation } from "@/features/messaging/hooks/use-active-conversation";
 import { useCreateMessage } from "@/features/messaging/mutations/use-create-message";
 import { useQueryParams } from "@/hooks/use-query-params";
 import { defaultVariants } from "@/lib/framer";
@@ -49,7 +49,14 @@ export const ConversationSendMessage = () => {
   }
 
   return (
-    <div className={`relative flex flex-col w-full bg-base-300 rounded-md ${activeConversation?._optimisticStatus === 'pending' || activeConversation?._optimisticStatus === 'error' ? 'pointer-events-none opacity-50' : ''}`}>
+    <div
+      className={`relative flex flex-col w-full bg-base-300 rounded-md ${
+          activeConversation?._optimisticStatus === "pending" ||
+          activeConversation?._optimisticStatus === "error"
+            ? "pointer-events-none opacity-50"
+            : ""
+        }`}
+    >
       {/*{replyComment && (*/}
       {/*  <ReplyToComment comment={replyComment} onClose={onCloseReply} />*/}
       {/*)}*/}

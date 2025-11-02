@@ -135,7 +135,8 @@ export const ProfileSettingsModal = ({
             if (
               (params.bio && me?.bio !== params.bio) ||
               (params.receivesMessagesFromAnyone !== undefined &&
-                params.receivesMessagesFromAnyone !== me?.receivesMessagesFromAnyone) ||
+                params.receivesMessagesFromAnyone !==
+                  me?.receivesMessagesFromAnyone) ||
               Object.values(params?.links || {}).filter(Boolean).length !== 0
             ) {
               updateUserInfo.mutate({

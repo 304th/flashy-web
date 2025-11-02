@@ -1,24 +1,21 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import Link from "next/link";
-// import { useForm } from 'react-hook-form'
-import { PlusIcon, CheckIcon, SearchIcon, ArrowRightIcon } from "lucide-react";
+import { useState } from "react";
 import { motion } from "framer-motion";
+import {  SearchIcon } from "lucide-react";
 import { Modal as ModalComponent } from "@/packages/modals";
 import { CloseButton } from "@/components/ui/close-button";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { UserAvatar } from "@/components/ui/user-avatar";
 import { Separator } from "@/components/ui/separator";
-import { useProfileFollowings } from "@/features/profile/queries/use-profile-followings";
 import { Loadable } from "@/components/ui/loadable";
 import { NotFound } from "@/components/ui/not-found";
+import {
+  ConversationCreateMessageUser
+} from "@/features/messaging/components/conversation-create-modal/conversation-create-message-user";
+import { useProfileFollowings } from "@/features/profile/queries/use-profile-followings";
 import { useDebouncedValue } from "@tanstack/react-pacer/debouncer";
-// import { useCreateConversation } from "@/features/messaging/mutations/use-create-conversation";
-// import { api } from "@/services/api";
+import { useProfileConversations } from "@/features/profile/queries/use-profile-conversations";
 import { useUsersSearchByUsername } from "@/features/common/queries/use-users-search-by-username";
-import { useNewConversationUser } from "@/features/messaging/hooks/use-new-conversation-user";
 import { useCreateConversation } from "@/features/messaging/mutations/use-create-conversation";
 
 export interface ConversationCreateModalProps {
@@ -33,10 +30,11 @@ export const ConversationCreateModal = ({
 }: ConversationCreateModalProps) => {
   const { data: followingUsers, query: followingsQuery } =
     useProfileFollowings();
+  const { data: profileConversations } = useProfileConversations();
   const [search, setSearch] = useState("");
   const [debouncedSearch] = useDebouncedValue(search, { wait: 500 });
   const [foundUsers, usersSearchQuery] =
-    useUsersSearchByUsername(debouncedSearch);
+    useUsersSearchByUsername(debouncedSearch, { hideMyself: true });
   const createConversation = useCreateConversation();
 
   return (
@@ -64,70 +62,65 @@ export const ConversationCreateModal = ({
             }
             containerClassname="w-full"
           />
-          <div className="flex flex-col w-full gap-2">
-            <Separator>Your subscriptions</Separator>
-            <div className="flex flex-col w-full">
-              <Loadable
-                queries={[followingsQuery] as any}
-                fullScreenForDefaults
-              >
-                {() =>
-                  followingUsers && followingUsers?.length > 0 ? (
-                    followingUsers.map((followingUser) => (
-                      <MessageUser
-                        key={followingUser.fbId}
-                        user={followingUser}
-                        onStartConversation={() => {
-                          createConversation.mutate({
-                            members: [followingUser],
-                          });
-                          onClose();
-                        }}
-                      />
-                    ))
-                  ) : (
-                    <NotFound>No users found</NotFound>
-                  )
-                }
-              </Loadable>
+          <div className="flex flex-col w-full gap-4">
+            {debouncedSearch && (
+              <div className="flex flex-col w-full gap-2">
+                <Separator>Search results:</Separator>
+                <Loadable queries={[usersSearchQuery]} fullScreenForDefaults>
+                  {() =>
+                    foundUsers && foundUsers.length ? (
+                      foundUsers.map((foundUser) => (
+                        <ConversationCreateMessageUser
+                          key={foundUser.fbId}
+                          user={foundUser}
+                          onStartConversation={() => {
+                            createConversation.mutate({
+                              members: [foundUser],
+                            });
+                            onClose();
+                          }}
+                        />
+                      ))
+                    ) : (
+                      <NotFound>No users found</NotFound>
+                    )
+                  }
+                </Loadable>
+              </div>
+            )}
+            <div className="flex flex-col w-full gap-2">
+              <Separator>Your subscriptions:</Separator>
+              <div className="flex flex-col w-full">
+                <Loadable
+                  queries={[followingsQuery] as any}
+                  fullScreenForDefaults
+                >
+                  {() =>
+                    followingUsers && followingUsers?.length > 0 ? (
+                      followingUsers.map((followingUser) => (
+                        <ConversationCreateMessageUser
+                          key={followingUser.fbId}
+                          user={followingUser}
+                          onStartConversation={() => {
+                            createConversation.mutate({
+                              members: [followingUser],
+                            });
+                            onClose();
+                          }}
+                        />
+                      ))
+                    ) : (
+                      <NotFound>No subscriptions found</NotFound>
+                    )
+                  }
+                </Loadable>
+              </div>
             </div>
+
           </div>
         </div>
       </motion.div>
     </Modal>
-  );
-};
-
-const MessageUser = ({
-  user,
-  onStartConversation,
-}: {
-  user: User;
-  onStartConversation: () => void;
-}) => {
-  return (
-    <div
-      className="group relative flex items-center justify-between p-2 rounded-md
-        cursor-pointer transition hover:bg-base-250 overflow-hidden"
-      onClick={onStartConversation}
-    >
-      <div className="flex items-center gap-3 min-w-0">
-        <UserAvatar avatar={user?.userimage} className="size-10" />
-        <div className="flex flex-col min-w-0">
-          <p className="text-white font-medium truncate">{user?.username}</p>
-          <p className="text-muted-foreground text-sm truncate">
-            @{user?.username}
-          </p>
-        </div>
-      </div>
-      <div
-        className="opacity-0 transition translate-x-[8px]
-          group-hover:opacity-100 group-hover:translate-0
-          group-hover:text-white"
-      >
-        <ArrowRightIcon />
-      </div>
-    </div>
   );
 };
 

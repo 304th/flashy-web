@@ -48,6 +48,8 @@ export const ChatMessage = ({ message }: { message: Message }) => {
     return BRIGHT_COLORS[colorIndex];
   }, [isOwned, message._id, message.author.fbId]);
 
+  console.log(isOwned)
+
   return (
     <div className={`flex w-full ${isOwned ? "justify-end" : "justify-start"}`}>
       <div

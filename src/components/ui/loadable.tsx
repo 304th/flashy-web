@@ -13,6 +13,7 @@ interface Query<T> {
 interface LoadableProps<TData extends any[]> {
   queries: { [K in keyof TData]: Query<TData[K]> };
   fallback?: ReactNode | null;
+  defaultFallbackClassname?: string;
   noFallback?: boolean;
   error?: ReactNode;
   fullScreenForDefaults?: boolean;
@@ -23,6 +24,7 @@ export const Loadable = <TData extends any[]>({
   queries,
   fallback,
   fullScreenForDefaults = false,
+  defaultFallbackClassname,
   noFallback = false,
   error = "Network Error",
   children,
@@ -49,12 +51,12 @@ export const Loadable = <TData extends any[]>({
     if (fullScreenForDefaults) {
       return (
         <div className="flex w-full h-full justify-center items-center">
-          <Spinner />
+          <Spinner className={defaultFallbackClassname} />
         </div>
       );
     }
 
-    return <Spinner />;
+    return <Spinner className={defaultFallbackClassname} />;
   }
 
   return <>{children(data)}</>;

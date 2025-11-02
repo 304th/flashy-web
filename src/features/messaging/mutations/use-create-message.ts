@@ -1,6 +1,9 @@
 import { createMutation, useOptimisticMutation } from "@/lib/query-toolkit-v2";
 import { api } from "@/services/api";
+import { profileConversationsCollection } from "@/features/profile/entities/profile-conversations.collection";
 import { conversationMessagesCollection } from "@/features/messaging/entities/conversation-messages.collection";
+import { messageSchema } from "@/features/messaging/schemas/message.schema";
+import {useMe} from "@/features/auth/queries/use-me";
 
 export interface CreateMessageParams {
   conversationId: string;
@@ -13,7 +16,6 @@ export interface CreateMessageParams {
 
 export const createMessage = createMutation<CreateMessageParams, Message>({
   write: async (params) => {
-    return;
     const data = await api
       .post(`conversations/${params.conversationId}/messages`, {
         json: {
@@ -31,10 +33,26 @@ export const createMessage = createMutation<CreateMessageParams, Message>({
 });
 
 export const useCreateMessage = () => {
+  const { data: author } = useMe();
+
   return useOptimisticMutation({
     mutation: createMessage,
     onOptimistic: async (ch, params) => {
-      return ch(conversationMessagesCollection).prepend(params);
+      const message = messageSchema.createEntityFromParams({
+        author: {
+          fbId: author!.fbId,
+          username: author!.username,
+          userimage: author!.userimage,
+        },
+        ...params,
+      })
+
+      return Promise.all([
+        ch(profileConversationsCollection).update(params.conversationId, (conversation) => {
+          conversation.lastMessage = message;
+        }),
+        ch(conversationMessagesCollection).prepend(message),
+      ])
     },
   });
 };

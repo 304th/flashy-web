@@ -5,7 +5,7 @@ class MessageSchema implements StaticSchema<Message> {
     return "_id";
   }
 
-  createEntityFromParams(params: Partial<Conversation>): Message {
+  createEntityFromParams(params: Partial<Message>): Message {
     const id = nanoid();
 
     return {
@@ -19,7 +19,6 @@ class MessageSchema implements StaticSchema<Message> {
       deletedBy: [],
       replyToMessage: "",
       createdAt: new Date().toString(),
-      updatedAt: new Date().toString(),
       ...params,
     };
   }

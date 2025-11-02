@@ -33,8 +33,6 @@ export const ConversationSendMessage = () => {
     mode: "all",
   });
 
-  const message = form.watch("message");
-
   const onSubmit = (params: any) => {
     sendMessage.mutate({
       conversationId: conversationId!,
@@ -42,6 +40,7 @@ export const ConversationSendMessage = () => {
       tipAmount: params.tipAmount,
       mentionedUsers: params.mentionedUsers,
     });
+    form.reset();
   };
 
   if (!conversationId) {

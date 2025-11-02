@@ -72,27 +72,42 @@ const ExistingChatMessages = ({ chatId }: { chatId: string }) => {
     if (!messages) return [];
 
     const result: (Message | { type: "separator"; date: Date })[] = [];
-    let lastDate: Date | null = null;
+    let currentDayMessages: Message[] = [];
+    let currentDay: string | null = null;
 
     for (const message of messages) {
       const messageDate = new Date(message.createdAt);
       const messageDay = format(messageDate, "yyyy-MM-dd");
 
-      // Check if we need to add a separator
-      if (lastDate === null) {
-        // First message, add separator for its date
-        result.push({ type: "separator", date: messageDate });
-        lastDate = messageDate;
+      if (currentDay === null) {
+        // First message
+        currentDay = messageDay;
+        currentDayMessages.push(message);
+      } else if (messageDay === currentDay) {
+        // Same day, add to current group
+        currentDayMessages.push(message);
       } else {
-        const lastDay = format(lastDate, "yyyy-MM-dd");
-        if (messageDay !== lastDay) {
-          // Different day, add separator
-          result.push({ type: "separator", date: messageDate });
-          lastDate = messageDate;
-        }
-      }
+        // Different day, finalize previous group
+        // Add messages first, then separator (so separator appears on top with flex-col-reverse)
+        result.push(...currentDayMessages);
+        result.push({
+          type: "separator",
+          date: new Date(currentDayMessages[0].createdAt),
+        });
 
-      result.push(message);
+        // Start new group
+        currentDay = messageDay;
+        currentDayMessages = [message];
+      }
+    }
+
+    // Finalize last group
+    if (currentDayMessages.length > 0) {
+      result.push(...currentDayMessages);
+      result.push({
+        type: "separator",
+        date: new Date(currentDayMessages[0].createdAt),
+      });
     }
 
     return result;
@@ -100,7 +115,7 @@ const ExistingChatMessages = ({ chatId }: { chatId: string }) => {
 
   return (
     <div
-      className="flex flex-col justify-end gap-2 items-center h-full mt-[72px]
+      className="flex flex-col-reverse gap-2 items-center h-full mt-[72px]
         mb-[88px] pb-8"
     >
       <Loadable queries={[conversationQuery, messagesQuery] as any}>
@@ -108,12 +123,13 @@ const ExistingChatMessages = ({ chatId }: { chatId: string }) => {
           messagesWithSeparators.map((item, index) => {
             if ("type" in item && item.type === "separator") {
               return (
-                <Separator key={`separator-${index}`}>
+                <Separator key={`separator-${index}`} className="!w-2/4 p-6">
                   {formatDateLabel(item.date)}
                 </Separator>
               );
             }
-            return <ChatMessage key={item._id} message={item as Message} />;
+
+            return <ChatMessage key={(item as TODO)._id} message={item as Message} />;
           })
         }
       </Loadable>

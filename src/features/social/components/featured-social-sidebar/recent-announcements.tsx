@@ -12,6 +12,7 @@ export const RecentAnnouncements = () => {
           className="flex flex-col p-4 h-fit w-full gap-2 rounded bg-base-250"
         >
           <p className="text-sm text-base-800">Recent Announcements</p>
+
           <div className="flex flex-col gap-3 divide-y">
             {recentAnnouncements.map((socialPost) => (
               <RecentAnnouncementSocialPost socialPost={socialPost} />

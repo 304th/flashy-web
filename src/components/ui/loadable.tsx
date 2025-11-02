@@ -39,7 +39,7 @@ export const Loadable = <TData extends any[]>({
 
   if (isLoading || empty) {
     if (noFallback) {
-      return null
+      return null;
     }
 
     if (fallback) {

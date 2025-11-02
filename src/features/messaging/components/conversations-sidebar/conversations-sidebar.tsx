@@ -22,7 +22,9 @@ export const ConversationsSidebar = () => {
       <div className="flex flex-col w-full p-4">
         <p className="text-white text-lg font-medium">Direct Messaging</p>
       </div>
-      <div className="flex w-full items-center px-4 pb-4 border-b justify-between">
+      <div
+        className="flex w-full items-center px-4 pb-4 border-b justify-between"
+      >
         <p>Chats:</p>
         <Button
           variant="secondary"

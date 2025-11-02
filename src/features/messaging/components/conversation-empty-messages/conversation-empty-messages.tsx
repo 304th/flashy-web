@@ -3,11 +3,11 @@
 // import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 // import { useConversationCreator } from "@/features/messaging/hooks/use-conversation-creator";
-import {Separator} from "@/components/ui/separator";
+import { Separator } from "@/components/ui/separator";
 import { useCreateMessage } from "@/features/messaging/mutations/use-create-message";
 import { useCreateConversation } from "@/features/messaging/mutations/use-create-conversation";
-import {useCreateConversationWithMessage} from "@/features/messaging/mutations/use-create-conversation-with-message";
-import {useNewConversationUser} from "@/features/messaging/hooks/use-new-conversation-user";
+import { useCreateConversationWithMessage } from "@/features/messaging/mutations/use-create-conversation-with-message";
+import { useNewConversationUser } from "@/features/messaging/hooks/use-new-conversation-user";
 
 export const ConversationEmptyMessages = ({ userId }: { userId?: string }) => {
   const [newChatUser] = useNewConversationUser();
@@ -19,10 +19,8 @@ export const ConversationEmptyMessages = ({ userId }: { userId?: string }) => {
     <div className="flex flex-col items-center w-full gap-3">
       <Separator>
         <p className="text-sm">
-          This is the start of you conversation with {" "}
-          <span className="text-brand-200">
-            @{newChatUser?.username}
-          </span>{" "}
+          This is the start of you conversation with{" "}
+          <span className="text-brand-200">@{newChatUser?.username}</span>{" "}
         </p>
       </Separator>
       <div className="flex items-center gap-2">
@@ -32,12 +30,12 @@ export const ConversationEmptyMessages = ({ userId }: { userId?: string }) => {
           onClick={() => {
             createChatWithMessage.mutate({
               conversation: {
-                members: [userId!]
+                members: [userId!],
               },
               message: {
                 body: `Hey, what's up?`,
               },
-            })
+            });
             // createChat.mutate({
             //   members: [userId],
             // });

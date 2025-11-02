@@ -2,7 +2,7 @@ import { api } from "@/services/api";
 import { createCollection } from "@/lib/query-toolkit-v2";
 import { conversationSchema } from "@/features/messaging/schemas/conversation.schema";
 
-export const conversationsCollection = createCollection<
+export const profileConversationsCollection = createCollection<
   Conversation,
   { pageParam?: number }
 >({
@@ -14,5 +14,5 @@ export const conversationsCollection = createCollection<
     return response.data;
   },
   schema: conversationSchema,
-  name: "conversations",
+  name: "profileConversations",
 });

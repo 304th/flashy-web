@@ -16,7 +16,7 @@ type RegisteredCollection = {
   name: string;
   queryKey: unknown[];
   queryClient: QueryClient;
-  collection: Collection<any, any>;
+  collection: Collection<TODO, TODO>;
 };
 
 type RegisteredEntity = {
@@ -33,10 +33,15 @@ type RegisteredPartitioned = {
   name: string;
   queryKey: unknown[];
   queryClient: QueryClient;
-  collection: Collection<any, any>;
+  collection: Collection<TODO, TODO>;
 };
 
 export type RegisteredAny = RegisteredLive | RegisteredPartitioned;
+
+export type OptTransaction = {
+  rollback: (error: TODO) => void;
+  sync?: (data: TODO) => void;
+};
 
 function areQueryKeysEqual(key1: unknown[], key2: unknown[]): boolean {
   if (key1.length !== key2.length) {
@@ -114,23 +119,3 @@ class LiveRegistry {
 }
 
 export const liveRegistry = new LiveRegistry();
-
-export type OptTransaction = {
-  rollback: () => void;
-  sync?: (data: any) => void;
-};
-
-export function aggregateTransactions(
-  transactions: OptTransaction[],
-): OptTransaction {
-  return {
-    rollback: () => {
-      transactions.forEach((t) => t.rollback());
-    },
-    sync: (data: any) => {
-      transactions.forEach((t) => t.sync?.(data));
-    },
-  };
-}
-
-export type TriggerTarget = string; // name used during registration

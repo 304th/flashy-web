@@ -1,39 +1,49 @@
-import { useMemo } from "react";
-import { useQueryClient, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
+import type { QueryKey } from "@tanstack/react-query";
 
-const isPaginatedList = <QueryData>(
-  data: QueryData | PaginatedList<QueryData>,
-): data is PaginatedList<QueryData> =>
-  typeof data === "object" && data !== null && "pages" in data;
+const isPaginatedList = <T>(
+  data: T | PaginatedList<T>
+): data is PaginatedList<T> =>
+  typeof data === "object" &&
+  data !== null &&
+  "pages" in data &&
+  Array.isArray((data as any).pages);
 
-export const useViewQuery = <SubsetData, QueryData>({
-  queryKey,
-  select,
-}: {
-  queryKey: readonly unknown[];
-  select: (data: QueryData) => SubsetData;
-}) => {
-  const queryClient = useQueryClient();
+export interface PaginatedList<T> {
+  pages: T[][];
+  pageParams: unknown[];
+}
 
-  const query = useQuery<QueryData, unknown, QueryData>({
+export const useViewQuery = <
+  ViewData,
+  CachedData,
+  TError = unknown
+>(
+  {
     queryKey,
-    enabled: Boolean(queryClient.getQueryData(queryKey)),
+    select,
+  }: {
+    queryKey: QueryKey;
+    select: (data: CachedData) => ViewData;
+  }
+) => {
+  return useQuery<CachedData, TError, ViewData>({
+    queryKey,
+    queryFn: () => Promise.reject("View query never fetches"),
+    enabled: false,
+    staleTime: Infinity,
+    select: (cachedData) => {
+      let flatData;
+
+      if (Array.isArray(cachedData)) {
+        flatData = cachedData;
+      } else if (isPaginatedList(cachedData)) {
+        flatData = cachedData.pages.flat() as unknown as CachedData;
+      } else {
+        flatData = cachedData;
+      }
+
+      return select(flatData);
+    },
   });
-
-  const selectedData = useMemo(() => {
-    if (!query.data) return undefined;
-
-    if (Array.isArray(query.data)) {
-      return select(query.data);
-    } else if (isPaginatedList(query.data)) {
-      return select((query.data.pages as unknown[]).flat() as QueryData);
-    }
-
-    return select(query.data);
-  }, [query.data, select]);
-
-  return {
-    data: selectedData,
-    query,
-  };
 };

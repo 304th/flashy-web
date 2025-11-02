@@ -1,9 +1,13 @@
+import { useRef } from "react";
+import { useRouter } from "next/navigation";
 import { api } from "@/services/api";
 import { useOptimisticMutation, createMutation } from "@/lib/query-toolkit-v2";
+import { profileConversationsCollection } from "@/features/profile/entities/profile-conversations.collection";
 import { useMe } from "@/features/auth/queries/use-me";
+import { nonce, timeout } from "@/lib/utils";
 
 export interface CreateConversationParams {
-  members: string[];
+  members: Author[];
 }
 
 export const createConversation = createMutation<
@@ -11,7 +15,7 @@ export const createConversation = createMutation<
   Conversation
 >({
   write: async (params) => {
-    return {_id: '123xsssss'}
+    await timeout(2000);
     const data = await api
       .post("conversations", {
         json: {
@@ -22,30 +26,31 @@ export const createConversation = createMutation<
 
     return data.data;
   },
+  key: 'createConversation',
 });
 
 export const useCreateConversation = () => {
-  // const { data: author } = useMe();
+  const { data: author } = useMe();
+  const router = useRouter();
+  const temporaryId = useRef<string>("");
 
   return useOptimisticMutation({
     mutation: createConversation,
-    // onOptimistic: (ch, params) => {
-    //   return Promise.all([
-    //     ch(commentsCollection).prepend(
-    //       {
-    //         ...params,
-    //         created_by: {
-    //           _id: author!.fbId,
-    //           username: author!.username,
-    //           userimage: author!.userimage,
-    //         },
-    //       },
-    //       { sync: true },
-    //     ),
-    //     ch(socialFeedCollection).update(params.postId, (post) => {
-    //       post.commentsCount += 1;
-    //     }),
-    //   ]);
-    // },
+    onOptimistic: async (ch, params) => {
+      const id = nonce();
+      temporaryId.current = id;
+
+      return ch(profileConversationsCollection).prepend(
+        {
+          _id: id,
+          members: params.members,
+          hostID: author!.fbId,
+        },
+        { rollback: false },
+      );
+    },
+    onMutate: () => {
+      router.push(`/messages/chat?id=${temporaryId.current}&new=true`);
+    },
   });
 };

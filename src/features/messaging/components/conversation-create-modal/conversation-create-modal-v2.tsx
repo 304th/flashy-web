@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import Link from 'next/link';
+import Link from "next/link";
 // import { useForm } from 'react-hook-form'
 import { PlusIcon, CheckIcon, SearchIcon, ArrowRightIcon } from "lucide-react";
 import { motion } from "framer-motion";
@@ -18,7 +18,8 @@ import { useDebouncedValue } from "@tanstack/react-pacer/debouncer";
 // import { useCreateConversation } from "@/features/messaging/mutations/use-create-conversation";
 // import { api } from "@/services/api";
 import { useUsersSearchByUsername } from "@/features/common/queries/use-users-search-by-username";
-import {useNewConversationUser} from "@/features/messaging/hooks/use-new-conversation-user";
+import { useNewConversationUser } from "@/features/messaging/hooks/use-new-conversation-user";
+import { useCreateConversation } from "@/features/messaging/mutations/use-create-conversation";
 
 export interface ConversationCreateModalProps {
   onClose(): void;
@@ -36,6 +37,7 @@ export const ConversationCreateModal = ({
   const [debouncedSearch] = useDebouncedValue(search, { wait: 500 });
   const [foundUsers, usersSearchQuery] =
     useUsersSearchByUsername(debouncedSearch);
+  const createConversation = useCreateConversation();
 
   return (
     <Modal onClose={onClose} className={"!p-0"} {...props}>
@@ -72,7 +74,16 @@ export const ConversationCreateModal = ({
                 {() =>
                   followingUsers && followingUsers?.length > 0 ? (
                     followingUsers.map((followingUser) => (
-                      <MessageUser key={followingUser.fbId} user={followingUser} />
+                      <MessageUser
+                        key={followingUser.fbId}
+                        user={followingUser}
+                        onStartConversation={() => {
+                          createConversation.mutate({
+                            members: [followingUser],
+                          });
+                          onClose();
+                        }}
+                      />
                     ))
                   ) : (
                     <NotFound>No users found</NotFound>
@@ -87,33 +98,36 @@ export const ConversationCreateModal = ({
   );
 };
 
-const MessageUser = ({ user }: { user: User }) => {
-  const [, setNewConversationUser] = useNewConversationUser();
-
+const MessageUser = ({
+  user,
+  onStartConversation,
+}: {
+  user: User;
+  onStartConversation: () => void;
+}) => {
   return (
-    <Link href={`/messages/chat?u=${user.fbId}&new=true`} onClick={() => setNewConversationUser(user)}>
-      <div
-        className="group relative flex items-center justify-between p-2 rounded-md
+    <div
+      className="group relative flex items-center justify-between p-2 rounded-md
         cursor-pointer transition hover:bg-base-250 overflow-hidden"
-      >
-        <div className="flex items-center gap-3 min-w-0">
-          <UserAvatar avatar={user?.userimage} className="size-10" />
-          <div className="flex flex-col min-w-0">
-            <p className="text-white font-medium truncate">{user?.username}</p>
-            <p className="text-muted-foreground text-sm truncate">
-              @{user?.username}
-            </p>
-          </div>
-        </div>
-        <div
-          className="opacity-0 transition translate-x-[8px]
-          group-hover:opacity-100 group-hover:translate-0
-          group-hover:text-white"
-        >
-          <ArrowRightIcon />
+      onClick={onStartConversation}
+    >
+      <div className="flex items-center gap-3 min-w-0">
+        <UserAvatar avatar={user?.userimage} className="size-10" />
+        <div className="flex flex-col min-w-0">
+          <p className="text-white font-medium truncate">{user?.username}</p>
+          <p className="text-muted-foreground text-sm truncate">
+            @{user?.username}
+          </p>
         </div>
       </div>
-    </Link>
+      <div
+        className="opacity-0 transition translate-x-[8px]
+          group-hover:opacity-100 group-hover:translate-0
+          group-hover:text-white"
+      >
+        <ArrowRightIcon />
+      </div>
+    </div>
   );
 };
 

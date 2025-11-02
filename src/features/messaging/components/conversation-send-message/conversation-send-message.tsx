@@ -42,6 +42,10 @@ export const ConversationSendMessage = () => {
     });
   };
 
+  if (!conversationId) {
+    return null;
+  }
+
   return (
     <div className={"relative flex flex-col w-full bg-base-300 rounded-md"}>
       {/*{replyComment && (*/}

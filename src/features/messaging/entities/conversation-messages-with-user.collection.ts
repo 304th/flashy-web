@@ -8,7 +8,7 @@ export interface ConversationWithUserParams {
 
 export const conversationMessagesWithUserCollection = createCollection<
   Message,
-  { pageParam: number; } & ConversationWithUserParams
+  { pageParam: number } & ConversationWithUserParams
 >({
   async sourceFrom(params) {
     const response = await api
@@ -20,4 +20,3 @@ export const conversationMessagesWithUserCollection = createCollection<
   schema: messageSchema,
   name: "conversationMessagesWithUser",
 });
-

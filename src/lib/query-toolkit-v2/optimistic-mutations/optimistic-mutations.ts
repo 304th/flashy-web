@@ -184,7 +184,7 @@ export class CollectionOptimisticMutations<Entity, State> {
     });
   }
 
-  public rollback() {
+  public rollback(error: TODO) {
     const runRollback = this.rollbacks.pop();
 
     if (runRollback) {

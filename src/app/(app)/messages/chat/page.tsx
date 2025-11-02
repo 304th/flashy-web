@@ -8,7 +8,7 @@ import { useConversationMessages } from "@/features/messaging/queries/use-conver
 import { ConversationEmptyMessages } from "@/features/messaging/components/conversation-empty-messages/conversation-empty-messages";
 import { useConversationById } from "@/features/messaging/queries/use-conversation-by-id";
 import { useConversationMessagesWithUser } from "@/features/messaging/queries/use-conversation-messages-with-user";
-import {useNewConversationUser} from "@/features/messaging/hooks/use-new-conversation-user";
+import {useIsMutating} from "@tanstack/react-query";
 
 export default function ChatMessagesPage() {
   return (
@@ -20,22 +20,24 @@ export default function ChatMessagesPage() {
 
 const ChatMessages = () => {
   const id = useQueryParams("id");
-  const userId = useQueryParams("u");
   const newChat = useQueryParams("new");
 
-  if (id) {
-    return <ChatMessagesByIdPage chatId={id} />
+  if (!id) {
+    return null;
   }
 
-  if (userId) {
-    return <ChatMessagesByUserIdPage userId={userId} newChat={Boolean(newChat)} />
+  if (newChat) {
+    return <NewlyCreatedChatMessages chatId={id} />
   }
-}
 
-const ChatMessagesByIdPage = ({ chatId }: { chatId: string }) => {
+  return <ExistingChatMessages chatId={id} />
+};
+
+const ExistingChatMessages = ({ chatId }: { chatId: string }) => {
   const { data: conversation, query: conversationQuery } =
     useConversationById(chatId);
-  const { data: messages, query: messagesQuery } = useConversationMessages(chatId);
+  const { data: messages, query: messagesQuery } =
+    useConversationMessages(chatId);
 
   return (
     <div
@@ -53,7 +55,15 @@ const ChatMessagesByIdPage = ({ chatId }: { chatId: string }) => {
   );
 };
 
-const ChatMessagesByUserIdPage = ({ userId, newChat }: { userId: string; newChat: boolean; }) => {
+const NewlyCreatedChatMessages = ({
+  chatId,
+}: {
+  chatId: string;
+}) => {
+  const mutationsCount = useIsMutating({
+    mutationKey: ['createConversation'],
+  });
+
   const { data: messages, query } = useConversationMessagesWithUser(userId);
 
   return (
@@ -61,14 +71,17 @@ const ChatMessagesByUserIdPage = ({ userId, newChat }: { userId: string; newChat
       className="flex flex-col justify-end gap-2 items-center h-full mt-[72px]
         mb-[88px] pb-8"
     >
-      <Loadable queries={[query] as any} noFallback={Boolean(newChat)}>
-        {() =>
-          !messages || messages.length === 0 ? <ConversationEmptyMessages userId={userId} /> : messages?.map((message) => (
-            <ChatMessage key={message._id} message={message} />
-          ))
-        }
-      </Loadable>
-
+      {/*<Loadable queries={[query] as any} noFallback={Boolean(newChat)}>*/}
+      {/*  {() =>*/}
+      {/*    !messages || messages.length === 0 ? (*/}
+      {/*      <ConversationEmptyMessages userId={userId} />*/}
+      {/*    ) : (*/}
+      {/*      messages?.map((message) => (*/}
+      {/*        <ChatMessage key={message._id} message={message} />*/}
+      {/*      ))*/}
+      {/*    )*/}
+      {/*  }*/}
+      {/*</Loadable>*/}
     </div>
   );
 };

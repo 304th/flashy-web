@@ -13,7 +13,7 @@ export interface CreateMessageParams {
 
 export const createMessage = createMutation<CreateMessageParams, Message>({
   write: async (params) => {
-    return
+    return;
     const data = await api
       .post(`conversations/${params.conversationId}/messages`, {
         json: {

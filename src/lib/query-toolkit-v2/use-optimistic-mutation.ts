@@ -36,6 +36,7 @@ export const useOptimisticMutation = <Params, Response>({
       >[];
     }
   >({
+    ...(mutation.key ? { mutationKey: [mutation.key] } : {}),
     mutationFn: async (params: Params) => {
       return await mutation.write(params);
     },
@@ -63,8 +64,8 @@ export const useOptimisticMutation = <Params, Response>({
     },
     onSuccess: async (data, params, context) => {
       context!.transactions.forEach((transaction) => {
-        if ((transaction as any).sync) {
-          (transaction as any).sync(data);
+        if ((transaction as TODO).sync) {
+          (transaction as TODO).sync(data);
         }
       });
 
@@ -72,7 +73,7 @@ export const useOptimisticMutation = <Params, Response>({
     },
     onError: async (error, _, context) => {
       context!.transactions.forEach((transaction) => {
-        (transaction as any).rollback();
+        transaction.rollback(error);
       });
 
       onError?.(error);

@@ -1,4 +1,4 @@
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow, isWithinInterval, subSeconds } from "date-fns";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -65,3 +65,19 @@ export const timeout = (ms: number = 1000) =>
       resolve(true);
     }, ms);
   });
+
+export const nonce = () => Math.random().toString(36).slice(2);
+
+export const isTimeWithinSeconds = (
+  timestamp: number,
+  options: { seconds: number } = { seconds: 300 },
+) => {
+  const targetDate = new Date(timestamp);
+  const now = new Date();
+  const secondsAgo = subSeconds(now, options.seconds);
+
+  return isWithinInterval(targetDate, {
+    start: secondsAgo,
+    end: now,
+  });
+};

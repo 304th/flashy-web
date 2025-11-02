@@ -1,5 +1,8 @@
 declare global {
+  type TODO = any;
   type JwtToken = `ey${string}.${string}.${string}`;
+
+
 
   interface StaticSchema<T> {
     getId(): keyof T;
@@ -29,6 +32,7 @@ declare global {
   type ReactionType = "like";
   type Optimistic<T> = {
     _optimisticStatus?: "success" | "pending" | "error";
+    _optimisticError?: string;
     _optimisticId?: string;
   } & T;
 

@@ -18,6 +18,8 @@ export const ConversationPreview = ({
   const isPending = conversation._optimisticStatus === "pending";
   const isError = conversation._optimisticStatus === "error";
 
+  console.log('ERROR:', conversation._optimisticError);
+
   return (
     <Link href={`/messages/chat?id=${conversation._id}`}>
       <div

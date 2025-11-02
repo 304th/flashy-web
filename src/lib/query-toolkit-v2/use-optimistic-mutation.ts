@@ -72,9 +72,9 @@ export const useOptimisticMutation = <Params, Response>({
       onSuccess?.(data, channel, params);
     },
     onError: async (error, _, context) => {
-      context!.transactions.forEach((transaction) => {
-        transaction.rollback(error);
-      });
+      await Promise.all(
+        context!.transactions.map((transaction) => transaction.rollback(error)),
+      );
 
       onError?.(error);
       await handleMutationError(error);

@@ -39,7 +39,7 @@ type RegisteredPartitioned = {
 export type RegisteredAny = RegisteredLive | RegisteredPartitioned;
 
 export type OptTransaction = {
-  rollback: (error: TODO) => void;
+  rollback: (error: TODO) => Promise<void>;
   sync?: (data: TODO) => void;
 };
 

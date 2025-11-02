@@ -5,6 +5,7 @@ import { useOptimisticMutation, createMutation } from "@/lib/query-toolkit-v2";
 import { profileConversationsCollection } from "@/features/profile/entities/profile-conversations.collection";
 import { useMe } from "@/features/auth/queries/use-me";
 import { nonce, timeout } from "@/lib/utils";
+import {extractChatIdFromMembers} from "@/features/messaging/utils/conversation-utils";
 
 export interface CreateConversationParams {
   members: Author[];
@@ -19,7 +20,7 @@ export const createConversation = createMutation<
     const data = await api
       .post("conversations", {
         json: {
-          members: params.members,
+          members: params.members.map(member => member.fbId),
         },
       })
       .json<{ data: Conversation }>();
@@ -37,20 +38,17 @@ export const useCreateConversation = () => {
   return useOptimisticMutation({
     mutation: createConversation,
     onOptimistic: async (ch, params) => {
-      const id = nonce();
-      temporaryId.current = id;
-
       return ch(profileConversationsCollection).prepend(
         {
-          _id: id,
+          _id: extractChatIdFromMembers(params.members),
           members: params.members,
           hostID: author!.fbId,
         },
         { rollback: false },
       );
     },
-    onMutate: () => {
-      router.push(`/messages/chat?id=${temporaryId.current}&new=true`);
+    onMutate: (params) => {
+      router.push(`/messages/chat?id=${extractChatIdFromMembers(params.members)}&new=true`);
     },
   });
 };

@@ -33,7 +33,7 @@ const NewlyCreatedConversationHeader = ({
 }: {
   conversationId: string;
 }) => {
-  const { data: conversation } = useActiveConversation(conversationId);
+  const { data: conversation } = useActiveConversation();
 
   if (!conversation) {
     return null;
@@ -52,7 +52,7 @@ const ExistingConversationHeader = ({
 }: {
   conversationId: string;
 }) => {
-  const conversationQuery = useActiveConversation(conversationId);
+  const conversationQuery = useActiveConversation();
 
   return (
     <Loadable queries={[conversationQuery] as any}>

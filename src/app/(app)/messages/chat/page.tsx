@@ -1,14 +1,16 @@
 "use client";
 
 import { Suspense } from "react";
-import { Loadable } from "@/components/ui/loadable";
+import { Loadable, LoadableError } from "@/components/ui/loadable";
+import { Spinner } from "@/components/ui/spinner/spinner";
 import { ChatMessage } from "@/features/messaging/components/chat-message/chat-message";
 import { useQueryParams } from "@/hooks/use-query-params";
 import { useConversationMessages } from "@/features/messaging/queries/use-conversation-messages";
-import { ConversationEmptyMessages } from "@/features/messaging/components/conversation-empty-messages/conversation-empty-messages";
 import { useConversationById } from "@/features/messaging/queries/use-conversation-by-id";
-import { useConversationMessagesWithUser } from "@/features/messaging/queries/use-conversation-messages-with-user";
-import {useIsMutating} from "@tanstack/react-query";
+import {useActiveConversation} from "@/features/messaging/hooks/use-active-conversation";
+import {
+  ConversationNotAllowedError
+} from "@/features/messaging/components/conversation-not-allowed-error/conversation-not-allowed-error";
 
 export default function ChatMessagesPage() {
   return (
@@ -60,28 +62,14 @@ const NewlyCreatedChatMessages = ({
 }: {
   chatId: string;
 }) => {
-  const mutationsCount = useIsMutating({
-    mutationKey: ['createConversation'],
-  });
-
-  const { data: messages, query } = useConversationMessagesWithUser(userId);
+  const { data: conversation } = useActiveConversation();
 
   return (
     <div
       className="flex flex-col justify-end gap-2 items-center h-full mt-[72px]
         mb-[88px] pb-8"
     >
-      {/*<Loadable queries={[query] as any} noFallback={Boolean(newChat)}>*/}
-      {/*  {() =>*/}
-      {/*    !messages || messages.length === 0 ? (*/}
-      {/*      <ConversationEmptyMessages userId={userId} />*/}
-      {/*    ) : (*/}
-      {/*      messages?.map((message) => (*/}
-      {/*        <ChatMessage key={message._id} message={message} />*/}
-      {/*      ))*/}
-      {/*    )*/}
-      {/*  }*/}
-      {/*</Loadable>*/}
+      {conversation?._optimisticStatus === 'pending' ? <Spinner /> : conversation?._optimisticError ? <ConversationNotAllowedError error={conversation._optimisticError} /> : null}
     </div>
   );
 };

@@ -8,6 +8,29 @@ import {
   type EntityOptimisticUpdater,
 } from "@/lib/query-toolkit-v2/optimistic-mutations/updaters";
 
+/**
+ * Extracts a user-friendly error message from an error object
+ */
+const extractErrorMessage = async (error: any): Promise<string> => {
+  try {
+    if (typeof error === "string") {
+      return error;
+    }
+
+    const errorBody = (await error?.response?.json()) || error.message;
+
+    return (
+      errorBody?.error ||
+      errorBody?.message ||
+      (typeof errorBody === "string"
+        ? errorBody
+        : "Unknown error. Please try again later.")
+    );
+  } catch {
+    return "Unknown error. Please try again later.";
+  }
+};
+
 export type OptimisticUpdate<Params> = (
   params: Params,
 ) => Promise<
@@ -15,7 +38,7 @@ export type OptimisticUpdate<Params> = (
 >;
 
 export class CollectionOptimisticMutations<Entity, State> {
-  private readonly rollbacks: ((state: State) => State)[];
+  private readonly rollbacks: ((state: State, errorMessage?: string) => State)[];
   private readonly pendingSyncs: ((
     state: State,
     params: Optimistic<Entity>,
@@ -60,11 +83,14 @@ export class CollectionOptimisticMutations<Entity, State> {
     if (mergedOptions?.rollback) {
       this.rollbacks.push(() => previous);
     } else {
-      this.rollbacks.push((draft) =>
+      this.rollbacks.push((draft, errorMessage) =>
         this.updater.update(
           id || this.collection.getEntityId(item as Entity),
           (draft) => {
             draft._optimisticStatus = "error";
+            if (errorMessage) {
+              draft._optimisticError = errorMessage;
+            }
           },
           draft,
         ),
@@ -184,12 +210,13 @@ export class CollectionOptimisticMutations<Entity, State> {
     });
   }
 
-  public rollback(error: TODO) {
+  public async rollback(error: TODO) {
     const runRollback = this.rollbacks.pop();
 
     if (runRollback) {
+      const errorMessage = await extractErrorMessage(error);
       this.queryClient.setQueryData(this.queryKey, (state: State) =>
-        runRollback(state),
+        runRollback(state, errorMessage),
       );
     }
   }
@@ -206,7 +233,7 @@ export class CollectionOptimisticMutations<Entity, State> {
 }
 
 export class EntityOptimisticMutations<Item> {
-  private readonly rollbacks: ((state: Item) => Item)[];
+  private readonly rollbacks: ((state: Item, errorMessage?: string) => Item)[];
   private readonly pendingSyncs: ((state: Item) => Item)[];
 
   constructor(
@@ -235,9 +262,12 @@ export class EntityOptimisticMutations<Item> {
     if (mergedOptions?.rollback) {
       this.rollbacks.push(() => previous);
     } else {
-      this.rollbacks.push((draft) =>
+      this.rollbacks.push((draft, errorMessage) =>
         this.updater.update((draft) => {
           draft._optimisticStatus = "error";
+          if (errorMessage) {
+            draft._optimisticError = errorMessage;
+          }
         }, draft as Optimistic<Item>),
       );
     }
@@ -260,12 +290,13 @@ export class EntityOptimisticMutations<Item> {
     });
   }
 
-  public rollback() {
+  public async rollback(error: TODO) {
     const runRollback = this.rollbacks.pop();
 
     if (runRollback) {
+      const errorMessage = await extractErrorMessage(error);
       this.queryClient.setQueryData(this.queryKey, (state: Item) =>
-        runRollback(state),
+        runRollback(state, errorMessage),
       );
     }
   }

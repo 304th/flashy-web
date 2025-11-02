@@ -60,12 +60,12 @@ export const Loadable = <TData extends any[]>({
   return <>{children(data)}</>;
 };
 
-const LoadableError = ({
+export const LoadableError = ({
   error,
   fullScreen,
 }: {
   error: LoadableProps<any>["error"];
-  fullScreen: LoadableProps<any>["fullScreenForDefaults"];
+  fullScreen?: LoadableProps<any>["fullScreenForDefaults"];
 }) => {
   if (typeof error === "string") {
     if (fullScreen) {

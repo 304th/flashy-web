@@ -2,16 +2,14 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import {  SearchIcon } from "lucide-react";
+import { SearchIcon } from "lucide-react";
 import { Modal as ModalComponent } from "@/packages/modals";
 import { CloseButton } from "@/components/ui/close-button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Loadable } from "@/components/ui/loadable";
 import { NotFound } from "@/components/ui/not-found";
-import {
-  ConversationCreateMessageUser
-} from "@/features/messaging/components/conversation-create-modal/conversation-create-message-user";
+import { ConversationCreateMessageUser } from "@/features/messaging/components/conversation-create-modal/conversation-create-message-user";
 import { useProfileFollowings } from "@/features/profile/queries/use-profile-followings";
 import { useDebouncedValue } from "@tanstack/react-pacer/debouncer";
 import { useProfileConversations } from "@/features/profile/queries/use-profile-conversations";
@@ -33,8 +31,10 @@ export const ConversationCreateModal = ({
   const { data: profileConversations } = useProfileConversations();
   const [search, setSearch] = useState("");
   const [debouncedSearch] = useDebouncedValue(search, { wait: 500 });
-  const [foundUsers, usersSearchQuery] =
-    useUsersSearchByUsername(debouncedSearch, { hideMyself: true });
+  const [foundUsers, usersSearchQuery] = useUsersSearchByUsername(
+    debouncedSearch,
+    { hideMyself: true },
+  );
   const createConversation = useCreateConversation();
 
   return (
@@ -116,7 +116,6 @@ export const ConversationCreateModal = ({
                 </Loadable>
               </div>
             </div>
-
           </div>
         </div>
       </motion.div>

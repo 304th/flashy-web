@@ -1,6 +1,6 @@
-import Link from 'next/link';
-import {ArrowRightIcon} from "lucide-react";
-import {UserAvatar} from "@/components/ui/user-avatar";
+import Link from "next/link";
+import { ArrowRightIcon } from "lucide-react";
+import { UserAvatar } from "@/components/ui/user-avatar";
 import { useConversationWithUserExists } from "@/features/messaging/hooks/use-conversation-with-user-exists";
 
 export interface ConversationCreateModalUserProps {
@@ -15,17 +15,22 @@ export const ConversationCreateMessageUser = ({
   const chatExists = useConversationWithUserExists(user.fbId);
 
   if (chatExists) {
-    return <Link href={`/messages/chat?id=${chatExists._id}`}>
-      <MessageUser user={user} />
-    </Link>
+    return (
+      <Link href={`/messages/chat?id=${chatExists._id}`}>
+        <MessageUser user={user} />
+      </Link>
+    );
   }
 
-  return (
-    <MessageUser user={user} onStartConversation={onStartConversation} />
-  );
+  return <MessageUser user={user} onStartConversation={onStartConversation} />;
 };
 
-const MessageUser = ({ user, onStartConversation }: Omit<ConversationCreateModalUserProps, 'onStartConversation'> & { onStartConversation?: () => void }) => {
+const MessageUser = ({
+  user,
+  onStartConversation,
+}: Omit<ConversationCreateModalUserProps, "onStartConversation"> & {
+  onStartConversation?: () => void;
+}) => {
   return (
     <div
       className="group relative flex items-center justify-between p-2 rounded-md
@@ -50,4 +55,4 @@ const MessageUser = ({ user, onStartConversation }: Omit<ConversationCreateModal
       </div>
     </div>
   );
-}
+};

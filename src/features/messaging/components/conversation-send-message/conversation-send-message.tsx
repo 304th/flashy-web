@@ -51,10 +51,10 @@ export const ConversationSendMessage = () => {
   return (
     <div
       className={`relative flex flex-col w-full bg-base-300 rounded-md ${
-          activeConversation?._optimisticStatus === "pending" ||
-          activeConversation?._optimisticStatus === "error"
-            ? "pointer-events-none opacity-50"
-            : ""
+        activeConversation?._optimisticStatus === "pending" ||
+        activeConversation?._optimisticStatus === "error"
+          ? "pointer-events-none opacity-50"
+          : ""
         }`}
     >
       {/*{replyComment && (*/}

@@ -40,11 +40,11 @@ export const ChatMessage = ({ message }: { message: Message }) => {
     if (isOwned) {
       return null;
     }
-    
+
     const combinedString = `${message.conversationId}-${message.author.fbId}`;
     const hash = hashString(combinedString);
     const colorIndex = hash % BRIGHT_COLORS.length;
-    
+
     return BRIGHT_COLORS[colorIndex];
   }, [isOwned, message._id, message.author.fbId]);
 
@@ -55,9 +55,9 @@ export const ChatMessage = ({ message }: { message: Message }) => {
           ${isOwned ? "items-end" : "items-start"}`}
       >
         <div
-          className={`flex w-full p-2 border-2 rounded-2xl text-white
-            ${isOwned 
-              ? "bg-orange-900 border-orange-500" 
+          className={`flex w-full p-2 border-2 rounded-2xl text-white ${
+            isOwned
+              ? "bg-orange-900 border-orange-500"
               : `${nonOwnedColors?.bg} ${nonOwnedColors?.border}`
             }`}
         >

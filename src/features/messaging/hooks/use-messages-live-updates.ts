@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "react";
 import { channel } from "@/lib/query-toolkit-v2";
 import { conversationMessagesCollection } from "@/features/messaging/entities/conversation-messages.collection";
-import { messageSchema } from "@/features/messaging/schemas/message.schema";
 import { messagingWebSocket } from "@/features/messaging/services/messaging-websocket";
 
 /**
@@ -17,9 +16,11 @@ export const useMessagesLiveUpdates = (conversationId?: string) => {
   }, [conversationId]);
 
   useEffect(() => {
-    if (!conversationId) return;
+    if (!conversationId) {
+      return;
+    }
 
-    const unsubscribe = messagingWebSocket.subscribe((message) => {
+    return messagingWebSocket.subscribe((message) => {
       // Only process messages for the current conversation
       if (message.conversationId !== conversationIdRef.current) {
         return;
@@ -41,13 +42,11 @@ export const useMessagesLiveUpdates = (conversationId?: string) => {
       // Add the message to the conversation messages collection using Channel
       // Using append since messages are likely ordered oldest-first in the array,
       // and with flex-col-reverse, appending adds to the end of array which appears at bottom visually
-      channel(conversationMessagesCollection).append(message, {
+      void channel(conversationMessagesCollection).prepend(message, {
         sync: true,
         rollback: false,
       });
     });
-
-    return unsubscribe;
   }, [conversationId]);
 
   return {

@@ -35,6 +35,8 @@ const formSchema = z.object({
     .optional(),
   videoDuration: z.number().min(0),
   status: z.string(),
+  category: z.string().optional(),
+  series: z.string().optional(),
 });
 
 export const VideoCreateModal = ({
@@ -49,6 +51,8 @@ export const VideoCreateModal = ({
       title: "",
       description: "",
       status: "draft",
+      category: undefined,
+      series: undefined,
     },
     mode: "all",
   });
@@ -110,6 +114,8 @@ export const VideoCreateModal = ({
                 statusweb: params.status as "draft" | "published",
                 publishDate:
                   params.status === "published" ? Date.now() : undefined,
+                category: params.category,
+                series: params.series,
               });
 
               if (params.status === "published") {

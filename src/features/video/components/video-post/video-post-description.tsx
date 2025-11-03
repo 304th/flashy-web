@@ -3,12 +3,14 @@ import { formatDistanceToNow } from "date-fns";
 
 export const VideoPostDescription = ({
   videoPost,
+  className,
 }: {
   videoPost: Optimistic<VideoPost>;
+  className?: string;
 }) => {
   return (
     <div className="flex flex-col w-full justify-start px-2">
-      <p className="text-lg font-medium text-white">{videoPost.title}</p>
+      <p className={`text-lg font-medium text-white ellipsis ${className}`}>{videoPost.title}</p>
       <p className="text-sm">@{videoPost.username}</p>
       <p className="text-sm">
         <VideoViews views={videoPost.views} /> -

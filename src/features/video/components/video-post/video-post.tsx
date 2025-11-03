@@ -26,15 +26,15 @@ export const VideoPost = ({
           group-hover:bg-base-300 p-2 ${horizontal ? "flex-row" : ""}`}
       >
         <div
-          className={`relative w-full h-[180px] bg-cover bg-center rounded
-            ${horizontal ? "h-[110px]!" : ""}`}
+          className={`relative w-full h-[180px] shrink-0 bg-cover bg-center rounded
+            ${horizontal ? "h-[110px]! !shrink-0 !w-fit aspect-square" : ""}`}
           style={{ backgroundImage: `url(${videoPost.storyImage})` }}
           role="img"
           aria-label="Video Post Thumbnail"
         >
           <VideoPostDuration videoPost={videoPost} />
         </div>
-        <VideoPostDescription videoPost={videoPost} />
+        <VideoPostDescription videoPost={videoPost} className={horizontal ? 'max-w-3/4' : 'w-full'} />
       </Link>
       <div className="absolute top-3 right-3">
         <VideoPostMenu videoPost={videoPost} />

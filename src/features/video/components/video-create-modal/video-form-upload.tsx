@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { useFormContext } from "react-hook-form";
+import Lottie from "lottie-react";
 import { VideoUpload as VideoUploadInput } from "@/components/ui/video-upload";
 import { Button } from "@/components/ui/button";
 import { useCreateVideoOptions } from "@/features/video/mutations/use-create-video-options";
 import { useUploadVideo } from "@/features/video/mutations/use-upload-video";
 import { getVideoDuration } from "@/features/video/utils/get-video-duration";
+import uploadPendingAnimation from "@/features/video/assets/upload-pending.json";
 
 export const VideoFormUpload = ({ onClose }: { onClose: () => void }) => {
   const context = useFormContext();
@@ -21,9 +23,10 @@ export const VideoFormUpload = ({ onClose }: { onClose: () => void }) => {
   const isProcessing = isUploading && uploadProgress === 100;
 
   return (
-    <div className="flex flex-col">
+    <div className="relative flex flex-col">
+
       <div
-        className="flex w-[75vw] max-w-[800px] max-h-[75vh] aspect-video
+        className="relative flex w-[75vw] max-w-[800px] max-h-[75vh] aspect-video
           mx-auto"
       >
         <VideoUploadInput
@@ -33,6 +36,23 @@ export const VideoFormUpload = ({ onClose }: { onClose: () => void }) => {
           onChange={(uploadedFile) => setFile(uploadedFile)}
           onError={(msg) => console.error(msg)}
         />
+        {
+          (isUploading || isProcessing) && (
+            <div className="absolute inset-0 flex items-center justify-center z-1">
+              <div className="flex justify-center items-center rounded-full p-4 backdrop-grayscale-100 bg-white/10">
+                <Lottie
+                  animationData={uploadPendingAnimation}
+                  loop={true}
+                  autoplay={true}
+                  style={{
+                    width: "200px",
+                    height: "200px",
+                  }}
+                />
+              </div>
+            </div>
+          )
+        }
       </div>
       <div className="flex w-full justify-end gap-2 p-4">
         <Button variant="secondary" onClick={onClose}>

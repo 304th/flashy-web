@@ -4,6 +4,7 @@ import { profileConversationsCollection } from "@/features/profile/entities/prof
 import { conversationMessagesCollection } from "@/features/messaging/entities/conversation-messages.collection";
 import { messageSchema } from "@/features/messaging/schemas/message.schema";
 import { useMe } from "@/features/auth/queries/use-me";
+import {timeout} from "@/lib/utils";
 
 export interface CreateMessageParams {
   conversationId: string;
@@ -16,6 +17,9 @@ export interface CreateMessageParams {
 
 export const createMessage = createMutation<CreateMessageParams, Message>({
   write: async (params) => {
+    await timeout()
+    throw '';
+
     const data = await api
       .post(`conversations/${params.conversationId}/messages`, {
         json: {
@@ -54,7 +58,9 @@ export const useCreateMessage = () => {
             conversation.lastMessage = message;
           },
         ),
-        ch(conversationMessagesCollection).prepend(message),
+        ch(conversationMessagesCollection).prepend(message, {
+          rollback: false,
+        }),
       ]);
     },
   });

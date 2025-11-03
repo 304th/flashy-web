@@ -13,3 +13,5 @@ export const TrophyIcon = ({ className }: { className?: string }) => (
     />
   </svg>
 );
+
+

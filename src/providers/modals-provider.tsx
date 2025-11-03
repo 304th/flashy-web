@@ -65,6 +65,10 @@ import {
   PlaylistEditModalProps,
 } from "@/features/video/components/playlist-edit-modal/playlist-edit-modal";
 import {
+  VideoEditModal,
+  VideoEditModalProps,
+} from "@/features/video/components/video-edit-modal/video-edit-modal";
+import {
   ConversationCreateModal,
   ConversationCreateModalProps,
 } from "@/features/messaging/components/conversation-create-modal/conversation-create-modal";
@@ -86,6 +90,7 @@ const modalsConfig = {
   PlaylistViewModal,
   PlaylistUpdateVideosModal,
   PlaylistEditModal,
+  VideoEditModal,
   ConversationCreateModal,
 };
 
@@ -133,6 +138,10 @@ export type ModalPropsTypes =
   | {
       type: "VideoCreateModal";
       props: VideoCreateModalProps;
+    }
+  | {
+      type: "VideoEditModal";
+      props: VideoEditModalProps;
     }
   | {
       type: "TipModal";

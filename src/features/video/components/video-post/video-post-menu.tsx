@@ -62,7 +62,17 @@ export const VideoPostMenu = ({
         >
           {isOwned && (
             <DropdownMenuGroup className="flex flex-col gap-[2px]">
-              {/*<DropdownMenuItem>Edit</DropdownMenuItem>*/}
+              <DropdownMenuItem
+                onClick={(e) => {
+                  setOpen(false);
+                  e.preventDefault();
+                  openModal("VideoEditModal", {
+                    video: videoPost,
+                  });
+                }}
+              >
+                Edit
+              </DropdownMenuItem>
               <DropdownMenuItem
                 variant="destructive"
                 onClick={(e) => {

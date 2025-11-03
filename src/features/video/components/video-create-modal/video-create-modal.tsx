@@ -126,21 +126,9 @@ export const VideoCreateModal = ({
             })}
           >
             <AnimatePresence>
-              {!videoId && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                  <VideoFormUpload onClose={handleAccidentalClose} />
-                </motion.div>
-              )}
-              {videoId && !publishedVideo && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                  <VideoFormDetails onClose={handleAccidentalClose} />
-                </motion.div>
-              )}
-              {publishedVideo && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                  <VideoCreateSuccess video={publishedVideo} />
-                </motion.div>
-              )}
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                <VideoFormDetails onClose={handleAccidentalClose} />
+              </motion.div>
             </AnimatePresence>
           </form>
         </Form>

@@ -3,6 +3,7 @@
 import { Loadable } from "@/components/ui/loadable";
 import { ConversationTitle } from "@/features/messaging/components/conversation-title/conversation-title";
 import { ConversationThumbnail } from "@/features/messaging/components/conversation-thumbnail/conversation-thumbnail";
+import { ConversationOnline } from "@/features/messaging/components/conversation-title/conversation-online";
 import { useQueryParams } from "@/hooks/use-query-params";
 import { useActiveConversation } from "@/features/messaging/hooks/use-active-conversation";
 
@@ -21,20 +22,16 @@ export const ConversationHeader = () => {
     >
       <div className="flex items-center gap-3">
         {isNewConversation ? (
-          <NewlyCreatedConversationHeader conversationId={conversationId} />
+          <NewlyCreatedConversationHeader />
         ) : (
-          <ExistingConversationHeader conversationId={conversationId} />
+          <ExistingConversationHeader />
         )}
       </div>
     </div>
   );
 };
 
-const NewlyCreatedConversationHeader = ({
-  conversationId,
-}: {
-  conversationId: string;
-}) => {
+const NewlyCreatedConversationHeader = () => {
   const { data: conversation } = useActiveConversation();
 
   if (!conversation) {
@@ -49,11 +46,7 @@ const NewlyCreatedConversationHeader = ({
   );
 };
 
-const ExistingConversationHeader = ({
-  conversationId,
-}: {
-  conversationId: string;
-}) => {
+const ExistingConversationHeader = () => {
   const conversationQuery = useActiveConversation();
 
   return (
@@ -62,7 +55,10 @@ const ExistingConversationHeader = ({
         conversationQuery.data ? (
           <>
             <ConversationThumbnail conversation={conversationQuery.data} />
-            <ConversationTitle conversation={conversationQuery.data} />
+            <div className="flex flex-col gap-0">
+              <ConversationTitle conversation={conversationQuery.data} />
+              <ConversationOnline conversation={conversationQuery.data} />
+            </div>
           </>
         ) : null
       }

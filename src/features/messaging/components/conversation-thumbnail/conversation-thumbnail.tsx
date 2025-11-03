@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { UserAvatar } from "@/components/ui/user-avatar";
 import { useMe } from "@/features/auth/queries/use-me";
+import {useIsInterlocutorOnline} from "@/features/messaging/hooks/use-is-interlocutor-online";
 
 export const ConversationThumbnail = ({
   conversation,
@@ -10,6 +11,7 @@ export const ConversationThumbnail = ({
   className?: string;
 }) => {
   const { data: me } = useMe();
+  const isOnline = useIsInterlocutorOnline(conversation);
   const isChannel = conversation.type === "channel";
 
   const thumbnail = useMemo(() => {
@@ -34,5 +36,5 @@ export const ConversationThumbnail = ({
       ?.userimage;
   }, [me, conversation]);
 
-  return <UserAvatar avatar={thumbnail} className={`size-10 ${className}`} />;
+  return <UserAvatar avatar={thumbnail} className={`size-10 ${className} ${isOnline ? 'outline-2 outline-green-400 outline-offset-3' : ''}`} />;
 };

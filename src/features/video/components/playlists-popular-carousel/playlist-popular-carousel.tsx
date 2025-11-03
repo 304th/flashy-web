@@ -68,12 +68,13 @@ export const PlaylistPopularCarousel = () => {
       }
     };
     window.addEventListener("resize", handleResize);
+
     return () => window.removeEventListener("resize", handleResize);
   }, [currentIndex, playlists.length]);
 
   return (
     <div className="w-full">
-      <Loadable queries={[query]} fullScreenForDefaults>
+      <Loadable queries={[query]} fullScreenForDefaults skipLoadingIfDataPresent fallback={<p>FUCK YOU</p>}>
         {() => (
           <div className="relative">
             {/* Carousel Container */}

@@ -17,6 +17,8 @@ interface LoadableProps<TData extends any[]> {
   noFallback?: boolean;
   error?: ReactNode;
   fullScreenForDefaults?: boolean;
+  /** If true, do not show loading UI when any query already has data */
+  skipLoadingIfDataPresent?: boolean;
   children: ((data: TData) => ReactNode) | (() => ReactNode);
 }
 
@@ -27,6 +29,7 @@ export const Loadable = <TData extends any[]>({
   defaultFallbackClassname,
   noFallback = false,
   error = "Network Error",
+  skipLoadingIfDataPresent = false,
   children,
 }: LoadableProps<TData>) => {
   const isLoading = queries.some((query) => query.isLoading);
@@ -35,11 +38,13 @@ export const Loadable = <TData extends any[]>({
   const empty = queries.some(
     (query) => typeof query.data === "undefined" && query.isSuccess,
   );
+  const hasAnyData = queries.some((query) => typeof query.data !== "undefined");
+
   if (queryError) {
     return <LoadableError error={error} fullScreen={fullScreenForDefaults} />;
   }
 
-  if (isLoading || empty) {
+  if ((isLoading || empty) && !(skipLoadingIfDataPresent && hasAnyData)) {
     if (noFallback) {
       return null;
     }

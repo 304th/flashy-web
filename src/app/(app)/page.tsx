@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <div className="flex flex-col gap-4 w-full">
       <PlaylistPopularCarousel />
-      <Loadable queries={[query]}>
+      <Loadable queries={[query]} skipLoadingIfDataPresent>
         {() =>
           mostRecentVideos ? (
             <VideoCarousel title="Still Hot" videoPosts={mostRecentVideos} />

@@ -19,7 +19,7 @@ export const useConversationMessages = (conversationId?: string) => {
       }) as any,
     options: {
       enabled: Boolean(conversationId),
-      staleTime: 5 * 60 * 1000, // 5 minutes
+      staleTime: 30 * 1000, // 10 seconds
     },
   });
 };

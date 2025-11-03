@@ -27,8 +27,8 @@ export const ConversationPreview = ({
       href={`/messages/chat?id=${conversation._id}${conversation._optimisticId ? "&new=true" : ""}`}
     >
       <div
-        className={`flex w-full p-4 justify-between transition cursor-pointer
-          ${isNew || isChatUnread ? "bg-blue-500/20" : isActive ? "bg-base-400" : "hover:bg-base-300"}`}
+        className={`relative flex w-full p-4 justify-between transition cursor-pointer
+          ${isChatUnread ? 'bg-brand-200/4' : isActive ? "bg-base-400" : "hover:bg-base-300"}`}
       >
         <div className="flex items-center gap-3">
           <ConversationThumbnail conversation={conversation} />
@@ -46,16 +46,20 @@ export const ConversationPreview = ({
             </p>
           </div>
         </div>
-        <div className="">
-          {isPending ? (
-            <Spinner />
-          ) : isError ? (
-            <TriangleAlertIcon size={16} className="text-red-500" />
-          ) : (
-            <p className="text-xs">
-              {isNew ? "Now" : timeAgo(conversation.updatedAt, false)}
-            </p>
-          )}
+        <div className="relative flex">
+          <div className="h-full relative top-0">
+            {isPending ? (
+              <Spinner />
+            ) : isError ? (
+              <TriangleAlertIcon size={16} className="text-red-500" />
+            ) : (
+              <p className="text-xs">
+                {isNew ? "Now" : timeAgo(conversation.updatedAt, false)}
+              </p>
+            )}
+          </div>
+
+          {isChatUnread && <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[6px] h-[6px] rounded-full bg-brand-200" />}
         </div>
       </div>
     </Link>

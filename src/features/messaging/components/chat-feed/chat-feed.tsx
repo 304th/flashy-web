@@ -14,29 +14,18 @@ import {
 } from "@/features/messaging/utils/conversation-utils";
 import { chatFeedAnimation } from "@/features/messaging/utils/chat-feed-animations";
 import { useInfiniteScroll } from "@/hooks/use-infinite-scroll";
-import { useQueryClient } from "@tanstack/react-query";
-import { useMe } from "@/features/auth/queries/use-me";
-import { useMessagesLiveUpdates } from "@/features/messaging/hooks/use-messages-live-updates";
+import { useMarkUnreadChatsAsRead } from "@/features/messaging/hooks/use-mark-unread-chats-as-read";
 
 export const ChatFeed = ({ chatId }: { chatId: string }) => {
-  const unread = useRef<boolean>(false);
-  const { data: me } = useMe();
-  const queryClient = useQueryClient();
+  const markChatASRead = useMarkUnreadChatsAsRead(chatId)
 
   const { data: conversation, query: chatQuery } = useConversationById(chatId);
   const { data: messages, query: messagesQuery } =
     useConversationMessages(chatId);
 
-  // Enable live updates for messages
-  const s = useMessagesLiveUpdates(chatId);
-  console.log('CONNECTED: ', s.isConnected)
-
   useEffect(() => {
     if (messages) {
-      queryClient.setQueryData<Conversation[]>(
-        ["me", me?.fbId, "unread", "conversations"],
-        (unreadChats) => unreadChats?.filter((chat) => chat._id !== chatId),
-      );
+      markChatASRead();
     }
   }, [messages]);
 

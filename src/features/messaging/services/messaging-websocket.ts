@@ -145,15 +145,14 @@ class MessagingWebSocketService {
   }
 
   private ensureConnected() {
-    if (this.shouldConnect || this.isConnecting) {
-      return;
-    }
+    // If already connecting or connected, do nothing
+    if (this.isConnecting || this.socket?.connected) return;
+
+    // Mark desire to stay connected while there are subscribers
+    this.shouldConnect = true;
 
     const user = firebaseAuth.currentUser;
-
-    if (user) {
-      void this.connect();
-    }
+    if (user) void this.connect();
   }
 
   private disconnect() {

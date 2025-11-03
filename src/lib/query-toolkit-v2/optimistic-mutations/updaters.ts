@@ -6,6 +6,7 @@ export interface OptimisticUpdaterOptions<Entity> {
   syncFn?: (state: Entity) => Optimistic<Entity>;
   rollback?: boolean;
   type?: "active" | "all";
+  queryKey?: unknown[];
 }
 
 export interface OptimisticUpdater<Entity, State> {

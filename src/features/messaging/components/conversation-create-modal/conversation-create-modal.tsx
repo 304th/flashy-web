@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { SearchIcon } from "lucide-react";
 import { Modal as ModalComponent } from "@/packages/modals";
@@ -12,9 +12,10 @@ import { NotFound } from "@/components/ui/not-found";
 import { ConversationCreateMessageUser } from "@/features/messaging/components/conversation-create-modal/conversation-create-message-user";
 import { useProfileFollowings } from "@/features/profile/queries/use-profile-followings";
 import { useDebouncedValue } from "@tanstack/react-pacer/debouncer";
-import { useProfileConversations } from "@/features/profile/queries/use-profile-conversations";
 import { useUsersSearchByUsername } from "@/features/common/queries/use-users-search-by-username";
 import { useCreateConversation } from "@/features/messaging/mutations/use-create-conversation";
+import { useProfileFollowers } from "@/features/profile/queries/use-profile-followers";
+import { uniqBy } from "@/lib/utils";
 
 export interface ConversationCreateModalProps {
   onClose(): void;
@@ -28,7 +29,7 @@ export const ConversationCreateModal = ({
 }: ConversationCreateModalProps) => {
   const { data: followingUsers, query: followingsQuery } =
     useProfileFollowings();
-  const { data: profileConversations } = useProfileConversations();
+  const { data: followerUsers, query: followersQuery } = useProfileFollowers();
   const [search, setSearch] = useState("");
   const [debouncedSearch] = useDebouncedValue(search, { wait: 500 });
   const [foundUsers, usersSearchQuery] = useUsersSearchByUsername(
@@ -36,6 +37,14 @@ export const ConversationCreateModal = ({
     { hideMyself: true },
   );
   const createConversation = useCreateConversation();
+  const subs = useMemo(
+    () =>
+      uniqBy(
+        [...(followerUsers || []), ...(followingUsers || [])],
+        (user) => user?.fbId,
+      ),
+    [followingUsers, followerUsers],
+  );
 
   return (
     <Modal onClose={onClose} className={"!p-0"} {...props}>
@@ -89,28 +98,28 @@ export const ConversationCreateModal = ({
               </div>
             )}
             <div className="flex flex-col w-full gap-2">
-              <Separator>Your subscriptions:</Separator>
+              <Separator>Your subs and followers:</Separator>
               <div className="flex flex-col w-full">
                 <Loadable
-                  queries={[followingsQuery] as any}
+                  queries={[followingsQuery, followersQuery] as any}
                   fullScreenForDefaults
                 >
                   {() =>
-                    followingUsers && followingUsers?.length > 0 ? (
-                      followingUsers.map((followingUser) => (
+                    subs && subs?.length > 0 ? (
+                      subs.map((sub) => (
                         <ConversationCreateMessageUser
-                          key={followingUser.fbId}
-                          user={followingUser}
+                          key={sub.fbId}
+                          user={sub}
                           onStartConversation={() => {
                             createConversation.mutate({
-                              members: [followingUser],
+                              members: [sub],
                             });
                             onClose();
                           }}
                         />
                       ))
                     ) : (
-                      <NotFound>No subscriptions found</NotFound>
+                      <NotFound>No users found</NotFound>
                     )
                   }
                 </Loadable>

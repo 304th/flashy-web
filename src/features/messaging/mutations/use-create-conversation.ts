@@ -50,7 +50,7 @@ export const useCreateConversation = () => {
       );
     },
     onSuccess: (conversation) => {
-      router.push(`/messages/chat?id=${conversation._id}`);
+      router.replace(`/messages/chat?id=${conversation._id}`);
     },
   });
 };

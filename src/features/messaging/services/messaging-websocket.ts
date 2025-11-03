@@ -122,7 +122,10 @@ class MessagingWebSocketService {
         console.log("WebSocket disconnected");
 
         // Attempt to reconnect if we should be connected
-        if (this.shouldConnect && this.reconnectAttempts < this.maxReconnectAttempts) {
+        if (
+          this.shouldConnect &&
+          this.reconnectAttempts < this.maxReconnectAttempts
+        ) {
           this.reconnectAttempts++;
           this.reconnectTimeout = setTimeout(() => {
             this.connect();

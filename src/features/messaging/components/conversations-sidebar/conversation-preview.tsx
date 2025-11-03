@@ -28,7 +28,7 @@ export const ConversationPreview = ({
     >
       <div
         className={`flex w-full p-4 justify-between transition cursor-pointer
-          ${isError ? "bg-red-400/20" : isNew || isChatUnread ? "bg-blue-500/20" : isActive ? "bg-base-400" : "hover:bg-base-300"}`}
+          ${isNew || isChatUnread ? "bg-blue-500/20" : isActive ? "bg-base-400" : "hover:bg-base-300"}`}
       >
         <div className="flex items-center gap-3">
           <ConversationThumbnail conversation={conversation} />

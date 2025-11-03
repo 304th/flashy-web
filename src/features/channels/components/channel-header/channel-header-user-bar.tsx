@@ -7,11 +7,11 @@ import { ShareIcon } from "@/components/ui/icons/share2";
 import { BlazeTipIcon } from "@/components/ui/icons/blaze-tip";
 import { ChannelMenu } from "@/features/channels/components/channel-header/channel-menu";
 import { ChannelSubscribeButton } from "@/features/channels/components/channel-subscribe-button/channel-subscribe-button";
+import { ChannelMessageButton } from "@/features/channels/components/channel-header/channel-message-button";
 import { ChannelSubscriptions } from "@/features/channels/components/channel-subscriptions/channel-subscriptions";
 import { useChannelContext } from "@/features/profile/components/channel-context/channel-context";
 import { useModals } from "@/hooks/use-modals";
 import { useProtectedAction } from "@/features/auth/hooks/use-protected-action";
-import {ChatIcon} from "@/components/ui/icons/chat";
 
 export const ChannelHeaderUserBar = ({ className }: { className?: string }) => {
   const { channelId, channel, channelQuery } = useChannelContext();
@@ -62,19 +62,7 @@ export const ChannelHeaderUserBar = ({ className }: { className?: string }) => {
                   <ShareIcon />
                   Share
                 </Button>
-                <Button
-                  variant="secondary"
-                  className="w-fit"
-                  onClick={() => {
-                    openModal("ShareModal", {
-                      id: channelId,
-                      type: "channel",
-                    });
-                  }}
-                >
-                  <ChatIcon />
-                  Message
-                </Button>
+                <ChannelMessageButton channel={channel} />
                 <ChannelMenu />
               </div>
             </UserProfile>

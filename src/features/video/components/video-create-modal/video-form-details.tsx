@@ -101,7 +101,7 @@ export const VideoFormDetails = ({ onClose }: { onClose: () => void }) => {
           />
           <p className="text-lg text-white font-medium ellipsis">{title}</p>
           <FormField
-            name="playlistId"
+            name="series"
             render={(props) => (
               <FormItem className="w-full">
                 <FormLabel>Playlist</FormLabel>

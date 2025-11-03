@@ -11,6 +11,7 @@ import { ChannelSubscriptions } from "@/features/channels/components/channel-sub
 import { useChannelContext } from "@/features/profile/components/channel-context/channel-context";
 import { useModals } from "@/hooks/use-modals";
 import { useProtectedAction } from "@/features/auth/hooks/use-protected-action";
+import {ChatIcon} from "@/components/ui/icons/chat";
 
 export const ChannelHeaderUserBar = ({ className }: { className?: string }) => {
   const { channelId, channel, channelQuery } = useChannelContext();
@@ -60,6 +61,19 @@ export const ChannelHeaderUserBar = ({ className }: { className?: string }) => {
                 >
                   <ShareIcon />
                   Share
+                </Button>
+                <Button
+                  variant="secondary"
+                  className="w-fit"
+                  onClick={() => {
+                    openModal("ShareModal", {
+                      id: channelId,
+                      type: "channel",
+                    });
+                  }}
+                >
+                  <ChatIcon />
+                  Message
                 </Button>
                 <ChannelMenu />
               </div>

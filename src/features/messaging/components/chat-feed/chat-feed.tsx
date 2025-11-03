@@ -16,6 +16,7 @@ import { chatFeedAnimation } from "@/features/messaging/utils/chat-feed-animatio
 import { useInfiniteScroll } from "@/hooks/use-infinite-scroll";
 import { useQueryClient } from "@tanstack/react-query";
 import { useMe } from "@/features/auth/queries/use-me";
+import { useMessagesLiveUpdates } from "@/features/messaging/hooks/use-messages-live-updates";
 
 export const ChatFeed = ({ chatId }: { chatId: string }) => {
   const unread = useRef<boolean>(false);
@@ -25,6 +26,9 @@ export const ChatFeed = ({ chatId }: { chatId: string }) => {
   const { data: conversation, query: chatQuery } = useConversationById(chatId);
   const { data: messages, query: messagesQuery } =
     useConversationMessages(chatId);
+
+  // Enable live updates for messages
+  useMessagesLiveUpdates(chatId);
 
   useEffect(() => {
     if (messages) {

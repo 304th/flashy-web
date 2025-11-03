@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { channel } from "@/lib/query-toolkit-v2";
+import { profileConversationsCollection } from "@/features/profile/entities/profile-conversations.collection";
 import { conversationMessagesCollection } from "@/features/messaging/entities/conversation-messages.collection";
 import { messagingWebSocket } from "@/features/messaging/services/messaging-websocket";
 
@@ -42,10 +43,11 @@ export const useMessagesLiveUpdates = (conversationId?: string) => {
       // Add the message to the conversation messages collection using Channel
       // Using append since messages are likely ordered oldest-first in the array,
       // and with flex-col-reverse, appending adds to the end of array which appears at bottom visually
-      void channel(conversationMessagesCollection).prepend(message, {
-        sync: true,
-        rollback: false,
-      });
+      void channel(profileConversationsCollection).update(message.conversationId, (conversation) => {
+        conversation.lastMessage = message;
+        conversation.updatedAt = message.createdAt;
+      })
+      void channel(conversationMessagesCollection).prepend(message);
     });
   }, [conversationId]);
 

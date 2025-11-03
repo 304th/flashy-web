@@ -28,7 +28,8 @@ export const ChatFeed = ({ chatId }: { chatId: string }) => {
     useConversationMessages(chatId);
 
   // Enable live updates for messages
-  useMessagesLiveUpdates(chatId);
+  const s = useMessagesLiveUpdates(chatId);
+  console.log('CONNECTED: ', s.isConnected)
 
   useEffect(() => {
     if (messages) {

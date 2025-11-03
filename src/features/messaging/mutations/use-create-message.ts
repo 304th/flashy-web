@@ -55,7 +55,9 @@ export const useCreateMessage = () => {
             conversation.lastMessage = message;
           },
         ),
-        ch(conversationMessagesCollection).prepend(message),
+        ch(conversationMessagesCollection).prepend(message, {
+          type: 'active'
+        }),
       ]);
     },
   });

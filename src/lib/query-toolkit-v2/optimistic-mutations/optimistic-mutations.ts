@@ -80,8 +80,11 @@ export class CollectionOptimisticMutations<Entity, State> {
   }) {
     await this.queryClient.cancelQueries({ queryKey: this.queryKey });
     const previous = this.queryClient.getQueryData(this.queryKey) as State;
-    this.queryClient.setQueryData(this.queryKey, update);
-    const mergedOptions = { sync: false, rollback: true, ...options };
+    const mergedOptions = { sync: false, rollback: true, type: "all" as const, ...options };
+    this.queryClient.setQueriesData(
+      { queryKey: this.queryKey, type: mergedOptions.type },
+      update,
+    );
 
     if (mergedOptions?.rollback) {
       this.rollbacks.push(() => previous);
@@ -213,23 +216,25 @@ export class CollectionOptimisticMutations<Entity, State> {
     });
   }
 
-  public async rollback(error: TODO) {
+  public async rollback(error: TODO, type: "active" | "all" = "all") {
     const runRollback = this.rollbacks.pop();
 
     if (runRollback) {
       const errorMessage = await extractErrorMessage(error);
-      this.queryClient.setQueryData(this.queryKey, (state: State) =>
-        runRollback(state, errorMessage),
+      this.queryClient.setQueriesData(
+        { queryKey: this.queryKey, type },
+        (state: State) => runRollback(state, errorMessage),
       );
     }
   }
 
-  public sync(params: Entity) {
+  public sync(params: Entity, type: "active" | "all" = "all") {
     const pendingSync = this.pendingSyncs.pop();
 
     if (pendingSync) {
-      this.queryClient.setQueryData(this.queryKey, (state: State) =>
-        pendingSync(state, params as Optimistic<Entity>),
+      this.queryClient.setQueriesData(
+        { queryKey: this.queryKey, type },
+        (state: State) => pendingSync(state, params as Optimistic<Entity>),
       );
     }
   }
@@ -259,8 +264,11 @@ export class EntityOptimisticMutations<Item> {
   }) {
     await this.queryClient.cancelQueries({ queryKey: this.queryKey });
     const previous = this.queryClient.getQueryData(this.queryKey) as Item;
-    this.queryClient.setQueryData(this.queryKey, update);
-    const mergedOptions = { sync: false, rollback: true, ...options };
+    const mergedOptions = { sync: false, rollback: true, type: "all" as const, ...options };
+    this.queryClient.setQueriesData(
+      { queryKey: this.queryKey, type: mergedOptions.type },
+      update,
+    );
 
     if (mergedOptions?.rollback) {
       this.rollbacks.push(() => previous);
@@ -293,22 +301,26 @@ export class EntityOptimisticMutations<Item> {
     });
   }
 
-  public async rollback(error: TODO) {
+  public async rollback(error: TODO, type: "active" | "all" = "all") {
     const runRollback = this.rollbacks.pop();
 
     if (runRollback) {
       const errorMessage = await extractErrorMessage(error);
-      this.queryClient.setQueryData(this.queryKey, (state: Item) =>
-        runRollback(state, errorMessage),
+      this.queryClient.setQueriesData(
+        { queryKey: this.queryKey, type },
+        (state: Item) => runRollback(state, errorMessage),
       );
     }
   }
 
-  public sync(params: Item) {
+  public sync(params: Item, type: "active" | "all" = "all") {
     const pendingSync = this.pendingSyncs.pop();
 
     if (pendingSync) {
-      this.queryClient.setQueryData(this.queryKey, pendingSync(params));
+      this.queryClient.setQueriesData(
+        { queryKey: this.queryKey, type },
+        pendingSync(params),
+      );
     }
   }
 }

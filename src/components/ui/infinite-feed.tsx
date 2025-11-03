@@ -22,7 +22,7 @@ export const InfiniteFeed = <TData, TError>({
       {children}
       <div
         ref={scrollRef}
-        className={`relative top-0 h-1 w-full bg-red-900 ${className}`}
+        className={`relative top-0 h-1 w-full ${className}`}
       />
       {hasNextPage && isFetchingNextPage && (
         <div className="flex w-full justify-center">

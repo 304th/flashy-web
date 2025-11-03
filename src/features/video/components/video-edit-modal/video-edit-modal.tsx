@@ -165,10 +165,12 @@ export const VideoEditModal = ({ video, onClose, ...props }: VideoEditModalProps
                     title="Replace Thumbnail"
                     className="w-full"
                     onChange={async (file) => {
-                      form.setValue("thumbnailUpload", file, {
-                        shouldDirty: true,
-                        shouldValidate: true,
-                      });
+                      if (file) {
+                        form.setValue("thumbnailUpload", file, {
+                          shouldDirty: true,
+                          shouldValidate: true,
+                        });
+                      }
                     }}
                   />
                   <FormField
@@ -230,7 +232,7 @@ export const VideoEditModal = ({ video, onClose, ...props }: VideoEditModalProps
                       }
 
                       await updateVideo.mutateAsync({
-                        fbId: video.fbId,
+                        key: video.fbId,
                         title: params.title,
                         description: params.description,
                         thumbnail,

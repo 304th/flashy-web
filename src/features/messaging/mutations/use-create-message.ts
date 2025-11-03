@@ -17,9 +17,6 @@ export interface CreateMessageParams {
 
 export const createMessage = createMutation<CreateMessageParams, Message>({
   write: async (params) => {
-    await timeout()
-    throw '';
-
     const data = await api
       .post(`conversations/${params.conversationId}/messages`, {
         json: {

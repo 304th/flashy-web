@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { AccountLogin } from "@/features/auth/components/account-login/account-login";
+import { HeaderUserSearch } from "@/components/ui/header-user-search";
 
 export const Header = () => {
   return (
@@ -18,6 +19,9 @@ export const Header = () => {
             className="relative scale-90 top-[1px]"
           />
         </Link>
+        <div className="flex-1 mx-6 hidden md:flex justify-center">
+          <HeaderUserSearch />
+        </div>
         <AccountLogin />
       </div>
     </div>

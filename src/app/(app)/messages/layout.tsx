@@ -18,7 +18,7 @@ export default function MessagesLayout({
   return (
     <div className="relative flex gap-4 w-full">
       <div className="w-2/6">
-        <Suspense>
+        <Suspense fallback={<div className="rounded-md bg-base-250 h-[calc(100vh-100px)]" />}>
           <ConversationsSidebar />
         </Suspense>
       </div>

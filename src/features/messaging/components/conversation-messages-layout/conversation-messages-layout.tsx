@@ -11,9 +11,11 @@ export const ConversationMessagesLayout = ({
 }) => {
   return (
     <div className="relative flex flex-col h-full">
-      <div className="absolute top-0 w-full">
-        <ConversationHeader />
-      </div>
+      <Suspense fallback={<div className="absolute top-0 w-full h-[72px]" />}>
+        <div className="absolute top-0 w-full">
+          <ConversationHeader />
+        </div>
+      </Suspense>
       <div className="flex flex-col h-full justify-center">{children}</div>
       <Suspense>
         <div

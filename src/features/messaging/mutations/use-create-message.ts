@@ -55,9 +55,7 @@ export const useCreateMessage = () => {
             conversation.lastMessage = message;
           },
         ),
-        ch(conversationMessagesCollection).prepend(message, {
-          rollback: false,
-        }),
+        ch(conversationMessagesCollection).prepend(message),
       ]);
     },
   });

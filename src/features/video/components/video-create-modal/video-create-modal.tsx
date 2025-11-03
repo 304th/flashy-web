@@ -1,5 +1,5 @@
 import config from "@/config";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,7 +18,7 @@ import { uploadImage } from "@/features/common/mutations/use-upload-image";
 export interface VideoCreateModalProps {
   onClose(): void;
 }
-
+//TODO: refactor
 const formSchema = z.object({
   videoId: z.string(),
   title: z
@@ -44,6 +44,7 @@ export const VideoCreateModal = ({
   ...props
 }: VideoCreateModalProps) => {
   const [publishedVideo, setPublishedVideo] = useState<VideoPost | null>(null);
+  const [isUploading, setIsUploading] = useState<boolean>(false);
   const createVideoPost = useCreateVideoPost();
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -63,8 +64,24 @@ export const VideoCreateModal = ({
     onClose,
   });
 
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const ce = e as CustomEvent<any>;
+      setIsUploading(Boolean(ce.detail?.isUploading));
+    };
+
+    window.addEventListener("video-upload-state-change", handler as EventListener);
+
+    return () => {
+      window.removeEventListener(
+        "video-upload-state-change",
+        handler as EventListener,
+      );
+    };
+  }, []);
+
   const handleAccidentalClose = () => {
-    if (!videoId || form.formState.isSubmitSuccessful) {
+    if ((!videoId && !isUploading) || form.formState.isSubmitSuccessful) {
       return onClose();
     }
 
@@ -126,9 +143,23 @@ export const VideoCreateModal = ({
             })}
           >
             <AnimatePresence>
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                <VideoFormDetails onClose={handleAccidentalClose} />
-              </motion.div>
+              {(!videoId || isUploading) && (
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                  <VideoFormUpload onClose={handleAccidentalClose} />
+                </motion.div>
+              )}
+              {videoId && !publishedVideo && !isUploading && (
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                  <VideoFormDetails
+                    onClose={handleAccidentalClose}
+                  />
+                </motion.div>
+              )}
+              {publishedVideo && (
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                  <VideoCreateSuccess video={publishedVideo} />
+                </motion.div>
+              )}
             </AnimatePresence>
           </form>
         </Form>

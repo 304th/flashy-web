@@ -21,6 +21,11 @@ export const useOpenUnsavedVideoChanges = ({
         actionTitle: "Leave",
         destructive: true,
         onConfirm: () => {
+          // Ensure any in-flight upload is aborted
+          try {
+            window.dispatchEvent(new CustomEvent("abort-video-upload"));
+          } catch {}
+
           if (videoId) {
             deleteUploadedVideo.mutate(
               {

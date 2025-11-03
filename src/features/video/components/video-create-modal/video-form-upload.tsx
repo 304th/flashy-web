@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import Lottie from "lottie-react";
 import { VideoUpload as VideoUploadInput } from "@/components/ui/video-upload";
@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { useCreateVideoOptions } from "@/features/video/mutations/use-create-video-options";
 import { useUploadVideo } from "@/features/video/mutations/use-upload-video";
 import { getVideoDuration } from "@/features/video/utils/get-video-duration";
+import { useModals } from "@/hooks/use-modals";
+import { useDeleteUploadedVideo } from "@/features/video/mutations/use-delete-uploaded-video";
 import uploadPendingAnimation from "@/features/video/assets/upload-pending.json";
 
 export const VideoFormUpload = ({ onClose }: { onClose: () => void }) => {
@@ -18,9 +20,34 @@ export const VideoFormUpload = ({ onClose }: { onClose: () => void }) => {
       setUploadProgress(progress);
     },
   });
+  const { openModal } = useModals();
+  const deleteUploadedVideo = useDeleteUploadedVideo();
 
   const isUploading = createVideoOptions.isPending || uploadVideo.isPending;
   const isProcessing = isUploading && uploadProgress === 100;
+
+  // Listen for global abort event triggered by other close flows (e.g., X button)
+  useEffect(() => {
+    const handler = () => {
+      (uploadVideo as any).abort?.();
+    };
+    window.addEventListener("abort-video-upload", handler as EventListener);
+
+    return () => {
+      window.removeEventListener("abort-video-upload", handler as EventListener);
+    };
+  }, [uploadVideo]);
+
+  // Broadcast uploading state so the parent modal can decide to confirm-on-close
+  useEffect(() => {
+    try {
+      window.dispatchEvent(
+        new CustomEvent("video-upload-state-change", {
+          detail: { isUploading },
+        }),
+      );
+    } catch {}
+  }, [isUploading]);
 
   return (
     <div className="relative flex flex-col">
@@ -39,7 +66,7 @@ export const VideoFormUpload = ({ onClose }: { onClose: () => void }) => {
         {
           (isUploading || isProcessing) && (
             <div className="absolute inset-0 flex items-center justify-center z-1">
-              <div className="flex justify-center items-center rounded-full p-4 backdrop-grayscale-100 bg-white/10">
+              <div className="flex justify-center items-center rounded-full p-4 backdrop-grayscale-100 bg-base-100/30">
                 <Lottie
                   animationData={uploadPendingAnimation}
                   loop={true}
@@ -55,7 +82,45 @@ export const VideoFormUpload = ({ onClose }: { onClose: () => void }) => {
         }
       </div>
       <div className="flex w-full justify-end gap-2 p-4">
-        <Button variant="secondary" onClick={onClose}>
+        <Button
+          variant="secondary"
+          onClick={() => {
+            const videoId = context.getValues("videoId");
+
+            if (isUploading || videoId) {
+              openModal(
+                "ConfirmModal",
+                {
+                  title: "Unsaved changes",
+                  description:
+                    "Are you sure you want to leave? Upload will be aborted and the video will be deleted.",
+                  actionTitle: "Leave",
+                  destructive: true,
+                  onConfirm: () => {
+                    // Abort any in-flight upload
+                    (uploadVideo as any).abort?.();
+                    // Ask others (other close flows) to abort as well
+                    try {
+                      window.dispatchEvent(new CustomEvent("abort-video-upload"));
+                    } catch {}
+
+                    if (videoId) {
+                      deleteUploadedVideo.mutate(
+                        { videoId },
+                        { onSuccess: onClose }
+                      );
+                    } else {
+                      onClose();
+                    }
+                  },
+                },
+                { subModal: true },
+              );
+            } else {
+              onClose();
+            }
+          }}
+        >
           Cancel
         </Button>
         <Button
@@ -72,19 +137,19 @@ export const VideoFormUpload = ({ onClose }: { onClose: () => void }) => {
           onClick={async () => {
             const uploadOptions =
               await createVideoOptions.mutateAsync(undefined); //FIXME: see why undefined is needed at all
-            const video = await uploadVideo.mutateAsync({
-              uploadToken: uploadOptions.token.token,
-              file: file!,
-              videoId: uploadOptions.video.videoId,
-            });
-
-            context.setValue("videoId", video.videoId, {
+            context.setValue("videoId", uploadOptions.video.videoId, {
               shouldDirty: true,
               shouldValidate: true,
             });
             context.setValue("title", file?.name, {
               shouldDirty: true,
               shouldValidate: true,
+            });
+
+            await uploadVideo.mutateAsync({
+              uploadToken: uploadOptions.token.token,
+              file: file!,
+              videoId: uploadOptions.video.videoId,
             });
 
             context.setValue("videoDuration", await getVideoDuration(file!));

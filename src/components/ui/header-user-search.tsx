@@ -2,8 +2,11 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { Input } from "@/components/ui/input";
+import { motion } from "framer-motion";
 import { Search, Clock, X } from "lucide-react";
+import { Spinner } from "@/components/ui/spinner/spinner";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { useUsersSearchByUsername } from "@/features/common/queries/use-users-search-by-username";
 import { useOutsideAction } from "@/hooks/use-outside-action";
 import { UserProfile } from "@/components/ui/user-profile";
@@ -38,7 +41,7 @@ const UserItem = ({ user, onClick }: UserItemProps) => (
   <Link
     href={`/channel/social?id=${user.fbId}`}
     onClick={onClick}
-    className="px-2 py-1.5 hover:bg-base-400 hover:text-white"
+    className="p-2 transition hover:bg-base-400 hover:text-white"
   >
     <UserProfile user={user} isLinkable={false} />
   </Link>
@@ -49,9 +52,9 @@ const SearchResults = ({
   results,
   onUserClick,
 }: SearchResultsProps) => (
-  <div className="flex flex-col max-h-80 overflow-y-auto">
+  <motion.div initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col max-h-80 overflow-y-auto">
     {isLoading ? (
-      <div className="px-3 py-2 text-sm text-muted-foreground">Searching…</div>
+      <div className="p-4 flex items-center justify-center text-sm text-muted-foreground"><Spinner /></div>
     ) : results.length === 0 ? (
       <div className="px-3 py-2 text-sm text-muted-foreground">
         No users found
@@ -65,7 +68,7 @@ const SearchResults = ({
         />
       ))
     )}
-  </div>
+  </motion.div>
 );
 
 const RecentSearches = ({
@@ -82,12 +85,14 @@ const RecentSearches = ({
         <Clock className="h-3.5 w-3.5" />
         Recent searches
       </div>
-      <button
+      <Button
+        variant="ghost"
+        size="xs"
         className="text-muted-foreground hover:text-foreground"
         onClick={onClear}
       >
         <X className="h-3.5 w-3.5" />
-      </button>
+      </Button>
     </div>
     <div className="flex flex-col max-h-80 overflow-y-auto">
       {recents.map((user) => (
@@ -130,9 +135,7 @@ export const HeaderUserSearch = () => {
   }, [value]);
 
   // Fetch users based on debounced search value
-  const [users, query] = useUsersSearchByUsername(debounced, {
-    hideMyself: true,
-  });
+  const [users, query] = useUsersSearchByUsername(debounced);
 
   // Close dropdown on outside click
   useOutsideAction(containerRef as React.RefObject<HTMLElement>, () =>

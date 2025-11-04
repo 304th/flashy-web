@@ -47,7 +47,11 @@ const formSchema = z.object({
   series: z.string().optional(),
 });
 
-export const VideoEditModal = ({ video, onClose, ...props }: VideoEditModalProps) => {
+export const VideoEditModal = ({
+  video,
+  onClose,
+  ...props
+}: VideoEditModalProps) => {
   const updateVideo = useUpdateVideoPost();
   const { data: playlists } = useProfilePlaylists();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -61,7 +65,11 @@ export const VideoEditModal = ({ video, onClose, ...props }: VideoEditModalProps
     mode: "all",
   });
 
-  const isPublished = Boolean((video as any).statusweb ? (video as any).statusweb === "published" : video.publishDate);
+  const isPublished = Boolean(
+    (video as any).statusweb
+      ? (video as any).statusweb === "published"
+      : video.publishDate,
+  );
 
   return (
     <Modal onClose={onClose} className={"!p-0"} {...props}>
@@ -80,10 +88,11 @@ export const VideoEditModal = ({ video, onClose, ...props }: VideoEditModalProps
               let thumbnail: string | undefined = undefined;
 
               if (params.thumbnailUpload) {
-                const { uploadUrl, fileType } = await createSignedUploadUrlMutation.write({
-                  fileName: params.thumbnailUpload.name,
-                  fileType: params.thumbnailUpload.type,
-                });
+                const { uploadUrl, fileType } =
+                  await createSignedUploadUrlMutation.write({
+                    fileName: params.thumbnailUpload.name,
+                    fileType: params.thumbnailUpload.type,
+                  });
 
                 thumbnail = await uploadImage.write({
                   file: params.thumbnailUpload,
@@ -104,7 +113,7 @@ export const VideoEditModal = ({ video, onClose, ...props }: VideoEditModalProps
               onClose();
             })}
           >
-            <div className="flex flex-col w-full max-h-[75vh] aspect-video ">
+            <div className="flex flex-col w-full max-h-[75vh] aspect-video">
               <div className="flex w-full grow divide-x">
                 <div className="flex flex-col w-3/5 p-4 gap-4">
                   <FormField
@@ -113,7 +122,10 @@ export const VideoEditModal = ({ video, onClose, ...props }: VideoEditModalProps
                       <FormItem className="w-full">
                         <FormLabel>Video Title</FormLabel>
                         <FormControl>
-                          <Input placeholder="Name your video..." {...fieldProps.field} />
+                          <Input
+                            placeholder="Name your video..."
+                            {...fieldProps.field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -158,7 +170,8 @@ export const VideoEditModal = ({ video, onClose, ...props }: VideoEditModalProps
                 </div>
                 <div className="flex flex-col w-2/5 p-4 gap-4">
                   <div
-                    className="relative w-full h-[160px] bg-cover bg-center rounded"
+                    className="relative w-full h-[160px] bg-cover bg-center
+                      rounded"
                     style={{ backgroundImage: `url(${video.storyImage})` }}
                   />
                   <ImageUpload
@@ -219,10 +232,11 @@ export const VideoEditModal = ({ video, onClose, ...props }: VideoEditModalProps
                       let thumbnail: string | undefined = undefined;
 
                       if (params.thumbnailUpload) {
-                        const { uploadUrl, fileType } = await createSignedUploadUrlMutation.write({
-                          fileName: params.thumbnailUpload.name,
-                          fileType: params.thumbnailUpload.type,
-                        });
+                        const { uploadUrl, fileType } =
+                          await createSignedUploadUrlMutation.write({
+                            fileName: params.thumbnailUpload.name,
+                            fileType: params.thumbnailUpload.type,
+                          });
 
                         thumbnail = await uploadImage.write({
                           file: params.thumbnailUpload,
@@ -265,5 +279,3 @@ const Modal = (props: any) => (
     className="w-[90vw] max-w-[860px] bg-base-300 shadow-2xl !p-0"
   />
 );
-
-

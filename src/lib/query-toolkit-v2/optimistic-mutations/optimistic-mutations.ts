@@ -80,7 +80,12 @@ export class CollectionOptimisticMutations<Entity, State> {
   }) {
     await this.queryClient.cancelQueries({ queryKey: this.queryKey });
     const previous = this.queryClient.getQueryData(this.queryKey) as State;
-    const mergedOptions = { sync: false, rollback: true, type: "all" as const, ...options };
+    const mergedOptions = {
+      sync: false,
+      rollback: true,
+      type: "all" as const,
+      ...options,
+    };
     this.queryClient.setQueriesData(
       { queryKey: this.queryKey, type: mergedOptions.type },
       update,
@@ -264,7 +269,12 @@ export class EntityOptimisticMutations<Item> {
   }) {
     await this.queryClient.cancelQueries({ queryKey: this.queryKey });
     const previous = this.queryClient.getQueryData(this.queryKey) as Item;
-    const mergedOptions = { sync: false, rollback: true, type: "all" as const, ...options };
+    const mergedOptions = {
+      sync: false,
+      rollback: true,
+      type: "all" as const,
+      ...options,
+    };
     this.queryClient.setQueriesData(
       { queryKey: this.queryKey, type: mergedOptions.type },
       update,

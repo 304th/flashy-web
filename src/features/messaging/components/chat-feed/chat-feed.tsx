@@ -17,7 +17,7 @@ import { useInfiniteScroll } from "@/hooks/use-infinite-scroll";
 import { useMarkUnreadChatsAsRead } from "@/features/messaging/hooks/use-mark-unread-chats-as-read";
 
 export const ChatFeed = ({ chatId }: { chatId: string }) => {
-  const markChatASRead = useMarkUnreadChatsAsRead(chatId)
+  const markChatASRead = useMarkUnreadChatsAsRead(chatId);
 
   const { data: conversation, query: chatQuery } = useConversationById(chatId);
   const { data: messages, query: messagesQuery } =

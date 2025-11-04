@@ -11,11 +11,14 @@ import { messagingWebSocket } from "@/features/messaging/services/messaging-webs
 export const useMessagesLiveUpdates = () => {
   useEffect(() => {
     return messagingWebSocket.subscribe((message) => {
-      void channel(profileConversationsCollection).update(message.conversationId, (conversation) => {
-        conversation.lastMessage = message;
-        conversation.updatedAt = message.createdAt;
-        conversation.readBy = [];
-      })
+      void channel(profileConversationsCollection).update(
+        message.conversationId,
+        (conversation) => {
+          conversation.lastMessage = message;
+          conversation.updatedAt = message.createdAt;
+          conversation.readBy = [];
+        },
+      );
       void channel(conversationMessagesCollection).prepend(message, {
         queryKey: ["conversation", message.conversationId, "messages"],
       });

@@ -4,7 +4,7 @@ import { type ReactNode, Suspense } from "react";
 import { ConversationsSidebar } from "@/features/messaging/components/conversations-sidebar/conversations-sidebar";
 import { ConversationMessagesLayout } from "@/features/messaging/components/conversation-messages-layout/conversation-messages-layout";
 import { useProtectedRedirect } from "@/features/auth/hooks/use-protected-redirect";
-import {useMessagesLiveUpdates} from "@/features/messaging/hooks/use-messages-live-updates";
+import { useMessagesLiveUpdates } from "@/features/messaging/hooks/use-messages-live-updates";
 
 export default function MessagesLayout({
   children,
@@ -18,7 +18,11 @@ export default function MessagesLayout({
   return (
     <div className="relative flex gap-4 w-full">
       <div className="w-2/6">
-        <Suspense fallback={<div className="rounded-md bg-base-250 h-[calc(100vh-100px)]" />}>
+        <Suspense
+          fallback={
+            <div className="rounded-md bg-base-250 h-[calc(100vh-100px)]" />
+          }
+        >
           <ConversationsSidebar />
         </Suspense>
       </div>

@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Turnstile } from "@marsidev/react-turnstile";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
 import { z } from "zod";
@@ -12,41 +11,25 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { usePreRegisterEmail } from "@/features/auth/queries/use-pre-register-email";
+import { Input } from "@/components/ui/input";
+import { useSendLinkToEmail } from "@/features/auth/queries/use-send-link-to-email";
 import { defaultVariants } from "@/lib/framer";
-import { IconButton } from "@/components/ui/icon-button";
-import { EyeIcon, EyeClosedIcon } from "lucide-react";
 
-const formSchema = z
-  .object({
-    email: z.string().email("Invalid email address"),
-    password: z.string().min(8, "Password must be at least 8 characters"),
-    confirmPassword: z.string(),
-    captchaToken: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ["confirmPassword"],
-  });
+const formSchema = z.object({
+  email: z.string().email("Invalid email address"),
+});
 
 export const SignupForm = ({
   onEmailSent,
 }: {
   onEmailSent: (email: string) => void;
 }) => {
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const preRegisterEmail = usePreRegisterEmail();
-  // const signupWithEmail = useSignupWithEmail();
+  const sendLinkToEmail = useSendLinkToEmail();
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
-      password: "",
-      confirmPassword: "",
-      captchaToken: "",
     },
     mode: "all",
   });
@@ -55,22 +38,19 @@ export const SignupForm = ({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit((params) => {
-          preRegisterEmail.mutate(
+          sendLinkToEmail.mutate(
             {
               email: params.email,
-              password: params.password,
-              captchaToken: params.captchaToken,
             },
             {
-              onSuccess: (response) => {
-                console.log(`Email: ${response.email} - OTP: ${response.otp}`);
+              onSuccess: () => {
                 onEmailSent(params.email);
               },
             },
           );
         })}
       >
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-3">
           <div className="flex flex-col gap-3">
             <FormField
               name="email"
@@ -79,63 +59,8 @@ export const SignupForm = ({
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input {...props.field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                </motion.div>
-              )}
-            />
-            <FormField
-              name="password"
-              render={(props) => (
-                <motion.div variants={defaultVariants.child}>
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
                       <Input
-                        type={showPassword ? "" : "password"}
-                        trailingIcon={
-                          <IconButton
-                            size="xs"
-                            type="button"
-                            onClick={() => setShowPassword((state) => !state)}
-                          >
-                            {showPassword ? <EyeIcon /> : <EyeClosedIcon />}
-                          </IconButton>
-                        }
-                        {...props.field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                </motion.div>
-              )}
-            />
-            <FormField
-              name="confirmPassword"
-              render={(props) => (
-                <motion.div variants={defaultVariants.child}>
-                  <FormItem>
-                    <FormLabel>Confirm password</FormLabel>
-                    <FormControl>
-                      <Input
-                        type={showConfirmPassword ? "" : "password"}
-                        trailingIcon={
-                          <IconButton
-                            size="xs"
-                            type="button"
-                            onClick={() =>
-                              setShowConfirmPassword((state) => !state)
-                            }
-                          >
-                            {showConfirmPassword ? (
-                              <EyeIcon />
-                            ) : (
-                              <EyeClosedIcon />
-                            )}
-                          </IconButton>
-                        }
+                        placeholder="Enter a valid email..."
                         {...props.field}
                       />
                     </FormControl>
@@ -145,29 +70,15 @@ export const SignupForm = ({
               )}
             />
           </div>
-          <motion.div
-            className="flex flex-col w-full items-center justify-center gap-5"
-            variants={defaultVariants.child}
-          >
+          <motion.div className="w-full" variants={defaultVariants.child}>
             <Button
               size="xl"
-              className="w-full"
+              className="w-full backdrop-blur-2xl"
               disabled={!form.formState.isValid}
-              pending={preRegisterEmail.isPending}
+              pending={sendLinkToEmail.isPending}
             >
-              Sign Up
+              Send Link
             </Button>
-            <Turnstile
-              siteKey={process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY!}
-              onSuccess={(turnstileToken) => {
-                form.setValue("captchaToken", turnstileToken, {
-                  shouldValidate: true,
-                });
-              }}
-              onError={(error) => {
-                console.log(error);
-              }}
-            />
           </motion.div>
         </div>
       </form>

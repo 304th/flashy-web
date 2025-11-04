@@ -59,14 +59,22 @@ class MessagingWebSocketService {
     this.connectionHandlers.forEach((handler) => handler(connected));
   }
 
-  private getSocketConfig(): { baseUrl: string; path: string; namespace: string } | null {
+  private getSocketConfig(): {
+    baseUrl: string;
+    path: string;
+    namespace: string;
+  } | null {
     const baseUrl = new URL(config.api.baseUrl!);
 
     if (!baseUrl) {
       return null;
     }
 
-    return { baseUrl: baseUrl.origin, path: "/api/v1/socket.io", namespace: "/messages" };
+    return {
+      baseUrl: baseUrl.origin,
+      path: "/api/v1/socket.io",
+      namespace: "/messages",
+    };
   }
 
   private async connect() {
@@ -109,11 +117,14 @@ class MessagingWebSocketService {
         console.log("Socket.IO connected");
       });
 
-      this.socket.on("new_message", (payload: { type?: string; message?: Message }) => {
-        if (payload?.message) {
-          this.notifyMessageHandlers(payload.message);
-        }
-      });
+      this.socket.on(
+        "new_message",
+        (payload: { type?: string; message?: Message }) => {
+          if (payload?.message) {
+            this.notifyMessageHandlers(payload.message);
+          }
+        },
+      );
 
       this.socket.on("connect_error", (error: any) => {
         console.error("Socket.IO connect_error:", error);

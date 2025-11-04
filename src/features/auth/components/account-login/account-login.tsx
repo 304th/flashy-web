@@ -9,7 +9,7 @@ export const AccountLogin = () => {
   const { data: me, query } = useMe();
 
   return (
-    <Loadable queries={[query]}>
+    <Loadable queries={[query]} error={<NotLoggedIn />}>
       {() => (me ? <LoggedIn /> : <NotLoggedIn />)}
     </Loadable>
   );

@@ -319,7 +319,3 @@ export const useMentions = ({
     handleSelect,
   } as const;
 };
-
-
-
-

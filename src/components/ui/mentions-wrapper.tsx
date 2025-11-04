@@ -162,7 +162,3 @@ export const MentionsWrapper: React.FC<MentionsWrapperProps> = ({
     </div>
   );
 };
-
-
-
-

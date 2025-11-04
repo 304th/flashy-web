@@ -186,8 +186,8 @@ const DragDropArea = ({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             className="absolute inset-0 flex items-center justify-center
-              bg-[url(/images/forest.png)] bg-contain bg-opacity-50
-              rounded-lg z-10 pointer-events-none"
+              bg-[url(/images/forest.png)] bg-contain bg-opacity-50 rounded-lg
+              z-10 pointer-events-none"
           >
             <p className="text-white text-lg font-semibold">
               Upload Images here (up to 3mb)
@@ -216,9 +216,7 @@ const DescriptionField = ({
   const textareaClassName = `min-h-[120px] shadow-none
     focus-visible:ring-0 focus-visible:ring-offset-0
     transition-colors duration-150 ${
-      isDragActive
-        ? "pointer-events-none"
-        : "border-base-400 bg-transparent"
+      isDragActive ? "pointer-events-none" : "border-base-400 bg-transparent"
     }`;
 
   return (

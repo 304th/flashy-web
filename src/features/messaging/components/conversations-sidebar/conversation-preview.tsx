@@ -27,8 +27,9 @@ export const ConversationPreview = ({
       href={`/messages/chat?id=${conversation._id}${conversation._optimisticId ? "&new=true" : ""}`}
     >
       <div
-        className={`relative flex w-full p-4 justify-between transition cursor-pointer
-          ${isChatUnread ? 'bg-brand-200/4' : isActive ? "bg-base-400" : "hover:bg-base-300"}`}
+        className={`relative flex w-full p-4 justify-between transition
+          cursor-pointer
+          ${isChatUnread ? "bg-brand-200/4" : isActive ? "bg-base-400" : "hover:bg-base-300"}`}
       >
         <div className="flex items-center gap-3">
           <ConversationThumbnail conversation={conversation} />
@@ -59,7 +60,12 @@ export const ConversationPreview = ({
             )}
           </div>
 
-          {isChatUnread && <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[6px] h-[6px] rounded-full bg-brand-200" />}
+          {isChatUnread && (
+            <div
+              className="absolute right-0 top-1/2 -translate-y-1/2 w-[6px]
+                h-[6px] rounded-full bg-brand-200"
+            />
+          )}
         </div>
       </div>
     </Link>

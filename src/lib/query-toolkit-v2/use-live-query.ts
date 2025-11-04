@@ -73,9 +73,9 @@ export const useLiveQuery = <Entity, Params = undefined>({
 }: {
   queryKey: unknown[];
   collection: Collection<Entity, Params>;
-  options?: (Record<string, any> & {
+  options?: Record<string, any> & {
     localStorageCache?: LocalStorageCacheOptions<Entity[]>;
-  });
+  };
   getParams?: () => Params;
 }) => {
   const queryClient = useQueryClient();
@@ -93,9 +93,10 @@ export const useLiveQuery = <Entity, Params = undefined>({
       )
     : undefined;
 
-  const cachedData: Entity[] | undefined = cacheEnabled && cacheKey
-    ? loadFromStorage<Entity[]>(cacheKey, cacheCfg?.ttlMs)
-    : undefined;
+  const cachedData: Entity[] | undefined =
+    cacheEnabled && cacheKey
+      ? loadFromStorage<Entity[]>(cacheKey, cacheCfg?.ttlMs)
+      : undefined;
 
   // Do not pass our custom option into React Query
   const { localStorageCache: _omit, ...reactQueryOptions } = options ?? {};
@@ -112,7 +113,7 @@ export const useLiveQuery = <Entity, Params = undefined>({
     // Ensure background refetch when initialData is present unless user overrode
     staleTime:
       cachedData !== undefined
-        ? reactQueryOptions?.staleTime ?? 0
+        ? (reactQueryOptions?.staleTime ?? 0)
         : reactQueryOptions?.staleTime,
     ...reactQueryOptions,
   });
@@ -156,7 +157,10 @@ export const useLiveQuery = <Entity, Params = undefined>({
     if (latest === undefined) return;
 
     const equal = cacheCfg?.compare
-      ? cacheCfg.compare(loadFromStorage<Entity[]>(cacheKey, cacheCfg?.ttlMs), latest)
+      ? cacheCfg.compare(
+          loadFromStorage<Entity[]>(cacheKey, cacheCfg?.ttlMs),
+          latest,
+        )
       : JSON.stringify(loadFromStorage<Entity[]>(cacheKey, cacheCfg?.ttlMs)) ===
         JSON.stringify(latest);
 
@@ -166,7 +170,14 @@ export const useLiveQuery = <Entity, Params = undefined>({
       // still refresh timestamp to extend TTL window
       saveToStorage(cacheKey, latest);
     }
-  }, [cacheEnabled, cacheKey, cacheCfg?.compare, cacheCfg?.ttlMs, query.status, query.data]);
+  }, [
+    cacheEnabled,
+    cacheKey,
+    cacheCfg?.compare,
+    cacheCfg?.ttlMs,
+    query.status,
+    query.data,
+  ]);
 
   return {
     data: query.data,

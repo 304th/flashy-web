@@ -8,11 +8,11 @@ export const usePopularPlaylists = () => {
     options: {
       localStorageCache: {
         enabled: true,
-        keyPrefix: 'flashy',
+        keyPrefix: "flashy",
         version: 1,
         ttlMs: 60 * 60 * 1000,
         compare: (a, b) => JSON.stringify(a) === JSON.stringify(b),
-      }
-    }
+      },
+    },
   });
 };

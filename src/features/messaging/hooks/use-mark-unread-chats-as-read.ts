@@ -7,9 +7,14 @@ export const useMarkUnreadChatsAsRead = (conversationId: string) => {
   const { data: me } = useMe();
 
   return () => {
-    void channel(profileConversationsCollection).update(conversationId, (conversation) => {
-      conversation.readBy.push(me!.fbId);
-    })
-    void channel(profileUnreadConversationsCollection).filter((conversation) => conversation._id !== conversationId)
-  }
-}
+    void channel(profileConversationsCollection).update(
+      conversationId,
+      (conversation) => {
+        conversation.readBy.push(me!.fbId);
+      },
+    );
+    void channel(profileUnreadConversationsCollection).filter(
+      (conversation) => conversation._id !== conversationId,
+    );
+  };
+};

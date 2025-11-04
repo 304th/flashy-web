@@ -70,7 +70,10 @@ export const VideoCreateModal = ({
       setIsUploading(Boolean(ce.detail?.isUploading));
     };
 
-    window.addEventListener("video-upload-state-change", handler as EventListener);
+    window.addEventListener(
+      "video-upload-state-change",
+      handler as EventListener,
+    );
 
     return () => {
       window.removeEventListener(
@@ -150,9 +153,7 @@ export const VideoCreateModal = ({
               )}
               {videoId && !publishedVideo && !isUploading && (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                  <VideoFormDetails
-                    onClose={handleAccidentalClose}
-                  />
+                  <VideoFormDetails onClose={handleAccidentalClose} />
                 </motion.div>
               )}
               {publishedVideo && (

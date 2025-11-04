@@ -1,5 +1,6 @@
 import { env } from "@/config";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -45,12 +46,14 @@ export const BalanceButton = () => {
           >
             <Loadable queries={[query]} defaultFallbackClassname="p-2">
               {() => (
-                <BalanceValue balance={balance?.[balanceToken] || "0.0"} />
+                <motion.div key={balanceToken} initial={{ scale: 0.5 }} animate={{ scale: 1 }}>
+                  <BalanceValue balance={balance?.[balanceToken] || "0.0"} />
+                </motion.div>
               )}
             </Loadable>
-            <div className="scale-150">
+            <motion.div key={balanceToken} initial={{ scale: 0.5 }} animate={{ scale: 1 }} transition={{ delay: 0.1 }} className="scale-150">
               <WalletTokenIcon token={balanceToken} />
-            </div>
+            </motion.div>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent

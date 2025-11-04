@@ -26,7 +26,8 @@ export const VideoPost = ({
           group-hover:bg-base-300 p-2 ${horizontal ? "flex-row" : ""}`}
       >
         <div
-          className={`relative w-full h-[180px] shrink-0 bg-cover bg-center rounded
+          className={`relative w-full h-[180px] shrink-0 bg-cover bg-center
+            rounded
             ${horizontal ? "h-[110px]! !shrink-0 !w-fit aspect-square" : ""}`}
           style={{ backgroundImage: `url(${videoPost.storyImage})` }}
           role="img"
@@ -34,7 +35,10 @@ export const VideoPost = ({
         >
           <VideoPostDuration videoPost={videoPost} />
         </div>
-        <VideoPostDescription videoPost={videoPost} className={horizontal ? 'max-w-3/4' : 'w-full'} />
+        <VideoPostDescription
+          videoPost={videoPost}
+          className={horizontal ? "max-w-3/4" : "w-full"}
+        />
       </Link>
       <div className="absolute top-3 right-3">
         <VideoPostMenu videoPost={videoPost} />

@@ -4,7 +4,7 @@ import { profileConversationsCollection } from "@/features/profile/entities/prof
 import { conversationMessagesCollection } from "@/features/messaging/entities/conversation-messages.collection";
 import { messageSchema } from "@/features/messaging/schemas/message.schema";
 import { useMe } from "@/features/auth/queries/use-me";
-import {timeout} from "@/lib/utils";
+import { timeout } from "@/lib/utils";
 
 export interface CreateMessageParams {
   conversationId: string;
@@ -56,7 +56,7 @@ export const useCreateMessage = () => {
           },
         ),
         ch(conversationMessagesCollection).prepend(message, {
-          type: 'active'
+          type: "active",
         }),
       ]);
     },

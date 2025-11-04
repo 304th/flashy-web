@@ -133,13 +133,18 @@ export const PlaylistPopularCarousel = () => {
   const playlists = normalizePlaylistsArray(popularPlaylists);
   const extendedPlaylists = createExtendedPlaylists(playlists);
 
-  const scrollToIndex = (index: number, behavior: ScrollBehavior = "smooth") => {
+  const scrollToIndex = (
+    index: number,
+    behavior: ScrollBehavior = "smooth",
+  ) => {
     const container = scrollContainerRef.current;
     if (!container || playlists.length === 0) {
       return;
     }
 
-    const firstCard = container.querySelector("[data-card]") as HTMLElement | null;
+    const firstCard = container.querySelector(
+      "[data-card]",
+    ) as HTMLElement | null;
     const metrics = calculateScrollMetrics(container, firstCard);
     const scrollPosition = calculateScrollPosition(index, metrics);
 
@@ -173,7 +178,11 @@ export const PlaylistPopularCarousel = () => {
 
   return (
     <div className="w-full">
-      <Loadable queries={[query]} fullScreenForDefaults skipLoadingIfDataPresent>
+      <Loadable
+        queries={[query]}
+        fullScreenForDefaults
+        skipLoadingIfDataPresent
+      >
         {() => (
           <div className="relative">
             {/* Carousel Container */}

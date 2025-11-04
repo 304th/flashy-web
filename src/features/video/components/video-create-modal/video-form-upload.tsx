@@ -34,7 +34,10 @@ export const VideoFormUpload = ({ onClose }: { onClose: () => void }) => {
     window.addEventListener("abort-video-upload", handler as EventListener);
 
     return () => {
-      window.removeEventListener("abort-video-upload", handler as EventListener);
+      window.removeEventListener(
+        "abort-video-upload",
+        handler as EventListener,
+      );
     };
   }, [uploadVideo]);
 
@@ -51,10 +54,9 @@ export const VideoFormUpload = ({ onClose }: { onClose: () => void }) => {
 
   return (
     <div className="relative flex flex-col">
-
       <div
-        className="relative flex w-[75vw] max-w-[800px] max-h-[75vh] aspect-video
-          mx-auto"
+        className="relative flex w-[75vw] max-w-[800px] max-h-[75vh]
+          aspect-video mx-auto"
       >
         <VideoUploadInput
           className="w-full h-full rounded-none border-none hover:bg-base-100"
@@ -63,23 +65,24 @@ export const VideoFormUpload = ({ onClose }: { onClose: () => void }) => {
           onChange={(uploadedFile) => setFile(uploadedFile)}
           onError={(msg) => console.error(msg)}
         />
-        {
-          (isUploading || isProcessing) && (
-            <div className="absolute inset-0 flex items-center justify-center z-1">
-              <div className="flex justify-center items-center rounded-full p-4 backdrop-grayscale-100 bg-base-100/30">
-                <Lottie
-                  animationData={uploadPendingAnimation}
-                  loop={true}
-                  autoplay={true}
-                  style={{
-                    width: "200px",
-                    height: "200px",
-                  }}
-                />
-              </div>
+        {(isUploading || isProcessing) && (
+          <div className="absolute inset-0 flex items-center justify-center z-1">
+            <div
+              className="flex justify-center items-center rounded-full p-4
+                backdrop-grayscale-100 bg-base-100/30"
+            >
+              <Lottie
+                animationData={uploadPendingAnimation}
+                loop={true}
+                autoplay={true}
+                style={{
+                  width: "200px",
+                  height: "200px",
+                }}
+              />
             </div>
-          )
-        }
+          </div>
+        )}
       </div>
       <div className="flex w-full justify-end gap-2 p-4">
         <Button
@@ -101,13 +104,15 @@ export const VideoFormUpload = ({ onClose }: { onClose: () => void }) => {
                     (uploadVideo as any).abort?.();
                     // Ask others (other close flows) to abort as well
                     try {
-                      window.dispatchEvent(new CustomEvent("abort-video-upload"));
+                      window.dispatchEvent(
+                        new CustomEvent("abort-video-upload"),
+                      );
                     } catch {}
 
                     if (videoId) {
                       deleteUploadedVideo.mutate(
                         { videoId },
-                        { onSuccess: onClose }
+                        { onSuccess: onClose },
                       );
                     } else {
                       onClose();

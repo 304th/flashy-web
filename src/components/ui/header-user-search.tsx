@@ -44,12 +44,14 @@ const UserItem = ({ user, onClick }: UserItemProps) => (
   </Link>
 );
 
-const SearchResults = ({ isLoading, results, onUserClick }: SearchResultsProps) => (
+const SearchResults = ({
+  isLoading,
+  results,
+  onUserClick,
+}: SearchResultsProps) => (
   <div className="flex flex-col max-h-80 overflow-y-auto">
     {isLoading ? (
-      <div className="px-3 py-2 text-sm text-muted-foreground">
-        Searching…
-      </div>
+      <div className="px-3 py-2 text-sm text-muted-foreground">Searching…</div>
     ) : results.length === 0 ? (
       <div className="px-3 py-2 text-sm text-muted-foreground">
         No users found
@@ -66,9 +68,16 @@ const SearchResults = ({ isLoading, results, onUserClick }: SearchResultsProps) 
   </div>
 );
 
-const RecentSearches = ({ recents, onUserClick, onClear }: RecentSearchesProps) => (
+const RecentSearches = ({
+  recents,
+  onUserClick,
+  onClear,
+}: RecentSearchesProps) => (
   <div className="flex flex-col">
-    <div className="flex items-center justify-between px-3 py-2 text-xs text-muted-foreground">
+    <div
+      className="flex items-center justify-between px-3 py-2 text-xs
+        text-muted-foreground"
+    >
       <div className="flex items-center gap-2">
         <Clock className="h-3.5 w-3.5" />
         Recent searches
@@ -113,7 +122,10 @@ export const HeaderUserSearch = () => {
 
   // Debounce search input
   useEffect(() => {
-    const timeout = setTimeout(() => setDebounced(value.trim()), DEBOUNCE_DELAY);
+    const timeout = setTimeout(
+      () => setDebounced(value.trim()),
+      DEBOUNCE_DELAY,
+    );
     return () => clearTimeout(timeout);
   }, [value]);
 
@@ -123,7 +135,9 @@ export const HeaderUserSearch = () => {
   });
 
   // Close dropdown on outside click
-  useOutsideAction(containerRef as React.RefObject<HTMLElement>, () => setOpen(false));
+  useOutsideAction(containerRef as React.RefObject<HTMLElement>, () =>
+    setOpen(false),
+  );
 
   // Computed values
   const showRecents = open && !value && recents.length > 0;
@@ -158,7 +172,7 @@ export const HeaderUserSearch = () => {
     addRecent({
       fbId: user.fbId,
       username: user.username,
-      userimage: user.userimage
+      userimage: user.userimage,
     });
     setOpen(false);
     setValue("");
@@ -181,7 +195,10 @@ export const HeaderUserSearch = () => {
       />
 
       {(showResults || showRecents) && (
-        <div className="absolute left-0 right-0 mt-2 bg-base-300 border border-base-400 rounded-md shadow-md z-50 overflow-hidden">
+        <div
+          className="absolute left-0 right-0 mt-2 bg-base-300 border
+            border-base-400 rounded-md shadow-md z-50 overflow-hidden"
+        >
           {showResults && (
             <SearchResults
               isLoading={isLoading}
@@ -202,5 +219,3 @@ export const HeaderUserSearch = () => {
     </div>
   );
 };
-
-

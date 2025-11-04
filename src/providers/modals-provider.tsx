@@ -72,7 +72,14 @@ import {
   ConversationCreateModal,
   ConversationCreateModalProps,
 } from "@/features/messaging/components/conversation-create-modal/conversation-create-modal";
-import { SignInModal, type SignInModalProps } from "@/features/auth/components/login/signin-modal";
+import {
+  SignInModal,
+  type SignInModalProps,
+} from "@/features/auth/components/login/signin-modal";
+import {
+  MagicLinkVerificationModal,
+  type MagicLinkVerificationModalProps,
+} from "@/features/auth/components/magic-link-verification-modal/magic-link-verification-modal";
 
 const modalsConfig = {
   LoginModal,
@@ -94,6 +101,7 @@ const modalsConfig = {
   PlaylistEditModal,
   VideoEditModal,
   ConversationCreateModal,
+  MagicLinkVerificationModal,
 };
 
 export type ModalPropsTypes =
@@ -172,6 +180,10 @@ export type ModalPropsTypes =
   | {
       type: "SignInModal";
       props: SignInModalProps;
+    }
+  | {
+      type: "MagicLinkVerificationModal";
+      props: MagicLinkVerificationModalProps;
     };
 
 export const ModalsProvider = ({ children }: PropsWithChildren<object>) => (

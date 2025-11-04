@@ -26,7 +26,6 @@ export const LoggedIn = () => {
         <motion.div variants={defaultVariants.child}>
           <BalanceButton />
         </motion.div>
-
         {/*<motion.div variants={defaultVariants.child}>*/}
         {/*  <Button*/}
         {/*    className="!w-fit p-0 aspect-square"*/}

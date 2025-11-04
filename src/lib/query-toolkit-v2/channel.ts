@@ -72,8 +72,12 @@ export class Channel<T> {
   ) {
     return await Promise.all(
       this.entries
-        .filter((e) => (e.kind === "collection" || e.kind === "partitioned"))
-        .filter(e =>  options.queryKey ? JSON.stringify(e.queryKey) === JSON.stringify(options.queryKey) : true)
+        .filter((e) => e.kind === "collection" || e.kind === "partitioned")
+        .filter((e) =>
+          options.queryKey
+            ? JSON.stringify(e.queryKey) === JSON.stringify(options.queryKey)
+            : true,
+        )
         .map(async (entry) =>
           (entry.kind === "collection"
             ? liveRegistry.createCollectionTransaction(entry)
@@ -90,7 +94,11 @@ export class Channel<T> {
     return await Promise.all(
       this.entries
         .filter((e) => e.kind === "collection" || e.kind === "partitioned")
-        .filter(e =>  options.queryKey ? JSON.stringify(e.queryKey) === JSON.stringify(options.queryKey) : true)
+        .filter((e) =>
+          options.queryKey
+            ? JSON.stringify(e.queryKey) === JSON.stringify(options.queryKey)
+            : true,
+        )
         .map(async (entry) =>
           (entry.kind === "collection"
             ? liveRegistry.createCollectionTransaction(entry)

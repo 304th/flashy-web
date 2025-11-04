@@ -8,6 +8,7 @@ import { ApiProvider } from "@/providers/api-provider";
 import { ModalsProvider } from "@/providers/modals-provider";
 import { NotificationsProvider } from "@/providers/notifications-provider";
 import { LoadingProvider } from "@/providers/loading-provider";
+import { VerificationProvider } from "@/providers/verification-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,6 +41,7 @@ export default function RootLayout({
           <ApiProvider>
             <ModalsProvider>
               <LoadingProvider />
+              <VerificationProvider />
               <Layout>{children}</Layout>
             </ModalsProvider>
           </ApiProvider>

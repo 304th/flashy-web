@@ -1,4 +1,3 @@
-import { api } from "@/services/api";
 import {
   getMutation,
   handleAuthSuccess,
@@ -14,7 +13,7 @@ interface GoogleSignInParams {
 export const useSignInWithGoogle = () => {
   const queryClient = useQueryClient();
 
-  return getMutation<User, Error, GoogleSignInParams>(
+  return getMutation<void, Error, GoogleSignInParams>(
     ["googleSignIn"],
     async ({ credential }) => {
       const tokenId = await signInWithGoogle(credential);
@@ -22,14 +21,6 @@ export const useSignInWithGoogle = () => {
       if (!tokenId) {
         throw new Error("Error signing in");
       }
-
-      return await api
-        .post("auth/token/login", {
-          json: {
-            tokenId,
-          },
-        })
-        .json();
     },
     {
       onError: handleMutationError,

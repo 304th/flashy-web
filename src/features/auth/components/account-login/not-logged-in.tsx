@@ -16,7 +16,7 @@ export const NotLoggedIn = () => {
       <Button
         className="min-w-[120px]"
         onClick={() => {
-          openModal("SignupModal");
+          openModal("SignInModal");
         }}
       >
         Sign In

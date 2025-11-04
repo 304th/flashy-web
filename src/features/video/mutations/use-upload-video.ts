@@ -36,11 +36,11 @@ export const useUploadVideo = ({
         // Note: VideoUploader doesn't support abort, so the upload will continue
         // in the background, but we'll ignore the result if aborted
         const result = await uploader.upload();
-        
+
         if (isAbortedRef.current) {
           throw new Error("Upload was aborted");
         }
-        
+
         return result;
       } catch (error) {
         if (isAbortedRef.current) {

@@ -1,9 +1,6 @@
 import { toast } from "sonner";
 import { api } from "@/services/api";
-import {
-  createMutation,
-  useOptimisticMutation,
-} from "@/lib/query-toolkit-v2";
+import { createMutation, useOptimisticMutation } from "@/lib/query-toolkit-v2";
 import { profileVideoFeedDraftsCollection } from "@/features/profile/entities/profile-video-feed-drafts.collection";
 import { profileVideoFeedPublishedCollection } from "@/features/profile/entities/profile-video-feed-published.collection";
 
@@ -67,9 +64,8 @@ export const useUpdateVideoPost = () => {
         );
       }
 
-      await ch(profileVideoFeedDraftsCollection).update(
-        params.key,
-        (video) => applyCommon(video),
+      await ch(profileVideoFeedDraftsCollection).update(params.key, (video) =>
+        applyCommon(video),
       );
 
       return ch(profileVideoFeedPublishedCollection).update(
@@ -82,5 +78,3 @@ export const useUpdateVideoPost = () => {
     },
   });
 };
-
-

@@ -14,17 +14,17 @@ import { cva, type VariantProps } from "class-variance-authority";
 
 export const selectVariants = cva(
   // base styles
-  "group/trigger cursor-pointer min-w-0 shrink-0 bg-base-200 shadow-regular-xs outline-none ring-1 ring-base-400 text-paragraph-sm flex items-center text-left transition duration-200 ease-out hover:bg-base-300 hover:ring-base-600 focus:shadow-button-important-focus focus:outline-none focus:ring-stroke-strong-950 focus:text-text-strong-950 data-[placeholder]:focus:text-text-strong-950 disabled:pointer-events-none disabled:bg-bg-weak-50 disabled:text-text-disabled-300 disabled:shadow-none disabled:ring-transparent data-[placeholder]:disabled:text-text-disabled-300 data-[placeholder]:text-text-sub-600",
+  "group/trigger cursor-pointer min-w-0 shrink-0 bg-base-200 shadow-regular-xs outline-none ring-1 ring-base-400 text-paragraph-sm flex items-center text-left transition duration-200 ease-out hover:bg-base-300 hover:ring-base-600 focus:shadow-button-important-focus focus:outline-none focus:ring-stroke-strong-950 focus:text-text-strong-950 data-[placeholder]:focus:text-text-strong-950 disabled:pointer-events-none disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:shadow-none disabled:ring-transparent data-[placeholder]:disabled:text-text-disabled-300 data-[placeholder]:text-text-sub-600",
   {
     variants: {
       size: {
-        medium: "h-10 min-h-10 gap-2 rounded-[10px] pl-3 pr-2.5",
-        small: "h-9 min-h-9 gap-2 rounded-lg pl-2.5 pr-2",
-        xsmall: "h-8 min-h-8 gap-1.5 rounded-lg pl-2 pr-1.5",
+        medium: "h-10 min-h-10 gap-2 rounded-md pl-3 pr-2.5",
+        small: "h-9 min-h-9 gap-2 rounded-md pl-2.5 pr-2",
+        xsmall: "h-8 min-h-8 gap-1.5 rounded-md pl-2 pr-1.5",
       },
       variant: {
         default: "w-full",
-        compact: "w-auto h-10 gap-1 rounded-[10px] pl-3 pr-2.5",
+        compact: "w-auto h-10 gap-1 rounded-md pl-3 pr-2.5",
         compactForInput:
           "w-auto rounded-none shadow-none ring-0 focus:bg-bg-weak-50 focus:shadow-none focus:ring-0 focus:ring-transparent pl-2.5 pr-2",
         inline:
@@ -173,7 +173,7 @@ const SelectContent = React.forwardRef<
         ref={forwardedRef}
         className={cn(
           // base
-          `relative z-50 overflow-hidden rounded-2xl bg-base-200
+          `relative z-50 overflow-hidden rounded-md bg-base-200
           shadow-regular-md ring-1 ring-inset ring-base-600`,
           // widths
           `min-w-(--radix-select-trigger-width)
@@ -224,12 +224,12 @@ const SelectItem = React.forwardRef<
       ref={forwardedRef}
       className={cn(
         // base
-        `group relative cursor-pointer select-none rounded-lg p-2 pr-9
-        text-paragraph-sm text-text-strong-950`,
+        `group relative cursor-pointer select-none rounded-md p-2 pr-9
+        text-paragraph-sm`,
         "flex items-center gap-2 transition duration-200 ease-out",
         // disabled
         `data-disabled:pointer-events-none
-        data-[disabled]:text-text-disabled-300`,
+        data-[disabled]:text-base-800`,
         // hover, focus
         `data-[highlighted]:bg-base-400 data-highlighted:outline-0
         hover:border-base-600`,

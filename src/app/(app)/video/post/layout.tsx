@@ -1,8 +1,6 @@
 "use client";
 
 import { type ReactNode, Suspense } from "react";
-import { Loadable } from "@/components/ui/loadable";
-import { VideoWatch } from "@/features/video/components/video-watch/video-watch";
 import { VideoSidebar } from "@/features/video/components/video-sidebar/video-sidebar";
 import { PlaylistProvider } from "@/features/video/components/video-playlist-context";
 import { useQueryParams } from "@/hooks/use-query-params";
@@ -29,8 +27,8 @@ const VideoPostLayoutComponent = ({ children }: { children: ReactNode }) => {
 
   return (
     <div className="relative flex gap-4 w-full">
-      <div className="w-5/7">{children}</div>
-      <div className="w-2/7">
+      <div className="w-7/10">{children}</div>
+      <div className="w-3/10">
         <VideoSidebar
           playlistId={playlistId || videoPost?.playlist?.fbId}
           playlistTitle={videoPost?.playlist?.title}

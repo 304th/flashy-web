@@ -1,5 +1,5 @@
 import config from "@/config";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,6 +14,7 @@ import { useCreateVideoPost } from "@/features/video/mutations/use-create-video-
 import { useOpenUnsavedVideoChanges } from "@/features/video/hooks/use-open-unsaved-video-changes";
 import { createSignedUploadUrlMutation } from "@/features/common/mutations/use-create-signed-upload-url";
 import { uploadImage } from "@/features/common/mutations/use-upload-image";
+import { useDeleteUploadedVideo } from "@/features/video/mutations/use-delete-uploaded-video";
 
 export interface VideoCreateModalProps {
   onClose(): void;
@@ -39,13 +40,19 @@ const formSchema = z.object({
   series: z.string().optional(),
 });
 
+type Step = 'upload' | 'details' | 'success';
+
 export const VideoCreateModal = ({
   onClose,
   ...props
 }: VideoCreateModalProps) => {
+  const [step, setStep] = useState<Step>('upload');
   const [publishedVideo, setPublishedVideo] = useState<VideoPost | null>(null);
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const createVideoPost = useCreateVideoPost();
+  const deleteUploadedVideo = useDeleteUploadedVideo();
+  const abortUploadRef = useRef<(() => void) | null>(null);
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -59,29 +66,47 @@ export const VideoCreateModal = ({
   });
 
   const videoId = form.watch("videoId");
+
+  // Cleanup function: abort upload if in progress, delete video if exists
+  const cleanup = useCallback(() => {
+    // Abort upload if in progress
+    if (abortUploadRef.current) {
+      abortUploadRef.current();
+    }
+
+    // Delete uploaded video if it exists
+    const currentVideoId = form.getValues("videoId");
+    if (currentVideoId) {
+      deleteUploadedVideo.mutate({ videoId: currentVideoId });
+    }
+
+    // Reset form and step to prevent unwanted transitions
+    form.reset();
+    setStep('upload');
+  }, [deleteUploadedVideo, form]);
+
+  const handleConfirmedClose = useCallback(() => {
+    cleanup();
+    onClose();
+  }, [cleanup, onClose]);
+
   const openUnsavedChanges = useOpenUnsavedVideoChanges({
     videoId,
-    onClose,
+    onConfirmedClose: handleConfirmedClose,
   });
 
+  // Step transitions
   useEffect(() => {
-    const handler = (e: Event) => {
-      const ce = e as CustomEvent<any>;
-      setIsUploading(Boolean(ce.detail?.isUploading));
-    };
+    if (videoId && !isUploading && step === 'upload') {
+      setStep('details');
+    }
+  }, [videoId, isUploading, step]);
 
-    window.addEventListener(
-      "video-upload-state-change",
-      handler as EventListener,
-    );
-
-    return () => {
-      window.removeEventListener(
-        "video-upload-state-change",
-        handler as EventListener,
-      );
-    };
-  }, []);
+  useEffect(() => {
+    if (publishedVideo) {
+      setStep('success');
+    }
+  }, [publishedVideo]);
 
   const handleAccidentalClose = () => {
     if ((!videoId && !isUploading) || form.formState.isSubmitSuccessful) {
@@ -145,20 +170,42 @@ export const VideoCreateModal = ({
               }
             })}
           >
-            <AnimatePresence>
-              {(!videoId || isUploading) && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                  <VideoFormUpload onClose={handleAccidentalClose} />
+            <AnimatePresence mode="wait">
+              {step === 'upload' && (
+                <motion.div
+                  key="upload"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                >
+                  <VideoFormUpload
+                    onCancel={handleAccidentalClose}
+                    onConfirmedClose={handleConfirmedClose}
+                    onUploadingChange={setIsUploading}
+                    onAbortRefChange={(abortFn) => {
+                      abortUploadRef.current = abortFn;
+                    }}
+                  />
                 </motion.div>
               )}
-              {videoId && !publishedVideo && !isUploading && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+              {step === 'details' && (
+                <motion.div
+                  key="details"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                >
                   <VideoFormDetails onClose={handleAccidentalClose} />
                 </motion.div>
               )}
-              {publishedVideo && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                  <VideoCreateSuccess video={publishedVideo} />
+              {step === 'success' && (
+                <motion.div
+                  key="success"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                >
+                  <VideoCreateSuccess video={publishedVideo!} />
                 </motion.div>
               )}
             </AnimatePresence>

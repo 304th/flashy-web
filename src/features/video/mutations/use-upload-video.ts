@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { VideoUploader } from "@api.video/video-uploader";
 import { getMutation } from "@/lib/query-toolkit-v2";
+import type { UseMutationResult } from "@tanstack/react-query";
 
 export interface UploadVideoParams {
   file: File;
@@ -8,11 +9,20 @@ export interface UploadVideoParams {
   videoId: string;
 }
 
+export type UseUploadVideoReturn = UseMutationResult<
+  { videoId: string },
+  unknown,
+  UploadVideoParams,
+  unknown
+> & {
+  abort: () => void;
+};
+
 export const useUploadVideo = ({
   onProgress,
 }: {
   onProgress: (progress: number) => void;
-}) => {
+}): UseUploadVideoReturn => {
   const isAbortedRef = useRef(false);
   const latestUploaderRef = useRef<VideoUploader | null>(null);
 
@@ -57,7 +67,9 @@ export const useUploadVideo = ({
       isAbortedRef.current = true;
       try {
         latestUploaderRef.current?.cancel?.();
-      } catch {}
+      } catch (error) {
+        console.error("Failed to cancel video upload:", error);
+      }
       mutation.reset();
     },
   });

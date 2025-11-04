@@ -28,7 +28,7 @@ export const VideoPost = ({
         <div
           className={`relative w-full h-[180px] shrink-0 bg-cover bg-center
             rounded
-            ${horizontal ? "h-[110px]! !shrink-0 !w-fit aspect-square" : ""}`}
+            ${horizontal ? "h-[110px]! !shrink-0 !w-fit aspect-video" : ""}`}
           style={{ backgroundImage: `url(${videoPost.storyImage})` }}
           role="img"
           aria-label="Video Post Thumbnail"
@@ -37,7 +37,7 @@ export const VideoPost = ({
         </div>
         <VideoPostDescription
           videoPost={videoPost}
-          className={horizontal ? "max-w-3/4" : "w-full"}
+          className={horizontal ? "max-w-[67%] text-[14px]" : "w-full"}
         />
       </Link>
       <div className="absolute top-3 right-3">

@@ -103,13 +103,18 @@ export const VideoFormDetails = ({ onClose }: { onClose: () => void }) => {
           <FormField
             name="series"
             render={(props) => (
-              <FormItem className="w-full">
+              <FormItem className={`w-full ${!playlists || playlists.length === 0} ? 'pointer-events-none' : '`}>
                 <FormLabel>Playlist</FormLabel>
                 <FormControl>
                   <Select.Root
                     value={props.field.value}
                     onValueChange={props.field.onChange}
-                    placeholder="Select a playlist (optional)"
+                    placeholder={
+                      !playlists || playlists.length === 0
+                        ? "No playlists available"
+                        : "Select a playlist (optional)"
+                    }
+                    disabled={!playlists || playlists.length === 0}
                   >
                     {(playlists || []).map((pl) => (
                       <Select.Item key={pl.fbId} value={pl.fbId}>

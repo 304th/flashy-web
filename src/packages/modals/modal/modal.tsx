@@ -29,7 +29,7 @@ export const Modal = ({
     if (leaf) {
       onClose?.();
     }
-  }, ["data-radix-popper-content-wrapper"]);
+  }, ["data-radix-popper-content-wrapper", "data-radix-scroll-area-viewport"]);
 
   useLayoutEffect(() => {
     if (ignoreIds) {

@@ -7,10 +7,19 @@ import { useCreateVideoOptions } from "@/features/video/mutations/use-create-vid
 import { useUploadVideo } from "@/features/video/mutations/use-upload-video";
 import { getVideoDuration } from "@/features/video/utils/get-video-duration";
 import { useModals } from "@/hooks/use-modals";
-import { useDeleteUploadedVideo } from "@/features/video/mutations/use-delete-uploaded-video";
 import uploadPendingAnimation from "@/features/video/assets/upload-pending.json";
 
-export const VideoFormUpload = ({ onClose }: { onClose: () => void }) => {
+export const VideoFormUpload = ({
+  onCancel,
+  onConfirmedClose,
+  onUploadingChange,
+  onAbortRefChange,
+}: {
+  onCancel: () => void;
+  onConfirmedClose: () => void;
+  onUploadingChange: (isUploading: boolean) => void;
+  onAbortRefChange: (abortFn: (() => void) | null) => void;
+}) => {
   const context = useFormContext();
   const [file, setFile] = useState<File | null>(null);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
@@ -21,36 +30,22 @@ export const VideoFormUpload = ({ onClose }: { onClose: () => void }) => {
     },
   });
   const { openModal } = useModals();
-  const deleteUploadedVideo = useDeleteUploadedVideo();
 
   const isUploading = createVideoOptions.isPending || uploadVideo.isPending;
   const isProcessing = isUploading && uploadProgress === 100;
 
-  // Listen for global abort event triggered by other close flows (e.g., X button)
+  // Pass abort function reference to parent
   useEffect(() => {
-    const handler = () => {
-      (uploadVideo as any).abort?.();
-    };
-    window.addEventListener("abort-video-upload", handler as EventListener);
-
+    onAbortRefChange(uploadVideo.abort);
     return () => {
-      window.removeEventListener(
-        "abort-video-upload",
-        handler as EventListener,
-      );
+      onAbortRefChange(null);
     };
-  }, [uploadVideo]);
+  }, [uploadVideo.abort, onAbortRefChange]);
 
-  // Broadcast uploading state so the parent modal can decide to confirm-on-close
+  // Notify parent of uploading state changes
   useEffect(() => {
-    try {
-      window.dispatchEvent(
-        new CustomEvent("video-upload-state-change", {
-          detail: { isUploading },
-        }),
-      );
-    } catch {}
-  }, [isUploading]);
+    onUploadingChange(isUploading);
+  }, [isUploading, onUploadingChange]);
 
   return (
     <div className="relative flex flex-col">
@@ -99,30 +94,12 @@ export const VideoFormUpload = ({ onClose }: { onClose: () => void }) => {
                     "Are you sure you want to leave? Upload will be aborted and the video will be deleted.",
                   actionTitle: "Leave",
                   destructive: true,
-                  onConfirm: () => {
-                    // Abort any in-flight upload
-                    (uploadVideo as any).abort?.();
-                    // Ask others (other close flows) to abort as well
-                    try {
-                      window.dispatchEvent(
-                        new CustomEvent("abort-video-upload"),
-                      );
-                    } catch {}
-
-                    if (videoId) {
-                      deleteUploadedVideo.mutate(
-                        { videoId },
-                        { onSuccess: onClose },
-                      );
-                    } else {
-                      onClose();
-                    }
-                  },
+                  onConfirm: onConfirmedClose,
                 },
                 { subModal: true },
               );
             } else {
-              onClose();
+              onCancel();
             }
           }}
         >

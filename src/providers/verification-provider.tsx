@@ -1,9 +1,18 @@
 "use client";
 
+import { Suspense } from "react";
 import { useVerificationLinkFound } from "@/features/auth/hooks/use-verification-link-found";
 
-export const VerificationProvider = () => {
+const VerificationProviderContent = () => {
   useVerificationLinkFound();
 
   return null;
+};
+
+export const VerificationProvider = () => {
+  return (
+    <Suspense fallback={null}>
+      <VerificationProviderContent />
+    </Suspense>
+  );
 };

@@ -19,17 +19,17 @@ export const NotLoggedIn = () => {
           openModal("SignupModal");
         }}
       >
-        Sign Up
+        Sign In
       </Button>
-      <Button
-        variant="secondary"
-        className="min-w-[120px]"
-        onClick={() => {
-          openModal("LoginModal");
-        }}
-      >
-        Login
-      </Button>
+      {/*<Button*/}
+      {/*  variant="secondary"*/}
+      {/*  className="min-w-[120px]"*/}
+      {/*  onClick={() => {*/}
+      {/*    openModal("LoginModal");*/}
+      {/*  }}*/}
+      {/*>*/}
+      {/*  Login*/}
+      {/*</Button>*/}
     </motion.div>
   );
 };

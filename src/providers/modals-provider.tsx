@@ -72,10 +72,12 @@ import {
   ConversationCreateModal,
   ConversationCreateModalProps,
 } from "@/features/messaging/components/conversation-create-modal/conversation-create-modal";
+import { SignInModal, type SignInModalProps } from "@/features/auth/components/login/signin-modal";
 
 const modalsConfig = {
   LoginModal,
   SignupModal,
+  SignInModal,
   PostCommentsModal,
   ConfirmModal,
   ImageViewerModal,
@@ -166,6 +168,10 @@ export type ModalPropsTypes =
   | {
       type: "ConversationCreateModal";
       props: ConversationCreateModalProps;
+    }
+  | {
+      type: "SignInModal";
+      props: SignInModalProps;
     };
 
 export const ModalsProvider = ({ children }: PropsWithChildren<object>) => (

@@ -12,7 +12,7 @@ export const VideoCarousel = ({
     <div className="flex flex-col gap-3">
       <div className="flex w-full items-center justify-between">
         <p className="text-white text-lg font-medium">{title}</p>
-        <Link href="/video" className="text-brand-200 hover:underline">
+        <Link href="/video" className="text-brand-200 transition  hover:bg-brand-100/10 py-[2px] px-2 rounded-md">
           More Videos
         </Link>
       </div>

@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {
   TwitterShareButton,
@@ -12,6 +12,7 @@ import {
   WhatsappIcon,
   BlueskyIcon,
 } from "react-share";
+import { CopyIcon } from "lucide-react";
 import { Modal as ModalComponent } from "@/packages/modals";
 import { CloseButton } from "@/components/ui/close-button";
 import { Button } from "@/components/ui/button";
@@ -34,6 +35,8 @@ export const ShareModal = ({
   onClose,
   ...props
 }: ShareModalProps) => {
+  const [copied, setCopied] = useState(false);
+
   const [url, title] = useMemo(() => {
     const info = getShareableInfo(id, type);
 
@@ -44,6 +47,16 @@ export const ShareModal = ({
       info.title,
     ];
   }, [id, type]);
+
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error("Failed to copy:", err);
+    }
+  };
 
   return (
     <Modal onClose={onClose} className={"!p-0"} {...props}>
@@ -120,6 +133,10 @@ export const ShareModal = ({
           </motion.div>
         </motion.div>
         <div className="flex w-full justify-end gap-2">
+          <Button variant="secondary" onClick={handleCopyLink} className="w-[115px]">
+            <CopyIcon />
+            {copied ? "Copied!" : "Copy Link"}
+          </Button>
           <Button variant="secondary" onClick={onClose}>
             Cancel
           </Button>

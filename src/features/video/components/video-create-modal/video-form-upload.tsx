@@ -69,7 +69,7 @@ export const VideoFormUpload = ({ onClose }: { onClose: () => void }) => {
           <div className="absolute inset-0 flex items-center justify-center z-1">
             <div
               className="flex justify-center items-center rounded-full p-4
-                backdrop-grayscale-100 bg-base-100/30"
+                backdrop-grayscale-100 bg-base-100/60"
             >
               <Lottie
                 animationData={uploadPendingAnimation}

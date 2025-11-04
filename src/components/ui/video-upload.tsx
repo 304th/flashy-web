@@ -121,6 +121,7 @@ export const VideoUpload = ({
             src={preview}
             muted
             autoPlay
+            loop
           />
         </div>
       )}

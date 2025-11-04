@@ -87,7 +87,7 @@ export class CollectionOptimisticMutations<Entity, State> {
       ...options,
     };
     this.queryClient.setQueriesData(
-      { queryKey: this.queryKey, type: mergedOptions.type },
+      { queryKey: this.queryKey, type: mergedOptions.type, exact: true },
       update,
     );
 
@@ -227,7 +227,7 @@ export class CollectionOptimisticMutations<Entity, State> {
     if (runRollback) {
       const errorMessage = await extractErrorMessage(error);
       this.queryClient.setQueriesData(
-        { queryKey: this.queryKey, type },
+        { queryKey: this.queryKey, type, exact: true },
         (state: State) => runRollback(state, errorMessage),
       );
     }
@@ -238,7 +238,7 @@ export class CollectionOptimisticMutations<Entity, State> {
 
     if (pendingSync) {
       this.queryClient.setQueriesData(
-        { queryKey: this.queryKey, type },
+        { queryKey: this.queryKey, type, exact: true },
         (state: State) => pendingSync(state, params as Optimistic<Entity>),
       );
     }
@@ -276,7 +276,7 @@ export class EntityOptimisticMutations<Item> {
       ...options,
     };
     this.queryClient.setQueriesData(
-      { queryKey: this.queryKey, type: mergedOptions.type },
+      { queryKey: this.queryKey, type: mergedOptions.type, exact: true },
       update,
     );
 
@@ -317,7 +317,7 @@ export class EntityOptimisticMutations<Item> {
     if (runRollback) {
       const errorMessage = await extractErrorMessage(error);
       this.queryClient.setQueriesData(
-        { queryKey: this.queryKey, type },
+        { queryKey: this.queryKey, type, exact: true },
         (state: Item) => runRollback(state, errorMessage),
       );
     }
@@ -328,7 +328,7 @@ export class EntityOptimisticMutations<Item> {
 
     if (pendingSync) {
       this.queryClient.setQueriesData(
-        { queryKey: this.queryKey, type },
+        { queryKey: this.queryKey, type, exact: true },
         pendingSync(params),
       );
     }

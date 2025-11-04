@@ -182,7 +182,7 @@ export const PlaylistPopularCarousel = () => {
         queries={[query]}
         fullScreenForDefaults
         skipLoadingIfDataPresent
-        fallback={<div className="grid grid-cols-7 gap-4"><div className="skeleton h-[340px] col-span-2 rounded-md" /> <div className="skeleton h-[340px] col-span-3 rounded-md" /><div className="skeleton h-[340px] col-span-2 rounded-md" /></div>}
+        fallback={<div className="grid grid-cols-7 gap-4 h-[374px]"><div className="skeleton h-[340px] col-span-2 rounded-md" /> <div className="skeleton h-[340px] col-span-3 rounded-md" /><div className="skeleton h-[340px] col-span-2 rounded-md" /></div>}
       >
         {() => (
           <div className="relative">

@@ -88,10 +88,10 @@ const RecentSearches = ({
       <Button
         variant="ghost"
         size="xs"
-        className="text-muted-foreground hover:text-foreground"
+        className="!aspect-square p-0"
         onClick={onClear}
       >
-        <X className="h-3.5 w-3.5" />
+        <X />
       </Button>
     </div>
     <div className="flex flex-col max-h-80 overflow-y-auto">

@@ -5,5 +5,14 @@ export const useMostRecentVideos = () => {
   return useLiveQuery({
     queryKey: ["mostRecentVideos"],
     collection: mostRecentVideosCollection,
+    options: {
+      localStorageCache: {
+        enabled: true,
+        keyPrefix: "flashy",
+        version: 1,
+        ttlMs: 60 * 60 * 1000,
+        compare: (a, b) => JSON.stringify(a) === JSON.stringify(b),
+      },
+    },
   });
 };

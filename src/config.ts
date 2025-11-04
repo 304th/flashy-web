@@ -28,7 +28,7 @@ const config = {
         maxLength: 100,
       },
       description: {
-        maxLength: 2500,
+        maxLength: 5000,
       },
     },
     uploads: {

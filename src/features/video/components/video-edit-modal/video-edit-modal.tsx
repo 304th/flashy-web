@@ -42,6 +42,7 @@ const CATEGORIES = [
 const formSchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters").max(120),
   description: z.string().max(500).optional(),
+  thumbnail: z.string().optional().nullable(),
   thumbnailUpload: z.instanceof(File).optional(),
   category: z.string().optional(),
   series: z.string().optional(),
@@ -59,6 +60,7 @@ export const VideoEditModal = ({
     defaultValues: {
       title: video.title || "",
       description: video.description || "",
+      thumbnail: video.storyImage,
       category: (video as any).category,
       series: (video as any).playlist?.fbId,
     },
@@ -70,6 +72,27 @@ export const VideoEditModal = ({
       ? (video as any).statusweb === "published"
       : video.publishDate,
   );
+
+  const thumbnailUrl = form.watch("thumbnail");
+
+  const handleThumbnailUpload = async (params: z.infer<typeof formSchema>) => {
+    if (params.thumbnailUpload) {
+      const { uploadUrl, fileType } =
+        await createSignedUploadUrlMutation.write({
+          fileName: params.thumbnailUpload.name,
+          fileType: params.thumbnailUpload.type,
+        });
+
+      return await uploadImage.write({
+        file: params.thumbnailUpload,
+        type: fileType,
+        uploadUrl,
+      });
+    } else if (params.thumbnail === null) {
+      return "";
+    }
+    return undefined;
+  };
 
   return (
     <Modal onClose={onClose} className={"!p-0"} {...props}>
@@ -85,21 +108,7 @@ export const VideoEditModal = ({
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(async (params) => {
-              let thumbnail: string | undefined = undefined;
-
-              if (params.thumbnailUpload) {
-                const { uploadUrl, fileType } =
-                  await createSignedUploadUrlMutation.write({
-                    fileName: params.thumbnailUpload.name,
-                    fileType: params.thumbnailUpload.type,
-                  });
-
-                thumbnail = await uploadImage.write({
-                  file: params.thumbnailUpload,
-                  type: fileType,
-                  uploadUrl,
-                });
-              }
+              const thumbnail = await handleThumbnailUpload(params);
 
               await updateVideo.mutateAsync({
                 key: video.fbId,
@@ -169,19 +178,18 @@ export const VideoEditModal = ({
                   />
                 </div>
                 <div className="flex flex-col w-2/5 p-4 gap-4">
-                  <div
-                    className="relative w-full h-[160px] bg-cover bg-center
-                      rounded"
-                    style={{ backgroundImage: `url(${video.storyImage})` }}
-                  />
                   <ImageUpload
-                    title="Replace Thumbnail"
+                    title="Upload Thumbnail"
+                    initialPreview={thumbnailUrl ?? undefined}
                     className="w-full"
                     onChange={async (file) => {
                       if (file) {
                         form.setValue("thumbnailUpload", file, {
                           shouldDirty: true,
-                          shouldValidate: true,
+                        });
+                      } else {
+                        form.setValue("thumbnail", null, {
+                          shouldDirty: true,
                         });
                       }
                     }}
@@ -222,28 +230,14 @@ export const VideoEditModal = ({
                 >
                   Save
                 </Button>
-                {!isPublished && (
+                {!isPublished ? (
                   <Button
                     variant="secondary"
                     disabled={!form.formState.isValid}
                     pending={form.formState.isSubmitting}
                     className="w-[110px]"
                     onClick={form.handleSubmit(async (params) => {
-                      let thumbnail: string | undefined = undefined;
-
-                      if (params.thumbnailUpload) {
-                        const { uploadUrl, fileType } =
-                          await createSignedUploadUrlMutation.write({
-                            fileName: params.thumbnailUpload.name,
-                            fileType: params.thumbnailUpload.type,
-                          });
-
-                        thumbnail = await uploadImage.write({
-                          file: params.thumbnailUpload,
-                          type: fileType,
-                          uploadUrl,
-                        });
-                      }
+                      const thumbnail = await handleThumbnailUpload(params);
 
                       await updateVideo.mutateAsync({
                         key: video.fbId,
@@ -260,6 +254,30 @@ export const VideoEditModal = ({
                     })}
                   >
                     Publish
+                  </Button>
+                ) : (
+                  <Button
+                    variant="secondary"
+                    disabled={!form.formState.isValid}
+                    pending={form.formState.isSubmitting}
+                    className="w-[110px]"
+                    onClick={form.handleSubmit(async (params) => {
+                      const thumbnail = await handleThumbnailUpload(params);
+
+                      await updateVideo.mutateAsync({
+                        key: video.fbId,
+                        title: params.title,
+                        description: params.description,
+                        thumbnail,
+                        category: params.category,
+                        series: params.series,
+                        statusweb: "draft",
+                      });
+
+                      onClose();
+                    })}
+                  >
+                    Draft
                   </Button>
                 )}
               </div>

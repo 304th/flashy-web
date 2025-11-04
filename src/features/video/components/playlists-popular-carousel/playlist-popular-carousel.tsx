@@ -182,10 +182,15 @@ export const PlaylistPopularCarousel = () => {
         queries={[query]}
         fullScreenForDefaults
         skipLoadingIfDataPresent
+        fallback={<div className="grid grid-cols-7 gap-4"><div className="skeleton h-[340px] col-span-2 rounded-md" /> <div className="skeleton h-[340px] col-span-3 rounded-md" /><div className="skeleton h-[340px] col-span-2 rounded-md" /></div>}
       >
         {() => (
           <div className="relative">
-            {/* Carousel Container */}
+            {/* Left Gradient Fade */}
+            <div className="absolute left-0 top-0 bottom-0 w-8 z-10 pointer-events-none bg-gradient-to-r from-background to-transparent" />
+
+            {/* Right Gradient Fade */}
+            <div className="absolute right-0 top-0 bottom-0 w-8 z-10 pointer-events-none bg-gradient-to-l from-background to-transparent" />
             <div
               ref={scrollContainerRef}
               className="flex gap-4 overflow-x-hidden scrollbar-hide px-8"

@@ -47,7 +47,7 @@ const NavItem = ({
       <div
         className={`flex w-full flex-col items-center justify-center gap-1
           cursor aspect-square transition rounded
-          ${pathname === route ? "bg-base-300 text-white" : "hover:bg-base-300"}`}
+          ${pathname === route ? "bg-base-300 text-white" : "hover:bg-base-300 hover:scale-110"}`}
       >
         {icon}
         <p className="font-medium">{children}</p>

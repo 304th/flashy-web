@@ -3,6 +3,7 @@
 import { PlaylistPopularCarousel } from "@/features/video/components/playlists-popular-carousel/playlist-popular-carousel";
 import { VideoCarousel } from "@/features/video/components/video-carousel/video-carousel";
 import { Loadable } from "@/components/ui/loadable";
+import { NotFound } from "@/components/ui/not-found";
 import { useMostRecentVideos } from "@/features/video/queries/use-most-recent-videos";
 
 export default function Home() {
@@ -11,9 +12,9 @@ export default function Home() {
   return (
     <div className="flex flex-col gap-4 w-full">
       <PlaylistPopularCarousel />
-      <Loadable queries={[query]} skipLoadingIfDataPresent>
+      <Loadable queries={[query]} fullScreenForDefaults skipLoadingIfDataPresent>
         {() =>
-          mostRecentVideos ? (
+          mostRecentVideos? (
             <VideoCarousel title="Still Hot" videoPosts={mostRecentVideos} />
           ) : null
         }

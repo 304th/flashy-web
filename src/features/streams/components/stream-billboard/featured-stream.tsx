@@ -24,7 +24,11 @@ export const FeaturedStream = ({ stream }: { stream: Stream }) => {
         />
       </div>
       <div className="flex w-1/2 h-full bg-pink-500">
-        <StreamPlayer playbackId={stream.externalStreamId} />
+        <StreamPlayer
+          videoId={stream.externalStreamId}
+          isLive={stream.isLive}
+          autoplay={true}
+        />
       </div>
     </div>
   );

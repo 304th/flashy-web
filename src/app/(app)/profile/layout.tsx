@@ -9,8 +9,8 @@ import { ChannelContextProvider } from "@/features/profile/components/channel-co
 import { useAuthed } from "@/features/auth/hooks/use-authed";
 import { useMe } from "@/features/auth/queries/use-me";
 import { getTabNameFromPathname } from "@/features/channels/utils/get-tab-name-from-pathname";
-import { capitalize } from "media-chrome/utils/utils";
 import { useProtectedRedirect } from "@/features/auth/hooks/use-protected-redirect";
+import { capitalize } from "media-chrome/utils/utils";
 
 const profileTabs = [
   {
@@ -27,6 +27,11 @@ const profileTabs = [
     key: "playlists",
     label: "Playlists",
     path: "/profile/playlists",
+  },
+  {
+    key: "streams",
+    label: "Streams",
+    path: "/profile/streams",
   },
   {
     key: "about",

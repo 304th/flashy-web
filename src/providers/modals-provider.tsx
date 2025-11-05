@@ -80,6 +80,18 @@ import {
   MagicLinkVerificationModal,
   type MagicLinkVerificationModalProps,
 } from "@/features/auth/components/magic-link-verification-modal/magic-link-verification-modal";
+import {
+  StreamCreateModal,
+  StreamCreateModalProps,
+} from "@/features/streams/components/stream-create-modal/stream-create-modal";
+import {
+  StreamKeyModal,
+  StreamKeyModalProps,
+} from "@/features/streams/components/stream-key-modal/stream-key-modal";
+import {
+  StreamSettingsModal,
+  StreamSettingsModalProps,
+} from "@/features/streams/components/stream-settings-modal/stream-settings-modal";
 
 const modalsConfig = {
   LoginModal,
@@ -102,6 +114,9 @@ const modalsConfig = {
   VideoEditModal,
   ConversationCreateModal,
   MagicLinkVerificationModal,
+  StreamCreateModal,
+  StreamKeyModal,
+  StreamSettingsModal,
 };
 
 export type ModalPropsTypes =
@@ -184,6 +199,18 @@ export type ModalPropsTypes =
   | {
       type: "MagicLinkVerificationModal";
       props: MagicLinkVerificationModalProps;
+    }
+  | {
+      type: "StreamCreateModal";
+      props: StreamCreateModalProps;
+    }
+  | {
+      type: "StreamKeyModal";
+      props: StreamKeyModalProps;
+    }
+  | {
+      type: "StreamSettingsModal";
+      props: StreamSettingsModalProps;
     };
 
 export const ModalsProvider = ({ children }: PropsWithChildren<object>) => (

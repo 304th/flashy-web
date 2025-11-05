@@ -64,6 +64,8 @@ declare global {
     userimage: string;
   }
 
+  type StreamStatus = "scheduled" | "live" | "ended" | "cancelled";
+
   interface Stream {
     id: string;
     title: string;
@@ -72,8 +74,26 @@ declare global {
     externalStreamId: string;
     userId: string;
     author: User;
+    status: StreamStatus;
+    scheduledAt?: string;
+    startedAt?: string;
+    endedAt?: string;
+    isLive: boolean;
+    viewerCount: number;
+    chatEnabled: boolean;
+    streamKey?: string;
+    rtmpUrl?: string;
+    recordingUrl?: string;
     createdAt: string;
     updatedAt: string;
+  }
+
+  interface ChatMessage {
+    _id: string;
+    streamId: string;
+    user: Author;
+    message: string;
+    createdAt: string;
   }
 
   interface PollOption {

@@ -1,12 +1,26 @@
-import MuxPlayer from "@mux/mux-player-react/lazy";
+import ApiVideoPlayer from "@api.video/react-player";
 
-export const StreamPlayer = ({ playbackId }: { playbackId: string }) => {
+interface StreamPlayerProps {
+  videoId: string;
+  isLive?: boolean;
+  autoplay?: boolean;
+}
+
+export const StreamPlayer = ({
+  videoId,
+  isLive = false,
+  autoplay = false,
+}: StreamPlayerProps) => {
+  const Player = ApiVideoPlayer as any;
+
   return (
-    <MuxPlayer
-      streamType="on-demand"
-      // playbackId="a4nOgmxGWg6gULfcBbAa00gXyfcwPnAFldF8RdsNyk8M"
-      playbackId={playbackId}
-      accentColor="#0f8259"
-    />
+    <div style={{ width: "100%", aspectRatio: "16/9" }}>
+      <Player
+        video={{ id: videoId }}
+        live={isLive}
+        autoplay={autoplay}
+        style={{ width: "100%", height: "100%" }}
+      />
+    </div>
   );
 };

@@ -77,6 +77,7 @@ export const ChannelHeaderUserBar = ({ className }: { className?: string }) => {
             userimage: channel?.userimage!,
           }}
           loading={channelQuery.isLoading}
+          className="w-full"
         />
         <ChannelSubscriptions />
       </div>

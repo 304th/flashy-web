@@ -301,6 +301,22 @@
   );
 }
 
+@utility success-gradient-rotate {
+  background-size: 100% 100%;
+  background-position: 0 0;
+  background-image: conic-gradient(
+    from 90deg at 50% 50%,
+    #ffbf28 10%,
+    #ec0101 50%,
+    transparent 75%,
+    #ffbf28 90%
+  );
+  @apply absolute inset-0 opacity-0;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-name: rotate-gradient;
+}
+
 @keyframes skeletonWave {
   0% {
     background-position-x: -500px;
@@ -316,6 +332,15 @@
   }
   100% {
     background-position-x: 50px;
+  }
+}
+
+@keyframes rotate-gradient {
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
 

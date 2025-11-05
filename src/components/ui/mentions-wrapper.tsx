@@ -10,7 +10,7 @@ import { useMentions } from "@/features/social/hooks/use-mentions";
 /*                              Types & Interfaces                            */
 /* -------------------------------------------------------------------------- */
 
-type TextElement = HTMLInputElement | HTMLTextAreaElement;
+type TextElement = HTMLInputElement | HTMLTextAreaElement | HTMLDivElement;
 
 interface MentionUser {
   fbId?: string;
@@ -23,15 +23,17 @@ interface MentionsWrapperProps {
   value: string;
   onChange: (next: string) => void;
   children: (props: {
-    /** Ref that works for both <input> and <textarea> */
+    /** Ref that works for <input>, <textarea>, and contenteditable <div> */
     ref: (instance: TextElement | null) => void;
     onMouseDown: (e: React.MouseEvent<TextElement>) => void;
     onFocus: (e: React.FocusEvent<TextElement>) => void;
     onBlur: (e: React.FocusEvent<TextElement>) => void;
+    skipCursorRestoration?: React.MutableRefObject<boolean>;
   }) => React.ReactNode;
   containerClassName?: string;
   maxMentionDropdownWidth?: number | string; // e.g., 420
   mentionPlaceholder?: string;
+  isContentEditable?: boolean;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -45,10 +47,12 @@ export const MentionsWrapper: React.FC<MentionsWrapperProps> = ({
   containerClassName = "",
   maxMentionDropdownWidth = 420,
   mentionPlaceholder = "Search users...",
+  isContentEditable = false,
 }) => {
   /* Refs – union type is preserved for the whole lifetime */
   const textareaRef = useRef<TextElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const skipCursorRestorationRef = useRef<boolean>(false);
 
   /* --------------------------------------------------------------- */
   /*   Hook – we assume it is typed to accept the union ref type.   */
@@ -69,6 +73,8 @@ export const MentionsWrapper: React.FC<MentionsWrapperProps> = ({
     containerRef,
     getValue: () => value ?? "",
     setValue: onChange,
+    isContentEditable,
+    skipCursorRestorationRef,
   });
 
   return (
@@ -93,6 +99,7 @@ export const MentionsWrapper: React.FC<MentionsWrapperProps> = ({
         onBlur: apiForTextarea.onBlur as (
           e: React.FocusEvent<TextElement>,
         ) => void,
+        skipCursorRestoration: skipCursorRestorationRef,
       })}
       {/* ---------------------------------------------------------------- */}
       {/*                     Mention dropdown portal                      */}

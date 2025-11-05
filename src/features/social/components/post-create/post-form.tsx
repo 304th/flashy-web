@@ -1,5 +1,5 @@
 import config from "@/config";
-import { useMemo, useRef } from "react";
+import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 
 // UI Components
 import { Form, FormField, FormItem } from "@/components/ui/form";
-import { Textarea } from "@/components/ui/textarea";
+import { ContentEditable } from "@/components/ui/content-editable";
 import { Button } from "@/components/ui/button";
 import { MentionsWrapper } from "@/components/ui/mentions-wrapper";
 
@@ -79,21 +79,6 @@ export const PostForm = ({ onSuccess }: PostFormProps) => {
 
   const { isDragActive, dragHandlers } = useDragAndDrop(handleFilesUpload);
 
-  const highlightedDescription = useMemo(() => {
-    const text = description || "";
-    const parts = text.split(/(@[a-zA-Z0-9_]{1,20})/g);
-
-    return parts.map((part, idx) =>
-      part.startsWith("@") ? (
-        <span key={idx} className="text-blue-500 font-medium">
-          {part}
-        </span>
-      ) : (
-        <span key={idx}>{part}</span>
-      ),
-    );
-  }, [description]);
-
   const handleSubmit = (params: PostFormValues) => {
     createSocialPost.mutate({
       description: params.description,
@@ -115,10 +100,7 @@ export const PostForm = ({ onSuccess }: PostFormProps) => {
         className="flex flex-col w-full gap-2"
       >
         <DragDropArea isDragActive={isDragActive} dragHandlers={dragHandlers}>
-          <DescriptionField
-            highlightedDescription={highlightedDescription}
-            isDragActive={isDragActive}
-          />
+          <DescriptionField isDragActive={isDragActive} />
         </DragDropArea>
 
         <LinkPreviewsSection
@@ -201,22 +183,14 @@ const DragDropArea = ({
 };
 
 interface DescriptionFieldProps {
-  highlightedDescription: React.ReactNode;
   isDragActive: boolean;
 }
 
-const DescriptionField = ({
-  highlightedDescription,
-  isDragActive,
-}: DescriptionFieldProps) => {
-  const overlayClassName = `pointer-events-none absolute inset-0 z-1
-    rounded-md px-3 py-2 whitespace-pre-wrap break-words
-    text-[inherit] leading-[inherit] font-[inherit]`;
-
-  const textareaClassName = `min-h-[120px] shadow-none
+const DescriptionField = ({ isDragActive }: DescriptionFieldProps) => {
+  const contentEditableClassName = `min-h-[120px] shadow-none
     focus-visible:ring-0 focus-visible:ring-offset-0
     transition-colors duration-150 ${
-      isDragActive ? "pointer-events-none" : "border-base-400 bg-transparent"
+      isDragActive ? "pointer-events-none" : "border-base-400"
     }`;
 
   return (
@@ -225,37 +199,33 @@ const DescriptionField = ({
       render={(props) => (
         <motion.div variants={defaultVariants.child}>
           <FormItem className="m-0 p-0">
-            <div className="relative">
-              <div aria-hidden className={overlayClassName}>
-                {highlightedDescription}
-              </div>
-              <MentionsWrapper
-                value={props.field.value ?? ""}
-                onChange={(val) => props.field.onChange(val)}
-                containerClassName=""
-              >
-                {(mentionsProps) => (
-                  <Textarea
-                    maxLength={config.content.social.maxLength}
-                    placeholder="What ya thinking..."
-                    noHover={isDragActive}
-                    {...props.field}
-                    ref={(el) => {
-                      mentionsProps.ref(el);
-                      if (typeof props.field.ref === "function") {
-                        props.field.ref(el);
-                      }
-                    }}
-                    onChange={(e) => props.field.onChange(e)}
-                    onMouseDown={mentionsProps.onMouseDown}
-                    onFocus={mentionsProps.onFocus}
-                    onBlur={mentionsProps.onBlur}
-                    className={textareaClassName}
-                    style={{ color: "transparent", caretColor: "white" }}
-                  />
-                )}
-              </MentionsWrapper>
-            </div>
+            <MentionsWrapper
+              value={props.field.value ?? ""}
+              onChange={(val) => props.field.onChange(val)}
+              containerClassName=""
+              isContentEditable={true}
+            >
+              {(mentionsProps) => (
+                <ContentEditable
+                  maxLength={config.content.social.maxLength}
+                  placeholder="What ya thinking..."
+                  noHover={isDragActive}
+                  value={props.field.value ?? ""}
+                  onChange={(val) => props.field.onChange(val)}
+                  ref={(el) => {
+                    mentionsProps.ref(el);
+                    if (typeof props.field.ref === "function") {
+                      props.field.ref(el);
+                    }
+                  }}
+                  onMouseDown={mentionsProps.onMouseDown}
+                  onFocus={mentionsProps.onFocus}
+                  onBlur={mentionsProps.onBlur}
+                  skipCursorRestoration={mentionsProps.skipCursorRestoration}
+                  className={contentEditableClassName}
+                />
+              )}
+            </MentionsWrapper>
           </FormItem>
         </motion.div>
       )}

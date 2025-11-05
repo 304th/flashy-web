@@ -1,15 +1,17 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, type RefObject } from "react";
-import { api } from "@/services/api";
+import { useUsersSearchByUsername } from "@/features/common/queries/use-users-search-by-username";
 
-type TextElement = HTMLInputElement | HTMLTextAreaElement;
+type TextElement = HTMLInputElement | HTMLTextAreaElement | HTMLDivElement;
 
 export interface UseMentionsOptions {
   textareaRef: RefObject<TextElement | null>;
   containerRef: RefObject<HTMLDivElement | null>;
   getValue: () => string;
   setValue: (next: string) => void;
+  isContentEditable?: boolean;
+  skipCursorRestorationRef?: RefObject<boolean>;
 }
 
 export const useMentions = ({
@@ -17,11 +19,12 @@ export const useMentions = ({
   containerRef,
   getValue,
   setValue,
+  isContentEditable = false,
+  skipCursorRestorationRef,
 }: UseMentionsOptions) => {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState<User[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [debouncedQuery, setDebouncedQuery] = useState("");
   const [position, setPosition] = useState<{ left: number; top: number }>({
     left: 0,
     top: 0,
@@ -31,15 +34,87 @@ export const useMentions = ({
   const [isFocused, setIsFocused] = useState(false);
   const suppressNextOpenRef = useRef(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
-  const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => setPortalReady(true), []);
+
+  // Debounce the search query
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setDebouncedQuery(query.trim());
+    }, 250);
+    return () => clearTimeout(timeout);
+  }, [query]);
+
+  // Use the dedicated user search hook
+  const [users, searchQuery] = useUsersSearchByUsername(
+    open && debouncedQuery ? debouncedQuery : undefined,
+  );
+  const results = useMemo(() => users || [], [users]);
+  const loading = Boolean(searchQuery?.isFetching);
+
+  const getCaretPosition = (): number => {
+    const el = textareaRef.current;
+    if (!el) return 0;
+
+    if (isContentEditable) {
+      const selection = window.getSelection();
+      if (!selection || selection.rangeCount === 0) return 0;
+
+      const range = selection.getRangeAt(0);
+      const preCaretRange = range.cloneRange();
+      preCaretRange.selectNodeContents(el);
+      preCaretRange.setEnd(range.endContainer, range.endOffset);
+      return preCaretRange.toString().length;
+    } else {
+      return (el as HTMLInputElement | HTMLTextAreaElement).selectionStart ?? 0;
+    }
+  };
+
+  const setCaretPosition = (position: number) => {
+    const el = textareaRef.current;
+    if (!el) return;
+
+    if (isContentEditable) {
+      const selection = window.getSelection();
+      if (!selection) return;
+
+      let currentPos = 0;
+
+      const traverseNodes = (node: Node): boolean => {
+        if (node.nodeType === Node.TEXT_NODE) {
+          const textLength = node.textContent?.length || 0;
+          if (currentPos + textLength >= position) {
+            const offset = position - currentPos;
+            const range = document.createRange();
+            range.setStart(node, Math.min(offset, textLength));
+            range.collapse(true);
+            selection.removeAllRanges();
+            selection.addRange(range);
+            return true;
+          }
+          currentPos += textLength;
+        } else if (node.nodeType === Node.ELEMENT_NODE) {
+          for (const child of Array.from(node.childNodes)) {
+            if (traverseNodes(child)) return true;
+          }
+        }
+        return false;
+      };
+
+      traverseNodes(el);
+    } else {
+      (el as HTMLInputElement | HTMLTextAreaElement).setSelectionRange(
+        position,
+        position,
+      );
+    }
+  };
 
   const currentMention = useMemo(() => {
     const el = textareaRef.current;
     const value = getValue() || "";
     if (!el) return null;
-    const caret = el.selectionStart ?? value.length;
+    const caret = getCaretPosition();
     const before = value.substring(0, caret);
     const lastSpace = Math.max(
       before.lastIndexOf(" "),
@@ -47,23 +122,43 @@ export const useMentions = ({
       before.lastIndexOf("\t"),
     );
     const segment = before.substring(lastSpace + 1);
-    const match = segment.match(/^@([a-zA-Z0-9_]{1,20})$/);
+    const match = segment.match(/^@([a-zA-Z0-9_]{1,50})$/);
     if (!match) return null;
     const start = caret - segment.length;
     const end = caret;
     return { query: match[1], start, end } as const;
-  }, [getValue(), textareaRef.current?.selectionStart]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [getValue(), isContentEditable]);
 
   const computeCaretPosition = (index?: number) => {
     const ta = textareaRef.current;
     if (!ta) return { left: 8, top: 28 };
 
+    if (isContentEditable) {
+      const selection = window.getSelection();
+      if (!selection || selection.rangeCount === 0) {
+        const rect = ta.getBoundingClientRect();
+        return { left: rect.left + 8, top: rect.top + 28 };
+      }
+
+      const range = selection.getRangeAt(0);
+      const rect = range.getBoundingClientRect();
+      const taRect = ta.getBoundingClientRect();
+      const style = window.getComputedStyle(ta);
+      const lineHeight = parseFloat(style.lineHeight || "20");
+
+      return {
+        left: rect.left || taRect.left + 8,
+        top: rect.bottom || taRect.top + (isFinite(lineHeight) ? lineHeight : 20),
+      };
+    }
+
     const style = window.getComputedStyle(ta);
     const div = document.createElement("div");
     const span = document.createElement("span");
     const caret = document.createElement("span");
-    const value = ta.value;
-    const caretIndex = index ?? ta.selectionStart ?? value.length;
+    const value = (ta as HTMLInputElement | HTMLTextAreaElement).value;
+    const caretIndex = index ?? (ta as HTMLInputElement | HTMLTextAreaElement).selectionStart ?? value.length;
 
     const properties = [
       "boxSizing",
@@ -129,7 +224,10 @@ export const useMentions = ({
 
     if (!open) {
       if (suppressNextOpenRef.current) {
-        suppressNextOpenRef.current = false;
+        // Don't clear the flag immediately - wait a bit to handle multiple effect runs
+        setTimeout(() => {
+          suppressNextOpenRef.current = false;
+        }, 100);
         return;
       }
 
@@ -154,7 +252,7 @@ export const useMentions = ({
         return;
       }
 
-      const caret = el.selectionStart ?? value.length;
+      const caret = getCaretPosition();
 
       if (
         anchorStart >= value.length ||
@@ -169,7 +267,7 @@ export const useMentions = ({
       const token = value.slice(anchorStart, caret);
       const tokenBody = token.slice(1);
 
-      if (/^[a-zA-Z0-9_]{0,20}$/.test(tokenBody)) {
+      if (/^[a-zA-Z0-9_]{0,50}$/.test(tokenBody)) {
         setQuery(tokenBody);
       } else {
         close();
@@ -177,7 +275,7 @@ export const useMentions = ({
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [getValue(), textareaRef.current?.selectionStart, isFocused]);
+  }, [getValue(), isFocused]);
 
   useEffect(() => {
     if (!open) {
@@ -203,29 +301,6 @@ export const useMentions = ({
     };
   }, [open, anchorStart]);
 
-  useEffect(() => {
-    if (!open) {
-      return;
-    }
-
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current);
-    }
-
-    debounceRef.current = setTimeout(async () => {
-      try {
-        setLoading(true);
-        const users = await api
-          .get("users/search", { searchParams: { username: query } })
-          .json<User[]>();
-        setResults(users || []);
-      } catch (e) {
-        setResults([]);
-      } finally {
-        setLoading(false);
-      }
-    }, 250);
-  }, [open, query]);
 
   useEffect(() => {
     if (!open) {
@@ -266,8 +341,7 @@ export const useMentions = ({
   const close = () => {
     setOpen(false);
     setQuery("");
-    setResults([]);
-    setLoading(false);
+    setDebouncedQuery("");
   };
 
   const handleSelect = (user: Partial<User>) => {
@@ -278,19 +352,53 @@ export const useMentions = ({
       return;
     }
 
-    const caret = el.selectionStart ?? value.length;
+    const caret = getCaretPosition();
     const start = anchorStart ?? caret;
     const nextValue =
       value.slice(0, start) + `@${user.username} ` + value.slice(caret);
+
+    // Close and suppress reopening before updating value
+    close();
+    setAnchorStart(null);
+    suppressNextOpenRef.current = true;
+
+    // Tell ContentEditable to skip cursor restoration
+    if (skipCursorRestorationRef?.current !== undefined) {
+      skipCursorRestorationRef.current = true;
+    }
+
     setValue(nextValue);
     const newCaret = (value.slice(0, start) + `@${user.username} `).length;
 
+    // Use double RAF to ensure this runs after all React updates and effects
     requestAnimationFrame(() => {
-      el.focus();
-      el.setSelectionRange(newCaret, newCaret);
+      requestAnimationFrame(() => {
+        if (document.activeElement !== el) {
+          el.focus();
+        }
+
+        // For contenteditable, use Selection API directly
+        if (isContentEditable) {
+          const selection = window.getSelection();
+          if (!selection) return;
+
+          // Find the text node and set cursor at exact position
+          const textNode = el.firstChild;
+
+          if (textNode && textNode.nodeType === Node.TEXT_NODE) {
+            const range = document.createRange();
+            const textLength = textNode.textContent?.length || 0;
+            const safePosition = Math.min(newCaret, textLength);
+            range.setStart(textNode, safePosition);
+            range.collapse(true);
+            selection.removeAllRanges();
+            selection.addRange(range);
+          }
+        } else {
+          setCaretPosition(newCaret);
+        }
+      });
     });
-    close();
-    setAnchorStart(null);
   };
 
   const apiForTextarea = {

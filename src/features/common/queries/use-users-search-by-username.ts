@@ -17,6 +17,7 @@ export const useUsersSearchByUsername = (
     },
     Boolean(username),
     {
+      staleTime: 2 * 60 * 1000,
       select: (foundUsers: TODO) => {
         return options.hideMyself
           ? foundUsers.filter((foundUser: TODO) => foundUser.fbId !== me?.fbId)

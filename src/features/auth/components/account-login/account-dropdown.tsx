@@ -22,6 +22,11 @@ import { useLogout } from "@/features/auth/queries/use-logout";
 import { usePathnameChangedEffect } from "@/hooks/use-pathname-changed-effect";
 import { useModals } from "@/hooks/use-modals";
 import { UserProfile } from "@/components/ui/user-profile";
+import { ChannelIcon } from "@/components/ui/icons/channel";
+import { ChannelVideosIcon } from "@/components/ui/icons/channel-videos";
+import { ChannelWalletIcon } from "@/components/ui/icons/channel-wallet";
+import { ChannelSettingsIcon } from "@/components/ui/icons/channel-settings";
+import {ChannelLogoutIcon} from "@/components/ui/icons/channel-logout";
 
 export const AccountDropdown = () => {
   const { data: me } = useMe();
@@ -65,34 +70,34 @@ export const AccountDropdown = () => {
           </div>
           <DropdownMenuGroup>
             <Link href="/profile/social">
-              <DropdownMenuItem>
+              <DropdownMenuItem className="[&_svg:not([class*='size-'])]:size-6">
                 <div className="flex items-center gap-2 p-1">
-                  <UserIcon />
-                  <p>Channel</p>
+                  <ChannelIcon />
+                  <p className="text-white">Channel</p>
                 </div>
               </DropdownMenuItem>
             </Link>
             <Link href="/profile/video">
-              <DropdownMenuItem>
+              <DropdownMenuItem className="[&_svg:not([class*='size-'])]:size-6">
                 <div className="flex items-center gap-2 p-1">
-                  <VideoIcon />
-                  <p>My Videos</p>
+                  <ChannelVideosIcon />
+                  <p className="text-white">My Videos</p>
                 </div>
               </DropdownMenuItem>
             </Link>
-            <Link href="/profile/playlists">
-              <DropdownMenuItem>
-                <div className="flex items-center gap-2 p-1">
-                  <PlayIcon />
-                  <p>My Playlists</p>
-                </div>
-              </DropdownMenuItem>
-            </Link>
+            {/*<Link href="/profile/playlists">*/}
+            {/*  <DropdownMenuItem>*/}
+            {/*    <div className="flex items-center gap-2 p-1">*/}
+            {/*      <PlayIcon />*/}
+            {/*      <p>My Playlists</p>*/}
+            {/*    </div>*/}
+            {/*  </DropdownMenuItem>*/}
+            {/*</Link>*/}
             <Link href="/profile/wallet">
-              <DropdownMenuItem>
+              <DropdownMenuItem className="[&_svg:not([class*='size-'])]:size-6">
                 <div className="flex items-center gap-2 p-1">
-                  <WalletIcon />
-                  <p>My Wallet</p>
+                  <ChannelWalletIcon />
+                  <p className="text-white">My Wallet</p>
                 </div>
               </DropdownMenuItem>
             </Link>
@@ -103,10 +108,11 @@ export const AccountDropdown = () => {
               openModal("ProfileSettingsModal");
               setOpen(false);
             }}
+            className="[&_svg:not([class*='size-'])]:size-6"
           >
             <div className="flex items-center gap-2 p-1">
-              <SettingsIcon />
-              Settings
+              <ChannelSettingsIcon />
+              <p className="text-white">Settings</p>
             </div>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
@@ -116,10 +122,11 @@ export const AccountDropdown = () => {
                 onSuccess: () => setOpen(false),
               })
             }
+            className="[&_svg:not([class*='size-'])]:size-6"
           >
             <div className="flex items-center gap-2 p-1">
-              <LogOutIcon />
-              Log out
+              <ChannelLogoutIcon />
+              <p className='text-white'>Log out</p>
             </div>
           </DropdownMenuItem>
         </DropdownMenuContent>

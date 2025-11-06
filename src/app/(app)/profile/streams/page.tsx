@@ -1,10 +1,10 @@
 "use client";
 
-import { PlusIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { StreamList } from "@/features/streams/components/stream-list/stream-list";
+import { StreamIcon } from "@/components/ui/icons/stream";
 import { useModals } from "@/hooks/use-modals";
 import { useMe } from "@/features/auth/queries/use-me";
-import { StreamList } from "@/features/streams/components/stream-list/stream-list";
 
 export default function ProfileStreamsPage() {
   const { openModal } = useModals();
@@ -19,13 +19,12 @@ export default function ProfileStreamsPage() {
       <div className="flex w-full justify-start gap-2">
         <Button
           variant="secondary"
-          onClick={() => openModal("StreamCreateModal")}
+          onClick={() => openModal("GoLiveModal")}
         >
-          <PlusIcon />
-          Create a stream
+          <StreamIcon />
+          Go Live
         </Button>
       </div>
-
       <StreamList userId={currentUser.fbId} showActions={true} />
     </div>
   );

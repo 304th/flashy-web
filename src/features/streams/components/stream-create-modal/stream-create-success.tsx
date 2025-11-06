@@ -25,8 +25,7 @@ export const StreamCreateSuccess = ({
     <div className="space-y-6">
       <div className="rounded-lg bg-green-50 p-4 dark:bg-green-900/20">
         <p className="text-sm text-green-800 dark:text-green-200">
-          Your stream has been created successfully! Use the credentials below to
-          start streaming with OBS or your preferred streaming software.
+          Your stream is ready! Use these credentials to connect your streaming software (OBS, Streamlabs, etc.) and start broadcasting.
         </p>
       </div>
 
@@ -108,15 +107,21 @@ export const StreamCreateSuccess = ({
 
       <div className="rounded-lg bg-blue-50 p-4 dark:bg-blue-900/20">
         <p className="text-sm font-medium text-blue-800 dark:text-blue-200 mb-2">
-          How to use these credentials:
+          Next steps:
         </p>
         <ol className="list-decimal list-inside space-y-1 text-sm text-blue-700 dark:text-blue-300">
           <li>Open your streaming software (OBS, Streamlabs, etc.)</li>
           <li>Go to Settings → Stream</li>
-          <li>Paste the RTMP URL in the Server field</li>
-          <li>Paste the Stream Key in the Stream Key field</li>
-          <li>Click "Start Streaming" when you're ready!</li>
+          <li>Paste the RTMP URL and Stream Key</li>
+          <li>Start streaming in your software</li>
+          <li>Come back here and click "Go Live" to make your stream visible</li>
         </ol>
+      </div>
+
+      <div className="rounded-lg bg-yellow-50 p-3 dark:bg-yellow-900/20">
+        <p className="text-xs text-yellow-800 dark:text-yellow-200">
+          Note: You can only have one active stream at a time. End or delete this stream before creating another.
+        </p>
       </div>
 
       <div className="flex justify-end gap-3 pt-4">

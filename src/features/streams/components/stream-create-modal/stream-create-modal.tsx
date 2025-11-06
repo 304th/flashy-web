@@ -82,7 +82,10 @@ export const StreamCreateModal = ({ onClose }: StreamCreateModalProps) => {
             <CloseButton />
           </div>
           <div className="flex flex-col w-full justify-center">
-            <p className="text-2xl font-extrabold text-white">{step === "details" ? "Create Stream" : "Stream Created!"}</p>
+            <p className="text-2xl font-extrabold text-white">{step === "details" ? "Prepare to Stream" : "Stream Ready!"}</p>
+            {step === "details" && (
+              <p className="text-sm text-base-content/70 mt-1">Set up your stream details and get your RTMP credentials</p>
+            )}
           </div>
         </div>
         <AnimatePresence mode="wait">

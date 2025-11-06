@@ -92,6 +92,7 @@ import {
   StreamSettingsModal,
   StreamSettingsModalProps,
 } from "@/features/streams/components/stream-settings-modal/stream-settings-modal";
+import { GoLiveModal, type GoLiveModalProps } from "@/features/streams/components/go-live-modal/go-live-modal";
 
 const modalsConfig = {
   LoginModal,
@@ -115,6 +116,7 @@ const modalsConfig = {
   ConversationCreateModal,
   MagicLinkVerificationModal,
   StreamCreateModal,
+  GoLiveModal,
   StreamKeyModal,
   StreamSettingsModal,
 };
@@ -211,7 +213,11 @@ export type ModalPropsTypes =
   | {
       type: "StreamSettingsModal";
       props: StreamSettingsModalProps;
-    };
+    }
+    | {
+  type: "GoLiveModal";
+  props: GoLiveModalProps;
+};
 
 export const ModalsProvider = ({ children }: PropsWithChildren<object>) => (
   <ModalCenterProvider config={modalsConfig}>

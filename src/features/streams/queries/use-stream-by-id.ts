@@ -1,7 +1,13 @@
-import { api } from "@/services/api";
-import { getQuery } from "@/lib/query-toolkit-v2";
+import { useLiveEntity } from "@/lib/query-toolkit-v2";
+import { streamEntity } from "@/features/streams/entities/stream.entity";
 
-export const useStreamById = (streamId: string) =>
-  getQuery<Stream>(["streams", streamId], async () => {
-    return api.get(`streaming/${streamId}`).json<Stream>();
+export const useStreamById = (id: string) => {
+  return useLiveEntity<Stream, { id: string }>({
+    entity: streamEntity,
+    queryKey: ["streams", id],
+    getParams: () => ({ id }),
+    options: {
+      enabled: Boolean(id),
+    },
   });
+};

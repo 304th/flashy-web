@@ -189,6 +189,7 @@ export const HeaderUserSearch = () => {
   return (
     <div ref={containerRef} className="relative w-full max-w-[420px]">
       <Input
+        type="text"
         placeholder="Search users..."
         value={value}
         onChange={(e) => setValue(e.target.value)}

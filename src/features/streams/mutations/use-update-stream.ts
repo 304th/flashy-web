@@ -1,7 +1,7 @@
 import { toast } from "sonner";
 import { api } from "@/services/api";
 import { createMutation, useOptimisticMutation } from "@/lib/query-toolkit-v2";
-import { profileStreamsCollection } from "@/features/profile/entities/profile-streams.collection";
+import { profileStreamEntity } from "@/features/profile/entities/profile-stream.entity";
 
 export interface UpdateStreamParams {
   streamId: string;
@@ -27,7 +27,7 @@ export const useUpdateStream = () => {
   return useOptimisticMutation({
     mutation: streamUpdateMutation,
     onOptimistic: async (ch, params) => {
-      return ch(profileStreamsCollection).update(params.streamId, (stream) => {
+      return ch(profileStreamEntity).update((stream) => {
         if (params.title) stream.title = params.title;
         if (params.description !== undefined) stream.description = params.description;
         if (params.thumbnail) stream.thumbnail = params.thumbnail;

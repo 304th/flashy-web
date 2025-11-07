@@ -26,6 +26,7 @@ export const Modal = ({
   const ignoreList = useRef<Element[]>([]);
 
   useOutsideAction(ref, () => {
+    console.log(onClose)
     if (leaf) {
       onClose?.();
     }

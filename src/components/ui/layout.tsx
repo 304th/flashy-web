@@ -8,7 +8,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
       <Header />
       <div className="relative max-w-content z-0">
         <Sidebar />
-        <div className="flex flex-col p-4 ml-[60px]">{children}</div>
+        <div className="flex flex-col p-4 ml-[70px]">{children}</div>
       </div>
     </>
   );

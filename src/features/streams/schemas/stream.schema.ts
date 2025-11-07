@@ -2,7 +2,7 @@ import { nanoid } from "nanoid";
 
 class StreamSchema implements StaticSchema<Stream> {
   getId(): keyof Stream {
-    return "id";
+    return "_id";
   }
 
   createEntityFromParams(params: Partial<Stream>): Stream {
@@ -10,7 +10,7 @@ class StreamSchema implements StaticSchema<Stream> {
     const now = new Date().toISOString();
 
     return {
-      id,
+      _id: id,
       title: "",
       description: "",
       thumbnail: "",

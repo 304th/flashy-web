@@ -1,7 +1,7 @@
 "use client";
 
 import { PropsWithChildren, ReactNode, useState } from "react";
-import { HouseIcon, TvIcon, NotebookIcon } from "lucide-react";
+import { HouseIcon, TvIcon, NotebookIcon, Radio } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
@@ -15,19 +15,22 @@ export const Sidebar = () => {
 
   return (
     <div
-      className={`fixed flex justify-center py-4 transition w-[60px] h-screen
+      className={`fixed flex justify-center py-4 transition w-[70px] h-screen
         z-0`}
       onMouseEnter={() => setExpanded(true)}
       onMouseLeave={() => setExpanded(false)}
     >
       <div className="flex flex-col w-full items-center gap-2">
-        <NavItem route="/" icon={<HouseIcon size={16} />}>
+        <NavItem route="/" icon={<HouseIcon size={18} />}>
           Home
         </NavItem>
-        <NavItem route="/video" icon={<TvIcon size={16} />}>
+        <NavItem route="/stream" icon={<Radio size={18} />}>
+          Streams
+        </NavItem>
+        <NavItem route="/video" icon={<TvIcon size={18} />}>
           Video
         </NavItem>
-        <NavItem route="/social" icon={<NotebookIcon size={16} />}>
+        <NavItem route="/social" icon={<NotebookIcon size={18} />}>
           Social
         </NavItem>
       </div>

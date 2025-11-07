@@ -67,7 +67,7 @@ declare global {
   type StreamStatus = "scheduled" | "live" | "ended" | "cancelled";
 
   interface Stream {
-    id: string;
+    _id: string;
     title: string;
     description: string;
     thumbnail: string;

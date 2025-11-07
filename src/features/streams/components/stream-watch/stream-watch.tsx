@@ -29,7 +29,7 @@ export const StreamWatch = ({ stream }: { stream: Stream }) => {
     <div className="flex flex-col w-full gap-4">
       <div className="relative">
         <StreamPlayer
-          key={stream.id}
+          key={stream._id}
           videoId={stream.externalStreamId}
           isLive={stream.isLive}
           autoplay={true}

@@ -8,7 +8,7 @@ import { useStreamById } from "@/features/streams/queries/use-stream-by-id";
 
 export default function StreamPage() {
   const id = useQueryParams("id");
-  const [stream, query] = useStreamById(id!);
+  const { data: stream, query } = useStreamById(id!);
 
   if (!id) {
     return <StreamNotFound />;
@@ -21,7 +21,7 @@ export default function StreamPage() {
     >
       {() =>
         stream ? (
-          <StreamWatch key={stream.id} stream={stream} />
+          <StreamWatch key={stream._id} stream={stream} />
         ) : (
           <StreamNotFound />
         )

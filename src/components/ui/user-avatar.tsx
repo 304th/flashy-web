@@ -1,14 +1,16 @@
-import { type HTMLAttributes, useState } from "react";
+import { type HTMLAttributes, useState, type ReactNode } from "react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 export interface UserAvatarProps {
   avatar?: string;
   className?: string;
+  children?: ReactNode;
 }
 
 export const UserAvatar = ({
   avatar,
   className,
+  children,
   ...props
 }: UserAvatarProps & HTMLAttributes<HTMLDivElement>) => {
   const [imageError, setImageError] = useState(false);
@@ -17,9 +19,9 @@ export const UserAvatar = ({
     setImageError(true);
   };
 
-  return (
+  return <div className="relative flex">
     <Avatar
-      className={`cursor-pointer user-select-none ${className}`}
+      className={`relative cursor-pointer user-select-none ${className}`}
       {...props}
     >
       {avatar && !imageError && (
@@ -38,5 +40,7 @@ export const UserAvatar = ({
         />
       </AvatarFallback>
     </Avatar>
-  );
+    {children}
+
+  </div>
 };

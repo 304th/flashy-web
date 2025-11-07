@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { channel } from "@/lib/query-toolkit-v2";
 import { liveStreamsCollection } from "@/features/streams/entities/live-streams.collection";
+import { profileStreamEntity } from "@/features/profile/entities/profile-stream.entity";
 import { streamsWebSocket } from "@/features/streams/services/streams-websocket";
 
 /**
@@ -9,10 +10,21 @@ import { streamsWebSocket } from "@/features/streams/services/streams-websocket"
  */
 export const useStreamsLiveUpdates = () => {
   useEffect(() => {
-    return streamsWebSocket.subscribe((stream) => {
-      console.log("stream_updates", stream);
+    const unsubscribe = streamsWebSocket.subscribe((stream) => {
       void channel(liveStreamsCollection).prepend(stream);
+      void channel(profileStreamEntity).update((profileStream) => {
+        if (profileStream._id === stream._id) {
+          profileStream.isLive = stream.isLive;
+          profileStream.status = stream.status;
+          profileStream.startedAt = stream.startedAt;
+          profileStream.endedAt = stream.endedAt;
+        }
+      })
     });
+
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   return {

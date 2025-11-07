@@ -8,9 +8,9 @@ import { useMe } from "@/features/auth/queries/use-me";
 
 export default function ProfileStreamsPage() {
   const { openModal } = useModals();
-  const { data: currentUser } = useMe();
+  const { data: me } = useMe();
 
-  if (!currentUser) {
+  if (!me) {
     return null;
   }
 
@@ -25,7 +25,7 @@ export default function ProfileStreamsPage() {
           Go Live
         </Button>
       </div>
-      <StreamList userId={currentUser.fbId} showActions={true} />
+      <StreamList />
     </div>
   );
 }

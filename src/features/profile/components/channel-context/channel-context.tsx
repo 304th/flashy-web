@@ -5,6 +5,7 @@ interface ChannelContextType {
   channelId?: string;
   channel?: User;
   channelQuery: UseQueryResult<User>;
+  stream?: Stream;
 }
 
 const ChannelContext = createContext<ChannelContextType>({} as any);
@@ -23,6 +24,7 @@ export const ChannelContextProvider = ({
   channelId,
   channel,
   channelQuery,
+  stream,
   children,
 }: PropsWithChildren<ChannelContextType>) => {
   return (
@@ -31,6 +33,7 @@ export const ChannelContextProvider = ({
         channelId,
         channel,
         channelQuery,
+        stream,
       }}
     >
       {children}

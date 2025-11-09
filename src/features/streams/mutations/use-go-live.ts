@@ -9,9 +9,7 @@ export interface GoLiveParams {
 
 const goLiveMutation = createMutation<GoLiveParams, Stream>({
   write: async (params) => {
-    return api
-      .post(`streaming/${params.streamId}/go-live`, {})
-      .json<Stream>();
+    return api.post(`streaming/${params.streamId}/go-live`, {}).json<Stream>();
   },
 });
 

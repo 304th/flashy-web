@@ -37,7 +37,7 @@ export const useSendChatMessage = () => {
         message: params.message,
       };
 
-      return ch(streamChatCollection).append(optimisticMessage, {
+      return ch(streamChatCollection).prepend(optimisticMessage, {
         sync: true,
       });
     },

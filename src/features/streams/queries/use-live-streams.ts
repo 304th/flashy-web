@@ -3,7 +3,7 @@ import { liveStreamsCollection } from "@/features/streams/entities/live-streams.
 
 export const useLiveStreams = () => {
   return usePartitionedQuery({
-    queryKey: ['streams', 'live'],
+    queryKey: ["streams", "live"],
     collection: liveStreamsCollection,
-  })
-}
+  });
+};

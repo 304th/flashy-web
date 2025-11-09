@@ -4,7 +4,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Modal as ModalComponent } from "@/packages/modals";
 import { CloseButton } from "@/components/ui/close-button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -75,7 +82,10 @@ export const StreamSettingsModal = ({
         <h2 className="mb-6 text-2xl font-bold">Stream Settings</h2>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="space-y-4"
+          >
             <FormField
               control={form.control}
               name="title"
@@ -140,7 +150,10 @@ export const StreamSettingsModal = ({
               control={form.control}
               name="chatEnabled"
               render={({ field }) => (
-                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                <FormItem
+                  className="flex flex-row items-center justify-between
+                    rounded-lg border p-4"
+                >
                   <div className="space-y-0.5">
                     <FormLabel className="text-base">Enable Chat</FormLabel>
                     <p className="text-sm text-muted-foreground">

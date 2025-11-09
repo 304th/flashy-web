@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import {useStreamsLiveUpdates} from "@/features/streams/hooks/use-streams-live-updates";
+import { useStreamsLiveUpdates } from "@/features/streams/hooks/use-streams-live-updates";
 
 export const LiveEventsProvider = () => {
   useStreamsLiveUpdates();
 
   return null;
-}
+};

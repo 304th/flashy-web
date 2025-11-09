@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { LiveTag } from "@/components/ui/live-tag";
 import { UserAvatar } from "@/components/ui/user-avatar";
 import { UserBadge } from "@/components/ui/user-badge";
 import { useMe } from "@/features/auth/queries/use-me";
@@ -36,10 +36,12 @@ export const UserProfile = ({
   if (isLinkable) {
     return (
       <Link
-        href={stream && stream.isLive ? `/stream/post?id=${stream._id}` :
-          user?.fbId === me?.fbId
-            ? `/profile/social`
-            :  `/channel/social?id=${user?.fbId}`
+        href={
+          stream && stream.isLive
+            ? `/stream/post?id=${stream._id}`
+            : user?.fbId === me?.fbId
+              ? `/profile/social`
+              : `/channel/social?id=${user?.fbId}`
         }
         className={`hover:bg-accent-alpha-lightest transition rounded-md gap-2 p-1 ${className}`}
       >
@@ -79,20 +81,22 @@ const BaseUserProfile = ({
   avatarClassname,
   children,
 }: PropsWithChildren<UserProfileProps>) => (
-  <div className={`relative flex items-center gap-2 p-[2px] ${className}`}>
+  <div
+    className={`relative flex items-center gap-2 p-[2px] ${className}
+      aspect-square`}
+  >
     <UserAvatar
       avatar={user.userimage}
-      className={`size-8 ${avatarClassname} ${isLive ? 'border-3 border-red-600' : ''}`}
+      className={`size-8 ${avatarClassname}
+        ${isLive ? "border-3 border-red-600" : ""}`}
     >
-      {
-        isLive && <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="absolute flex justify-center items-center bg-red-600 -bottom-1 left-1/2 -translate-x-1/2 px-2 w-[50px] rounded-md">
-          <p className="font-medium text-white">Live</p>
-        </motion.div>
-      }
+      {isLive && (
+        <LiveTag className="absolute -bottom-1 left-1/2 -translate-x-1/2" />
+      )}
     </UserAvatar>
-    <div className="flex flex-col gap-1">
-      {withoutUsername ? null : (
-        <div className="flex items-center gap-1">
+    {withoutUsername ? null : (
+      <div className="flex flex-col gap-1">
+        <div className="flex items-center gap-1 aspect-square">
           <p
             className={`text-white font-bold text-base
               ${truncateUsername ? "max-w-[220px] ellipsis" : ""}`}
@@ -101,8 +105,8 @@ const BaseUserProfile = ({
           </p>
           <UserBadge user={user} />
         </div>
-      )}
-      {children}
-    </div>
+        {children}
+      </div>
+    )}
   </div>
 );

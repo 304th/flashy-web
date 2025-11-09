@@ -66,11 +66,7 @@ export const StreamFormDetails = ({
           <FormItem>
             <FormLabel>Schedule Stream (Optional)</FormLabel>
             <FormControl>
-              <Input
-                type="datetime-local"
-                {...field}
-                disabled={isSubmitting}
-              />
+              <Input type="datetime-local" {...field} disabled={isSubmitting} />
             </FormControl>
             <FormMessage />
             <p className="text-sm text-muted-foreground">
@@ -84,7 +80,10 @@ export const StreamFormDetails = ({
         control={form.control}
         name="chatEnabled"
         render={({ field }) => (
-          <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+          <FormItem
+            className="flex flex-row items-center justify-between rounded-lg
+              border p-4"
+          >
             <div className="space-y-0.5">
               <FormLabel className="text-base">Enable Chat</FormLabel>
               <p className="text-sm text-muted-foreground">

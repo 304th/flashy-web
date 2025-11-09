@@ -26,7 +26,7 @@ import { ChannelIcon } from "@/components/ui/icons/channel";
 import { ChannelVideosIcon } from "@/components/ui/icons/channel-videos";
 import { ChannelWalletIcon } from "@/components/ui/icons/channel-wallet";
 import { ChannelSettingsIcon } from "@/components/ui/icons/channel-settings";
-import {ChannelLogoutIcon} from "@/components/ui/icons/channel-logout";
+import { ChannelLogoutIcon } from "@/components/ui/icons/channel-logout";
 
 export const AccountDropdown = () => {
   const { data: me } = useMe();
@@ -126,7 +126,7 @@ export const AccountDropdown = () => {
           >
             <div className="flex items-center gap-2 p-1">
               <ChannelLogoutIcon />
-              <p className='text-white'>Log out</p>
+              <p className="text-white">Log out</p>
             </div>
           </DropdownMenuItem>
         </DropdownMenuContent>

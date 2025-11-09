@@ -25,7 +25,10 @@ export const ChannelBanner = ({ className }: { className?: string }) => {
           }}
         />
       )}
-      <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/70 to-transparent pointer-events-none" />
+      <div
+        className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t
+          from-black/70 to-transparent pointer-events-none"
+      />
     </motion.div>
   );
 };

@@ -20,7 +20,13 @@ export const ProfileHeaderUserBar = ({ className }: { className?: string }) => {
       <Loadable queries={[channelQuery]}>
         {() =>
           channel ? (
-            <UserProfile user={channel} stream={stream} isLive={stream?.isLive} isLinkable={false} avatarClassname="size-20">
+            <UserProfile
+              user={channel}
+              stream={stream}
+              isLive={stream?.isLive}
+              isLinkable={false}
+              avatarClassname="size-20"
+            >
               <Button
                 variant="secondary"
                 className="w-fit"

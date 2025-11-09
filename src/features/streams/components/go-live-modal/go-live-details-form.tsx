@@ -41,7 +41,7 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>;
 
-export const GoLiveDetailsForm = ({ onClose }: { onClose: () => void; }) => {
+export const GoLiveDetailsForm = ({ onClose }: { onClose: () => void }) => {
   const { data: stream, query } = useProfileStream();
   const updateStream = useUpdateStream();
   const form = useForm<FormData>({
@@ -72,21 +72,24 @@ export const GoLiveDetailsForm = ({ onClose }: { onClose: () => void; }) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(async (params) => {
-        if (!stream) {
-          return;
-        }
+      <form
+        onSubmit={form.handleSubmit(async (params) => {
+          if (!stream) {
+            return;
+          }
 
-        updateStream.mutate({
-          streamId: stream._id,
-          title: params.title,
-          description: params.description || "",
-          chatEnabled: params.chatEnabled,
-          scheduledAt: params.scheduledAt || undefined,
-        });
+          updateStream.mutate({
+            streamId: stream._id,
+            title: params.title,
+            description: params.description || "",
+            chatEnabled: params.chatEnabled,
+            scheduledAt: params.scheduledAt || undefined,
+          });
 
-        onClose();
-      })} className="flex flex-col p-4 gap-4">
+          onClose();
+        })}
+        className="flex flex-col p-4 gap-4"
+      >
         <FormField
           control={form.control}
           name="title"
@@ -94,10 +97,7 @@ export const GoLiveDetailsForm = ({ onClose }: { onClose: () => void; }) => {
             <FormItem>
               <FormLabel>Stream Title *</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="Enter your stream title..."
-                  {...field}
-                />
+                <Input placeholder="Enter your stream title..." {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -144,7 +144,10 @@ export const GoLiveDetailsForm = ({ onClose }: { onClose: () => void; }) => {
           control={form.control}
           name="chatEnabled"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+            <FormItem
+              className="flex flex-row items-center justify-between rounded-lg
+                border p-4"
+            >
               <div className="space-y-0.5">
                 <FormLabel className="text-base">Enable Chat</FormLabel>
                 <p className="text-sm text-muted-foreground">
@@ -171,7 +174,12 @@ export const GoLiveDetailsForm = ({ onClose }: { onClose: () => void; }) => {
           </Button>
           <Button
             type="submit"
-            disabled={!form.formState.isValid || !form.formState.isDirty || updateStream.isPending || !stream}
+            disabled={
+              !form.formState.isValid ||
+              !form.formState.isDirty ||
+              updateStream.isPending ||
+              !stream
+            }
             className="min-w-[120px]"
           >
             Save

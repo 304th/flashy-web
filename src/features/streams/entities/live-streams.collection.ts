@@ -6,4 +6,4 @@ export const liveStreamsCollection = createCollection<Stream>({
   sourceFrom: async () => api.get("streaming/live").json<Stream[]>(),
   schema: streamSchema,
   name: "liveStreams",
-})
+});

@@ -12,7 +12,7 @@ export const useOutsideAction = (
       if (ref && !ref.current?.contains?.(target as Node)) {
         let target = event.target as any;
 
-        if (target.className.includes('overscroll-y-none')) {
+        if (target.className.includes("overscroll-y-none")) {
           return;
         }
 

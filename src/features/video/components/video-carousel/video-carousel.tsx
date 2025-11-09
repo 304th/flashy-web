@@ -25,14 +25,25 @@ export const VideoCarousel = ({
         </Link>
       </div>
       <div className="flex items-center gap-4 w-full overflow-x-auto">
-        <Loadable queries={[query]} fullScreenForDefaults fallback={<Fallback />}>
-          {() => videos && videos?.length > 0 ? videos.map((videoPost: TODO) => (
-              <VideoPost
-                key={videoPost._id}
-                videoPost={videoPost}
-                className="max-w-[300px]"
-              />
-            )): <div className="flex w-full justify-center items-center"><NotFound>Videos not found</NotFound></div>
+        <Loadable
+          queries={[query]}
+          fullScreenForDefaults
+          fallback={<Fallback />}
+        >
+          {() =>
+            videos && videos?.length > 0 ? (
+              videos.map((videoPost: TODO) => (
+                <VideoPost
+                  key={videoPost._id}
+                  videoPost={videoPost}
+                  className="max-w-[300px]"
+                />
+              ))
+            ) : (
+              <div className="flex w-full justify-center items-center">
+                <NotFound>Videos not found</NotFound>
+              </div>
+            )
           }
         </Loadable>
       </div>
@@ -41,10 +52,13 @@ export const VideoCarousel = ({
 };
 
 const Fallback = () => (
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full h-[272px]">
-    <div className="skeleton flex rounded"/>
-    <div className="skeleton flex rounded"/>
-    <div className="skeleton flex rounded"/>
-    <div className="skeleton flex rounded"/>
+  <div
+    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4
+      gap-4 w-full h-[272px]"
+  >
+    <div className="skeleton flex rounded" />
+    <div className="skeleton flex rounded" />
+    <div className="skeleton flex rounded" />
+    <div className="skeleton flex rounded" />
   </div>
-)
+);

@@ -17,10 +17,7 @@ export default function ProfileStreamsPage() {
   return (
     <div className="flex flex-col gap-4 justify-center w-full">
       <div className="flex w-full justify-start gap-2">
-        <Button
-          variant="secondary"
-          onClick={() => openModal("GoLiveModal")}
-        >
+        <Button variant="secondary" onClick={() => openModal("GoLiveModal")}>
           <StreamIcon />
           Go Live
         </Button>

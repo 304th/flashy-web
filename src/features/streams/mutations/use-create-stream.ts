@@ -44,7 +44,9 @@ export const useCreateStream = () => {
           username: author!.username,
           userimage: author!.userimage,
         },
-        status: params.scheduledAt ? ("scheduled" as const) : ("upcoming" as const),
+        status: params.scheduledAt
+          ? ("scheduled" as const)
+          : ("upcoming" as const),
         isLive: false,
         viewerCount: 0,
         externalStreamId: "",

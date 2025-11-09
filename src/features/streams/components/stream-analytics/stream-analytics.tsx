@@ -12,10 +12,7 @@ export const StreamAnalytics = ({ streamId }: StreamAnalyticsProps) => {
     return (
       <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
         {[...Array(4)].map((_, i) => (
-          <div
-            key={i}
-            className="rounded-lg border p-4 animate-pulse bg-muted"
-          >
+          <div key={i} className="rounded-lg border p-4 animate-pulse bg-muted">
             <div className="h-8 bg-background rounded mb-2" />
             <div className="h-4 bg-background rounded w-2/3" />
           </div>

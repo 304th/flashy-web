@@ -8,7 +8,10 @@ import { Modal as ModalComponent } from "@/packages/modals";
 import { CloseButton } from "@/components/ui/close-button";
 import { StreamFormDetails } from "./stream-form-details";
 import { StreamCreateSuccess } from "./stream-create-success";
-import { useCreateStream, type CreateStreamResponse } from "@/features/streams/mutations/use-create-stream";
+import {
+  useCreateStream,
+  type CreateStreamResponse,
+} from "@/features/streams/mutations/use-create-stream";
 import { AnimatePresence, motion } from "framer-motion";
 
 export interface StreamCreateModalProps {
@@ -39,7 +42,8 @@ type Step = "details" | "success";
 
 export const StreamCreateModal = ({ onClose }: StreamCreateModalProps) => {
   const [step, setStep] = useState<Step>("details");
-  const [createdStream, setCreatedStream] = useState<CreateStreamResponse | null>(null);
+  const [createdStream, setCreatedStream] =
+    useState<CreateStreamResponse | null>(null);
   const createStream = useCreateStream();
 
   const form = useForm<FormData>({
@@ -72,19 +76,23 @@ export const StreamCreateModal = ({ onClose }: StreamCreateModalProps) => {
   };
 
   return (
-    <ModalComponent className="bg-base-300 p-0! max-sm:min-w-unset max-w-full min-w-[600px]" onClose={onClose}>
+    <ModalComponent
+      className="bg-base-300 p-0! max-sm:min-w-unset max-w-full min-w-[600px]"
+      onClose={onClose}
+    >
       <div className="relative w-full max-w-2xl rounded-md bg-base-300">
         <div className="flex w-full p-4">
-          <div
-            className="absolute right-2 top-2"
-            onClick={onClose}
-          >
+          <div className="absolute right-2 top-2" onClick={onClose}>
             <CloseButton />
           </div>
           <div className="flex flex-col w-full justify-center">
-            <p className="text-2xl font-extrabold text-white">{step === "details" ? "Prepare to Stream" : "Stream Ready!"}</p>
+            <p className="text-2xl font-extrabold text-white">
+              {step === "details" ? "Prepare to Stream" : "Stream Ready!"}
+            </p>
             {step === "details" && (
-              <p className="text-sm text-base-content/70 mt-1">Set up your stream details and get your RTMP credentials</p>
+              <p className="text-sm text-base-content/70 mt-1">
+                Set up your stream details and get your RTMP credentials
+              </p>
             )}
           </div>
         </div>
@@ -97,7 +105,10 @@ export const StreamCreateModal = ({ onClose }: StreamCreateModalProps) => {
               exit={{ opacity: 0, x: -5 }}
             >
               <Form {...form}>
-                <form onSubmit={form.handleSubmit(handleSubmit)} className="p-4">
+                <form
+                  onSubmit={form.handleSubmit(handleSubmit)}
+                  className="p-4"
+                >
                   <StreamFormDetails
                     form={form}
                     isSubmitting={createStream.isPending}

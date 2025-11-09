@@ -20,7 +20,11 @@ export const StreamControls = ({ stream }: StreamControlsProps) => {
   };
 
   const handleEndStream = async () => {
-    if (!confirm("Are you sure you want to end this stream? This action cannot be undone.")) {
+    if (
+      !confirm(
+        "Are you sure you want to end this stream? This action cannot be undone.",
+      )
+    ) {
       return;
     }
 
@@ -58,7 +62,8 @@ export const StreamControls = ({ stream }: StreamControlsProps) => {
               <div>
                 <h3 className="font-semibold mb-1">Ready to go live?</h3>
                 <p className="text-sm text-muted-foreground">
-                  Make sure your streaming software is connected and broadcasting
+                  Make sure your streaming software is connected and
+                  broadcasting
                 </p>
               </div>
               <Button
@@ -80,8 +85,14 @@ export const StreamControls = ({ stream }: StreamControlsProps) => {
               <div className="flex items-center gap-3">
                 <div className="flex items-center gap-2">
                   <span className="flex h-3 w-3">
-                    <span className="animate-ping absolute inline-flex h-3 w-3 rounded-full bg-red-500 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                    <span
+                      className="animate-ping absolute inline-flex h-3 w-3
+                        rounded-full bg-red-500 opacity-75"
+                    ></span>
+                    <span
+                      className="relative inline-flex rounded-full h-3 w-3
+                        bg-red-500"
+                    ></span>
                   </span>
                   <span className="font-semibold text-red-500">LIVE</span>
                 </div>

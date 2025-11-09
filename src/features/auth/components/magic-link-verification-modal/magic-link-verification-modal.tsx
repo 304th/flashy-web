@@ -5,7 +5,7 @@ import { CloseButton } from "@/components/ui/close-button";
 import { Spinner } from "@/components/ui/spinner/spinner";
 import { useVerifyEmailLink } from "@/features/auth/queries/use-verify-email-link";
 import { defaultVariants } from "@/lib/framer";
-import {useMeAuthed} from "@/features/auth/hooks/use-me-authed";
+import { useMeAuthed } from "@/features/auth/hooks/use-me-authed";
 
 export interface MagicLinkVerificationModalProps {
   onClose(): void;

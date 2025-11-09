@@ -1,7 +1,7 @@
 import { toast } from "sonner";
 import { api } from "@/services/api";
 import { createMutation, useOptimisticMutation } from "@/lib/query-toolkit-v2";
-import { profileStreamEntity} from "@/features/profile/entities/profile-stream.entity";
+import { profileStreamEntity } from "@/features/profile/entities/profile-stream.entity";
 
 export interface RenewStreamKeyParams {
   streamId: string;

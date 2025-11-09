@@ -4,6 +4,7 @@ import { type ReactNode, Suspense } from "react";
 import { StreamChat } from "@/features/streams/components/stream-chat/stream-chat";
 import { useQueryParams } from "@/hooks/use-query-params";
 import { useStreamById } from "@/features/streams/queries/use-stream-by-id";
+import { StreamLiveChat } from "@/features/streams/components/stream-live-chat/stream-live-chat";
 
 export default function StreamLayout({
   children,
@@ -22,16 +23,14 @@ const StreamLayoutComponent = ({ children }: { children: ReactNode }) => {
   const { data: stream } = useStreamById(id!);
 
   return (
-    <div className="relative flex gap-4 w-full h-[calc(100vh-80px)]">
+    <div className="relative flex gap-4 w-full">
       <div className="w-7/10 overflow-y-auto">{children}</div>
-      <div className="w-3/10 border-l border-border">
+      <div className="w-3/10">
         {stream && (
           <div className="h-full flex flex-col">
-            <div className="border-b border-border p-4">
-              <h2 className="font-semibold text-lg">Live Chat</h2>
-            </div>
             <div className="flex-1 overflow-hidden">
-              <StreamChat streamId={stream.id} enabled={stream.chatEnabled} />
+              <StreamLiveChat stream={stream} />
+              {/*<StreamChat streamId={stream._id} enabled={stream.chatEnabled} />*/}
             </div>
           </div>
         )}

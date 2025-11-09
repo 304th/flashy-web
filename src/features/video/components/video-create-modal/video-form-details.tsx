@@ -103,7 +103,10 @@ export const VideoFormDetails = ({ onClose }: { onClose: () => void }) => {
           <FormField
             name="series"
             render={(props) => (
-              <FormItem className={`w-full ${!playlists || playlists.length === 0} ? 'pointer-events-none' : '`}>
+              <FormItem
+                className={`w-full ${!playlists || playlists.length === 0} ?
+                'pointer-events-none' : '`}
+              >
                 <FormLabel>Playlist</FormLabel>
                 <FormControl>
                   <Select.Root

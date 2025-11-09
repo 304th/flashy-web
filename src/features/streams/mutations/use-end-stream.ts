@@ -9,9 +9,7 @@ export interface EndStreamParams {
 
 const endStreamMutation = createMutation<EndStreamParams, Stream>({
   write: async (params) => {
-    return api
-      .post(`streaming/${params.streamId}/end`, {})
-      .json<Stream>();
+    return api.post(`streaming/${params.streamId}/end`, {}).json<Stream>();
   },
 });
 

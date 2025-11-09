@@ -40,7 +40,7 @@ export class WebSocketService<T> {
 
   subscribe(handler: MessageHandler<T>) {
     console.log(
-      `[${this.config.serviceName || "WebSocket"}] Handler subscribed. Total handlers: ${this.messageHandlers.size + 1}`
+      `[${this.config.serviceName || "WebSocket"}] Handler subscribed. Total handlers: ${this.messageHandlers.size + 1}`,
     );
     this.messageHandlers.add(handler);
     this.shouldConnect = true;
@@ -49,7 +49,7 @@ export class WebSocketService<T> {
     return () => {
       this.messageHandlers.delete(handler);
       console.log(
-        `[${this.config.serviceName || "WebSocket"}] Handler unsubscribed. Total handlers: ${this.messageHandlers.size}`
+        `[${this.config.serviceName || "WebSocket"}] Handler unsubscribed. Total handlers: ${this.messageHandlers.size}`,
       );
       if (this.messageHandlers.size === 0) {
         this.disconnect();
@@ -93,7 +93,7 @@ export class WebSocketService<T> {
     const cfg = this.getSocketConfig();
     if (!cfg) {
       console.warn(
-        `[${this.config.serviceName || "WebSocket"}] Socket URL not configured`
+        `[${this.config.serviceName || "WebSocket"}] Socket URL not configured`,
       );
       this.isConnecting = false;
       return;
@@ -106,7 +106,7 @@ export class WebSocketService<T> {
       const user = firebaseAuth.currentUser;
       if (!user) {
         console.warn(
-          `[${this.config.serviceName || "WebSocket"}] No authenticated user`
+          `[${this.config.serviceName || "WebSocket"}] No authenticated user`,
         );
         this.isConnecting = false;
         return;
@@ -129,10 +129,10 @@ export class WebSocketService<T> {
         this.reconnectAttempts = 0;
         this.notifyConnectionHandlers(true);
         console.log(
-          `[${this.config.serviceName || "WebSocket"}] Socket.IO connected`
+          `[${this.config.serviceName || "WebSocket"}] Socket.IO connected`,
         );
         console.log(
-          `[${this.config.serviceName || "WebSocket"}] Listening for event: "${this.config.eventName}"`
+          `[${this.config.serviceName || "WebSocket"}] Listening for event: "${this.config.eventName}"`,
         );
       });
 
@@ -140,28 +140,28 @@ export class WebSocketService<T> {
       this.socket.onAny((eventName, ...args) => {
         console.log(
           `[${this.config.serviceName || "WebSocket"}] Received ANY event: "${eventName}"`,
-          args
+          args,
         );
       });
 
       this.socket.on(this.config.eventName, (payload: any) => {
         console.log(
           `[${this.config.serviceName || "WebSocket"}] Received event "${this.config.eventName}"`,
-          payload
+          payload,
         );
         const message = this.config.payloadExtractor(payload);
         console.log(
           `[${this.config.serviceName || "WebSocket"}] Extracted message:`,
-          message
+          message,
         );
         if (message) {
           console.log(
-            `[${this.config.serviceName || "WebSocket"}] Notifying ${this.messageHandlers.size} handler(s)`
+            `[${this.config.serviceName || "WebSocket"}] Notifying ${this.messageHandlers.size} handler(s)`,
           );
           this.notifyMessageHandlers(message);
         } else {
           console.warn(
-            `[${this.config.serviceName || "WebSocket"}] Message extraction returned null`
+            `[${this.config.serviceName || "WebSocket"}] Message extraction returned null`,
           );
         }
       });
@@ -169,7 +169,7 @@ export class WebSocketService<T> {
       this.socket.on("connect_error", (error: any) => {
         console.error(
           `[${this.config.serviceName || "WebSocket"}] Socket.IO connect_error:`,
-          error
+          error,
         );
         this.isConnecting = false;
         this.notifyConnectionHandlers(false);
@@ -179,7 +179,7 @@ export class WebSocketService<T> {
         this.isConnecting = false;
         this.notifyConnectionHandlers(false);
         console.log(
-          `[${this.config.serviceName || "WebSocket"}] Socket.IO disconnected`
+          `[${this.config.serviceName || "WebSocket"}] Socket.IO disconnected`,
         );
 
         if (
@@ -189,7 +189,7 @@ export class WebSocketService<T> {
           this.reconnectAttempts++;
           const delay = this.reconnectDelay * this.reconnectAttempts;
           console.log(
-            `[${this.config.serviceName || "WebSocket"}] Reconnecting in ${delay}ms (attempt ${this.reconnectAttempts}/${this.maxReconnectAttempts})`
+            `[${this.config.serviceName || "WebSocket"}] Reconnecting in ${delay}ms (attempt ${this.reconnectAttempts}/${this.maxReconnectAttempts})`,
           );
           this.reconnectTimeout = setTimeout(() => {
             this.connect();
@@ -199,7 +199,7 @@ export class WebSocketService<T> {
     } catch (error) {
       console.error(
         `[${this.config.serviceName || "WebSocket"}] Error connecting Socket.IO:`,
-        error
+        error,
       );
       this.isConnecting = false;
       this.notifyConnectionHandlers(false);

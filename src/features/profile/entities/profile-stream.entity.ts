@@ -1,5 +1,5 @@
-import {createEntity} from "@/lib/query-toolkit-v2";
-import {api} from "@/services/api";
+import { createEntity } from "@/lib/query-toolkit-v2";
+import { api } from "@/services/api";
 
 export const profileStreamEntity = createEntity<Stream>({
   sourceFrom: async () => {

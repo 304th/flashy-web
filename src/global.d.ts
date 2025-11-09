@@ -64,7 +64,7 @@ declare global {
     userimage: string;
   }
 
-  type StreamStatus = "scheduled" | "live" | "ended" | "cancelled";
+  type StreamStatus = "upcoming" | "scheduled" | "live" | "ended" | "cancelled";
 
   interface Stream {
     _id: string;
@@ -245,7 +245,7 @@ declare global {
   //   reactions: Record<string, Record<string, Reaction>>;
   // }
 
-  type Reactable = SocialPost | VideoPost;
+  type Reactable = SocialPost | VideoPost | Stream;
 
   interface Likeable {
     _id: string;

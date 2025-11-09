@@ -1,5 +1,8 @@
 import { useMemo } from "react";
-import {formatBalance, formatTokenAmount} from "@/features/wallet/utils/format-balance";
+import {
+  formatBalance,
+  formatTokenAmount,
+} from "@/features/wallet/utils/format-balance";
 
 export const BalanceValue = ({
   balance,
@@ -10,9 +13,13 @@ export const BalanceValue = ({
   prefix?: string;
   className?: string;
 }) => {
-  const formattedBalance = useMemo(() => formatTokenAmount(balance, {
-    smallDecimals: 2,
-  }), [balance]);
+  const formattedBalance = useMemo(
+    () =>
+      formatTokenAmount(balance, {
+        smallDecimals: 2,
+      }),
+    [balance],
+  );
 
   const [wholePart, fractionalPart] = useMemo(
     () => formattedBalance.split("."),

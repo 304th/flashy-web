@@ -11,17 +11,20 @@ export interface GoLiveModalProps {
 
 export const GoLiveModal = ({ onClose }: GoLiveModalProps) => {
   return (
-    <ModalComponent className="bg-base-300 p-0! max-sm:min-w-unset max-w-full min-w-[600px] overflow-hidden" onClose={onClose}>
+    <ModalComponent
+      className="bg-base-300 p-0! max-sm:min-w-unset max-w-full min-w-[600px]
+        overflow-hidden"
+      onClose={onClose}
+    >
       <div className="relative w-full max-w-2xl rounded-md bg-base-300">
         <div className="flex w-full p-4">
-          <div
-            className="absolute right-2 top-2"
-            onClick={onClose}
-          >
+          <div className="absolute right-2 top-2" onClick={onClose}>
             <CloseButton />
           </div>
           <div className="flex flex-col w-full justify-center">
-            <p className="text-2xl font-extrabold text-white">Go Live Settings</p>
+            <p className="text-2xl font-extrabold text-white">
+              Go Live Settings
+            </p>
           </div>
         </div>
         <AnimatePresence>

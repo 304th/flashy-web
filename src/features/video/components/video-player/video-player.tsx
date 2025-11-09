@@ -2,6 +2,7 @@ import MuxPlayer from "@mux/mux-player-react/lazy";
 import { Loadable } from "@/components/ui/loadable";
 import { useUploadedVideoConfig } from "@/features/video/queries/use-uploaded-video-config";
 import { useRef } from "react";
+import { NotFound } from "@/components/ui/not-found";
 
 interface VideoPlayerProps {
   videoPost: VideoPost;
@@ -26,6 +27,11 @@ export const VideoPlayer = ({
       <Loadable
         queries={[query]}
         fallback={<VideoThumbnail thumbnail={videoPost.storyImage} />}
+        error={
+          <div className="flex w-full h-full justify-center items-center">
+            <NotFound>Video Not Available</NotFound>
+          </div>
+        }
       >
         {() => (
           <MuxPlayer

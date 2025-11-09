@@ -326,7 +326,9 @@ const ContentEditableComponent = React.forwardRef<
       isComposingRef.current = true;
     };
 
-    const handleCompositionEnd = (e: React.CompositionEvent<HTMLDivElement>) => {
+    const handleCompositionEnd = (
+      e: React.CompositionEvent<HTMLDivElement>,
+    ) => {
       isComposingRef.current = false;
       handleInput(e as React.FormEvent<HTMLDivElement>);
     };
@@ -428,17 +430,18 @@ const ContentEditableComponent = React.forwardRef<
           aria-multiline="true"
           aria-disabled={disabled}
           className={cn(
-            `bg-base-200 placeholder:text-muted-foreground
-            selection:bg-primary
+            `bg-base-200 placeholder:text-muted-foreground selection:bg-primary
             dark:bg-input/30 border-base-400 flex w-full min-w-0 rounded-md
             border px-3 py-2 !text-base shadow-xs transition-colors duration-150
-            outline-none disabled:pointer-events-none disabled:cursor-not-allowed
-            disabled:opacity-50 md:text-sm min-h-[80px] resize-none
-            whitespace-pre-wrap break-words overflow-auto`,
+            outline-none disabled:pointer-events-none
+            disabled:cursor-not-allowed disabled:opacity-50 md:text-sm
+            min-h-[80px] resize-none whitespace-pre-wrap break-words
+            overflow-auto`,
             `focus-visible:border-ring focus-visible:ring-ring/50
             focus-visible:ring-[3px] focus-visible:bg-base-400`,
             `aria-invalid:ring-destructive/20
-            dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive`,
+            dark:aria-invalid:ring-destructive/40
+            aria-invalid:border-destructive`,
             noHover ? "" : "hover:bg-base-300 hover:border-base-600",
             // Make text transparent so overlay shows
             "caret-white",

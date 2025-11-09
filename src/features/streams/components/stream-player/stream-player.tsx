@@ -20,7 +20,10 @@ export const StreamPlayer = ({
   const Player = ApiVideoPlayer as any;
 
   return (
-    <div style={{ width: "100%", aspectRatio: "16/9" }} className={`${className}`}>
+    <div
+      style={{ width: "100%", aspectRatio: "16/9" }}
+      className={`${className}`}
+    >
       <Player
         video={{ id: videoId }}
         live={isLive}

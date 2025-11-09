@@ -52,9 +52,18 @@ const SearchResults = ({
   results,
   onUserClick,
 }: SearchResultsProps) => (
-  <motion.div initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col max-h-80 overflow-y-auto">
+  <motion.div
+    initial={{ opacity: 0, y: -5 }}
+    animate={{ opacity: 1, y: 0 }}
+    className="flex flex-col max-h-80 overflow-y-auto"
+  >
     {isLoading ? (
-      <div className="p-4 flex items-center justify-center text-sm text-muted-foreground"><Spinner /></div>
+      <div
+        className="p-4 flex items-center justify-center text-sm
+          text-muted-foreground"
+      >
+        <Spinner />
+      </div>
     ) : results.length === 0 ? (
       <div className="px-3 py-2 text-sm text-muted-foreground">
         No users found

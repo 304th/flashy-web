@@ -11,7 +11,7 @@ import { useMe } from "@/features/auth/queries/use-me";
 import { getTabNameFromPathname } from "@/features/channels/utils/get-tab-name-from-pathname";
 import { useProtectedRedirect } from "@/features/auth/hooks/use-protected-redirect";
 import { capitalize } from "media-chrome/utils/utils";
-import {useProfileStream} from "@/features/profile/queries/use-profile-stream";
+import { useProfileStream } from "@/features/profile/queries/use-profile-stream";
 
 const profileTabs = [
   {

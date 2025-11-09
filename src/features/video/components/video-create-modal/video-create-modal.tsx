@@ -40,13 +40,13 @@ const formSchema = z.object({
   series: z.string().optional(),
 });
 
-type Step = 'upload' | 'details' | 'success';
+type Step = "upload" | "details" | "success";
 
 export const VideoCreateModal = ({
   onClose,
   ...props
 }: VideoCreateModalProps) => {
-  const [step, setStep] = useState<Step>('upload');
+  const [step, setStep] = useState<Step>("upload");
   const [publishedVideo, setPublishedVideo] = useState<VideoPost | null>(null);
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const createVideoPost = useCreateVideoPost();
@@ -82,7 +82,7 @@ export const VideoCreateModal = ({
 
     // Reset form and step to prevent unwanted transitions
     form.reset();
-    setStep('upload');
+    setStep("upload");
   }, [deleteUploadedVideo, form]);
 
   const handleConfirmedClose = useCallback(() => {
@@ -97,14 +97,14 @@ export const VideoCreateModal = ({
 
   // Step transitions
   useEffect(() => {
-    if (videoId && !isUploading && step === 'upload') {
-      setStep('details');
+    if (videoId && !isUploading && step === "upload") {
+      setStep("details");
     }
   }, [videoId, isUploading, step]);
 
   useEffect(() => {
     if (publishedVideo) {
-      setStep('success');
+      setStep("success");
     }
   }, [publishedVideo]);
 
@@ -171,7 +171,7 @@ export const VideoCreateModal = ({
             })}
           >
             <AnimatePresence mode="wait">
-              {step === 'upload' && (
+              {step === "upload" && (
                 <motion.div
                   key="upload"
                   initial={{ opacity: 0 }}
@@ -188,7 +188,7 @@ export const VideoCreateModal = ({
                   />
                 </motion.div>
               )}
-              {step === 'details' && (
+              {step === "details" && (
                 <motion.div
                   key="details"
                   initial={{ opacity: 0 }}
@@ -198,7 +198,7 @@ export const VideoCreateModal = ({
                   <VideoFormDetails onClose={handleAccidentalClose} />
                 </motion.div>
               )}
-              {step === 'success' && (
+              {step === "success" && (
                 <motion.div
                   key="success"
                   initial={{ opacity: 0 }}

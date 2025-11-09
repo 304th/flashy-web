@@ -149,7 +149,8 @@ export const useMentions = ({
 
       return {
         left: rect.left || taRect.left + 8,
-        top: rect.bottom || taRect.top + (isFinite(lineHeight) ? lineHeight : 20),
+        top:
+          rect.bottom || taRect.top + (isFinite(lineHeight) ? lineHeight : 20),
       };
     }
 
@@ -158,7 +159,10 @@ export const useMentions = ({
     const span = document.createElement("span");
     const caret = document.createElement("span");
     const value = (ta as HTMLInputElement | HTMLTextAreaElement).value;
-    const caretIndex = index ?? (ta as HTMLInputElement | HTMLTextAreaElement).selectionStart ?? value.length;
+    const caretIndex =
+      index ??
+      (ta as HTMLInputElement | HTMLTextAreaElement).selectionStart ??
+      value.length;
 
     const properties = [
       "boxSizing",
@@ -300,7 +304,6 @@ export const useMentions = ({
       window.removeEventListener("scroll", listener, true);
     };
   }, [open, anchorStart]);
-
 
   useEffect(() => {
     if (!open) {

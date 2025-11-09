@@ -133,7 +133,11 @@ export const ShareModal = ({
           </motion.div>
         </motion.div>
         <div className="flex w-full justify-end gap-2">
-          <Button variant="secondary" onClick={handleCopyLink} className="w-[115px]">
+          <Button
+            variant="secondary"
+            onClick={handleCopyLink}
+            className="w-[115px]"
+          >
             <CopyIcon />
             {copied ? "Copied!" : "Copy Link"}
           </Button>

@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { TriangleAlertIcon } from "lucide-react";
 import { Spinner } from "@/components/ui/spinner/spinner";
-import {env} from "@/config";
+import { env } from "@/config";
 
 // Assuming queries come from a library like React Query
 interface Query<T> {

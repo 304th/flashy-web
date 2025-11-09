@@ -1,12 +1,12 @@
-import {useEffect} from "react";
-import {useMe} from "@/features/auth/queries/use-me";
+import { useEffect } from "react";
+import { useMe } from "@/features/auth/queries/use-me";
 
 export const useMeAuthed = (callback: () => void) => {
-  const { data: me } = useMe()
+  const { data: me } = useMe();
 
   useEffect(() => {
     if (me) {
-      callback()
+      callback();
     }
   }, [me]);
-}
+};

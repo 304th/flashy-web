@@ -86,7 +86,7 @@ export const StreamCardMenu = ({
                     destructive: true,
                     onConfirm: () => {
                       deleteStream.mutate({
-                        streamId: stream.id,
+                        streamId: stream._id,
                       });
                     },
                   });

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { StreamCardDescription } from "@/features/streams/components/stream-card-v2/stream-card-description";
 import { StreamCardStatus } from "@/features/streams/components/stream-card-v2/stream-card-status";
 import { StreamCardMenu } from "@/features/streams/components/stream-card-v2/stream-card-menu";
-import {StreamPlayer} from "@/features/streams/components/stream-player/stream-player";
+import { StreamPlayer } from "@/features/streams/components/stream-player/stream-player";
 
 export const StreamCardV2 = ({
   stream,

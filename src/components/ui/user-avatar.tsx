@@ -19,28 +19,29 @@ export const UserAvatar = ({
     setImageError(true);
   };
 
-  return <div className="relative flex">
-    <Avatar
-      className={`relative cursor-pointer user-select-none ${className}`}
-      {...props}
-    >
-      {avatar && !imageError && (
-        <img
-          src={avatar}
-          alt="avatar"
-          className="aspect-square size-full object-cover"
-          onError={handleImageError}
-        />
-      )}
-      <AvatarFallback className="bg-transparent">
-        <img
-          src="/images/avatar.svg"
-          alt="Default Avatar"
-          className="aspect-square size-full object-cover"
-        />
-      </AvatarFallback>
-    </Avatar>
-    {children}
-
-  </div>
+  return (
+    <div className="relative flex">
+      <Avatar
+        className={`relative cursor-pointer user-select-none ${className}`}
+        {...props}
+      >
+        {avatar && !imageError && (
+          <img
+            src={avatar}
+            alt="avatar"
+            className="aspect-square size-full object-cover"
+            onError={handleImageError}
+          />
+        )}
+        <AvatarFallback className="bg-transparent">
+          <img
+            src="/images/avatar.svg"
+            alt="Default Avatar"
+            className="aspect-square size-full object-cover"
+          />
+        </AvatarFallback>
+      </Avatar>
+      {children}
+    </div>
+  );
 };

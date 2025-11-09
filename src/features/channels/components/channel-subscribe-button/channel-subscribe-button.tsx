@@ -6,9 +6,7 @@ import { useSubscribeToChannel } from "@/features/channels/mutations/use-subscri
 import { ChannelBuyKeyButton } from "@/features/channels/components/channel-subscribe-button/channel-buy-key-button";
 import { ChannelSellKeyButton } from "@/features/channels/components/channel-subscribe-button/channel-sell-key-button";
 import { useHasBoughtKey } from "@/features/keys/hooks/use-has-bought-key";
-import {
-  ChannelSubscribeAnimation
-} from "@/features/channels/components/channel-subscribe-button/channel-subscribe-animation";
+import { ChannelSubscribeAnimation } from "@/features/channels/components/channel-subscribe-button/channel-subscribe-animation";
 
 export const ChannelSubscribeButton = ({
   channel,
@@ -29,10 +27,12 @@ export const ChannelSubscribeButton = ({
     return <ChannelSellKeyButton channel={channel} className={className} />;
   }
 
-  return <div className={`relative h-full ${className}`}>
-    <ChannelSubscribeAnimation play={playAnimation} />
-    {
-      isSubscribed ? <ChannelBuyKeyButton channel={channel} className={className} /> : (
+  return (
+    <div className={`relative h-full ${className}`}>
+      <ChannelSubscribeAnimation play={playAnimation} />
+      {isSubscribed ? (
+        <ChannelBuyKeyButton channel={channel} className={className} />
+      ) : (
         <Button
           size="lg"
           className={`w-full bg-green-900 hover:bg-green-800 ${className}`}
@@ -54,7 +54,7 @@ export const ChannelSubscribeButton = ({
         >
           {isSubscribed ? "Subscribed" : "Subscribe"}
         </Button>
-      )
-    }
-  </div>
+      )}
+    </div>
+  );
 };

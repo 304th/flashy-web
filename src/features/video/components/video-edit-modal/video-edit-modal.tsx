@@ -77,11 +77,12 @@ export const VideoEditModal = ({
 
   const handleThumbnailUpload = async (params: z.infer<typeof formSchema>) => {
     if (params.thumbnailUpload) {
-      const { uploadUrl, fileType } =
-        await createSignedUploadUrlMutation.write({
+      const { uploadUrl, fileType } = await createSignedUploadUrlMutation.write(
+        {
           fileName: params.thumbnailUpload.name,
           fileType: params.thumbnailUpload.type,
-        });
+        },
+      );
 
       return await uploadImage.write({
         file: params.thumbnailUpload,

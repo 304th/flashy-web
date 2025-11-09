@@ -40,10 +40,20 @@ export const StreamList = () => {
       </div>
       <Loadable queries={[query as any]} fullScreenForDefaults>
         {() =>
-          stream?.isLive ? <StreamCardV2 stream={stream} className="max-w-[345px] aspect-video" /> : <div className="flex justify-center items-center w-full h-full gap-4 text-base-600">
-            <Radio className="h-10 w-10" />
-            <p className="text-3xl font-bold">Offline</p>
-        </div>
+          stream?.isLive ? (
+            <StreamCardV2
+              stream={stream}
+              className="max-w-[345px] aspect-video"
+            />
+          ) : (
+            <div
+              className="flex justify-center items-center w-full h-full gap-4
+                text-base-600"
+            >
+              <Radio className="h-10 w-10" />
+              <p className="text-3xl font-bold">Offline</p>
+            </div>
+          )
         }
       </Loadable>
       {/*<Loadable queries={[query as any]} fullScreenForDefaults>*/}

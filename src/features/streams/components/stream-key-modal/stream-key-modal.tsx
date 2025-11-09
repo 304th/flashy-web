@@ -117,9 +117,11 @@ export const StreamKeyModal = ({ stream, onClose }: StreamKeyModalProps) => {
         </div>
 
         <div className="mt-6 rounded-lg bg-yellow-50 p-4 dark:bg-yellow-900/20">
-          <p className="text-sm font-medium text-yellow-800 dark:text-yellow-200">
-            Keep your stream key private! Anyone with these credentials can stream
-            to your channel.
+          <p
+            className="text-sm font-medium text-yellow-800 dark:text-yellow-200"
+          >
+            Keep your stream key private! Anyone with these credentials can
+            stream to your channel.
           </p>
         </div>
 

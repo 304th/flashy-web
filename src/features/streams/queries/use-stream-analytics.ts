@@ -10,7 +10,10 @@ export interface StreamAnalytics {
 }
 
 export const useStreamAnalytics = (streamId: string) => {
-  return getQuery<StreamAnalytics>(["streams", streamId, "analytics"], async () => {
-    return api.get(`streaming/${streamId}/analytics`).json<StreamAnalytics>();
-  });
+  return getQuery<StreamAnalytics>(
+    ["streams", streamId, "analytics"],
+    async () => {
+      return api.get(`streaming/${streamId}/analytics`).json<StreamAnalytics>();
+    },
+  );
 };

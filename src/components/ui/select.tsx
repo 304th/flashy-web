@@ -228,8 +228,7 @@ const SelectItem = React.forwardRef<
         text-paragraph-sm`,
         "flex items-center gap-2 transition duration-200 ease-out",
         // disabled
-        `data-disabled:pointer-events-none
-        data-[disabled]:text-base-800`,
+        "data-disabled:pointer-events-none data-[disabled]:text-base-800",
         // hover, focus
         `data-[highlighted]:bg-base-400 data-highlighted:outline-0
         hover:border-base-600`,

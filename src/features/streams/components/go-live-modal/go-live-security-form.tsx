@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Eye, EyeOff, RefreshCw, Copy } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -17,7 +17,7 @@ export const GoLiveSecurityForm = () => {
       setShowStreamKey(false);
       setShowRtmpUrl(false);
     }
-  }, [stream])
+  }, [stream]);
 
   const handleCopyStreamKey = async () => {
     if (!stream) {
@@ -70,7 +70,7 @@ export const GoLiveSecurityForm = () => {
           </Button>
         </div>
         <div className="flex flex-col gap-1">
-          <p className=" text-sm">Stream Key</p>
+          <p className="text-sm">Stream Key</p>
           <div className="relative">
             <Input
               type={showStreamKey ? "text" : "password"}
@@ -83,7 +83,8 @@ export const GoLiveSecurityForm = () => {
               type="button"
               size="sm"
               variant="ghost"
-              className="absolute right-12 top-1/2 -translate-y-1/2 aspect-square p-0"
+              className="absolute right-12 top-1/2 -translate-y-1/2
+                aspect-square p-0"
               onClick={handleCopyStreamKey}
               disabled={!stream}
             >
@@ -93,8 +94,9 @@ export const GoLiveSecurityForm = () => {
               type="button"
               size="sm"
               variant="ghost"
-              className="absolute right-3 top-1/2 -translate-y-1/2 aspect-square p-0"
-              onClick={() => setShowStreamKey(state => !state)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 aspect-square
+                p-0"
+              onClick={() => setShowStreamKey((state) => !state)}
               disabled={!stream}
             >
               {showStreamKey ? (
@@ -104,10 +106,9 @@ export const GoLiveSecurityForm = () => {
               )}
             </Button>
           </div>
-
         </div>
         <div className="flex flex-col gap-1 text-sm">
-          <p className=" text-sm">RTMP URL</p>
+          <p className="text-sm">RTMP URL</p>
           <div className="relative">
             <Input
               type={showRtmpUrl ? "text" : "password"}
@@ -120,7 +121,8 @@ export const GoLiveSecurityForm = () => {
               type="button"
               size="sm"
               variant="ghost"
-              className="absolute right-12 top-1/2 -translate-y-1/2 aspect-square p-0"
+              className="absolute right-12 top-1/2 -translate-y-1/2
+                aspect-square p-0"
               onClick={handleCopyRtmpUrl}
               disabled={!stream}
             >
@@ -130,7 +132,8 @@ export const GoLiveSecurityForm = () => {
               type="button"
               size="sm"
               variant="ghost"
-              className="absolute right-3 top-1/2 -translate-y-1/2 aspect-square p-0"
+              className="absolute right-3 top-1/2 -translate-y-1/2 aspect-square
+                p-0"
               onClick={() => setShowRtmpUrl((state) => !state)}
               disabled={!stream}
             >
@@ -142,7 +145,6 @@ export const GoLiveSecurityForm = () => {
             </Button>
           </div>
         </div>
-
       </div>
     </div>
   );

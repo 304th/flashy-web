@@ -12,7 +12,10 @@ export const ChannelBuyKeyButton = ({
   const { openModal } = useModals();
 
   return (
-    <div className={`relative flex items-center w-full rounded-md border ${className} z-1`}>
+    <div
+      className={`relative flex items-center w-full rounded-md border
+        ${className} z-1`}
+    >
       <div
         className="inline-flex justify-between h-10 rounded-l-md text-base-800
           px-3 bg-background border-base-400 shadow-xs items-center gap-2

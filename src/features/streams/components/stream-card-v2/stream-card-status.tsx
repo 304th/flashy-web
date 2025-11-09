@@ -1,6 +1,10 @@
 import { Radio, Eye } from "lucide-react";
 
-export const StreamCardStatus = ({ stream }: { stream: Optimistic<Stream> }) => {
+export const StreamCardStatus = ({
+  stream,
+}: {
+  stream: Optimistic<Stream>;
+}) => {
   const getStatusBadge = () => {
     switch (stream.status) {
       case "live":
@@ -34,7 +38,11 @@ export const StreamCardStatus = ({ stream }: { stream: Optimistic<Stream> }) => 
 
       {/* Viewer Count */}
       {stream.isLive && (
-        <div className="absolute bottom-1 right-1 flex items-center gap-1 rounded-full bg-[#111111dd] px-3 py-1 text-xs font-semibold text-white">
+        <div
+          className="absolute bottom-1 right-1 flex items-center gap-1
+            rounded-full bg-[#111111dd] px-3 py-1 text-xs font-semibold
+            text-white"
+        >
           <Eye className="h-3 w-3" />
           {stream.viewerCount.toLocaleString()}
         </div>

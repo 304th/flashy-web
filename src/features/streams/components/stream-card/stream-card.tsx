@@ -10,7 +10,10 @@ interface StreamCardProps {
   showActions?: boolean;
 }
 
-export const StreamCard = ({ stream, showActions = false }: StreamCardProps) => {
+export const StreamCard = ({
+  stream,
+  showActions = false,
+}: StreamCardProps) => {
   const modals = useModals();
   const deleteStream = useDeleteStream();
 
@@ -55,7 +58,10 @@ export const StreamCard = ({ stream, showActions = false }: StreamCardProps) => 
   };
 
   return (
-    <div className="group relative rounded-lg border bg-card overflow-hidden hover:shadow-lg transition-shadow">
+    <div
+      className="group relative rounded-lg border bg-card overflow-hidden
+        hover:shadow-lg transition-shadow"
+    >
       {/* Thumbnail */}
       <div className="relative aspect-video w-full bg-muted">
         {stream.thumbnail ? (
@@ -75,7 +81,11 @@ export const StreamCard = ({ stream, showActions = false }: StreamCardProps) => 
 
         {/* Viewer Count */}
         {stream.isLive && (
-          <div className="absolute top-2 right-2 flex items-center gap-1 rounded-full bg-black/70 px-3 py-1 text-xs font-semibold text-white">
+          <div
+            className="absolute top-2 right-2 flex items-center gap-1
+              rounded-full bg-black/70 px-3 py-1 text-xs font-semibold
+              text-white"
+          >
             <Eye className="h-3 w-3" />
             {stream.viewerCount.toLocaleString()}
           </div>
@@ -98,13 +108,21 @@ export const StreamCard = ({ stream, showActions = false }: StreamCardProps) => 
 
             {/* Author Info */}
             <div className="flex items-center gap-2">
-              <UserAvatar avatar={stream.author.userimage} className="h-8 w-8" />
-              <span className="text-sm font-medium">{stream.author.username}</span>
+              <UserAvatar
+                avatar={stream.author.userimage}
+                className="h-8 w-8"
+              />
+              <span className="text-sm font-medium">
+                {stream.author.username}
+              </span>
             </div>
 
             {/* Schedule Info */}
             {stream.scheduledAt && stream.status === "scheduled" && (
-              <div className="mt-2 flex items-center gap-1 text-xs text-muted-foreground">
+              <div
+                className="mt-2 flex items-center gap-1 text-xs
+                  text-muted-foreground"
+              >
                 <Calendar className="h-3 w-3" />
                 <span>
                   {formatDistanceToNow(new Date(stream.scheduledAt), {
@@ -146,7 +164,8 @@ export const StreamCard = ({ stream, showActions = false }: StreamCardProps) => 
               variant="outline"
               onClick={handleDelete}
               disabled={deleteStream.isPending}
-              className="text-destructive hover:bg-destructive hover:text-destructive-foreground"
+              className="text-destructive hover:bg-destructive
+                hover:text-destructive-foreground"
             >
               <Trash2 className="h-4 w-4" />
             </Button>

@@ -11,7 +11,9 @@ export interface OptimisticUpdaterOptions<Entity> {
 
 export interface OptimisticUpdater<Entity, State> {
   prepend(item: Entity, state: State): State;
+  prependIfNotExists(item: Entity, state: State): State;
   append(item: Entity, state: State): State;
+  appendIfNotExists(item: Entity, state: State): State;
   update(
     id: string,
     updateFn: (state: Draft<Optimistic<Entity>>) => void,
@@ -40,9 +42,49 @@ export class PartitionedOptimisticUpdater<Entity>
     });
   }
 
+  prependIfNotExists(
+    item: Entity,
+    state: Paginated<Entity[]>,
+  ): Paginated<Entity[]> {
+    return produce(state, (draft) => {
+      const itemId = this.collection.getEntityId(item as Optimistic<Entity>);
+      const exists = draft.pages.some((page) =>
+        page.some(
+          (existingItem) =>
+            this.collection.getEntityId(existingItem as Optimistic<Entity>) ===
+            itemId,
+        ),
+      );
+
+      if (!exists) {
+        draft.pages[0].unshift(item as Draft<Entity>);
+      }
+    });
+  }
+
   append(item: Entity, state: Paginated<Entity[]>): Paginated<Entity[]> {
     return produce(state, (draft) => {
       draft.pages[0].push(item as Draft<Entity>);
+    });
+  }
+
+  appendIfNotExists(
+    item: Entity,
+    state: Paginated<Entity[]>,
+  ): Paginated<Entity[]> {
+    return produce(state, (draft) => {
+      const itemId = this.collection.getEntityId(item as Optimistic<Entity>);
+      const exists = draft.pages.some((page) =>
+        page.some(
+          (existingItem) =>
+            this.collection.getEntityId(existingItem as Optimistic<Entity>) ===
+            itemId,
+        ),
+      );
+
+      if (!exists) {
+        draft.pages[0].push(item as Draft<Entity>);
+      }
     });
   }
 
@@ -230,11 +272,43 @@ export class LiveOptimisticUpdater<Entity>
       draft.unshift(item as Draft<Entity>);
     });
   }
+
+  prependIfNotExists(item: Entity, state: Entity[]): Entity[] {
+    return produce(state, (draft) => {
+      const itemId = this.collection.getEntityId(item as Optimistic<Entity>);
+      const exists = draft.some(
+        (existingItem) =>
+          this.collection.getEntityId(existingItem as Optimistic<Entity>) ===
+          itemId,
+      );
+
+      if (!exists) {
+        draft.unshift(item as Draft<Entity>);
+      }
+    });
+  }
+
   append(item: Entity, state: Entity[]): Entity[] {
     return produce(state, (draft) => {
       draft.push(item as Draft<Entity>);
     });
   }
+
+  appendIfNotExists(item: Entity, state: Entity[]): Entity[] {
+    return produce(state, (draft) => {
+      const itemId = this.collection.getEntityId(item as Optimistic<Entity>);
+      const exists = draft.some(
+        (existingItem) =>
+          this.collection.getEntityId(existingItem as Optimistic<Entity>) ===
+          itemId,
+      );
+
+      if (!exists) {
+        draft.push(item as Draft<Entity>);
+      }
+    });
+  }
+
   update(
     id: string,
     updateFn: (state: Draft<Optimistic<Entity>>) => void,

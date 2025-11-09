@@ -108,6 +108,48 @@ export class Channel<T> {
     );
   }
 
+  async appendIfNotExists(
+    item: Partial<T>,
+    options: OptimisticUpdaterOptions<T> = { sync: false, rollback: true },
+  ) {
+    return await Promise.all(
+      this.entries
+        .filter((e) => e.kind === "collection" || e.kind === "partitioned")
+        .filter((e) =>
+          options.queryKey
+            ? JSON.stringify(e.queryKey) === JSON.stringify(options.queryKey)
+            : true,
+        )
+        .map(async (entry) =>
+          (entry.kind === "collection"
+            ? liveRegistry.createCollectionTransaction(entry)
+            : liveRegistry.createPartitionedTransaction(entry)
+          ).appendIfNotExists(item, options),
+        ),
+    );
+  }
+
+  async prependIfNotExists(
+    item: Partial<T>,
+    options: OptimisticUpdaterOptions<T> = { sync: false, rollback: true },
+  ) {
+    return await Promise.all(
+      this.entries
+        .filter((e) => e.kind === "collection" || e.kind === "partitioned")
+        .filter((e) =>
+          options.queryKey
+            ? JSON.stringify(e.queryKey) === JSON.stringify(options.queryKey)
+            : true,
+        )
+        .map(async (entry) =>
+          (entry.kind === "collection"
+            ? liveRegistry.createCollectionTransaction(entry)
+            : liveRegistry.createPartitionedTransaction(entry)
+          ).prependIfNotExists(item, options),
+        ),
+    );
+  }
+
   async move(id: string, position: number) {
     return await Promise.all(
       this.entries

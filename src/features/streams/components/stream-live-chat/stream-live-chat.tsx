@@ -1,7 +1,11 @@
 import { StreamLiveChatSendMessage } from "@/features/streams/components/stream-live-chat/stream-live-chat-send-message";
 import { StreamLiveChatFeed } from "@/features/streams/components/stream-live-chat/stream-live-chat-feed";
+import { useStreamChatLiveUpdates } from "@/features/streams/hooks/use-stream-chat-live-updates";
 
 export const StreamLiveChat = ({ stream }: { stream: Stream }) => {
+  // Enable live chat updates via WebSocket
+  useStreamChatLiveUpdates(stream._id);
+
   return (
     <div
       className="flex flex-col justify-between gap-3 rounded-md

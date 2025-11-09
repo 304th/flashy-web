@@ -139,6 +139,28 @@ export class CollectionOptimisticMutations<Entity, State> {
     });
   }
 
+  async prependIfNotExists(
+    item: Optimistic<Entity>,
+    options: OptimisticUpdaterOptions<Entity> = { sync: false, rollback: true },
+  ): Promise<CollectionOptimisticMutations<Entity, State>> {
+    const optimisticItem = this.createOptimistic(
+      this.collection.createItem(item),
+    );
+
+    return this.execute({
+      item,
+      update: (state: State): State =>
+        this.updater.prependIfNotExists(
+          this.createOptimistic(optimisticItem),
+          state,
+        ),
+      options,
+      sync: (draft, params) => {
+        return this.updater.replaceAt(0, params, draft);
+      },
+    });
+  }
+
   async append(
     item: Optimistic<Entity>,
     options: OptimisticUpdaterOptions<Entity> = { sync: false, rollback: true },
@@ -151,6 +173,23 @@ export class CollectionOptimisticMutations<Entity, State> {
       item,
       update: (state: State): State =>
         this.updater.append(optimisticItem, state),
+      options,
+      sync: (draft, params) => this.updater.replaceLast(params, draft),
+    });
+  }
+
+  async appendIfNotExists(
+    item: Optimistic<Entity>,
+    options: OptimisticUpdaterOptions<Entity> = { sync: false, rollback: true },
+  ): Promise<CollectionOptimisticMutations<Entity, State>> {
+    const optimisticItem = this.createOptimistic(
+      this.collection.createItem(item),
+    );
+
+    return this.execute({
+      item,
+      update: (state: State): State =>
+        this.updater.appendIfNotExists(optimisticItem, state),
       options,
       sync: (draft, params) => this.updater.replaceLast(params, draft),
     });

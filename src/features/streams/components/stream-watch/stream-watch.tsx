@@ -5,8 +5,15 @@ import { StreamWatchDescription } from "@/features/streams/components/stream-wat
 import { StreamWatchTimestamp } from "@/features/streams/components/stream-watch/stream-watch-timestamp";
 import { StreamWatchOptions } from "@/features/streams/components/stream-watch/stream-watch-options";
 import { LiveTag } from "@/components/ui/live-tag";
+import { useStreamViewersLiveUpdates } from "@/features/streams/hooks/use-stream-viewers-live-updates";
 
 export const StreamWatch = ({ stream }: { stream: Stream }) => {
+  // Enable live viewer count updates via WebSocket
+  const { viewerCount } = useStreamViewersLiveUpdates(stream._id);
+
+  // Use live viewer count if available, otherwise fall back to stream data
+  const displayViewerCount = viewerCount ?? stream.viewerCount ?? 0;
+
   return (
     <div className="flex flex-col w-full gap-4">
       <div className="relative">
@@ -30,10 +37,10 @@ export const StreamWatch = ({ stream }: { stream: Stream }) => {
         <div className="flex items-center gap-2 text-white">
           <EyeIcon />
           <p>
-            {stream.viewerCount || 0} viewers
+            {displayViewerCount} viewers
             {stream.status === "ended" ? (
               <span>
-                • Stream ended
+                {' '}• Stream ended
                 <StreamWatchTimestamp timestamp={stream.startedAt} />
               </span>
             ) : null}

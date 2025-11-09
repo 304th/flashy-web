@@ -22,7 +22,7 @@ export const StreamLiveChatMessageMenu = ({ chatMessage, stream }: { chatMessage
   const isStreamHost = useIsStreamHost(stream);
   const isOwned = useIsStreamChatMessageOwned(chatMessage)
 
-  if (!me) {
+  if (!me || chatMessage.user.fbId === stream.userId) {
     return null;
   }
 

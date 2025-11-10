@@ -9,14 +9,14 @@ export const StreamWatchOffline = ({
     <div
       style={{
         aspectRatio: "16/9",
-        background: "url(/images/offline-stream.jpg)",
+        background: "url(/images/stream-ended.jpg)",
       }}
       className={`flex justify-center items-center w-full overflow-hidden
         rounded-md ${className}`}
     >
       <div
         className="flex items-center justify-center absolute inset-0 z-1
-          backdrop-blur-2xl overflow-hidden rounded-md brightness-40"
+          backdrop-blur overflow-hidden rounded-md"
       />
       <div>
         <p className="relative z-2 text-white text-3xl font-bold">

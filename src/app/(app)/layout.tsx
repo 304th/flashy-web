@@ -10,6 +10,7 @@ import { NotificationsProvider } from "@/providers/notifications-provider";
 import { LoadingProvider } from "@/providers/loading-provider";
 import { VerificationProvider } from "@/providers/verification-provider";
 import { LiveEventsProvider } from "@/providers/live-events-provider";
+import { FingerprintProvider } from "@/providers/fingerprint-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,6 +45,7 @@ export default function RootLayout({
               <LoadingProvider />
               <VerificationProvider />
               <LiveEventsProvider />
+              <FingerprintProvider />
               <Layout>{children}</Layout>
             </ModalsProvider>
           </ApiProvider>

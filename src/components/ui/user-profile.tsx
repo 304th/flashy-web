@@ -82,8 +82,7 @@ const BaseUserProfile = ({
   children,
 }: PropsWithChildren<UserProfileProps>) => (
   <div
-    className={`relative flex items-center gap-2 p-[2px] ${className}
-      aspect-square`}
+    className={`relative flex items-center gap-2 p-[2px] ${className}`}
   >
     <UserAvatar
       avatar={user.userimage}
@@ -96,7 +95,7 @@ const BaseUserProfile = ({
     </UserAvatar>
     {withoutUsername ? null : (
       <div className="flex flex-col gap-1">
-        <div className="flex items-center gap-1 aspect-square">
+        <div className="flex items-center gap-1">
           <p
             className={`text-white font-bold text-base
               ${truncateUsername ? "max-w-[220px] ellipsis" : ""}`}

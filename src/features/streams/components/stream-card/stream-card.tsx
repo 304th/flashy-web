@@ -45,7 +45,7 @@ export const StreamCard = ({
 
   const handleDelete = () => {
     if (confirm("Are you sure you want to delete this stream?")) {
-      deleteStream.mutate({ streamId: stream.id });
+      deleteStream.mutate({ streamId: stream._id });
     }
   };
 

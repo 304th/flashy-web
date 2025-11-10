@@ -245,7 +245,7 @@ declare global {
   //   reactions: Record<string, Record<string, Reaction>>;
   // }
 
-  type Reactable = SocialPost | VideoPost | Stream;
+  type Reactable = SocialPost | VideoPost;
 
   interface Likeable {
     _id: string;

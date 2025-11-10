@@ -64,7 +64,7 @@ export const StreamSettingsModal = ({
   const handleSubmit = async (data: FormData) => {
     try {
       await updateStream.mutateAsync({
-        streamId: stream.id,
+        streamId: stream._id,
         ...data,
         description: data.description || "",
       });

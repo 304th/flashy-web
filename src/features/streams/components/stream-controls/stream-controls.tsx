@@ -13,7 +13,7 @@ export const StreamControls = ({ stream }: StreamControlsProps) => {
 
   const handleGoLive = async () => {
     try {
-      await goLive.mutateAsync({ streamId: stream.id });
+      await goLive.mutateAsync({ streamId: stream._id });
     } catch (error) {
       console.error("Failed to go live:", error);
     }
@@ -29,7 +29,7 @@ export const StreamControls = ({ stream }: StreamControlsProps) => {
     }
 
     try {
-      await endStream.mutateAsync({ streamId: stream.id });
+      await endStream.mutateAsync({ streamId: stream._id });
     } catch (error) {
       console.error("Failed to end stream:", error);
     }

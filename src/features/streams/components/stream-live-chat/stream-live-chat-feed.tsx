@@ -22,7 +22,7 @@ export const StreamLiveChatFeed = ({ stream }: { stream: Stream }) => {
   });
 
   return (
-    <div className="relative flex flex-col-reverse h-full gap-1 overflow-scroll">
+    <div className="relative flex flex-col-reverse h-full gap-1 overflow-scroll scrollbar-hide">
       <Loadable queries={[messagesQuery] as any}>
         {() =>
           messages && messages.length > 0 ? (

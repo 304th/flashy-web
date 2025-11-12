@@ -18,8 +18,15 @@ import { useQueryParams } from "@/hooks/use-query-params";
 import { ChannelNotFound } from "@/features/channels/components/channel-not-found/channel-not-found";
 import { useMe } from "@/features/auth/queries/use-me";
 import { useChannelById } from "@/features/channels/queries/use-channel-by-id";
+import {useProfileStream} from "@/features/profile/queries/use-profile-stream";
+import {useChannelStream} from "@/features/channels/queries/use-channel-stream";
 
 const channelTabs = [
+  {
+    key: "streams",
+    label: "Streams",
+    path: "/channel/streams",
+  },
   {
     key: "social",
     label: "Social",
@@ -63,6 +70,9 @@ const ChannelLayoutComponent = ({ children }: PropsWithChildren<{}>) => {
   const { data: channel, query: channelQuery } = useChannelById(
     channelId ?? channelUsername,
   );
+  const { data: stream } = useChannelStream({
+    channelId,
+  });
   const tabName = getTabNameFromPathname(pathname);
   const [effectiveChannelId, setEffectiveChannelId] = useState<
     string | undefined
@@ -95,6 +105,7 @@ const ChannelLayoutComponent = ({ children }: PropsWithChildren<{}>) => {
       channelId={effectiveChannelId}
       channel={channel}
       channelQuery={channelQuery}
+      stream={stream}
     >
       <div className="relative flex flex-col gap-4 w-full">
         <ChannelHeader />

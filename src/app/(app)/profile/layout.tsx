@@ -15,6 +15,11 @@ import { useProfileStream } from "@/features/profile/queries/use-profile-stream"
 
 const profileTabs = [
   {
+    key: "streams",
+    label: "Streams",
+    path: "/profile/streams",
+  },
+  {
     key: "social",
     label: "Social",
     path: "/profile/social",
@@ -28,11 +33,6 @@ const profileTabs = [
     key: "playlists",
     label: "Playlists",
     path: "/profile/playlists",
-  },
-  {
-    key: "streams",
-    label: "Streams",
-    path: "/profile/streams",
   },
   {
     key: "about",

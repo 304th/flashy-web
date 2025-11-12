@@ -4,6 +4,7 @@ import { liveStreamsCollection } from "@/features/streams/entities/live-streams.
 import { profileStreamEntity } from "@/features/profile/entities/profile-stream.entity";
 import { streamsWebSocket } from "@/features/streams/services/streams-websocket";
 import { streamEntity } from "@/features/streams/entities/stream.entity";
+import {channelStreamEntity} from "@/features/channels/entities/channel-stream.entity";
 
 /**
  * Hook to handle live updates for streams
@@ -38,6 +39,14 @@ export const useStreamsLiveUpdates = () => {
           profileStream.status = stream.status;
           profileStream.startedAt = stream.startedAt;
           profileStream.endedAt = stream.endedAt;
+        }
+      });
+      void channel(channelStreamEntity).update((channelStream) => {
+        if (channelStream._id === stream._id) {
+          channelStream.isLive = stream.isLive;
+          channelStream.status = stream.status;
+          channelStream.startedAt = stream.startedAt;
+          channelStream.endedAt = stream.endedAt;
         }
       });
     });

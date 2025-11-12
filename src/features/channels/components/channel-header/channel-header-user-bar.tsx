@@ -14,7 +14,7 @@ import { useModals } from "@/hooks/use-modals";
 import { useProtectedAction } from "@/features/auth/hooks/use-protected-action";
 
 export const ChannelHeaderUserBar = ({ className }: { className?: string }) => {
-  const { channelId, channel, channelQuery } = useChannelContext();
+  const { channelId, channel, channelQuery, stream } = useChannelContext();
   const { openModal } = useModals();
   const { requireAuth } = useProtectedAction();
 
@@ -28,6 +28,8 @@ export const ChannelHeaderUserBar = ({ className }: { className?: string }) => {
           channel ? (
             <UserProfile
               user={channel}
+              stream={stream}
+              isLive={stream?.isLive}
               isLinkable={false}
               avatarClassname="size-20"
             >

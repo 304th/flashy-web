@@ -1,12 +1,20 @@
 import { Spinner } from "@/components/ui/spinner/spinner";
 import { useChannelContext } from "@/features/profile/components/channel-context/channel-context";
+import { useModals } from "@/hooks/use-modals";
 
 export const ChannelSubscriptions = () => {
   const { channel, channelQuery } = useChannelContext();
+  const { openModal } = useModals();
 
   return (
     <div className="flex w-full items-center justify-between">
-      <div className="flex items-center gap-2 h-9">
+      <div
+        className="flex items-center gap-2 h-9 cursor-pointer hover:opacity-80 transition"
+        onClick={() =>
+          channel?.fbId &&
+          openModal("FollowersModal", { channelId: channel.fbId })
+        }
+      >
         {channelQuery.isLoading ? (
           <Spinner />
         ) : (
@@ -18,7 +26,13 @@ export const ChannelSubscriptions = () => {
           </>
         )}
       </div>
-      <div className="flex items-center gap-2 h-9">
+      <div
+        className="flex items-center gap-2 h-9 cursor-pointer hover:opacity-80 transition"
+        onClick={() =>
+          channel?.fbId &&
+          openModal("FollowingModal", { channelId: channel.fbId })
+        }
+      >
         {channelQuery.isLoading ? (
           <Spinner />
         ) : (

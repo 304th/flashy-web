@@ -96,6 +96,14 @@ import {
   GoLiveModal,
   type GoLiveModalProps,
 } from "@/features/streams/components/go-live-modal/go-live-modal";
+import {
+  FollowersModal,
+  FollowersModalProps,
+} from "@/features/channels/components/followers-modal/followers-modal";
+import {
+  FollowingModal,
+  FollowingModalProps,
+} from "@/features/channels/components/following-modal/following-modal";
 
 const modalsConfig = {
   LoginModal,
@@ -122,6 +130,8 @@ const modalsConfig = {
   GoLiveModal,
   StreamKeyModal,
   StreamSettingsModal,
+  FollowersModal,
+  FollowingModal,
 };
 
 export type ModalPropsTypes =
@@ -220,6 +230,14 @@ export type ModalPropsTypes =
   | {
       type: "GoLiveModal";
       props: GoLiveModalProps;
+    }
+  | {
+      type: "FollowersModal";
+      props: FollowersModalProps;
+    }
+  | {
+      type: "FollowingModal";
+      props: FollowingModalProps;
     };
 
 export const ModalsProvider = ({ children }: PropsWithChildren<object>) => (

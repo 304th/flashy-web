@@ -33,7 +33,6 @@ export const VideoCarousel = ({
       <div className="flex w-full items-center justify-between">
         <p className="text-white text-lg font-medium">{title}</p>
         <div className="flex items-center gap-2">
-
           <Link
             href="/video"
             className="text-brand-200 transition hover:bg-brand-100/10 py-[2px]
@@ -93,6 +92,7 @@ export const VideoCarousel = ({
 
 const Fallback = () => (
   <div className="flex items-center gap-4 w-full">
+    <div className="skeleton flex rounded h-[272px] max-w-[300px] w-[300px] flex-shrink-0" />
     <div className="skeleton flex rounded h-[272px] max-w-[300px] w-[300px] flex-shrink-0" />
     <div className="skeleton flex rounded h-[272px] max-w-[300px] w-[300px] flex-shrink-0" />
     <div className="skeleton flex rounded h-[272px] max-w-[300px] w-[300px] flex-shrink-0" />

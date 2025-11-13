@@ -206,11 +206,17 @@ export const VideoEditModal = ({
                             onValueChange={fieldProps.field.onChange}
                             placeholder="Select a playlist (optional)"
                           >
-                            {(playlists || []).map((pl) => (
-                              <Select.Item key={pl.fbId} value={pl.fbId}>
-                                {pl.title}
+                            {!playlists || playlists.length === 0 ? (
+                              <Select.Item value="no-playlists" disabled>
+                                No playlists
                               </Select.Item>
-                            ))}
+                            ) : (
+                              (playlists || []).map((pl) => (
+                                <Select.Item key={pl.fbId} value={pl.fbId}>
+                                  {pl.title}
+                                </Select.Item>
+                              ))
+                            )}
                           </Select.Root>
                         </FormControl>
                         <FormMessage />

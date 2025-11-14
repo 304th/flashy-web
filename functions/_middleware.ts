@@ -19,18 +19,18 @@ export const onRequest = async (context: TODO) => {
 
   if (request.method === 'POST' && url.pathname === '/') {
     const form = await request.formData();
-    const u = form.get('username');
-    const p = form.get('password');
+    const user = form.get('username');
+    const password = form.get('password');
 
-    if (u === USER && p === PASS) {
-      const resp = Response.redirect('/', 302);
+    if (user === USER && password === PASS) {
+      const resp = Response.redirect(new URL('/', url.origin).toString(), 302);
       resp.headers.set(
         'Set-Cookie',
-        `auth_session=${btoa(`${u}:${p}`)}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=86400`
+        `auth_session=${btoa(`${user}:${password}`)}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=604800`
       );
       return resp;
     } else {
-      return Response.redirect('/login.html?error=1', 302);
+      return Response.redirect(new URL('/login.html?error=1', url.origin).toString(), 302);
     }
   }
 
@@ -38,5 +38,5 @@ export const onRequest = async (context: TODO) => {
     return next();
   }
 
-  return Response.redirect('/login.html', 302);
+  return Response.redirect(new URL('/login.html', url.origin).toString(), 302);
 };

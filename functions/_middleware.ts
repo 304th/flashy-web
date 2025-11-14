@@ -12,6 +12,7 @@ export const onRequest = async (context: TODO) => {
     ?.split('=')[1];
 
   const isLoggedIn = session === btoa(`${USER}:${PASS}`);
+  console.log(request.url);
 
   // Allow login page and public assets to bypass auth
   const publicPaths = [

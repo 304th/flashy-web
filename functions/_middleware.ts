@@ -29,18 +29,19 @@ export const onRequest = async (context: TODO) => {
     return next();
   }
 
-  if (request.method === 'POST' && url.pathname === '/') {
+  if (request.method === 'POST' && url.pathname === '/login.html') {
     const form = await request.formData();
     const user = form.get('username');
     const password = form.get('password');
 
     if (user === USER && password === PASS) {
-      const resp = Response.redirect(new URL('/', url.origin).toString(), 302);
-      resp.headers.set(
-        'Set-Cookie',
-        `auth_session=${btoa(`${user}:${password}`)}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=604800`
-      );
-      return resp;
+      return new Response(null, {
+        status: 302,
+        headers: {
+          'Location': new URL('/', url.origin).toString(),
+          'Set-Cookie': `auth_session=${btoa(`${user}:${password}`)}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=604800`
+        }
+      });
     } else {
       return Response.redirect(new URL('/login.html?error=1', url.origin).toString(), 302);
     }

@@ -31,7 +31,7 @@ export async function onRequest(context: any) {
 
   // Your credentials here
   const VALID_USERNAME = 'flashy';
-  const VALID_PASSWORD = 'hellodarknessmyoldfriend2025';
+  const VALID_PASSWORD = 'veryflashy';
 
   // Check if the credentials match
   if (username !== VALID_USERNAME || password !== VALID_PASSWORD) {

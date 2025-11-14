@@ -11,25 +11,10 @@ export const onRequest = async (context: TODO) => {
     .find((cookie: string) => cookie.trim().startsWith('auth_session='))
     ?.split('=')[1];
 
-  const isLoggedIn = session === btoa(`${USER}:${PASS}`);
-  console.log('Request:', url.pathname, 'Logged in:', isLoggedIn);
+  const isLoggedIn = session === btoa(`${USER}:${PASS}`).replaceAll('=', '');
 
-  // Allow login page and public assets to bypass auth
-  const isPublicAsset =
-    url.pathname === '/login' ||
-    url.pathname === '/login.html' ||
-    url.pathname === '/favicon.ico' ||
-    url.pathname.startsWith('/_next/') ||
-    url.pathname.startsWith('/images/') ||
-    url.pathname.startsWith('/_worker.js') ||
-    /\.(svg|png|jpg|jpeg|gif|css|js|ico|woff|woff2|ttf|eot|json)$/i.test(url.pathname);
-
-  if (isPublicAsset) {
-    console.log('PUBLIC ASSET:', url.pathname);
-    return next();
-  }
-
-  if (request.method === 'POST' && url.pathname === '/login.html') {
+  // Handle login POST before checking public assets
+  if (request.method === 'POST' && (url.pathname === '/login.html' || url.pathname === '/login' || url.pathname === '/')) {
     const form = await request.formData();
     const user = form.get('username');
     const password = form.get('password');
@@ -45,6 +30,20 @@ export const onRequest = async (context: TODO) => {
     } else {
       return Response.redirect(new URL('/login.html?error=1', url.origin).toString(), 302);
     }
+  }
+
+  // Allow login page and public assets to bypass auth
+  const isPublicAsset =
+    url.pathname === '/login' ||
+    url.pathname === '/login.html' ||
+    url.pathname === '/favicon.ico' ||
+    url.pathname.startsWith('/_next/') ||
+    url.pathname.startsWith('/images/') ||
+    url.pathname.startsWith('/_worker.js') ||
+    /\.(svg|png|jpg|jpeg|gif|css|js|ico|woff|woff2|ttf|eot|json)$/i.test(url.pathname);
+
+  if (isPublicAsset) {
+    return next();
   }
 
   if (isLoggedIn) {

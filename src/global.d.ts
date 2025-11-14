@@ -88,6 +88,7 @@ declare global {
     updatedAt: string;
   }
 
+
   interface ChatMessage {
     _id: string;
     streamId: string;

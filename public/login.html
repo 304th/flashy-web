@@ -26,6 +26,7 @@
             button:hover {
                 background: #00AD6E;
             }
+            .error { color: #d32f2f; margin-top: 10px; }
         </style>
     </head>
     <body style="padding: 0; margin: 0; background-image: linear-gradient(180deg, #19F3A200 0%, #00AD6E87 100%);">
@@ -43,4 +44,10 @@
             </div>
         </div>
     </body>
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('error')) {
+        document.getElementById('error').textContent = 'Invalid username or password.';
+      }
+    </script>
 </html>

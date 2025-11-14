@@ -1,48 +1,42 @@
-export async function onRequest(context: any) {
-  // Get the authorization header from the request
-  const auth = context.request.headers.get('Authorization');
+export const onRequest = async (context: TODO) => {
+  const { request, env, next } = context;
+  const url = new URL(request.url);
+  const cookies = request.headers.get("Cookie") || "";
 
-  // If no authorization header is present, prompt for credentials
-  if (!auth) {
-    return new Response('Authentication required', {
-      status: 401,
-      headers: {
-        'WWW-Authenticate': 'Basic realm="Secure Area"'
-      }
-    });
+  const VALID_USER = env.BASIC_USER || "flashy";
+  const VALID_PASS = env.BASIC_PASS || "veryflashy";
+
+  const session = cookies
+    .split(";")
+    .find((cookie: string) => cookie.trim().startsWith("auth_session="))
+    ?.split("=")[1];
+
+  const isValidSession = session === btoa(`${VALID_USER}:${VALID_PASS}`);
+
+  if (url.pathname === "/login.html") {
+    return next();
   }
 
-  // Split the auth header to get the encoded credentials
-  const [scheme, encoded] = auth.split(' ');
+  if (request.method === "POST" && url.pathname === "/") {
+    const formData = await request.formData();
+    const username = formData.get("username");
+    const password = formData.get("password");
 
-  // Validate it's using Basic auth
-  if (!encoded || scheme !== 'Basic') {
-    return new Response('Invalid authentication', {
-      status: 401,
-      headers: {
-        'WWW-Authenticate': 'Basic realm="Secure Area"'
-      }
-    });
+    if (username === VALID_USER && password === VALID_PASS) {
+      const response = Response.redirect("/", 302);
+      response.headers.set(
+        "Set-Cookie",
+        `auth_session=${btoa(`${username}:${password}`)}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=86400`
+      );
+      return response;
+    } else {
+      return Response.redirect("/login.html?error=1", 302);
+    }
   }
 
-  // Decode the Base64 credentials
-  const decoded = atob(encoded);
-  const [username, password] = decoded.split(':');
-
-  // Your credentials here
-  const VALID_USERNAME = 'flashy';
-  const VALID_PASSWORD = 'veryflashy';
-
-  // Check if the credentials match
-  if (username !== VALID_USERNAME || password !== VALID_PASSWORD) {
-    return new Response('Invalid credentials', {
-      status: 401,
-      headers: {
-        'WWW-Authenticate': 'Basic realm="Secure Area"'
-      }
-    });
+  if (isValidSession) {
+    return next();
   }
 
-  // If authentication passes, continue to the requested page
-  return context.next();
-}
+  return next();
+};

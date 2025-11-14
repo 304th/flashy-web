@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html style="overscroll-behavior-y: none;">
+    <head>
+        <meta charset="utf-8">
+        <title>Flashy Social | Login</title>
+        <style>
+            input {
+                padding: 16px;
+                border: 1px solid #ddd;
+                border-radius: 6px;
+                font-size: 16px;
+            }
+            button {
+                width: 100%;
+                padding: 16px;
+                background: #19F3A2;
+                color: #101828;
+                border: none;
+                border-radius: 6px;
+                font-size: 18px;
+                font-weight: bold;
+                cursor: pointer;
+                transition: all 0.2s;
+            }
+
+            button:hover {
+                background: #00AD6E;
+            }
+        </style>
+    </head>
+    <body style="padding: 0; margin: 0; background-image: linear-gradient(180deg, #19F3A200 0%, #00AD6E87 100%);">
+        <div style="position: relative; display: flex; align-items: center; justify-content: center; height: 100vh;">
+            <div style="display: flex; flex-direction: column; gap: 16px; align-items: center; justify-content: center; width: 300px">
+                <img src="/images/flashy-social-logo.svg" alt="Flashy Social Logo" style="max-width: 200px" />
+                <img src="/images/flashy-man.png" alt="Flashy Man" style="max-width: 490px" />
+            </div>
+            <div style="position: absolute; max-width: 300px; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; padding: 8px; border-radius: 16px; backdrop-filter: blur(10px); background: #ffffff20;">
+                <form method="POST" action="/" style="display: flex; flex-direction: column; gap: 8px;">
+                    <input type="text" name="username" placeholder="Username" required />
+                    <input type="password" name="password" placeholder="Password" required />
+                    <button type="submit">Sign In</button>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

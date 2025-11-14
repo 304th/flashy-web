@@ -12,24 +12,18 @@ export const onRequest = async (context: TODO) => {
     ?.split('=')[1];
 
   const isLoggedIn = session === btoa(`${USER}:${PASS}`);
-  console.log(request.url);
+  console.log('Request:', url.pathname, 'Logged in:', isLoggedIn);
 
   // Allow login page and public assets to bypass auth
-  const publicPaths = [
-    '/login.html',
-    '/_next/',
-    '/images/',
-    '/favicon.ico',
-    '.svg',
-    '.png',
-    '.jpg',
-    '.jpeg',
-    '.gif',
-    '.css',
-    '.js',
-  ];
+  const isPublicAsset =
+    url.pathname === '/login.html' ||
+    url.pathname === '/favicon.ico' ||
+    url.pathname.startsWith('/_next/') ||
+    url.pathname.startsWith('/images/') ||
+    url.pathname.startsWith('/_worker.js') ||
+    /\.(svg|png|jpg|jpeg|gif|css|js|ico|woff|woff2|ttf|eot|json)$/i.test(url.pathname);
 
-  if (publicPaths.some(path => url.pathname.includes(path))) {
+  if (isPublicAsset) {
     return next();
   }
 

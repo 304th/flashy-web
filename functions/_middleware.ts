@@ -16,6 +16,7 @@ export const onRequest = async (context: TODO) => {
 
   // Allow login page and public assets to bypass auth
   const isPublicAsset =
+    url.pathname === '/login' ||
     url.pathname === '/login.html' ||
     url.pathname === '/favicon.ico' ||
     url.pathname.startsWith('/_next/') ||
@@ -24,6 +25,7 @@ export const onRequest = async (context: TODO) => {
     /\.(svg|png|jpg|jpeg|gif|css|js|ico|woff|woff2|ttf|eot|json)$/i.test(url.pathname);
 
   if (isPublicAsset) {
+    console.log('PUBLIC ASSET:', url.pathname);
     return next();
   }
 

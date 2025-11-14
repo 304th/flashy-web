@@ -13,7 +13,22 @@ export const onRequest = async (context: TODO) => {
 
   const isLoggedIn = session === btoa(`${USER}:${PASS}`);
 
-  if (url.pathname === '/login.html') {
+  // Allow login page and public assets to bypass auth
+  const publicPaths = [
+    '/login.html',
+    '/_next/',
+    '/images/',
+    '/favicon.ico',
+    '.svg',
+    '.png',
+    '.jpg',
+    '.jpeg',
+    '.gif',
+    '.css',
+    '.js',
+  ];
+
+  if (publicPaths.some(path => url.pathname.includes(path))) {
     return next();
   }
 

@@ -4,6 +4,7 @@ import { firebaseAuth, onAuthStateChanged } from "@/services/firebase";
 
 export const api = ky.create({
   prefixUrl: config.api.baseUrl,
+  timeout: 30000,
   hooks: {
     beforeRequest: [
       async (request) => {

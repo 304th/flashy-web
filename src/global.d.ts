@@ -149,6 +149,11 @@ declare global {
     userimage?: string;
     reactions: Record<string, Record<string, Reaction>>;
     playlist?: Playlist;
+    playbackAssets: {
+      player: string;
+      hls: string;
+      mp4: string;
+    }
     createdAt: number;
   }
 

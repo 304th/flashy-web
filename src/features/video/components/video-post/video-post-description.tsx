@@ -10,7 +10,7 @@ export const VideoPostDescription = ({
 }) => {
   return (
     <div className="flex flex-col w-full justify-start px-2">
-      <p className={`text-lg font-medium text-white ellipsis ${className}`}>
+      <p className={`text-lg font-medium text-white break-words ${className}`}>
         {videoPost.title}
       </p>
       <p className="text-sm">@{videoPost.username}</p>

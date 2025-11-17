@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { MeatballIcon } from "@/components/ui/icons/meatball";
-import { Separator } from "@/components/ui/separator";
 import { useModals } from "@/hooks/use-modals";
 import { useMe } from "@/features/auth/queries/use-me";
 import { useIsSuperAdmin } from "@/features/auth/hooks/use-is-super-admin";
@@ -17,6 +16,7 @@ import { useMuteChannel } from "@/features/channels/mutations/use-mute-channel";
 import { useUnmuteChannel } from "@/features/channels/mutations/use-unmute-channel";
 import { useVideoPostOwned } from "@/features/video/hooks/use-video-post-owned";
 import { useDeleteVideoPost } from "@/features/video/mutations/use-delete-video-post";
+import { useUpdateVideoPost } from "@/features/video/mutations/use-update-video-post";
 
 export const VideoPostMenu = ({
   videoPost,
@@ -29,6 +29,7 @@ export const VideoPostMenu = ({
   const [open, setOpen] = useState(false);
   const { openModal } = useModals();
   const deleteVideoPost = useDeleteVideoPost();
+  const updateVideo = useUpdateVideoPost();
   const muteUser = useMuteChannel();
   const unmuteUser = useUnmuteChannel();
   const isSuperAdmin = useIsSuperAdmin();
@@ -72,6 +73,25 @@ export const VideoPostMenu = ({
                 }}
               >
                 Edit
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={(e) => {
+                  setOpen(false);
+                  e.preventDefault();
+                  openModal("ConfirmModal", {
+                    title: videoPost.statusweb === 'published' ? 'Draft video' : 'Publish video',
+                    description: `Are you sure you want to ${videoPost.statusweb === 'published' ? 'draft' : 'publish'} this video?`,
+                    onConfirm: () => {
+                      updateVideo.mutate({
+                        key: videoPost.fbId,
+                        statusweb: videoPost.statusweb === 'published' ? "draft" : 'published',
+                        publishDate: videoPost.statusweb === 'published' ? undefined : Date.now(),
+                      })
+                    },
+                  });
+                }}
+              >
+                {videoPost.statusweb === 'published' ? 'Draft' : 'Publish'}
               </DropdownMenuItem>
               <DropdownMenuItem
                 variant="destructive"

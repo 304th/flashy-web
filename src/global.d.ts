@@ -147,6 +147,8 @@ declare global {
     price: number;
     username: string;
     userimage?: string;
+    category?: string;
+    statusweb: 'draft' | 'published';
     reactions: Record<string, Record<string, Reaction>>;
     playlist?: Playlist;
     playbackAssets: {

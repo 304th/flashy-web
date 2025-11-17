@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -53,6 +54,7 @@ export const VideoEditModal = ({
   onClose,
   ...props
 }: VideoEditModalProps) => {
+  const [updateType, setUpdateType] = useState<'published' | 'draft' | null>(null);
   const updateVideo = useUpdateVideoPost();
   const { data: playlists } = useProfilePlaylists();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -68,8 +70,8 @@ export const VideoEditModal = ({
   });
 
   const isPublished = Boolean(
-    (video as any).statusweb
-      ? (video as any).statusweb === "published"
+    video.statusweb
+      ? video.statusweb === "published"
       : video.publishDate,
   );
 
@@ -92,6 +94,7 @@ export const VideoEditModal = ({
     } else if (params.thumbnail === null) {
       return "";
     }
+
     return undefined;
   };
 
@@ -230,8 +233,8 @@ export const VideoEditModal = ({
                   Cancel
                 </Button>
                 <Button
-                  disabled={!form.formState.isValid}
-                  pending={form.formState.isSubmitting}
+                  disabled={!form.formState.isValid || Boolean(form.formState.isSubmitting && updateType) || !form.formState.isDirty}
+                  pending={form.formState.isSubmitting && !updateType}
                   className="w-[100px]"
                   type="submit"
                 >
@@ -241,9 +244,10 @@ export const VideoEditModal = ({
                   <Button
                     variant="secondary"
                     disabled={!form.formState.isValid}
-                    pending={form.formState.isSubmitting}
+                    pending={form.formState.isSubmitting && updateType === 'published'}
                     className="w-[110px]"
                     onClick={form.handleSubmit(async (params) => {
+                      setUpdateType('published');
                       const thumbnail = await handleThumbnailUpload(params);
 
                       await updateVideo.mutateAsync({
@@ -266,9 +270,10 @@ export const VideoEditModal = ({
                   <Button
                     variant="secondary"
                     disabled={!form.formState.isValid}
-                    pending={form.formState.isSubmitting}
+                    pending={form.formState.isSubmitting && updateType === 'draft'}
                     className="w-[110px]"
                     onClick={form.handleSubmit(async (params) => {
+                      setUpdateType('draft');
                       const thumbnail = await handleThumbnailUpload(params);
 
                       await updateVideo.mutateAsync({

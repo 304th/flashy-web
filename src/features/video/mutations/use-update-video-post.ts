@@ -6,7 +6,7 @@ import { profileVideoFeedPublishedCollection } from "@/features/profile/entities
 
 export interface UpdateVideoPostParams {
   key: string;
-  title: string;
+  title?: string;
   description?: string;
   thumbnail?: string;
   category?: string;
@@ -39,27 +39,48 @@ export const useUpdateVideoPost = () => {
     mutation: updateVideoMutation,
     onOptimistic: async (ch, params) => {
       const applyCommon = (video: VideoPost) => {
-        video.title = params.title;
-        video.description = params.description;
+        if (params.title) video.title = params.title;
+        if (params.description) video.description = params.description;
         if (params.thumbnail) video.storyImage = params.thumbnail;
-        if (params.category) (video as any).category = params.category;
+        if (params.category) video.category = params.category;
         if (params.series)
-          (video as any).playlist = {
-            ...(video as any).playlist,
+          video.playlist = {
+            ...video.playlist,
             fbId: params.series,
-          } as any;
+          } as TODO;
         if (params.publishDate) video.publishDate = params.publishDate;
       };
 
       if (params.statusweb === "published") {
         // Move from drafts to published
         await ch(profileVideoFeedDraftsCollection).delete(params.key);
+
         return ch(profileVideoFeedPublishedCollection).prepend(
           {
             fbId: params.key,
-          } as any,
+            publishDate: params.publishDate,
+            statusweb: 'published',
+          },
           {
             sync: true,
+            syncFn: (video) => {
+              return (video as any).story;
+            }
+          },
+        );
+      } else if (params.statusweb === "draft") {
+        await ch(profileVideoFeedPublishedCollection).delete(params.key);
+
+        return ch(profileVideoFeedDraftsCollection).prepend(
+          {
+            fbId: params.key,
+            statusweb: 'draft',
+          },
+          {
+            sync: true,
+            syncFn: (video) => {
+              return (video as any).story;
+            }
           },
         );
       }

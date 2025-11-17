@@ -64,7 +64,7 @@ export const VideoEditModal = ({
       description: video.description || "",
       thumbnail: video.storyImage,
       category: (video as any).category,
-      series: (video as any).playlist?.fbId,
+      series: video.series,
     },
     mode: "all",
   });

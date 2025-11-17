@@ -151,6 +151,7 @@ declare global {
     statusweb: 'draft' | 'published';
     reactions: Record<string, Record<string, Reaction>>;
     playlist?: Playlist;
+    series?: string;
     playbackAssets: {
       player: string;
       hls: string;

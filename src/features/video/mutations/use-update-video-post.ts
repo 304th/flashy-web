@@ -43,11 +43,14 @@ export const useUpdateVideoPost = () => {
         if (params.description) video.description = params.description;
         if (params.thumbnail) video.storyImage = params.thumbnail;
         if (params.category) video.category = params.category;
-        if (params.series)
+        if (params.series) {
           video.playlist = {
             ...video.playlist,
             fbId: params.series,
           } as TODO;
+          video.series = params.series;
+        }
+
         if (params.publishDate) video.publishDate = params.publishDate;
       };
 

@@ -23,7 +23,7 @@ class VideoPostSchema implements StaticSchema<VideoPost> {
       createdAt: Date.now(),
       reactions: {},
       ...params,
-    };
+    } as any;
   }
 }
 

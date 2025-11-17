@@ -24,7 +24,7 @@ export const ChannelSubscriptions = () => {
         ) : (
           <>
             <p className="text-2xl font-bold text-white">
-              {(following?.length ?? channel?.followersCount ?? 0).toLocaleString()}
+              {(followers?.length ?? channel?.followersCount ?? 0).toLocaleString()}
             </p>
             <p className="text-white">Followers</p>
           </>
@@ -42,7 +42,7 @@ export const ChannelSubscriptions = () => {
         ) : (
           <>
             <p className="text-2xl font-bold text-white">
-              {(followers?.length ?? channel?.followingCount ?? 0).toLocaleString()}
+              {(following?.length ?? channel?.followingCount ?? 0).toLocaleString()}
             </p>
             <p className="text-white">Following</p>
           </>

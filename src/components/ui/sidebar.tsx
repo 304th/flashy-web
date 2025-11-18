@@ -1,6 +1,6 @@
 "use client";
 
-import { PropsWithChildren, ReactNode } from "react";
+import { PropsWithChildren, ReactNode, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { HomeIcon } from "@/components/ui/icons/home";
@@ -8,6 +8,7 @@ import { PlayIcon } from "@/components/ui/icons/play";
 import { SocialIcon } from "@/components/ui/icons/social";
 import { StreamsIcon } from "@/components/ui/icons/streams";
 import { MonetiseIcon } from "@/components/ui/icons/monetise";
+import { ChevronDownIcon } from "@/components/ui/icons/chevron-down";
 import { Separator } from "@/components/ui/separator";
 import { useSidebar } from "@/contexts/sidebar-context";
 import {Tag} from "@/components/ui/tag";
@@ -16,6 +17,7 @@ import {Loadable} from "@/components/ui/loadable";
 import {UserProfile} from "@/components/ui/user-profile";
 import {NotFound} from "@/components/ui/not-found";
 import {useMe} from "@/features/auth/queries/use-me";
+import {Spinner} from "@/components/ui/spinner/spinner";
 
 interface NavItemProps {
   route: string;
@@ -60,6 +62,7 @@ export const Sidebar = () => {
             </div>
             <Separator />
             <Subscriptions />
+            <Separator />
           </>
         )
       }
@@ -100,21 +103,28 @@ const NavItem = ({
 const Subscriptions = () => {
   const { data: me, query: meQuery } = useMe()
   const { data: subscriptions, query: subsQuery } = useProfileFollowings();
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
-  if (!me) {
-    return null;
-  }
-
-  return <div className="flex flex-col gap-2">
-    <div className="flex items-center justify-between h-[30px] px-4">
+  return <div className="flex w-full flex-col gap-2">
+    <div
+      className="flex items-center justify-between !h-[40px] px-4 cursor-pointer transition hover:bg-base-300"
+      onClick={() => setIsCollapsed(!isCollapsed)}
+    >
       <p>Subscriptions</p>
+      <div className={`transition-transform ${isCollapsed ? '' : 'rotate-180'}`}>
+        <ChevronDownIcon />
+      </div>
     </div>
-    <Loadable queries={[meQuery, subsQuery] as any} fullScreenForDefaults>
-      {() => {
-        return subscriptions && subscriptions?.length > 0 ? subscriptions.map(subscription => (
-          <UserProfile key={subscription.fbId} user={subscription} className="py-2 px-4 rounded-none hover:bg-base-300" />
-        )) : <NotFound>No subscriptions yet</NotFound>
-      }}
-    </Loadable>
+    {!isCollapsed && (
+      <div className="flex w-full justify-center max-h-[200px] overflow-y-auto">
+        <Loadable queries={[meQuery, subsQuery] as any} fallback={<div className="flex items-center justify-center w-full p-4"><Spinner /></div>}>
+          {() => {
+            return subscriptions && subscriptions?.length > 0 && me ? subscriptions.map(subscription => (
+              <UserProfile key={subscription.fbId} user={subscription} className="w-full py-2 px-4 rounded-none hover:bg-base-300" />
+            )) : <NotFound>No subscriptions yet</NotFound>
+          }}
+        </Loadable>
+      </div>
+    )}
   </div>
 }

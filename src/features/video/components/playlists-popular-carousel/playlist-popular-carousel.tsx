@@ -195,14 +195,14 @@ export const PlaylistPopularCarousel = () => {
             {/* Left Gradient Fade */}
             <div
               className="absolute left-0 top-0 bottom-0 w-8 z-10
-                pointer-events-none bg-gradient-to-r from-background
+                pointer-events-none bg-gradient-to-r from-background/90
                 to-transparent"
             />
 
             {/* Right Gradient Fade */}
             <div
               className="absolute right-0 top-0 bottom-0 w-8 z-10
-                pointer-events-none bg-gradient-to-l from-background
+                pointer-events-none bg-gradient-to-l from-background/90
                 to-transparent"
             />
             <div

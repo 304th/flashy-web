@@ -199,7 +199,7 @@ export const HeaderUserSearch = () => {
     <div ref={containerRef} className="relative w-full max-w-[420px]">
       <Input
         type="text"
-        placeholder="Search users..."
+        placeholder="Search..."
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onFocus={handleFocus}

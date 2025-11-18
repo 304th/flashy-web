@@ -1,9 +1,14 @@
+'use client';
+
 import Link from "next/link";
 import { AccountLogin } from "@/features/auth/components/account-login/account-login";
 import { HeaderUserSearch } from "@/components/ui/header-user-search";
 import { HamburgerIcon } from "@/components/ui/icons/hamburger";
+import { useSidebar } from "@/contexts/sidebar-context";
 
 export const Header = () => {
+  const { toggleSidebar } = useSidebar();
+
   return (
     <div className="relative bg-base-200 border-b border-b-base-300 z-3">
       <div
@@ -11,7 +16,11 @@ export const Header = () => {
           h-16 items-center justify-between max-w-content"
       >
         <div className="flex items-center gap-4">
-          <div className="flex items-center justify-between p-3 text-white cursor-pointer hover:bg-base-300 rounded" role="button">
+          <div
+            className="flex items-center justify-between p-3 text-white cursor-pointer hover:bg-base-300 rounded"
+            role="button"
+            onClick={toggleSidebar}
+          >
             <HamburgerIcon />
           </div>
           <Link

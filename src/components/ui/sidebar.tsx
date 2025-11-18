@@ -1,43 +1,68 @@
 "use client";
 
-import { PropsWithChildren, ReactNode, useState } from "react";
+import { PropsWithChildren, ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { HomeIcon } from "@/components/ui/icons/home";
 import { PlayIcon } from "@/components/ui/icons/play";
 import { SocialIcon } from "@/components/ui/icons/social";
 import { StreamsIcon } from "@/components/ui/icons/streams";
+import { MonetiseIcon } from "@/components/ui/icons/monetise";
+import { Separator } from "@/components/ui/separator";
+import { useSidebar } from "@/contexts/sidebar-context";
+import {Tag} from "@/components/ui/tag";
+import {useProfileFollowings} from "@/features/profile/queries/use-profile-followings";
+import {Loadable} from "@/components/ui/loadable";
+import {UserProfile} from "@/components/ui/user-profile";
+import {NotFound} from "@/components/ui/not-found";
+import {useMe} from "@/features/auth/queries/use-me";
 
 interface NavItemProps {
   route: string;
   icon: ReactNode;
   className?: string;
+  expanded: boolean;
+  disabled?: boolean;
 }
 
 export const Sidebar = () => {
-  const [expanded, setExpanded] = useState(false);
+  const { expanded } = useSidebar();
 
   return (
     <div
-      className={`fixed flex justify-center py-4 transition w-[82px] h-screen
-        z-1000 bg-base-200`}
-      onMouseEnter={() => setExpanded(true)}
-      onMouseLeave={() => setExpanded(false)}
+      className={`flex flex-col justify-start gap-2 py-4 h-full
+        bg-base-200 border-r border-r-base-300 ${
+          expanded ? "w-[240px]" : "w-[82px]"
+        }`}
     >
       <div className="flex flex-col w-full items-center gap-2">
-        <NavItem route="/" icon={<HomeIcon />} className="text-xs">
-          <p>Home</p>
+        <NavItem route="/" icon={<HomeIcon />} className="text-xs" expanded={expanded}>
+          Home
         </NavItem>
-        <NavItem route="/video" icon={<PlayIcon />} className="text-xs">
-          <p>Video</p>
+        <NavItem route="/video" icon={<PlayIcon />} className="text-xs" expanded={expanded}>
+          Video
         </NavItem>
-        <NavItem route="/stream" icon={<StreamsIcon />} className="text-xs">
-          <p>Streams</p>
+        <NavItem route="/stream" icon={<StreamsIcon />} className="text-xs" expanded={expanded}>
+          Streams
         </NavItem>
-        <NavItem route="/social" icon={<SocialIcon />} className="text-xs">
-          <p>Social</p>
+        <NavItem route="/social" icon={<SocialIcon />} className="text-xs" expanded={expanded}>
+          Social
         </NavItem>
       </div>
+      {
+        expanded && (
+          <>
+            <Separator />
+            <div className="flex flex-col w-full items-center gap-2">
+              <NavItem route="/" icon={<MonetiseIcon />} className="text-xs" expanded={expanded} disabled>
+                <Tag>COMING SOON</Tag>
+              </NavItem>
+            </div>
+            <Separator />
+            <Subscriptions />
+          </>
+        )
+      }
     </div>
   );
 };
@@ -45,24 +70,51 @@ export const Sidebar = () => {
 const NavItem = ({
   route,
   icon,
+  expanded,
+  disabled,
   className,
   children,
 }: PropsWithChildren<NavItemProps>) => {
   const pathname = usePathname();
 
   return (
-    <Link href={route} className={`w-full aspect-square ${className}`}>
+    <Link aria-disabled={disabled} href={!disabled ? route : ''} className={`w-full ${expanded ? "" : ""} ${disabled ? 'cursor-not-allowed' : ''} ${className}`}>
       <div
-        className={`flex w-full flex-col items-center justify-center gap-1
-          cursor aspect-square transition rounded ${
+        className={`w-full transition cursor ${
+            expanded
+              ? "grid grid-cols-[40px_1fr] items-center gap-3 px-4 h-[44px]"
+              : "flex flex-col items-center justify-center gap-2 p-4 h-[60px]"
+          } ${
             pathname === route
               ? "bg-base-300 text-white"
-              : "hover:bg-base-300 hover:scale-110"
+              : "hover:bg-base-300"
           }`}
       >
-        {icon}
-        {children}
+        <div className="flex items-center justify-center">{icon}</div>
+        <span className={expanded ? "text-sm font-medium whitespace-nowrap" : "text-xs"}>{children}</span>
       </div>
     </Link>
   );
 };
+
+const Subscriptions = () => {
+  const { data: me, query: meQuery } = useMe()
+  const { data: subscriptions, query: subsQuery } = useProfileFollowings();
+
+  if (!me) {
+    return null;
+  }
+
+  return <div className="flex flex-col gap-2">
+    <div className="flex items-center justify-between h-[30px] px-4">
+      <p>Subscriptions</p>
+    </div>
+    <Loadable queries={[meQuery, subsQuery] as any} fullScreenForDefaults>
+      {() => {
+        return subscriptions && subscriptions?.length > 0 ? subscriptions.map(subscription => (
+          <UserProfile key={subscription.fbId} user={subscription} className="py-2 px-4 rounded-none hover:bg-base-300" />
+        )) : <NotFound>No subscriptions yet</NotFound>
+      }}
+    </Loadable>
+  </div>
+}

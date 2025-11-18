@@ -11,6 +11,7 @@ import { LoadingProvider } from "@/providers/loading-provider";
 import { VerificationProvider } from "@/providers/verification-provider";
 import { LiveEventsProvider } from "@/providers/live-events-provider";
 import { FingerprintProvider } from "@/providers/fingerprint-provider";
+import { SidebarProvider } from "@/contexts/sidebar-context";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -46,7 +47,9 @@ export default function RootLayout({
               <VerificationProvider />
               <LiveEventsProvider />
               <FingerprintProvider />
-              <Layout>{children}</Layout>
+              <SidebarProvider>
+                <Layout>{children}</Layout>
+              </SidebarProvider>
             </ModalsProvider>
           </ApiProvider>
         </GoogleOAuthProvider>

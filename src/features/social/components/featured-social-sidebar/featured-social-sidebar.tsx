@@ -11,7 +11,7 @@ export const FeaturedSocialSidebar = () => {
   const { query } = useFeaturedSocialPosts();
 
   return (
-    <div className="sticky top-4 flex flex-col gap-3">
+    <div className="sticky top-0 flex flex-col gap-3 overflow-y-auto">
       <Loadable queries={[query]} fullScreenForDefaults>
         {() => (
           <>

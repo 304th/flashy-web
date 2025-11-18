@@ -16,7 +16,7 @@ export default function MessagesLayout({
   useMessagesLiveUpdates();
 
   return (
-    <div className="relative flex gap-4 w-full">
+    <div className="relative flex gap-4 w-full max-w-page">
       <div className="w-2/6">
         <Suspense
           fallback={

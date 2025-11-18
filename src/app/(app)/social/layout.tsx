@@ -7,7 +7,7 @@ export default function SocialLayout({
   children: ReactNode;
 }>) {
   return (
-    <div className="relative flex gap-4 w-full">
+    <div className="relative flex gap-4 w-full max-w-page">
       <div className="w-1/2 max-xl:w-3/5">{children}</div>
       <div className="w-1/2 max-xl:w-2/5">
         <FeaturedSocialSidebar />

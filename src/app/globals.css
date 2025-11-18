@@ -4,11 +4,13 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
+  --breakpoint-xs: 400px;
   --breakpoint-sm: 639px;
   --breakpoint-md: 767px;
   --breakpoint-lg: 1023px;
   --breakpoint-xl: 1279px;
-  --breakpoint-2xl: 3235px;
+  --breakpoint-2xl: 1700px;
+  --breakpoint-3xl: 2235px;
 }
 
 @theme inline {
@@ -269,6 +271,18 @@
   margin: 0 auto;
   /*max-width: 2000px;*/
   width: 100%;
+}
+
+@utility max-w-page {
+    margin: 0 auto;
+    max-width: 1530px;
+    width: 100%;
+}
+
+@utility max-w-video {
+    margin: 0 auto;
+    max-width: 1800px;
+    width: 100%;
 }
 
 @utility ellipsis {

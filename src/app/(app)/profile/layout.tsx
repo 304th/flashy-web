@@ -65,7 +65,7 @@ export default function ProfileLayout({
       channelQuery={channelQuery}
       stream={stream}
     >
-      <div className="relative flex flex-col gap-4 w-full">
+      <div className="relative flex flex-col gap-4 w-full max-w-page">
         <ProfileHeader />
         <div className="relative flex w-full justify-center items-center">
           <p className="absolute left-0 text-xl text-white font-bold">

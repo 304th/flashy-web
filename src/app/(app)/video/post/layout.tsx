@@ -26,9 +26,9 @@ const VideoPostLayoutComponent = ({ children }: { children: ReactNode }) => {
   const { data: videoPost } = useVideoPostById(id!);
 
   return (
-    <div className="relative flex gap-4 w-full">
-      <div className="w-7/10">{children}</div>
-      <div className="w-3/10">
+    <div className="relative flex gap-4 w-full max-w-video">
+      <div className="w-8/11">{children}</div>
+      <div className="w-3/11">
         <VideoSidebar
           playlistId={playlistId || videoPost?.playlist?.fbId}
           playlistTitle={videoPost?.playlist?.title}

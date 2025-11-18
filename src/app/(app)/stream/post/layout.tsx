@@ -23,7 +23,7 @@ const StreamLayoutComponent = ({ children }: { children: ReactNode }) => {
   const { data: stream } = useStreamById(id!);
 
   return (
-    <div className="relative flex gap-4 w-full">
+    <div className="relative flex gap-4 w-full max-w-video">
       <div className="w-7/10 overflow-y-auto">{children}</div>
       <div className="w-3/10">
         {stream && (

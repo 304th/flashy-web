@@ -86,22 +86,24 @@ export const VideoWatch = ({ videoPost }: { videoPost: VideoPost }) => {
           />
         )}
       </div>
-      <CommentsFeed
-        post={videoPost}
-        className="!overflow-auto !max-h-full"
-        onCommentReply={(comment) => setReplyComment(comment)}
-      />
-      <div
-        className="sticky bottom-0 pb-4 w-full shrink-0 bg-[#11111180]
-          backdrop-blur-xl"
-      >
-        <CommentSend
+      <div className="relative flex flex-col">
+        <CommentsFeed
           post={videoPost}
-          replyComment={replyComment}
-          autoFocus={false}
-          className="rounded-br-md rounded-bl-md z-1 border"
-          onCloseReply={() => setReplyComment(null)}
+          className="!overflow-auto !max-h-full"
+          onCommentReply={(comment) => setReplyComment(comment)}
         />
+        <div
+          className="sticky bottom-0 pb-4 w-full shrink-0 bg-[#11111180]
+            backdrop-blur-xl"
+        >
+          <CommentSend
+            post={videoPost}
+            replyComment={replyComment}
+            autoFocus={false}
+            className="rounded-br-md rounded-bl-md z-1 border"
+            onCloseReply={() => setReplyComment(null)}
+          />
+        </div>
       </div>
     </div>
   );

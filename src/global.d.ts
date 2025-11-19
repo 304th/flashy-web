@@ -331,6 +331,184 @@ declare global {
   // Example:
   // declare global { interface QueryToolkitChannels { posts: true; profile: true } }
   interface QueryToolkitChannels {}
+
+  // ==================== MONETISE TYPES ====================
+
+  type OpportunityType = 'sponsorship' | 'partnership' | 'affiliate';
+  type OpportunityStatus = 'active' | 'expired' | 'paused';
+  type CompensationType = 'fixed' | 'per-post' | 'commission' | 'product' | 'negotiable';
+  type CreatorOpportunityStatus =
+    | 'accepted'
+    | 'pending-deliverables'
+    | 'submitted'
+    | 'under-review'
+    | 'approved'
+    | 'rejected'
+    | 'expired'
+    | 'completed';
+
+  interface OpportunityEligibility {
+    minFollowers: number;
+    niches: string[];
+    platforms: string[];
+    countries: string[];
+  }
+
+  interface Opportunity {
+    _id: string;
+    title: string;
+    brandName: string;
+    brandLogo?: string;
+    type: OpportunityType;
+    description: string;
+    deliverables: string[];
+    compensation: string;
+    compensationType: CompensationType;
+    eligibility: OpportunityEligibility;
+    deadline: string;
+    requiresApplication: boolean;
+    termsAndConditions: string;
+    status: OpportunityStatus;
+    createdBy: string;
+    sponsorId?: string;
+    maxParticipants: number;
+    currentParticipants: number;
+    createdAt: string;
+    updatedAt: string;
+  }
+
+  interface SubmissionFile {
+    url: string;
+    filename: string;
+    type?: string;
+    size?: number;
+    uploadedAt?: string;
+  }
+
+  interface Submission {
+    files: SubmissionFile[];
+    links: string[];
+    note?: string;
+  }
+
+  interface CreatorOpportunity {
+    _id: string;
+    creatorId: string;
+    opportunityId: string | Opportunity;
+    status: CreatorOpportunityStatus;
+    appliedAt: string;
+    acceptedAt?: string;
+    submittedAt?: string;
+    approvedAt?: string;
+    completedAt?: string;
+    submission?: Submission;
+    feedback?: string;
+    resubmitCount: number;
+    tcAgreedAt?: string;
+    tcVersion?: string;
+    reminder5DaySent?: boolean;
+    reminder1DaySent?: boolean;
+    createdAt: string;
+    updatedAt: string;
+  }
+
+  interface OpportunityListParams {
+    page?: number;
+    limit?: number;
+    type?: OpportunityType;
+    niche?: string | string[];
+    minPayout?: number;
+    search?: string;
+    status?: OpportunityStatus;
+    sortBy?: 'createdAt' | 'deadline' | 'compensation';
+    sortOrder?: 'asc' | 'desc';
+  }
+
+  interface OpportunityListResponse {
+    opportunities: Opportunity[];
+    pagination: {
+      page: number;
+      limit: number;
+      total: number;
+      pages: number;
+      hasNext: boolean;
+      hasPrev: boolean;
+    };
+  }
+
+  interface CreatorOpportunityListResponse {
+    creatorOpportunities: CreatorOpportunity[];
+    pagination: {
+      page: number;
+      limit: number;
+      total: number;
+      pages: number;
+    };
+  }
+
+  interface SponsorSubmissionsResponse {
+    submissions: CreatorOpportunity[];
+    pagination: {
+      page: number;
+      limit: number;
+      total: number;
+      pages: number;
+    };
+  }
+
+  interface PresignedUrlRequest {
+    filename: string;
+    contentType: string;
+  }
+
+  interface PresignedUrlResponse {
+    uploadUrl: string;
+    fileUrl: string;
+    key: string;
+    filename: string;
+    originalFilename: string;
+    expiresIn: number;
+    contentType: string;
+  }
+
+  interface AcceptOpportunityResponse {
+    success: boolean;
+    creatorOpportunity: CreatorOpportunity;
+    message: string;
+  }
+
+  interface SubmitDeliverablesResponse {
+    success: boolean;
+    creatorOpportunity: CreatorOpportunity;
+    message: string;
+    resubmitsRemaining?: number;
+  }
+
+  interface ApproveRejectResponse {
+    success: boolean;
+    creatorOpportunity: CreatorOpportunity;
+    message: string;
+  }
+
+  interface CreateOpportunityParams {
+    title: string;
+    brandName: string;
+    brandLogo?: string;
+    type: OpportunityType;
+    description: string;
+    deliverables: string[];
+    compensation: string;
+    compensationType?: CompensationType;
+    eligibility?: Partial<OpportunityEligibility>;
+    deadline: string;
+    requiresApplication?: boolean;
+    termsAndConditions: string;
+    status?: OpportunityStatus;
+    sponsorId?: string;
+    maxParticipants?: number;
+  }
+
+  interface UpdateOpportunityParams extends Partial<CreateOpportunityParams> {}
 }
 
 export {};

@@ -56,8 +56,9 @@ export const Sidebar = () => {
           <>
             <Separator />
             <div className="flex flex-col w-full items-center gap-2">
-              <NavItem route="/" icon={<MonetiseIcon />} className="text-xs" expanded={expanded} disabled>
-                <Tag className="text-white">COMING SOON</Tag>
+              <NavItem route="/monetise" icon={<MonetiseIcon />} className="text-xs" expanded={expanded}>
+                Monetise
+                {/*<Tag className="text-white">COMING SOON</Tag>*/}
               </NavItem>
             </div>
             <Separator />

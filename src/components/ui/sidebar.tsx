@@ -116,7 +116,7 @@ const Subscriptions = () => {
       </div>
     </div>
     {!isCollapsed && (
-      <div className="flex w-full justify-center max-h-[200px] overflow-y-auto">
+      <div className="flex flex-col gap-1 w-full justify-center max-h-[200px] overflow-y-auto">
         <Loadable queries={[meQuery, subsQuery] as any} fallback={<div className="flex items-center justify-center w-full p-4"><Spinner /></div>}>
           {() => {
             return subscriptions && subscriptions?.length > 0 && me ? subscriptions.map(subscription => (

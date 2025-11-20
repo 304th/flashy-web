@@ -7,11 +7,11 @@ import {
   MonetiseFilterTabs,
   OpportunitiesGrid,
   SortSelect,
+  useOpportunities,
   type FilterType,
   type SortOption,
   type OpportunityData,
-} from "./_components";
-import { useOpportunities } from "@/features/monetise";
+} from "@/features/monetise";
 
 export default function MonetisePage() {
   const router = useRouter();
@@ -70,7 +70,7 @@ export default function MonetisePage() {
   };
 
   return (
-    <div className="flex flex-col gap-6 p-6">
+    <div className="flex flex-col gap-6 max-w-page">
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <MonetiseStatsCard

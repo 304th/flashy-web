@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { Star } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {Button} from "@/components/ui/button";
 
 interface OpportunityCardProps {
   id: string;
@@ -32,23 +33,24 @@ export function OpportunityCard({
 
   return (
     <div
-      className="group cursor-pointer"
+      className="flex flex-col group cursor-pointer gap-2"
       onClick={() => onClick?.(id)}
     >
-      <div className="relative aspect-video rounded-lg overflow-hidden mb-3">
+      <div className="relative aspect-video rounded-lg overflow-hidden">
         <Image
           src={imageUrl}
           alt={title}
           fill
           className="object-cover transition-transform group-hover:scale-105"
         />
-        <button
+        <Button
+          variant="secondary"
           onClick={(e) => {
             e.stopPropagation();
             onWishlistToggle?.(id);
           }}
           className={cn(
-            "absolute top-2 right-2 p-1.5 rounded-md transition-colors",
+            "!p-0 aspect-square absolute bottom-2 right-2 rounded-md transition-colors",
             isWishlisted
               ? "text-yellow-400"
               : "text-white/70 hover:text-white"
@@ -58,10 +60,10 @@ export function OpportunityCard({
             className="w-4 h-4"
             fill={isWishlisted ? "currentColor" : "none"}
           />
-        </button>
+        </Button>
       </div>
-      <div className="space-y-1">
-        <h3 className="text-sm font-medium text-white truncate">{title}</h3>
+      <div className="flex flex-col gap-1">
+        <h3 className="text-lg text-white truncate">{title}</h3>
         <p className="text-xs text-base-800">{category}</p>
         <p className="text-xs text-purple-400">{typeLabel}</p>
       </div>

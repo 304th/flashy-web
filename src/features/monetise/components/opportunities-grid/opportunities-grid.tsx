@@ -1,6 +1,6 @@
 "use client";
 
-import { OpportunityCard } from "./opportunity-card";
+import { OpportunityCard } from "@/features/monetise";
 
 interface OpportunityData {
   id: string;

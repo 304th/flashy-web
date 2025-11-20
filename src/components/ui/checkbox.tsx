@@ -72,25 +72,25 @@ export const Checkbox = React.forwardRef<
           height="16"
           rx="4"
           className={cn(
-            "fill-bg-soft-200 transition duration-200 ease-out",
+            "fill-base-200 transition duration-200 ease-out cursor-pointer",
             // hover
-            "group-hover/checkbox:fill-bg-sub-300",
+            "group-hover/checkbox:fill-base-500",
             // focus
-            "group-focus/checkbox:fill-primary-base",
+            "group-focus/checkbox:fill-base-500",
             // disabled
-            "group-disabled/checkbox:fill-bg-soft-200",
+            "group-disabled/checkbox:fill-base-500",
             // hover
-            "group-hover/checkbox:group-data-[state=checked]/checkbox:fill-primary-darker",
-            "group-hover/checkbox:group-data-[state=indeterminate]/checkbox:fill-primary-darker",
+            "group-hover/checkbox:group-data-[state=checked]/checkbox:fill-base-500",
+            "group-hover/checkbox:group-data-[state=indeterminate]/checkbox:fill-base-500",
             // focus
             "group-focus/checkbox:group-data-[state=checked]/checkbox:fill-primary-dark",
             "group-focus/checkbox:group-data-[state=indeterminate]/checkbox:fill-primary-dark",
             // checked
-            "group-data-[state=checked]/checkbox:fill-primary-base",
-            "group-data-[state=indeterminate]/checkbox:fill-primary-base",
+            "group-data-[state=checked]/checkbox:fill-red-500",
+            "group-data-[state=indeterminate]/checkbox:fill-red-500",
             // disabled checked
-            "group-disabled/checkbox:group-data-[state=checked]/checkbox:fill-bg-soft-200",
-            "group-disabled/checkbox:group-data-[state=indeterminate]/checkbox:fill-bg-soft-200",
+            "group-disabled/checkbox:group-data-[state=checked]/checkbox:fill-red-500",
+            "group-disabled/checkbox:group-data-[state=indeterminate]/checkbox:fill-red-500",
           )}
         />
         <g filter={`url(#${filterId})`}>
@@ -101,7 +101,7 @@ export const Checkbox = React.forwardRef<
             height="13"
             rx="2.6"
             className={cn(
-              "fill-bg-white-0 transition duration-200 ease-out",
+              "fill-base-300 transition duration-200 ease-out",
               // disabled
               "group-disabled/checkbox:hidden",
               // checked

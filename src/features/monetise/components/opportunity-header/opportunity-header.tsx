@@ -52,7 +52,7 @@ export function OpportunityHeader({
         className="gap-2"
       >
         <Star
-          className="w-4 h-4"
+          className={`w-4 h-4 ${isFavourited ? 'text-yellow-400' : ''}`}
           fill={isFavourited ? "currentColor" : "none"}
         />
         {isFavourited ? "Remove From Favourites" : "Add To Favourites"}

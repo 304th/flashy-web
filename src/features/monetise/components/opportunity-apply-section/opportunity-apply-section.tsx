@@ -24,7 +24,6 @@ export function OpportunityApplySection({
           id="agreement"
           checked={agreed}
           onCheckedChange={(checked) => setAgreed(checked === true)}
-          className="mt-0.5"
         />
         <label htmlFor="agreement" className="text-xs text-base-800 leading-relaxed cursor-pointer">
           By accepting this collaboration, you agree to complete and submit the specified deliverables by the deadline. {brandName} retains the right to approve or request revisions to content that does not align with the brief. Payment will be issued within 7 business days after approval.
@@ -35,7 +34,7 @@ export function OpportunityApplySection({
         onClick={onApply}
         disabled={!agreed || isApplying}
         pending={isApplying}
-        className="w-full sm:w-auto"
+        className="min-w-[100px] sm:w-auto"
       >
         Apply
       </Button>

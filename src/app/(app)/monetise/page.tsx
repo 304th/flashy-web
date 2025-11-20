@@ -12,12 +12,14 @@ import {
   type SortOption,
   type OpportunityData,
 } from "@/features/monetise";
+import { useWishlistStore } from "@/stores";
 
 export default function MonetisePage() {
   const router = useRouter();
   const [activeFilter, setActiveFilter] = useState<FilterType>("all");
   const [sortBy, setSortBy] = useState<SortOption>("a-z");
-  const [wishlistedIds, setWishlistedIds] = useState<Set<string>>(new Set());
+
+  const { wishlistedIds, toggleWishlist } = useWishlistStore();
 
   // Fetch opportunities based on filter
   const { data, query } = useOpportunities({
@@ -54,15 +56,7 @@ export default function MonetisePage() {
   }, [data, wishlistedIds, sortBy]);
 
   const handleWishlistToggle = (id: string) => {
-    setWishlistedIds((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) {
-        next.delete(id);
-      } else {
-        next.add(id);
-      }
-      return next;
-    });
+    toggleWishlist(id);
   };
 
   const handleOpportunityClick = (id: string) => {

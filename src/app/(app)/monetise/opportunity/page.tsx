@@ -15,6 +15,7 @@ import {
   OpportunityApplySection,
   type TabType,
 } from "@/features/monetise";
+import { useWishlistStore } from "@/stores";
 
 export default function OpportunityPage() {
   const router = useRouter();
@@ -22,7 +23,7 @@ export default function OpportunityPage() {
   const opportunityId = searchParams.get("id");
 
   const [activeTab, setActiveTab] = useState<TabType>("description");
-  const [isFavourited, setIsFavourited] = useState(false);
+  const { isWishlisted, toggleWishlist } = useWishlistStore();
 
   const { data: opportunity, query } = useOpportunityById(opportunityId || undefined);
   const acceptOpportunity = useAcceptOpportunity();
@@ -84,13 +85,11 @@ export default function OpportunityPage() {
       <div className="flex items-center gap-4">
         <Button
           variant="ghost"
-          size="icon"
           onClick={() => router.back()}
-          className="shrink-0"
         >
-          <ArrowLeft className="w-5 h-5" />
+          <ArrowLeft />
+          Go Back
         </Button>
-        <span className="text-sm text-base-800">Go Back</span>
       </div>
 
       {/* Main Content */}
@@ -120,8 +119,8 @@ export default function OpportunityPage() {
             type={opportunity.type.charAt(0).toUpperCase() + opportunity.type.slice(1)}
             description={opportunity.description}
             isEligible={true}
-            isFavourited={isFavourited}
-            onToggleFavourite={() => setIsFavourited(!isFavourited)}
+            isFavourited={isWishlisted(opportunity._id)}
+            onToggleFavourite={() => toggleWishlist(opportunity._id)}
           />
         </div>
       </div>

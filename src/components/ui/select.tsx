@@ -20,7 +20,8 @@ export const selectVariants = cva(
       size: {
         medium: "h-10 min-h-10 gap-2 rounded-md pl-3 pr-2.5",
         small: "h-9 min-h-9 gap-2 rounded-md pl-2.5 pr-2",
-        xsmall: "h-8 min-h-8 gap-1.5 rounded-md pl-2 pr-1.5",
+        xsmall: "!h-8 !min-h-8 gap-1.5 rounded-md pl-2 pr-1.5",
+        xxsmall: "h-6 min-h-6 gap-1.5 rounded-md pl-2 pr-1.5",
       },
       variant: {
         default: "w-full",
@@ -44,7 +45,7 @@ export const selectVariants = cva(
 );
 
 type SelectContextType = {
-  size?: "medium" | "small" | "xsmall";
+  size?: "medium" | "small" | "xsmall" | "xxsmall";
   variant?: "default" | "compact" | "compactForInput" | "inline";
   hasError?: boolean;
 };

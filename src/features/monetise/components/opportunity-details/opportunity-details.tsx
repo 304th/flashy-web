@@ -26,7 +26,7 @@ export function OpportunityDetails({
         <ul className="space-y-1.5">
           {deliverables.map((item, index) => (
             <li key={index} className="text-sm text-base-800 flex items-start gap-2">
-              <span className="text-base-600 mt-1">•</span>
+              <span className="text-base-600">•</span>
               <span>{item}</span>
             </li>
           ))}
@@ -52,8 +52,8 @@ export function OpportunityDetails({
         <h3 className="text-sm font-semibold text-white">Eligibility</h3>
         <ul className="space-y-1.5">
           {eligibility.map((item, index) => (
-            <li key={index} className="text-sm text-base-800 flex items-start gap-2">
-              <span className="text-base-600 mt-1">•</span>
+            <li key={index} className="text-sm text-brand-100 flex items-start gap-2">
+              <span className="text-base-600">•</span>
               <span>{item}</span>
             </li>
           ))}

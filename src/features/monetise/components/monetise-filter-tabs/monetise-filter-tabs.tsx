@@ -27,10 +27,10 @@ export function MonetiseFilterTabs({
           key={filter.value}
           onClick={() => onFilterChange(filter.value)}
           className={cn(
-            "px-3 py-1.5 text-sm font-medium rounded-md transition-colors",
+            "cursor-pointer px-3 py-1.5 text-sm font-medium rounded-md transition-colors",
             activeFilter === filter.value
-              ? "text-white"
-              : "text-base-800 hover:text-white"
+              ? "text-white bg-base-400"
+              : "text-base-800 hover:text-white hover:bg-base-300"
           )}
         >
           {filter.label}

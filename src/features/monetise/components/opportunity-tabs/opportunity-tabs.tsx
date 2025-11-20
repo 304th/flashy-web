@@ -15,7 +15,7 @@ export function OpportunityTabs({ activeTab, onTabChange }: OpportunityTabsProps
       <button
         onClick={() => onTabChange("description")}
         className={cn(
-          "pb-3 text-sm font-medium transition-colors border-b-2 -mb-px",
+          "cursor-pointer pb-3 text-sm font-medium transition-colors border-b-2 -mb-px",
           activeTab === "description"
             ? "text-white border-brand-100"
             : "text-base-800 border-transparent hover:text-white"
@@ -26,7 +26,7 @@ export function OpportunityTabs({ activeTab, onTabChange }: OpportunityTabsProps
       <button
         onClick={() => onTabChange("terms")}
         className={cn(
-          "pb-3 text-sm font-medium transition-colors border-b-2 -mb-px",
+          "cursor-pointer pb-3 text-sm font-medium transition-colors border-b-2 -mb-px",
           activeTab === "terms"
             ? "text-white border-brand-100"
             : "text-base-800 border-transparent hover:text-white"

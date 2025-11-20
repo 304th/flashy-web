@@ -19,7 +19,7 @@ export function OpportunityApplySection({
 
   return (
     <div className="space-y-4 pt-4 border-t border-base-600">
-      <div className="flex items-start gap-3">
+      <div className="flex items-start gap-2">
         <Checkbox
           id="agreement"
           checked={agreed}
@@ -34,7 +34,7 @@ export function OpportunityApplySection({
         onClick={onApply}
         disabled={!agreed || isApplying}
         pending={isApplying}
-        className="min-w-[100px] sm:w-auto"
+        className="min-w-[120px] sm:w-auto"
       >
         Apply
       </Button>

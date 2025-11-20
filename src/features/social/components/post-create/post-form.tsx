@@ -75,6 +75,7 @@ export const PostForm = ({ onSuccess }: PostFormProps) => {
     setValue: form.setValue,
     getValues: form.getValues,
     fieldName: "images",
+    maxImages: 8,
   });
 
   const { isDragActive, dragHandlers } = useDragAndDrop(handleFilesUpload);
@@ -172,7 +173,7 @@ const DragDropArea = ({
               z-10 pointer-events-none"
           >
             <p className="text-white text-lg font-semibold">
-              Upload Images here (up to 3mb)
+              Upload Images here (up to 8 images, 3mb each)
             </p>
           </motion.div>
         )}

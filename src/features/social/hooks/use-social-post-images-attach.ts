@@ -10,16 +10,26 @@ import type {
 export const useSocialPostImagesAttach = <T extends FieldValues>({
   fieldName = "images",
   maxSize = config.content.uploads.image.maxSize,
+  maxImages = 8,
   setValue,
   getValues,
 }: {
   fieldName?: keyof T;
   maxSize?: number;
+  maxImages?: number;
   setValue: UseFormSetValue<T>;
   getValues: UseFormGetValues<T>;
 }) => {
   const handleFilesUpload = (files: File[]) => {
     if (files.length === 0) return;
+
+    const currentImages = getValues(fieldName as any) || [];
+    const remainingSlots = maxImages - currentImages.length;
+
+    if (remainingSlots <= 0) {
+      toast.error(`You can only upload up to ${maxImages} images.`);
+      return;
+    }
 
     const validFiles: File[] = [];
     let hasError = false;
@@ -43,8 +53,13 @@ export const useSocialPostImagesAttach = <T extends FieldValues>({
 
     if (validFiles.length > 0) {
       // FIXME: fix types
-      const currentImages = getValues(fieldName as any) || [];
-      setValue(fieldName as any, [...currentImages, ...validFiles] as any, {
+      const filesToAdd = validFiles.slice(0, remainingSlots);
+      if (filesToAdd.length < validFiles.length) {
+        toast.error(
+          `Only ${filesToAdd.length} image(s) added. You can upload up to ${maxImages} images total.`,
+        );
+      }
+      setValue(fieldName as any, [...currentImages, ...filesToAdd] as any, {
         shouldDirty: true,
         shouldValidate: true,
       });

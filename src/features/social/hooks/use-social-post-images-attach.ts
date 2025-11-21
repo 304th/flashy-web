@@ -23,7 +23,7 @@ export const useSocialPostImagesAttach = <T extends FieldValues>({
   const handleFilesUpload = (files: File[]) => {
     if (files.length === 0) return;
 
-    const currentImages = getValues(fieldName as any) || [];
+    const currentImages = (getValues(fieldName as any) || []) as File[];
     const remainingSlots = maxImages - currentImages.length;
 
     if (remainingSlots <= 0) {

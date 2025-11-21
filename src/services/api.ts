@@ -27,7 +27,7 @@ export const api = ky.create({
             const clonedResponse = response.clone();
             const errorBody = await clonedResponse.json();
             // Store parsed error body on the error object for later use
-            error.errorBody = errorBody;
+            (error as any).errorBody = errorBody;
           } catch {
             // If parsing fails, leave error as is
           }

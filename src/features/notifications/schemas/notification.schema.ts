@@ -10,15 +10,15 @@ class NotificationSchema implements StaticSchema<UserNotification> {
 
     return {
       _id: id,
-      actionUserId: '',
-      generalAlertId: '',
+      actionUserId: "",
+      generalAlertId: "",
       image: null,
       orderId: Date.now(),
       pushData: {} as TODO,
-      text: '',
+      text: "",
       time: Date.now(),
-      userId: '',
-      userImage: '',
+      userId: "",
+      userImage: "",
       usernames: [],
       ...params,
     };

@@ -150,7 +150,10 @@ export const NotificationItem = ({ notification }: NotificationItemProps) => {
   const link = getNotificationLink(notification);
 
   const content = (
-    <div className="flex items-center gap-3 px-4 py-3 bg-base-200 hover:bg-base-300 transition-colors border-b border-base-400">
+    <div
+      className="flex items-center gap-3 px-4 py-3 bg-base-200 hover:bg-base-300
+        transition-colors border-b border-base-400"
+    >
       <UserAvatar
         avatar={notification.userImage}
         className="h-12 w-12 flex-shrink-0"
@@ -162,11 +165,7 @@ export const NotificationItem = ({ notification }: NotificationItemProps) => {
         </p>
       </div>
 
-      {icon && (
-        <div className="flex-shrink-0">
-          {icon}
-        </div>
-      )}
+      {icon && <div className="flex-shrink-0">{icon}</div>}
 
       {notification.image && (
         <img

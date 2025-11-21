@@ -7,7 +7,7 @@ import { CreateDropdown } from "@/features/auth/components/account-login/create-
 import { BalanceButton } from "@/features/wallet/components/balance-button";
 import { MessagesButton } from "@/features/auth/components/account-login/messages-button";
 import { defaultVariants } from "@/lib/framer";
-import {NotificationsButton} from "@/features/notifications/components/notifications-button/notifications-button";
+import { NotificationsButton } from "@/features/notifications/components/notifications-button/notifications-button";
 
 export const LoggedIn = () => {
   return (

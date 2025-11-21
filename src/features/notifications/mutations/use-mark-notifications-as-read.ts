@@ -1,6 +1,6 @@
 import { createMutation, useOptimisticMutation } from "@/lib/query-toolkit-v2";
 import { api } from "@/services/api";
-import {notificationsCountEntity} from "@/features/notifications/entities/notifications-count.entity";
+import { notificationsCountEntity } from "@/features/notifications/entities/notifications-count.entity";
 
 const markNotificationsAsRead = createMutation({
   write: async () => {
@@ -14,7 +14,7 @@ export const useMarkNotificationsAsRead = () => {
     onOptimistic: (ch, params) => {
       return ch(notificationsCountEntity).update((count) => {
         count.value = 0;
-      })
+      });
     },
   });
 };

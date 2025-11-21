@@ -41,7 +41,9 @@ export function useStickySidebar({
       return;
     }
 
-    const scrollElement = containerId ? document.getElementById(containerId) : (containerRef?.current || window);
+    const scrollElement = containerId
+      ? document.getElementById(containerId)
+      : containerRef?.current || window;
     const isWindow = scrollElement === window;
 
     const scrollY = isWindow
@@ -108,7 +110,11 @@ export function useStickySidebar({
 
     const handleScroll = () => requestAnimationFrame(updatePosition);
 
-    const target = containerId ? document.getElementById(containerId) : scrollEl === window ? window : scrollEl;
+    const target = containerId
+      ? document.getElementById(containerId)
+      : scrollEl === window
+        ? window
+        : scrollEl;
     target!.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", updatePosition);
 

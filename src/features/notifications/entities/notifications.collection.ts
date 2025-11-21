@@ -10,9 +10,9 @@ export const notificationsCollection = createCollection<
     const response = await api
       .get(`v2/notifications`, {
         searchParams: {
-          lastAlert: params.lastKey || '',
-          filter: 'ALL',
-        }
+          lastAlert: params.lastKey || "",
+          filter: "ALL",
+        },
       })
       .json<{ notifications: UserNotification[] }>();
 

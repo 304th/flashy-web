@@ -24,7 +24,7 @@ const groupNotificationsByDate = (notifications: UserNotification[]) => {
     const notificationDay = new Date(
       notificationDate.getFullYear(),
       notificationDate.getMonth(),
-      notificationDate.getDate()
+      notificationDate.getDate(),
     );
 
     if (notificationDay.getTime() === today.getTime()) {
@@ -71,31 +71,43 @@ export const NotificationsDropdown = ({ onClose }: { onClose: () => void }) => {
         </div>
       </div>
       <InfiniteFeed query={query}>
-        <Loadable queries={[query as any]} fallback={<div className="flex w-full p-1 justify-center"><Spinner /></div>}>
+        <Loadable
+          queries={[query as any]}
+          fallback={
+            <div className="flex w-full p-1 justify-center">
+              <Spinner />
+            </div>
+          }
+        >
           {() =>
             notificationsList.length > 0 ? (
               <div>
-                {Object.entries(groupedNotifications).map(([dateLabel, items]) => {
-                  if (items.length === 0) return null;
+                {Object.entries(groupedNotifications).map(
+                  ([dateLabel, items]) => {
+                    if (items.length === 0) return null;
 
-                  return (
-                    <div key={dateLabel}>
-                      <div className="bg-base-400 p-1 sticky top-[48px] z-[5]">
-                        <h2 className="text-white font-medium text-sm text-center">
-                          {dateLabel}
-                        </h2>
+                    return (
+                      <div key={dateLabel}>
+                        <div className="bg-base-400 p-1 sticky top-[48px] z-[5]">
+                          <h2
+                            className="text-white font-medium text-sm
+                              text-center"
+                          >
+                            {dateLabel}
+                          </h2>
+                        </div>
+                        <div>
+                          {items.map((notification) => (
+                            <NotificationItem
+                              key={notification._id}
+                              notification={notification}
+                            />
+                          ))}
+                        </div>
                       </div>
-                      <div>
-                        {items.map((notification) => (
-                          <NotificationItem
-                            key={notification._id}
-                            notification={notification}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  );
-                })}
+                    );
+                  },
+                )}
               </div>
             ) : (
               <div className="flex items-center justify-center py-12">

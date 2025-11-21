@@ -5,13 +5,11 @@ import { useMe } from "@/features/auth/queries/use-me";
 export const useNotifications = () => {
   const { data: me } = useMe();
 
-  return usePartitionedQuery<
-    UserNotification,
-    { lastKey?: string }
-  >({
+  return usePartitionedQuery<UserNotification, { lastKey?: string }>({
     queryKey: ["notifications", me?.fbId],
     collection: notificationsCollection,
-    getParams: ({ pageParam }) => ({ lastKey: pageParam as unknown as string | undefined }) as any,
+    getParams: ({ pageParam }) =>
+      ({ lastKey: pageParam as unknown as string | undefined }) as any,
     options: {
       enabled: Boolean(me),
       getNextPageParam: (lastPage: UserNotification[]) => {

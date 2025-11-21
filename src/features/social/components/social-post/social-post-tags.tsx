@@ -46,7 +46,7 @@ const RelightedTag = ({ socialPost }: { socialPost: SocialPost }) => {
       </div>
       <p className="text-sm">
         Relighted by{" "}
-        <span className="text-white font-bold">@{socialPost?.username}</span>
+        <span className="text-white font-bold">@{socialPost?.relightedBy?.username}</span>
       </p>
     </div>
   );

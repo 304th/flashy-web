@@ -64,8 +64,7 @@ export const useRemoveReaction = () => {
             params.id,
             deleteReactionFromSocialPost(author!),
           ),
-        ])
-
+        ]);
       } else if (params.postType === "video") {
         return Promise.all([
           channel(videoPostEntity).update(
@@ -80,7 +79,7 @@ export const useRemoveReaction = () => {
             params.id,
             deleteReactionFromVideoPost(author!),
           ),
-        ])
+        ]);
       }
 
       return Promise.all([]); // TODO: fix types

@@ -3,12 +3,14 @@ import { useStreamChatMessages } from "@/features/streams/queries/use-stream-cha
 import { Loadable } from "@/components/ui/loadable";
 import { StreamLiveChatMessage } from "@/features/streams/components/stream-live-chat/stream-live-chat-message";
 import { NotFound } from "@/components/ui/not-found";
-import {useInfiniteScroll} from "@/hooks/use-infinite-scroll";
-import {Spinner} from "@/components/ui/spinner/spinner";
+import { useInfiniteScroll } from "@/hooks/use-infinite-scroll";
+import { Spinner } from "@/components/ui/spinner/spinner";
 
 export const StreamLiveChatFeed = ({ stream }: { stream: Stream }) => {
   const listRef = useRef<TODO>(null);
-  const { data: messages, query: messagesQuery } = useStreamChatMessages(stream._id);
+  const { data: messages, query: messagesQuery } = useStreamChatMessages(
+    stream._id,
+  );
 
   useEffect(() => {
     if (messages?.length) {
@@ -22,15 +24,15 @@ export const StreamLiveChatFeed = ({ stream }: { stream: Stream }) => {
   });
 
   return (
-    <div className="relative flex flex-col-reverse h-full gap-1 overflow-scroll scrollbar-hide">
+    <div
+      className="relative flex flex-col-reverse h-full gap-1 overflow-scroll
+        scrollbar-hide"
+    >
       <Loadable queries={[messagesQuery] as any}>
         {() =>
           messages && messages.length > 0 ? (
             messages.map((message) => (
-              <StreamLiveChatMessage
-                chatMessage={message}
-                stream={stream}
-              />
+              <StreamLiveChatMessage chatMessage={message} stream={stream} />
             ))
           ) : (
             <NotFound>No messages yes</NotFound>

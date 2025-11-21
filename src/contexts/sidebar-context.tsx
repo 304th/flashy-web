@@ -1,6 +1,12 @@
-'use client';
+"use client";
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 
 interface SidebarContextType {
   expanded: boolean;
@@ -10,7 +16,7 @@ interface SidebarContextType {
 
 const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
 
-const SIDEBAR_STORAGE_KEY = 'sidebar-expanded';
+const SIDEBAR_STORAGE_KEY = "sidebar-expanded";
 
 export function SidebarProvider({ children }: { children: ReactNode }) {
   const [expanded, setExpanded] = useState(false);
@@ -20,7 +26,7 @@ export function SidebarProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const stored = localStorage.getItem(SIDEBAR_STORAGE_KEY);
     if (stored !== null) {
-      setExpanded(stored === 'true');
+      setExpanded(stored === "true");
     }
     setMounted(true);
   }, []);
@@ -33,7 +39,7 @@ export function SidebarProvider({ children }: { children: ReactNode }) {
   }, [expanded, mounted]);
 
   const toggleSidebar = () => {
-    setExpanded(prev => !prev);
+    setExpanded((prev) => !prev);
   };
 
   return (
@@ -46,7 +52,7 @@ export function SidebarProvider({ children }: { children: ReactNode }) {
 export function useSidebar() {
   const context = useContext(SidebarContext);
   if (context === undefined) {
-    throw new Error('useSidebar must be used within a SidebarProvider');
+    throw new Error("useSidebar must be used within a SidebarProvider");
   }
   return context;
 }

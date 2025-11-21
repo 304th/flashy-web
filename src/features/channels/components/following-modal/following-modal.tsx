@@ -4,18 +4,15 @@ import { InfiniteFeed } from "@/components/ui/infinite-feed";
 import { UserProfile } from "@/components/ui/user-profile";
 import { Spinner } from "@/components/ui/spinner/spinner";
 import { useChannelFollowings } from "@/features/channels/queries/use-channel-followings";
-import {Loadable} from "@/components/ui/loadable";
-import {NotFound} from "@/components/ui/not-found";
+import { Loadable } from "@/components/ui/loadable";
+import { NotFound } from "@/components/ui/not-found";
 
 export interface FollowingModalProps {
   channelId: string;
   onClose(): void;
 }
 
-export const FollowingModal = ({
-  channelId,
-  onClose,
-}: FollowingModalProps) => {
+export const FollowingModal = ({ channelId, onClose }: FollowingModalProps) => {
   const { data: followings, query } = useChannelFollowings({ channelId });
 
   return (
@@ -26,17 +23,23 @@ export const FollowingModal = ({
           <CloseButton />
         </div>
       </div>
-      <div className="flex flex-col w-full overflow-y-scroll max-h-[60vh] p-4 gap-2 disable-scroll-bar">
+      <div
+        className="flex flex-col w-full overflow-y-scroll max-h-[60vh] p-4 gap-2
+          disable-scroll-bar"
+      >
         <Loadable queries={[query] as any}>
           {() => {
-            return followings && followings?.length > 0 ?
+            return followings && followings?.length > 0 ? (
               followings.map((following) => (
                 <UserProfile
                   key={following.fbId}
                   user={following}
                   className="hover:bg-base-300 rounded-md p-2 cursor-pointer"
                 />
-              )) : <NotFound>Not following anyone yet</NotFound>
+              ))
+            ) : (
+              <NotFound>Not following anyone yet</NotFound>
+            );
           }}
         </Loadable>
         {/*{query.isLoading ? (*/}
@@ -66,6 +69,7 @@ export const FollowingModal = ({
 const Modal = (props: any) => (
   <ModalComponent
     {...props}
-    className={`max-sm:min-w-unset min-w-[500px] overflow-hidden !bg-base-300 !rounded-md max-sm:w-full !p-0 ${props.className}`}
+    className={`max-sm:min-w-unset min-w-[500px] overflow-hidden !bg-base-300
+      !rounded-md max-sm:w-full !p-0 ${props.className}`}
   />
 );

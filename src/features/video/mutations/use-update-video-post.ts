@@ -62,13 +62,13 @@ export const useUpdateVideoPost = () => {
           {
             fbId: params.key,
             publishDate: params.publishDate,
-            statusweb: 'published',
+            statusweb: "published",
           },
           {
             sync: true,
             syncFn: (video) => {
               return (video as any).story;
-            }
+            },
           },
         );
       } else if (params.statusweb === "draft") {
@@ -77,13 +77,13 @@ export const useUpdateVideoPost = () => {
         return ch(profileVideoFeedDraftsCollection).prepend(
           {
             fbId: params.key,
-            statusweb: 'draft',
+            statusweb: "draft",
           },
           {
             sync: true,
             syncFn: (video) => {
               return (video as any).story;
-            }
+            },
           },
         );
       }

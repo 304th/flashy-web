@@ -88,7 +88,6 @@ declare global {
     updatedAt: string;
   }
 
-
   interface ChatMessage {
     _id: string;
     streamId: string;
@@ -148,7 +147,7 @@ declare global {
     username: string;
     userimage?: string;
     category?: string;
-    statusweb: 'draft' | 'published';
+    statusweb: "draft" | "published";
     reactions: Record<string, Record<string, Reaction>>;
     playlist?: Playlist;
     series?: string;
@@ -156,7 +155,7 @@ declare global {
       player: string;
       hls: string;
       mp4: string;
-    }
+    };
     createdAt: number;
   }
 

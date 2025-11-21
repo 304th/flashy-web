@@ -3,8 +3,8 @@ import { api } from "@/services/api";
 import { createMutation, useOptimisticMutation } from "@/lib/query-toolkit-v2";
 import { useMe } from "@/features/auth/queries/use-me";
 import { socialFeedCollection } from "@/features/social/collections/social-feed";
-import {profileSocialFeedCollection} from "@/features/profile/entities/profile-social-feed.collection";
-import {channelSocialFeedCollection} from "@/features/channels/entities/channel-social-feed.collection";
+import { profileSocialFeedCollection } from "@/features/profile/entities/profile-social-feed.collection";
+import { channelSocialFeedCollection } from "@/features/channels/entities/channel-social-feed.collection";
 
 export interface RelightSocialPostParams {
   id: string;
@@ -56,7 +56,7 @@ export const useRelightSocialPost = () => {
           params.id,
           relightSocialPostWithAuthor(author!, params),
         ),
-      ])
+      ]);
     },
   });
 };

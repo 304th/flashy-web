@@ -8,7 +8,7 @@ export interface DeleteStreamChatMessageParams {
 
 const deleteChatMessageMutation = createMutation<
   DeleteStreamChatMessageParams,
-  { id: string; }
+  { id: string }
 >({
   write: async (params) => {
     return api
@@ -21,7 +21,9 @@ export const useDeleteStreamChatMessage = () => {
   return useOptimisticMutation({
     mutation: deleteChatMessageMutation,
     onOptimistic: async (ch, params) => {
-      return ch(streamChatCollection).filter(message => message._id !== params.messageId)
-    }
+      return ch(streamChatCollection).filter(
+        (message) => message._id !== params.messageId,
+      );
+    },
   });
 };

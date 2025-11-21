@@ -62,7 +62,8 @@ export const VideoCarousel = ({
       </div>
       <div
         ref={scrollContainerRef}
-        className="flex items-center gap-4 w-full overflow-x-auto scrollbar-hide"
+        className="flex items-center gap-4 w-full overflow-x-auto
+          scrollbar-hide"
       >
         <Loadable
           queries={[query]}
@@ -92,10 +93,25 @@ export const VideoCarousel = ({
 
 const Fallback = () => (
   <div className="flex items-center gap-4 w-full">
-    <div className="skeleton flex rounded h-[272px] max-w-[300px] w-[300px] flex-shrink-0" />
-    <div className="skeleton flex rounded h-[272px] max-w-[300px] w-[300px] flex-shrink-0" />
-    <div className="skeleton flex rounded h-[272px] max-w-[300px] w-[300px] flex-shrink-0" />
-    <div className="skeleton flex rounded h-[272px] max-w-[300px] w-[300px] flex-shrink-0" />
-    <div className="skeleton flex rounded h-[272px] max-w-[300px] w-[300px] flex-shrink-0" />
+    <div
+      className="skeleton flex rounded h-[272px] max-w-[300px] w-[300px]
+        flex-shrink-0"
+    />
+    <div
+      className="skeleton flex rounded h-[272px] max-w-[300px] w-[300px]
+        flex-shrink-0"
+    />
+    <div
+      className="skeleton flex rounded h-[272px] max-w-[300px] w-[300px]
+        flex-shrink-0"
+    />
+    <div
+      className="skeleton flex rounded h-[272px] max-w-[300px] w-[300px]
+        flex-shrink-0"
+    />
+    <div
+      className="skeleton flex rounded h-[272px] max-w-[300px] w-[300px]
+        flex-shrink-0"
+    />
   </div>
 );

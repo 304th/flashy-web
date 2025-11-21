@@ -29,8 +29,11 @@ export const StreamCardV2 = ({
         <div
           className={`relative w-full h-[180px] shrink-0 bg-cover bg-center
             rounded
-            ${horizontal ? "h-[110px]! !shrink-0 !w-fit aspect-video" : ""}'} ${stream.status === 'ended' ? 'bg-base-500' : ''}`}
-          style={{ backgroundImage: `url(${stream.thumbnail || stream.status === 'ended' ? '/images/stream-ended.jpg' : ''})` }}
+            ${horizontal ? "h-[110px]! !shrink-0 !w-fit aspect-video" : ""}'}
+            ${stream.status === "ended" ? "bg-base-500" : ""}`}
+          style={{
+            backgroundImage: `url(${stream.thumbnail || stream.status === "ended" ? "/images/stream-ended.jpg" : ""})`,
+          }}
           role="img"
           aria-label="Stream Thumbnail"
         >

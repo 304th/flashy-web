@@ -41,14 +41,20 @@ class StreamViewersWebSocketService extends WebSocketServiceOptionalAuth<StreamV
    * Join a stream as a viewer
    */
   joinStream(streamId: string) {
-    this.emit("join_stream", { streamId, visitorId: localStorage.getItem('visitorId') });
+    this.emit("join_stream", {
+      streamId,
+      visitorId: localStorage.getItem("visitorId"),
+    });
   }
 
   /**
    * Leave a stream as a viewer
    */
   leaveStream(streamId: string) {
-    this.emit("leave_stream", { streamId, visitorId: localStorage.getItem('visitorId') });
+    this.emit("leave_stream", {
+      streamId,
+      visitorId: localStorage.getItem("visitorId"),
+    });
   }
 }
 

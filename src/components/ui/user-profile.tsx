@@ -1,10 +1,10 @@
-import type {MouseEvent, PropsWithChildren} from "react";
+import type { MouseEvent, PropsWithChildren } from "react";
 import Link from "next/link";
 import { LiveTag } from "@/components/ui/live-tag";
 import { UserAvatar } from "@/components/ui/user-avatar";
 import { UserBadge } from "@/components/ui/user-badge";
 import { useMe } from "@/features/auth/queries/use-me";
-import {useModals} from "@/hooks/use-modals";
+import { useModals } from "@/hooks/use-modals";
 
 export interface UserProfileProps {
   user: User;
@@ -104,32 +104,34 @@ const BaseUserProfile = ({
     });
   };
 
-  return <div
-    className={`relative flex items-center gap-2 p-[2px] ${className}`}
-    onClick={handleImageClick}
-  >
-    <UserAvatar
-      avatar={user.userimage}
-      className={`size-8 ${avatarClassname}
-        ${isLive ? "border-3 border-red-600" : ""}`}
+  return (
+    <div
+      className={`relative flex items-center gap-2 p-[2px] ${className}`}
+      onClick={handleImageClick}
     >
-      {isLive && (
-        <LiveTag className="absolute -bottom-1 left-1/2 -translate-x-1/2"/>
-      )}
-    </UserAvatar>
-    {withoutUsername ? null : (
-      <div className="flex flex-col gap-1">
-        <div className="flex items-center gap-1">
-          <p
-            className={`text-white font-bold text-base
-              ${truncateUsername ? "max-w-[220px] ellipsis" : ""}`}
-          >
-            {user.username}
-          </p>
-          <UserBadge user={user}/>
+      <UserAvatar
+        avatar={user.userimage}
+        className={`size-8 ${avatarClassname}
+          ${isLive ? "border-3 border-red-600" : ""}`}
+      >
+        {isLive && (
+          <LiveTag className="absolute -bottom-1 left-1/2 -translate-x-1/2" />
+        )}
+      </UserAvatar>
+      {withoutUsername ? null : (
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center gap-1">
+            <p
+              className={`text-white font-bold text-base
+                ${truncateUsername ? "max-w-[220px] ellipsis" : ""}`}
+            >
+              {user.username}
+            </p>
+            <UserBadge user={user} />
+          </div>
+          {children}
         </div>
-        {children}
-      </div>
-    )}
-  </div>
+      )}
+    </div>
+  );
 };

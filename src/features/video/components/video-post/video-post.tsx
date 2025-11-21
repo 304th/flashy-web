@@ -16,7 +16,8 @@ export const VideoPost = ({
 }) => {
   return (
     <div
-      className={`group relative flex flex-col gap-2 w-full items-center ${className} rounded`}
+      className={`group relative flex flex-col gap-2 w-full items-center
+        ${className} rounded`}
     >
       <Link
         href={`/video/post?id=${videoPost._id}${includePlaylist ? `&playlistId=${includePlaylist}` : ""}`}

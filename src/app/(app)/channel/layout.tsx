@@ -18,8 +18,8 @@ import { useQueryParams } from "@/hooks/use-query-params";
 import { ChannelNotFound } from "@/features/channels/components/channel-not-found/channel-not-found";
 import { useMe } from "@/features/auth/queries/use-me";
 import { useChannelById } from "@/features/channels/queries/use-channel-by-id";
-import {useProfileStream} from "@/features/profile/queries/use-profile-stream";
-import {useChannelStream} from "@/features/channels/queries/use-channel-stream";
+import { useProfileStream } from "@/features/profile/queries/use-profile-stream";
+import { useChannelStream } from "@/features/channels/queries/use-channel-stream";
 
 const channelTabs = [
   {

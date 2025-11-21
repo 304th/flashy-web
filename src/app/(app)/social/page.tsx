@@ -3,7 +3,7 @@ import { SocialFeed } from "@/features/social/components/social-feed/social-feed
 
 export default function SocialFeedPage() {
   return (
-    <div className="flex flex-col gap-4 w-full">
+    <div id="feed" className="flex flex-col gap-4 w-full">
       <PostCreate />
       <SocialFeed />
     </div>

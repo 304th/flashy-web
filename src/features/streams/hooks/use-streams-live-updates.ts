@@ -4,7 +4,7 @@ import { liveStreamsCollection } from "@/features/streams/entities/live-streams.
 import { profileStreamEntity } from "@/features/profile/entities/profile-stream.entity";
 import { streamsWebSocket } from "@/features/streams/services/streams-websocket";
 import { streamEntity } from "@/features/streams/entities/stream.entity";
-import {channelStreamEntity} from "@/features/channels/entities/channel-stream.entity";
+import { channelStreamEntity } from "@/features/channels/entities/channel-stream.entity";
 
 /**
  * Hook to handle live updates for streams

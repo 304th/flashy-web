@@ -14,12 +14,12 @@ const useExtractPrivateToken = (videoPost: VideoPost) => {
     try {
       const url = new URL(videoPost.playbackAssets.player);
 
-      return url.searchParams.get('token') || '';
+      return url.searchParams.get("token") || "";
     } catch {
-      return ''
+      return "";
     }
   }, [videoPost]);
-}
+};
 
 export const VideoPlayer = ({
   videoPost,
@@ -35,20 +35,20 @@ export const VideoPlayer = ({
       key={videoPost.videoId}
       video={{ id: videoPost.videoId, token }}
       hideTitle
-      style={{ width: "100%", height: "100%", aspectRatio: 16/9 }}
+      style={{ width: "100%", height: "100%", aspectRatio: 16 / 9 }}
       onEnded={onEnded}
       onFirstPlay={onFirstPlay}
       onPlay={onPlay}
       onPause={onPause}
       autoplay={false}
       theme={{
-        trackPlayed: 'rgba(27, 243, 164, 1)',
-        text: 'rgba(255, 255, 255, 1)',
-        link: 'rgba(27, 243, 164, 1)',
-        linkHover: 'rgba(140, 255, 213, 1)'
+        trackPlayed: "rgba(27, 243, 164, 1)",
+        text: "rgba(255, 255, 255, 1)",
+        link: "rgba(27, 243, 164, 1)",
+        linkHover: "rgba(140, 255, 213, 1)",
       }}
     />
-  )
+  );
 };
 
 // const VideoThumbnail = ({ thumbnail }: { thumbnail: string }) => {

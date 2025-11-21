@@ -8,7 +8,7 @@ export const FingerprintProvider = () => {
 
   useEffect(() => {
     if (visitorId) {
-      localStorage.setItem('visitorId', visitorId);
+      localStorage.setItem("visitorId", visitorId);
     }
   }, [visitorId]);
 

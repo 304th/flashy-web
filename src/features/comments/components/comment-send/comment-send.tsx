@@ -62,22 +62,18 @@ export const CommentSend = ({
 
   const onSubmit = requireAuth((params: { message: string }) => {
     if (replyComment) {
-      sendReply.mutate(
-        {
-          commentId: replyComment._id,
-          text: params.message,
-          mentionedUsers: [],
-        },
-      );
+      sendReply.mutate({
+        commentId: replyComment._id,
+        text: params.message,
+        mentionedUsers: [],
+      });
     } else {
-      sendComment.mutate(
-        {
-          postId: post._id,
-          postType: "post",
-          text: params.message,
-          mentionedUsers: [],
-        }
-      );
+      sendComment.mutate({
+        postId: post._id,
+        postType: "post",
+        text: params.message,
+        mentionedUsers: [],
+      });
     }
 
     form.reset();

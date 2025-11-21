@@ -7,8 +7,8 @@ import { socialPostEntity } from "@/features/social/queries/use-social-post-by-i
 import { videoPostEntity } from "@/features/video/entities/video-post.entity";
 import { videoSearchCollection } from "@/features/video/entities/video-search.collection";
 import { topVideosCollection } from "@/features/video/entities/top-videos.collection";
-import {profileSocialFeedCollection} from "@/features/profile/entities/profile-social-feed.collection";
-import {channelSocialFeedCollection} from "@/features/channels/entities/channel-social-feed.collection";
+import { profileSocialFeedCollection } from "@/features/profile/entities/profile-social-feed.collection";
+import { channelSocialFeedCollection } from "@/features/channels/entities/channel-social-feed.collection";
 
 export interface AddReactionParams {
   id: string;
@@ -80,7 +80,7 @@ export const useAddReaction = () => {
             params.id,
             addReactionToSocialPost(author!),
           ),
-        ])
+        ]);
       } else if (params.postType === "video") {
         return Promise.all([
           channel(videoPostEntity).update(
@@ -95,10 +95,10 @@ export const useAddReaction = () => {
             params.id,
             addReactionToVideoPost(author!),
           ),
-        ])
+        ]);
       }
 
-      return Promise.all([]);// TODO: fix types
+      return Promise.all([]); // TODO: fix types
     },
   });
 };

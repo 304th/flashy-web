@@ -5,7 +5,10 @@ export interface ChannelStreamParams {
   channelId: string;
 }
 
-export const channelStreamEntity = createEntity<Omit<Stream, 'streamKey' | 'rtmpUrl'>, ChannelStreamParams>({
+export const channelStreamEntity = createEntity<
+  Omit<Stream, "streamKey" | "rtmpUrl">,
+  ChannelStreamParams
+>({
   sourceFrom: async (params) => {
     return await api.get(`streaming/user/${params?.channelId}`).json();
   },

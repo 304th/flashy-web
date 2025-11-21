@@ -1,9 +1,11 @@
+import { useEffect, useRef } from "react";
 import { NotificationItem } from "@/features/notifications/components/notification-item/notification-item";
 import { useNotifications } from "@/features/notifications/queries/use-notifications";
 import { Spinner } from "@/components/ui/spinner/spinner";
 import { InfiniteFeed } from "@/components/ui/infinite-feed";
 import { Loadable } from "@/components/ui/loadable";
-import {usePathnameChangedEffect} from "@/hooks/use-pathname-changed-effect";
+import { usePathnameChangedEffect } from "@/hooks/use-pathname-changed-effect";
+import { useMarkNotificationsAsRead } from "@/features/notifications/mutations/use-mark-notifications-as-read";
 
 const groupNotificationsByDate = (notifications: UserNotification[]) => {
   const now = new Date();
@@ -39,11 +41,24 @@ const groupNotificationsByDate = (notifications: UserNotification[]) => {
 
 export const NotificationsDropdown = ({ onClose }: { onClose: () => void }) => {
   const { data: notifications, query } = useNotifications();
+  const markAsRead = useMarkNotificationsAsRead();
+  const hasMarkedAsRead = useRef(false);
 
   const notificationsList = notifications || [];
   const groupedNotifications = groupNotificationsByDate(notificationsList);
 
   usePathnameChangedEffect(onClose);
+
+  useEffect(() => {
+    if (hasMarkedAsRead.current) return;
+
+    const timeout = setTimeout(() => {
+      hasMarkedAsRead.current = true;
+      markAsRead.mutate(undefined);
+    }, 1500);
+
+    return () => clearTimeout(timeout);
+  }, [markAsRead]);
 
   return (
     <div className="bg-base-300">

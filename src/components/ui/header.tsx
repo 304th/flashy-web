@@ -6,6 +6,9 @@ import { HeaderUserSearch } from "@/components/ui/header-user-search";
 import { HamburgerIcon } from "@/components/ui/icons/hamburger";
 import { useSidebar } from "@/contexts/sidebar-context";
 import { useNotifications } from "@/features/notifications/queries/use-notifications";
+import {motion} from "framer-motion";
+import {defaultVariants} from "@/lib/framer";
+import {CreateDropdown} from "@/features/auth/components/account-login/create-dropdown";
 
 export const Header = () => {
   const { toggleSidebar } = useSidebar();
@@ -40,8 +43,9 @@ export const Header = () => {
             />
           </Link>
         </div>
-        <div className="flex-1 mx-6 hidden md:flex justify-center">
+        <div className="flex-1 gap-2 items-center mx-6 hidden md:flex justify-center">
           <HeaderUserSearch />
+          <CreateDropdown />
         </div>
         <AccountLogin />
       </div>

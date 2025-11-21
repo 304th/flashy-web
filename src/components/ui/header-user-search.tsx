@@ -203,7 +203,7 @@ export const HeaderUserSearch = () => {
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onFocus={handleFocus}
-        className="pr-10"
+        className="pr-10 h-10"
         trailingIcon={<Search className="h-4 w-4 text-muted-foreground" />}
       />
 

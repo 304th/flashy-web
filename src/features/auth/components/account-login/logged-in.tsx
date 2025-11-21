@@ -19,9 +19,6 @@ export const LoggedIn = () => {
         variants={defaultVariants.container}
       >
         <motion.div variants={defaultVariants.child}>
-          <CreateDropdown />
-        </motion.div>
-        <motion.div variants={defaultVariants.child}>
           <MessagesButton />
         </motion.div>
         <motion.div variants={defaultVariants.child}>

@@ -10,7 +10,7 @@ import { useNotificationsCount } from "@/features/notifications/queries/use-noti
 import { NotificationsDropdown } from "@/features/notifications/components/notifications-dropdown/notifications-dropdown";
 
 export const NotificationsButton = () => {
-  const [notificationsCount] = useNotificationsCount();
+  const { data: notificationsCount } = useNotificationsCount();
   const [open, setOpen] = useState(false);
 
   return (
@@ -27,21 +27,21 @@ export const NotificationsButton = () => {
             >
               <BellIcon />
             </Button>
-            {notificationsCount && notificationsCount > 0 && (
+            {notificationsCount && notificationsCount?.value > 0 && (
               <div
                 className="absolute top-[-15%] right-[-15%] flex items-center
                   justify-center h-4 w-4 bg-orange-500 text-white p-2 rounded-lg pointer-events-none"
               >
-                <p className="font-medium text-sm">{notificationsCount}</p>
+                <p className="font-medium text-sm">{notificationsCount?.value}</p>
               </div>
             )}
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent
-          className="w-[420px] max-h-[600px] overflow-y-auto bg-base-300 border-base-400 p-0"
+          className="w-[420px] max-h-[600px] overflow-y-auto bg-base-300 border-base-400 p-0 scrollbar-hide"
           align="end"
         >
-          <NotificationsDropdown />
+          <NotificationsDropdown onClose={() => setOpen(false)} />
         </DropdownMenuContent>
       </DropdownMenu>
       <div className="absolute w-[80px] h-6 right-0" />

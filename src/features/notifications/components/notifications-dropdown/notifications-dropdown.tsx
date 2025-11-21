@@ -1,7 +1,9 @@
-import { Filter } from "lucide-react";
 import { NotificationItem } from "@/features/notifications/components/notification-item/notification-item";
 import { useNotifications } from "@/features/notifications/queries/use-notifications";
 import { Spinner } from "@/components/ui/spinner/spinner";
+import { InfiniteFeed } from "@/components/ui/infinite-feed";
+import { Loadable } from "@/components/ui/loadable";
+import {usePathnameChangedEffect} from "@/hooks/use-pathname-changed-effect";
 
 const groupNotificationsByDate = (notifications: UserNotification[]) => {
   const now = new Date();
@@ -32,27 +34,16 @@ const groupNotificationsByDate = (notifications: UserNotification[]) => {
     }
   });
 
-  // Sort each group by most recent first
-  Object.keys(groups).forEach((key) => {
-    groups[key].sort((a, b) => b.time - a.time);
-  });
-
   return groups;
 };
 
-export const NotificationsDropdown = () => {
+export const NotificationsDropdown = ({ onClose }: { onClose: () => void }) => {
   const { data: notifications, query } = useNotifications();
-
-  if (query.isLoading) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <Spinner />
-      </div>
-    );
-  }
 
   const notificationsList = notifications || [];
   const groupedNotifications = groupNotificationsByDate(notificationsList);
+
+  usePathnameChangedEffect(onClose);
 
   return (
     <div className="bg-base-300">
@@ -64,35 +55,41 @@ export const NotificationsDropdown = () => {
           {/*</button>*/}
         </div>
       </div>
-      <div>
-        {Object.entries(groupedNotifications).map(([dateLabel, items]) => {
-          if (items.length === 0) return null;
-
-          return (
-            <div key={dateLabel}>
-              <div className="bg-base-400 p-1 sticky top-[48px] z-[5]">
-                <h2 className="text-white font-medium text-sm text-center">
-                  {dateLabel}
-                </h2>
-              </div>
+      <InfiniteFeed query={query}>
+        <Loadable queries={[query as any]} fallback={<div className="flex w-full p-1 justify-center"><Spinner /></div>}>
+          {() =>
+            notificationsList.length > 0 ? (
               <div>
-                {items.map((notification) => (
-                  <NotificationItem
-                    key={notification._id}
-                    notification={notification}
-                  />
-                ))}
-              </div>
-            </div>
-          );
-        })}
+                {Object.entries(groupedNotifications).map(([dateLabel, items]) => {
+                  if (items.length === 0) return null;
 
-        {notificationsList.length === 0 && !query.isLoading && (
-          <div className="flex items-center justify-center py-12">
-            <p className="text-gray-400">No notifications yet</p>
-          </div>
-        )}
-      </div>
+                  return (
+                    <div key={dateLabel}>
+                      <div className="bg-base-400 p-1 sticky top-[48px] z-[5]">
+                        <h2 className="text-white font-medium text-sm text-center">
+                          {dateLabel}
+                        </h2>
+                      </div>
+                      <div>
+                        {items.map((notification) => (
+                          <NotificationItem
+                            key={notification._id}
+                            notification={notification}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="flex items-center justify-center py-12">
+                <p className="text-gray-400">No notifications yet</p>
+              </div>
+            )
+          }
+        </Loadable>
+      </InfiniteFeed>
     </div>
   );
 };

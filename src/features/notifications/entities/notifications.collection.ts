@@ -3,14 +3,14 @@ import { api } from "@/services/api";
 import { notificationSchema } from "@/features/notifications/schemas/notification.schema";
 
 export const notificationsCollection = createCollection<
-  TODO,
-  { lastKey?: string; }
+  UserNotification,
+  { lastKey?: string }
 >({
   async sourceFrom(params) {
     const response = await api
       .get(`v2/notifications`, {
         searchParams: {
-          lastKey: params.lastKey || '',
+          lastAlert: params.lastKey || '',
           filter: 'ALL',
         }
       })

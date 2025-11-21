@@ -7,6 +7,8 @@ import { socialPostEntity } from "@/features/social/queries/use-social-post-by-i
 import { videoPostEntity } from "@/features/video/entities/video-post.entity";
 import { videoSearchCollection } from "@/features/video/entities/video-search.collection";
 import { topVideosCollection } from "@/features/video/entities/top-videos.collection";
+import {profileSocialFeedCollection} from "@/features/profile/entities/profile-social-feed.collection";
+import {channelSocialFeedCollection} from "@/features/channels/entities/channel-social-feed.collection";
 
 export interface AddReactionParams {
   id: string;
@@ -60,11 +62,17 @@ export const useAddReaction = () => {
   return useOptimisticMutation({
     mutation: addReaction,
     onOptimistic: async (channel, params) => {
-      const updates = [];
-
       if (params.postType === "social") {
-        updates.push(
+        return Promise.all([
           channel(socialFeedCollection).update(
+            params.id,
+            addReactionToSocialPost(author!),
+          ),
+          channel(profileSocialFeedCollection).update(
+            params.id,
+            addReactionToSocialPost(author!),
+          ),
+          channel(channelSocialFeedCollection).update(
             params.id,
             addReactionToSocialPost(author!),
           ),
@@ -72,9 +80,9 @@ export const useAddReaction = () => {
             params.id,
             addReactionToSocialPost(author!),
           ),
-        );
+        ])
       } else if (params.postType === "video") {
-        updates.push(
+        return Promise.all([
           channel(videoPostEntity).update(
             params.id,
             addReactionToVideoPost(author!),
@@ -87,10 +95,10 @@ export const useAddReaction = () => {
             params.id,
             addReactionToVideoPost(author!),
           ),
-        );
+        ])
       }
 
-      return Promise.all(updates);
+      return Promise.all([]);// TODO: fix types
     },
   });
 };

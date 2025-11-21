@@ -1,15 +1,17 @@
-import type { PropsWithChildren } from "react";
+import type {MouseEvent, PropsWithChildren} from "react";
 import Link from "next/link";
 import { LiveTag } from "@/components/ui/live-tag";
 import { UserAvatar } from "@/components/ui/user-avatar";
 import { UserBadge } from "@/components/ui/user-badge";
 import { useMe } from "@/features/auth/queries/use-me";
+import {useModals} from "@/hooks/use-modals";
 
 export interface UserProfileProps {
   user: User;
   stream?: Stream;
   isLive?: boolean;
   isLinkable?: boolean;
+  showImage?: boolean;
   withoutUsername?: boolean;
   truncateUsername?: boolean;
   className?: string;
@@ -21,6 +23,7 @@ export const UserProfile = ({
   stream,
   isLive,
   isLinkable = true,
+  showImage = false,
   withoutUsername = false,
   truncateUsername = false,
   className,
@@ -52,6 +55,7 @@ export const UserProfile = ({
           truncateUsername={truncateUsername}
           withoutUsername={withoutUsername}
           avatarClassname={avatarClassname}
+          showImage={showImage}
           children={children}
         />
       </Link>
@@ -67,6 +71,7 @@ export const UserProfile = ({
       withoutUsername={withoutUsername}
       className={className}
       avatarClassname={avatarClassname}
+      showImage={showImage}
       children={children}
     />
   );
@@ -77,12 +82,31 @@ const BaseUserProfile = ({
   isLive,
   withoutUsername,
   truncateUsername,
+  showImage,
   className,
   avatarClassname,
   children,
-}: PropsWithChildren<UserProfileProps>) => (
-  <div
+}: PropsWithChildren<UserProfileProps>) => {
+  const { openModal } = useModals();
+
+  const handleImageClick = (e: MouseEvent<HTMLDivElement>) => {
+    if (!showImage || !user.userimage) {
+      return;
+    }
+
+    e.preventDefault();
+    e.stopPropagation();
+    e.nativeEvent.stopImmediatePropagation();
+
+    openModal("ImageViewerModal", {
+      slides: [{ src: user.userimage }],
+      initialOpenIndex: 0,
+    });
+  };
+
+  return <div
     className={`relative flex items-center gap-2 p-[2px] ${className}`}
+    onClick={handleImageClick}
   >
     <UserAvatar
       avatar={user.userimage}
@@ -90,7 +114,7 @@ const BaseUserProfile = ({
         ${isLive ? "border-3 border-red-600" : ""}`}
     >
       {isLive && (
-        <LiveTag className="absolute -bottom-1 left-1/2 -translate-x-1/2" />
+        <LiveTag className="absolute -bottom-1 left-1/2 -translate-x-1/2"/>
       )}
     </UserAvatar>
     {withoutUsername ? null : (
@@ -102,10 +126,10 @@ const BaseUserProfile = ({
           >
             {user.username}
           </p>
-          <UserBadge user={user} />
+          <UserBadge user={user}/>
         </div>
         {children}
       </div>
     )}
   </div>
-);
+};

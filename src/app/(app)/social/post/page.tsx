@@ -87,7 +87,7 @@ const SocialPostDetails = ({
                   onCommentReply={(comment) => setReplyComment(comment)}
                 />
                 <div
-                  className="sticky bottom-0 pb-4 w-full shrink-0 bg-[#11111180]
+                  className="sticky -bottom-4 pb-4 w-full shrink-0 bg-[#11111180]
                     backdrop-blur-xl"
                 >
                   <CommentSend

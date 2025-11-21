@@ -68,11 +68,6 @@ export const CommentSend = ({
           text: params.message,
           mentionedUsers: [],
         },
-        {
-          onSuccess: () => {
-            form.reset();
-          },
-        },
       );
     } else {
       sendComment.mutate(
@@ -81,14 +76,11 @@ export const CommentSend = ({
           postType: "post",
           text: params.message,
           mentionedUsers: [],
-        },
-        {
-          onSuccess: () => {
-            form.reset();
-          },
-        },
+        }
       );
     }
+
+    form.reset();
   });
 
   return (

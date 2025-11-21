@@ -1,15 +1,12 @@
 import { useState } from "react";
 import { Modal as ModalComponent } from "@/packages/modals";
 import { CloseButton } from "@/components/ui/close-button";
+import { SocialPostProvider } from "../social-post/social-post-context";
 import { SocialPost } from "@/features/social/components/social-post/social-post";
 import { CommentSend } from "@/features/comments/components/comment-send/comment-send";
 import { CommentsFeed } from "@/features/comments/components/comments-feed/comments-feed";
 import { useViewQuery } from "@/lib/query-toolkit-v2";
 import { useMe } from "@/features/auth/queries/use-me";
-import { useComments } from "@/features/comments/queries/use-comments";
-import { useSocialPosts } from "@/features/social/queries/use-social-posts";
-
-import { SocialPostProvider } from "../social-post/social-post-context";
 
 export interface PostCommentsModalProps {
   postId: string;
@@ -23,14 +20,11 @@ export const PostCommentsModal = ({
 }: PostCommentsModalProps) => {
   const { data: me } = useMe();
   const [replyComment, setReplyComment] = useState<CommentPost | null>(null);
-  const { optimisticUpdates: socialFeed } = useSocialPosts();
   const { data: socialPost } = useViewQuery<SocialPost, SocialPost[]>({
     queryKey: ["social", me?.fbId],
     select: (socialPosts) =>
       socialPosts.filter((post) => post._id === postId)[0],
   });
-
-  const { optimisticUpdates: comments } = useComments(postId);
 
   if (!socialPost) {
     //FIXME: put lower so that modal is not glitched out

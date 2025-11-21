@@ -18,5 +18,22 @@ export const api = ky.create({
         }
       },
     ],
+    beforeError: [
+      async (error) => {
+        const { response } = error;
+        if (response && response.body) {
+          // Clone the response to read the body without consuming it
+          try {
+            const clonedResponse = response.clone();
+            const errorBody = await clonedResponse.json();
+            // Store parsed error body on the error object for later use
+            error.errorBody = errorBody;
+          } catch {
+            // If parsing fails, leave error as is
+          }
+        }
+        return error;
+      },
+    ],
   },
 });

@@ -3,6 +3,8 @@ import { api } from "@/services/api";
 import { createMutation, useOptimisticMutation } from "@/lib/query-toolkit-v2";
 import { useMe } from "@/features/auth/queries/use-me";
 import { socialFeedCollection } from "@/features/social/collections/social-feed";
+import {profileSocialFeedCollection} from "@/features/profile/entities/profile-social-feed.collection";
+import {channelSocialFeedCollection} from "@/features/channels/entities/channel-social-feed.collection";
 
 export interface RelightSocialPostParams {
   id: string;
@@ -41,10 +43,20 @@ export const useRelightSocialPost = () => {
   return useOptimisticMutation({
     mutation: relightSocialPost,
     onOptimistic: (ch, params) => {
-      return ch(socialFeedCollection).update(
-        params.id,
-        relightSocialPostWithAuthor(author!, params),
-      );
+      return Promise.all([
+        ch(socialFeedCollection).update(
+          params.id,
+          relightSocialPostWithAuthor(author!, params),
+        ),
+        ch(profileSocialFeedCollection).update(
+          params.id,
+          relightSocialPostWithAuthor(author!, params),
+        ),
+        ch(channelSocialFeedCollection).update(
+          params.id,
+          relightSocialPostWithAuthor(author!, params),
+        ),
+      ])
     },
   });
 };

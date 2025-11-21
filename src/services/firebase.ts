@@ -17,8 +17,6 @@ import {
   type User,
 } from "firebase/auth";
 
-console.log('_____ENV_____: ', process.env)
-
 export const firebase = initializeApp({
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
 });

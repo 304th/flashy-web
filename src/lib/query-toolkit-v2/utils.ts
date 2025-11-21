@@ -73,22 +73,38 @@ export const getLocalStorageQuery = <T>(
   ] as const;
 };
 
-export const handleMutationError = async (error: any) => {
+export const handleMutationError = async (error: TODO) => {
   try {
     if (typeof error === "string") {
       return toast.error(error);
     }
 
-    const errorBody = (await error?.response?.json()) || error.message;
+    let errorBody;
+
+    if (error?.errorBody) {
+      errorBody = error.errorBody;
+    } else if (error?.response) {
+      try {
+        errorBody = await error.response.json();
+      } catch (jsonError) {
+        try {
+          errorBody = await error.response.text();
+        } catch (textError) {
+          errorBody = error.message;
+        }
+      }
+    } else {
+      errorBody = error.message;
+    }
 
     toast.error(
-      errorBody.error ||
-        errorBody.message ||
+      errorBody?.error ||
+        errorBody?.message ||
         (typeof errorBody === "string"
           ? errorBody
           : "Unknown error. Please try again later."),
     );
-  } catch {
+  } catch (e) {
     toast.error("Unknown error. Please try again later.");
   }
 };

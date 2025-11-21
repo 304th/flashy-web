@@ -14,9 +14,9 @@ export const notificationsCollection = createCollection<
           filter: 'ALL',
         }
       })
-      .json<{ series: UserNotification[] }>();
+      .json<{ notifications: UserNotification[] }>();
 
-    return response.series;
+    return response.notifications;
   },
   schema: notificationSchema,
   name: "notifications",

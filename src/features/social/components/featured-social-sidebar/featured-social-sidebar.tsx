@@ -16,7 +16,7 @@ export const FeaturedSocialSidebar = () => {
   });
 
   return (
-    <div className="relative">
+    <div className="relative pb-4">
       <div
         ref={ref}
         className={"flex flex-col gap-3"}

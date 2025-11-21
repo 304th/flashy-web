@@ -333,8 +333,10 @@ declare global {
     image: string | null;
     orderId: number;
     pushData: {
-      follower_id: string;
+      follower_id?: string;
       type: string;
+      post_id?: string;
+      item_id?: string;
     };
     text: string;
     time: number;

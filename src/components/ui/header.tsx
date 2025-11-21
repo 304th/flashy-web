@@ -5,6 +5,7 @@ import { AccountLogin } from "@/features/auth/components/account-login/account-l
 import { HeaderUserSearch } from "@/components/ui/header-user-search";
 import { HamburgerIcon } from "@/components/ui/icons/hamburger";
 import { useSidebar } from "@/contexts/sidebar-context";
+import { useNotifications } from "@/features/notifications/queries/use-notifications";
 
 export const Header = () => {
   const { toggleSidebar } = useSidebar();

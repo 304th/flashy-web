@@ -23,7 +23,7 @@ export const MessagesButton = () => {
       {unreadCount > 0 && (
         <div
           className="absolute top-[-15%] right-[-15%] flex items-center
-            justify-center h-4 w-4 bg-orange-500 text-white p-1 rounded-lg"
+            justify-center h-4 w-4 bg-orange-500 text-white p-2 rounded-lg"
         >
           <p className="font-medium text-sm">{unreadCount}</p>
         </div>

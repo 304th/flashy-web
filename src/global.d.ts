@@ -326,6 +326,23 @@ declare global {
     };
   }
 
+  interface UserNotification {
+    _id: string;
+    actionUserId: string;
+    generalAlertId: string;
+    image: string | null;
+    orderId: number;
+    pushData: {
+      follower_id: string;
+      type: string;
+    };
+    text: string;
+    time: number;
+    userId: string;
+    userImage: string;
+    usernames: string[];
+  }
+
   // Augment in your app to get typed channel names in query-toolkit-v2
   // Example:
   // declare global { interface QueryToolkitChannels { posts: true; profile: true } }

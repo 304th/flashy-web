@@ -4,11 +4,8 @@ import Link from "next/link";
 import { AccountLogin } from "@/features/auth/components/account-login/account-login";
 import { HeaderUserSearch } from "@/components/ui/header-user-search";
 import { HamburgerIcon } from "@/components/ui/icons/hamburger";
-import { useSidebar } from "@/contexts/sidebar-context";
-import { useNotifications } from "@/features/notifications/queries/use-notifications";
-import { motion } from "framer-motion";
-import { defaultVariants } from "@/lib/framer";
 import { CreateDropdown } from "@/features/auth/components/account-login/create-dropdown";
+import { useSidebar } from "@/contexts/sidebar-context";
 
 export const Header = () => {
   const { toggleSidebar } = useSidebar();

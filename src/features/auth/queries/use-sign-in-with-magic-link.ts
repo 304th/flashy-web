@@ -5,7 +5,6 @@ import {
   handleMutationError,
 } from "@/lib/query-toolkit-v2";
 import { signInWithLMagicLink } from "@/services/firebase";
-import { api } from "@/services/api";
 
 export interface SignInWithMagicLinkParams {
   email: string;

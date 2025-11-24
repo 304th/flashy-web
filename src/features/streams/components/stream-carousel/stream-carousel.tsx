@@ -113,5 +113,13 @@ const Fallback = () => (
       className="skeleton flex rounded h-[272px] max-w-[300px] w-[300px]
         flex-shrink-0"
     />
+    <div
+      className="skeleton flex rounded h-[272px] max-w-[300px] w-[300px]
+        flex-shrink-0"
+    />
+    <div
+      className="skeleton flex rounded h-[272px] max-w-[300px] w-[300px]
+        flex-shrink-0"
+    />
   </div>
 );

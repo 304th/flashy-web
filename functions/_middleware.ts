@@ -40,6 +40,7 @@ export const onRequest = async (context: TODO) => {
     url.pathname.startsWith('/_next/') ||
     url.pathname.startsWith('/images/') ||
     url.pathname.startsWith('/_worker.js') ||
+    url.searchParams.get('magicLink') !== '' ||
     /\.(svg|png|jpg|jpeg|gif|css|js|ico|woff|woff2|ttf|eot|json)$/i.test(url.pathname);
 
   if (isPublicAsset) {

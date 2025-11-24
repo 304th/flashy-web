@@ -74,6 +74,7 @@ export const sendSignInLink = async (email: string) =>
 
 export const isSignInWithLink = async () =>
   isSignInWithEmailLink(firebaseAuth, window.location.href);
+
 export const signInWithLMagicLink = async (email: string, link: string) => {
   await signInWithEmailLink(firebaseAuth, email, link);
 

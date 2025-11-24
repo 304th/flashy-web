@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-// import { LikeButton } from "@/features/reactions/components/like-button/like-button";
 import { BlazeTipIcon } from "@/components/ui/icons/blaze-tip";
 import { ShareIcon } from "@/components/ui/icons/share2";
 import { StreamWatchMenu } from "@/features/streams/components/stream-watch/stream-watch-options-menu";
@@ -24,7 +23,7 @@ export const StreamWatchOptions = ({ stream }: { stream: Stream }) => {
             userimage: stream.author.userimage,
           }}
         />
-        {isStreamOwned && (
+        {!isStreamOwned && (
           <ChannelSubscribeButton
             channel={{
               fbId: stream.userId,

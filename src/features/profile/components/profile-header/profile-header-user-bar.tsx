@@ -25,6 +25,7 @@ export const ProfileHeaderUserBar = ({ className }: { className?: string }) => {
               stream={stream}
               isLive={stream?.isLive}
               isLinkable={false}
+              showImage={true}
               avatarClassname="size-20"
             >
               <Button

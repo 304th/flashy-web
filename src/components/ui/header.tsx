@@ -1,9 +1,10 @@
-'use client';
+"use client";
 
 import Link from "next/link";
 import { AccountLogin } from "@/features/auth/components/account-login/account-login";
 import { HeaderUserSearch } from "@/components/ui/header-user-search";
 import { HamburgerIcon } from "@/components/ui/icons/hamburger";
+import { CreateDropdown } from "@/features/auth/components/account-login/create-dropdown";
 import { useSidebar } from "@/contexts/sidebar-context";
 
 export const Header = () => {
@@ -17,7 +18,8 @@ export const Header = () => {
       >
         <div className="flex items-center gap-4">
           <div
-            className="flex items-center justify-between p-3 text-white cursor-pointer hover:bg-base-300 rounded"
+            className="flex items-center justify-between p-3 text-white
+              cursor-pointer hover:bg-base-300 rounded"
             role="button"
             onClick={toggleSidebar}
           >
@@ -26,7 +28,7 @@ export const Header = () => {
           <Link
             href="/"
             className="inline-flex items-center p-2 rounded transition
-            hover:bg-base-300"
+              hover:bg-base-300"
           >
             <img src="/logo.svg" alt="Logo" height={36} width={90} />
             <img
@@ -38,8 +40,12 @@ export const Header = () => {
             />
           </Link>
         </div>
-        <div className="flex-1 mx-6 hidden md:flex justify-center">
+        <div
+          className="flex-1 gap-2 items-center mx-6 hidden md:flex
+            justify-center"
+        >
           <HeaderUserSearch />
+          <CreateDropdown />
         </div>
         <AccountLogin />
       </div>

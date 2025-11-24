@@ -7,6 +7,7 @@ import { CreateDropdown } from "@/features/auth/components/account-login/create-
 import { BalanceButton } from "@/features/wallet/components/balance-button";
 import { MessagesButton } from "@/features/auth/components/account-login/messages-button";
 import { defaultVariants } from "@/lib/framer";
+import { NotificationsButton } from "@/features/notifications/components/notifications-button/notifications-button";
 
 export const LoggedIn = () => {
   return (
@@ -18,23 +19,14 @@ export const LoggedIn = () => {
         variants={defaultVariants.container}
       >
         <motion.div variants={defaultVariants.child}>
-          <CreateDropdown />
+          <MessagesButton />
         </motion.div>
         <motion.div variants={defaultVariants.child}>
-          <MessagesButton />
+          <NotificationsButton />
         </motion.div>
         <motion.div variants={defaultVariants.child}>
           <BalanceButton />
         </motion.div>
-        {/*<motion.div variants={defaultVariants.child}>*/}
-        {/*  <Button*/}
-        {/*    className="!w-fit p-0 aspect-square"*/}
-        {/*    size="sm"*/}
-        {/*    variant="secondary"*/}
-        {/*  >*/}
-        {/*    <BellIcon />*/}
-        {/*  </Button>*/}
-        {/*</motion.div>*/}
       </motion.div>
       <motion.div variants={defaultVariants.child}>
         <AccountDropdown />

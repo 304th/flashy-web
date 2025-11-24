@@ -88,7 +88,6 @@ declare global {
     updatedAt: string;
   }
 
-
   interface ChatMessage {
     _id: string;
     streamId: string;
@@ -148,7 +147,7 @@ declare global {
     username: string;
     userimage?: string;
     category?: string;
-    statusweb: 'draft' | 'published';
+    statusweb: "draft" | "published";
     reactions: Record<string, Record<string, Reaction>>;
     playlist?: Playlist;
     series?: string;
@@ -156,7 +155,7 @@ declare global {
       player: string;
       hls: string;
       mp4: string;
-    }
+    };
     createdAt: number;
   }
 
@@ -325,6 +324,25 @@ declare global {
     video: {
       videoId: string;
     };
+  }
+
+  interface UserNotification {
+    _id: string;
+    actionUserId: string;
+    generalAlertId: string;
+    image: string | null;
+    orderId: number;
+    pushData: {
+      follower_id?: string;
+      type: string;
+      post_id?: string;
+      item_id?: string;
+    };
+    text: string;
+    time: number;
+    userId: string;
+    userImage: string;
+    usernames: string[];
   }
 
   // Augment in your app to get typed channel names in query-toolkit-v2

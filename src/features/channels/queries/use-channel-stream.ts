@@ -4,11 +4,7 @@ import {
   ChannelStreamParams,
 } from "@/features/channels/entities/channel-stream.entity";
 
-export const useChannelStream = ({
-  channelId,
-}: {
-  channelId?: string;
-}) => {
+export const useChannelStream = ({ channelId }: { channelId?: string }) => {
   return useLiveEntity<Stream, ChannelStreamParams>({
     entity: channelStreamEntity,
     queryKey: ["channels", channelId, "stream"],

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { channel } from "@/lib/query-toolkit-v2";
 import { streamChatMessagesWebSocket } from "@/features/streams/services/stream-chat-messages-websocket";
 import { streamChatCollection } from "@/features/streams/entities/stream-chat.collection";
-import {useMe} from "@/features/auth/queries/use-me";
+import { useMe } from "@/features/auth/queries/use-me";
 
 /**
  * Hook to handle live updates for stream chat messages
@@ -18,7 +18,9 @@ export const useStreamChatLiveUpdates = (streamId: string) => {
     const unsubscribeConnection =
       streamChatMessagesWebSocket.onConnectionChange((connected) => {
         if (connected) {
-          console.log(`[StreamChat] Connected! Joining stream chat ${streamId}`);
+          console.log(
+            `[StreamChat] Connected! Joining stream chat ${streamId}`,
+          );
           streamChatMessagesWebSocket.joinStreamChat(streamId);
         }
       });
@@ -57,7 +59,9 @@ export const useStreamChatLiveUpdates = (streamId: string) => {
           );
 
           // Remove the deleted message from the collection
-          void channel(streamChatCollection).filter((message) => message._id !== event.messageId);
+          void channel(streamChatCollection).filter(
+            (message) => message._id !== event.messageId,
+          );
         }
       },
     );

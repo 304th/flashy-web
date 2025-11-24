@@ -19,7 +19,10 @@ export const StreamLiveChatMessage = ({
       <div className="flex w-full gap-2 items-start">
         <UserProfile user={chatMessage.user} withoutUsername />
         <div className="flex flex-col">
-          <p className={`${isHost ? 'text-yellow-400' : 'text-white'} font-medium text-lg`}>
+          <p
+            className={`${isHost ? "text-yellow-400" : "text-white"} font-medium
+              text-lg`}
+          >
             {chatMessage.user.username}
           </p>
           <p>{chatMessage.message}</p>

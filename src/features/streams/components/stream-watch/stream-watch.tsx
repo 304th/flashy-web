@@ -40,7 +40,8 @@ export const StreamWatch = ({ stream }: { stream: Stream }) => {
             {displayViewerCount} viewers
             {stream.status === "ended" ? (
               <span>
-                {' '}• Stream ended
+                {" "}
+                • Stream ended
                 <StreamWatchTimestamp timestamp={stream.startedAt} />
               </span>
             ) : null}

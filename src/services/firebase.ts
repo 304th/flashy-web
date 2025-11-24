@@ -17,8 +17,6 @@ import {
   type User,
 } from "firebase/auth";
 
-console.log('_____ENV_____: ', process.env)
-
 export const firebase = initializeApp({
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
 });
@@ -76,6 +74,7 @@ export const sendSignInLink = async (email: string) =>
 
 export const isSignInWithLink = async () =>
   isSignInWithEmailLink(firebaseAuth, window.location.href);
+
 export const signInWithLMagicLink = async (email: string, link: string) => {
   await signInWithEmailLink(firebaseAuth, email, link);
 

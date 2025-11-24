@@ -4,18 +4,15 @@ import { InfiniteFeed } from "@/components/ui/infinite-feed";
 import { UserProfile } from "@/components/ui/user-profile";
 import { Spinner } from "@/components/ui/spinner/spinner";
 import { useChannelFollowers } from "@/features/channels/queries/use-channel-followers";
-import {Loadable} from "@/components/ui/loadable";
-import {NotFound} from "@/components/ui/not-found";
+import { Loadable } from "@/components/ui/loadable";
+import { NotFound } from "@/components/ui/not-found";
 
 export interface FollowersModalProps {
   channelId: string;
   onClose(): void;
 }
 
-export const FollowersModal = ({
-  channelId,
-  onClose,
-}: FollowersModalProps) => {
+export const FollowersModal = ({ channelId, onClose }: FollowersModalProps) => {
   const { data: followers, query } = useChannelFollowers({ channelId });
 
   return (
@@ -26,17 +23,23 @@ export const FollowersModal = ({
           <CloseButton />
         </div>
       </div>
-      <div className="flex flex-col w-full overflow-y-scroll max-h-[60vh] p-4 gap-2 disable-scroll-bar">
+      <div
+        className="flex flex-col w-full overflow-y-scroll max-h-[60vh] p-4 gap-2
+          disable-scroll-bar"
+      >
         <Loadable queries={[query] as any}>
           {() => {
-            return followers && followers?.length > 0 ?
+            return followers && followers?.length > 0 ? (
               followers.map((follower) => (
                 <UserProfile
                   key={follower.fbId}
                   user={follower}
                   className="hover:bg-base-300 rounded-md p-2 cursor-pointer"
                 />
-              )) : <NotFound>No followers yet</NotFound>
+              ))
+            ) : (
+              <NotFound>No followers yet</NotFound>
+            );
           }}
         </Loadable>
         {/*{query.isLoading ? (*/}
@@ -66,6 +69,7 @@ export const FollowersModal = ({
 const Modal = (props: any) => (
   <ModalComponent
     {...props}
-    className={`max-sm:min-w-unset min-w-[500px] overflow-hidden !bg-base-300 !rounded-md max-sm:w-full !p-0 ${props.className}`}
+    className={`max-sm:min-w-unset min-w-[500px] overflow-hidden !bg-base-300
+      !rounded-md max-sm:w-full !p-0 ${props.className}`}
   />
 );

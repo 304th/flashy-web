@@ -14,13 +14,19 @@ import { useIsStreamChatMessageOwned } from "@/features/streams/hooks/use-is-str
 import { useDeleteStreamChatMessage } from "@/features/streams/mutations/use-delete-stream-chat-message";
 import { useIsStreamHost } from "@/features/streams/hooks/use-is-stream-host";
 
-export const StreamLiveChatMessageMenu = ({ chatMessage, stream }: { chatMessage: ChatMessage; stream: Stream }) => {
+export const StreamLiveChatMessageMenu = ({
+  chatMessage,
+  stream,
+}: {
+  chatMessage: ChatMessage;
+  stream: Stream;
+}) => {
   const { data: me } = useMe();
   const [open, setOpen] = useState(false);
   const { openModal } = useModals();
   const deleteChatMessage = useDeleteStreamChatMessage();
   const isStreamHost = useIsStreamHost(stream);
-  const isOwned = useIsStreamChatMessageOwned(chatMessage)
+  const isOwned = useIsStreamChatMessageOwned(chatMessage);
 
   if (!me || chatMessage.user.fbId === stream.userId) {
     return null;
@@ -55,7 +61,8 @@ export const StreamLiveChatMessageMenu = ({ chatMessage, stream }: { chatMessage
                   e.preventDefault();
                   openModal("ConfirmModal", {
                     title: "Delete post",
-                    description: "Are you sure you want to delete this message?",
+                    description:
+                      "Are you sure you want to delete this message?",
                     destructive: true,
                     onConfirm: () => {
                       deleteChatMessage.mutate({

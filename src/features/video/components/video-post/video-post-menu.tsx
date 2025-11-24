@@ -79,19 +79,28 @@ export const VideoPostMenu = ({
                   setOpen(false);
                   e.preventDefault();
                   openModal("ConfirmModal", {
-                    title: videoPost.statusweb === 'published' ? 'Draft video' : 'Publish video',
-                    description: `Are you sure you want to ${videoPost.statusweb === 'published' ? 'draft' : 'publish'} this video?`,
+                    title:
+                      videoPost.statusweb === "published"
+                        ? "Draft video"
+                        : "Publish video",
+                    description: `Are you sure you want to ${videoPost.statusweb === "published" ? "draft" : "publish"} this video?`,
                     onConfirm: () => {
                       updateVideo.mutate({
                         key: videoPost.fbId,
-                        statusweb: videoPost.statusweb === 'published' ? "draft" : 'published',
-                        publishDate: videoPost.statusweb === 'published' ? undefined : Date.now(),
-                      })
+                        statusweb:
+                          videoPost.statusweb === "published"
+                            ? "draft"
+                            : "published",
+                        publishDate:
+                          videoPost.statusweb === "published"
+                            ? undefined
+                            : Date.now(),
+                      });
                     },
                   });
                 }}
               >
-                {videoPost.statusweb === 'published' ? 'Draft' : 'Publish'}
+                {videoPost.statusweb === "published" ? "Draft" : "Publish"}
               </DropdownMenuItem>
               <DropdownMenuItem
                 variant="destructive"

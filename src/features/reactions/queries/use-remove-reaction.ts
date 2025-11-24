@@ -7,6 +7,8 @@ import { socialPostEntity } from "@/features/social/queries/use-social-post-by-i
 import { videoPostEntity } from "@/features/video/entities/video-post.entity";
 import { videoSearchCollection } from "@/features/video/entities/video-search.collection";
 import { topVideosCollection } from "@/features/video/entities/top-videos.collection";
+import { profileSocialFeedCollection } from "@/features/profile/entities/profile-social-feed.collection";
+import { channelSocialFeedCollection } from "@/features/channels/entities/channel-social-feed.collection";
 
 export interface RemoveReactionParams {
   id: string;
@@ -44,11 +46,17 @@ export const useRemoveReaction = () => {
   return useOptimisticMutation({
     mutation: removeReaction,
     onOptimistic: (channel, params) => {
-      const updates = [];
-
       if (params.postType === "social") {
-        updates.push(
+        return Promise.all([
           channel(socialFeedCollection).update(
+            params.id,
+            deleteReactionFromSocialPost(author!),
+          ),
+          channel(profileSocialFeedCollection).update(
+            params.id,
+            deleteReactionFromSocialPost(author!),
+          ),
+          channel(channelSocialFeedCollection).update(
             params.id,
             deleteReactionFromSocialPost(author!),
           ),
@@ -56,9 +64,9 @@ export const useRemoveReaction = () => {
             params.id,
             deleteReactionFromSocialPost(author!),
           ),
-        );
+        ]);
       } else if (params.postType === "video") {
-        updates.push(
+        return Promise.all([
           channel(videoPostEntity).update(
             params.id,
             deleteReactionFromVideoPost(author!),
@@ -71,10 +79,10 @@ export const useRemoveReaction = () => {
             params.id,
             deleteReactionFromVideoPost(author!),
           ),
-        );
+        ]);
       }
 
-      return Promise.all(updates);
+      return Promise.all([]); // TODO: fix types
     },
   });
 };

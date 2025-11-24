@@ -10,21 +10,23 @@ import { CreateVideoIcon } from "@/components/ui/icons/create-video";
 import { CreateSocialIcon } from "@/components/ui/icons/create-social";
 import { useModals } from "@/hooks/use-modals";
 import { brightenColor } from "@/lib/css";
+import { useMe } from "@/features/auth/queries/use-me";
 
 export const CreateDropdown = () => {
+  const { data: me } = useMe();
   const [open, setOpen] = useState(false);
   const { openModal } = useModals();
+
+  if (!me) {
+    return null;
+  }
 
   return (
     <div className="relative" onMouseLeave={() => setOpen(false)}>
       {open && <div className="absolute w-[35px] h-8 right-0 bottom-[-8px]" />}
       <DropdownMenu modal={false} open={open}>
         <DropdownMenuTrigger asChild>
-          <Button
-            className="!w-fit"
-            size="sm"
-            onMouseEnter={() => setOpen(true)}
-          >
+          <Button className="!w-fit" onMouseEnter={() => setOpen(true)}>
             <PlusIcon />
             Create
           </Button>

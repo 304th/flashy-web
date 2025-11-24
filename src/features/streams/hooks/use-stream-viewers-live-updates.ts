@@ -25,9 +25,7 @@ export const useStreamViewersLiveUpdates = (streamId: string) => {
           `[StreamViewers] Connection changed: ${connected} for stream ${streamId}`,
         );
         if (connected) {
-          console.log(
-            `[StreamViewers] Connected! Joining stream ${streamId}`,
-          );
+          console.log(`[StreamViewers] Connected! Joining stream ${streamId}`);
           streamViewersWebSocket.joinStream(streamId);
         }
       },
@@ -35,7 +33,9 @@ export const useStreamViewersLiveUpdates = (streamId: string) => {
 
     // If already connected, join immediately
     if (streamViewersWebSocket.isConnected) {
-      console.log(`[StreamViewers] Already connected, joining stream ${streamId}`);
+      console.log(
+        `[StreamViewers] Already connected, joining stream ${streamId}`,
+      );
       streamViewersWebSocket.joinStream(streamId);
     } else {
       console.log(

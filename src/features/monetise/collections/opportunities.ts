@@ -6,6 +6,7 @@ export interface OpportunitiesCollectionParams {
   page?: number;
   limit?: number;
   type?: OpportunityType;
+  category?: OpportunityCategory;
   niche?: string | string[];
   minPayout?: number;
   search?: string;
@@ -23,6 +24,7 @@ export const opportunitiesCollection = createCollectionV2<
     if (params.page) searchParams.set("page", String(params.page));
     if (params.limit) searchParams.set("limit", String(params.limit));
     if (params.type) searchParams.set("type", params.type);
+    if (params.category) searchParams.set("category", params.category);
     if (params.niche) {
       if (Array.isArray(params.niche)) {
         params.niche.forEach((n) => searchParams.append("niche", n));

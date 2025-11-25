@@ -27,9 +27,9 @@ export function OpportunityHeader({
   return (
     <div className="space-y-4">
       {isEligible && (
-        <div className="flex items-center gap-2 text-green-400">
+        <div className="flex items-center gap-2 text-brand-100">
           <Check className="w-4 h-4" />
-          <span className="text-sm">Your Are Eligible For This Opportunity</span>
+          <span className="text-sm">You Are Eligible For This Opportunity</span>
         </div>
       )}
 

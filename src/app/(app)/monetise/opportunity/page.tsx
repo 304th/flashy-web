@@ -80,8 +80,7 @@ export default function OpportunityPage() {
     : "No deadline";
 
   return (
-    <div className="flex flex-col gap-6 max-w-page">
-      {/* Back Button */}
+    <div className="flex flex-col gap-4 max-w-page">
       <div className="flex items-center gap-4">
         <Button
           variant="ghost"
@@ -92,9 +91,7 @@ export default function OpportunityPage() {
         </Button>
       </div>
 
-      {/* Main Content */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Left - Image */}
+      <div className="grid grid-cols-1 lg:grid-cols-[40%_60%] gap-4">
         <div className="relative aspect-video rounded-lg overflow-hidden bg-base-400">
           {opportunity.brandLogo ? (
             <Image
@@ -110,12 +107,11 @@ export default function OpportunityPage() {
           )}
         </div>
 
-        {/* Right - Details */}
         <div className="space-y-6">
           <OpportunityHeader
             title={opportunity.title}
             brandName={opportunity.brandName}
-            category={opportunity.eligibility?.niches?.[0] || "General"}
+            category={opportunity.category}
             type={opportunity.type.charAt(0).toUpperCase() + opportunity.type.slice(1)}
             description={opportunity.description}
             isEligible={true}
@@ -125,7 +121,6 @@ export default function OpportunityPage() {
         </div>
       </div>
 
-      {/* Tabs Section */}
       <div className="space-y-6">
         <OpportunityTabs activeTab={activeTab} onTabChange={setActiveTab} />
 

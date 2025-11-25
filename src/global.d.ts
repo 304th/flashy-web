@@ -353,6 +353,19 @@ declare global {
   // ==================== MONETISE TYPES ====================
 
   type OpportunityType = 'sponsorship' | 'partnership' | 'affiliate';
+  type OpportunityCategory =
+    | 'lifestyle'
+    | 'health & well-being'
+    | 'technology'
+    | 'fashion & beauty'
+    | 'food & beverage'
+    | 'travel'
+    | 'finance'
+    | 'education'
+    | 'entertainment'
+    | 'sports & fitness'
+    | 'gaming'
+    | 'business';
   type OpportunityStatus = 'active' | 'expired' | 'paused';
   type CompensationType = 'fixed' | 'per-post' | 'commission' | 'product' | 'negotiable';
   type CreatorOpportunityStatus =
@@ -378,6 +391,7 @@ declare global {
     brandName: string;
     brandLogo?: string;
     type: OpportunityType;
+    category: OpportunityCategory;
     description: string;
     deliverables: string[];
     compensation: string;
@@ -434,6 +448,7 @@ declare global {
     page?: number;
     limit?: number;
     type?: OpportunityType;
+    category?: OpportunityCategory;
     niche?: string | string[];
     minPayout?: number;
     search?: string;
@@ -513,6 +528,7 @@ declare global {
     brandName: string;
     brandLogo?: string;
     type: OpportunityType;
+    category: OpportunityCategory;
     description: string;
     deliverables: string[];
     compensation: string;

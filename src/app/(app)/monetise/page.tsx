@@ -10,7 +10,6 @@ import {
   useOpportunities,
   type FilterType,
   type SortOption,
-  type OpportunityData,
 } from "@/features/monetise";
 import { useWishlistStore } from "@/stores";
 
@@ -19,7 +18,7 @@ export default function MonetisePage() {
   const [activeFilter, setActiveFilter] = useState<FilterType>("all");
   const [sortBy, setSortBy] = useState<SortOption>("a-z");
 
-  const { wishlistedIds, toggleWishlist } = useWishlistStore();
+  const { wishlistedIds } = useWishlistStore();
 
   // Fetch opportunities based on filter
   const { data, query } = useOpportunities({
@@ -31,33 +30,25 @@ export default function MonetisePage() {
   const isLoading = query.isLoading;
 
   // Transform API data to component format
-  const opportunities: OpportunityData[] = useMemo(() => {
-    if (!data) return [];
+  const opportunities= useMemo(() => {
+    if (!data) {
+      return [];
+    }
 
-    const allOpportunities = data.map((opp: Opportunity) => ({
-      id: opp._id,
-      title: opp.title,
-      brandName: opp.brandName,
-      brandLogo: opp.brandLogo,
-      imageUrl: opp.brandLogo || "/placeholder-opportunity.jpg",
-      category: opp.eligibility?.niches?.[0] || "General",
-      type: opp.type,
-      isWishlisted: wishlistedIds.has(opp._id),
+    const allOpportunities = data.map((opportunity: Opportunity) => ({
+      ...opportunity,
+      imageUrl: opportunity.brandLogo || "/placeholder-opportunity.jpg",
     }));
 
     // Sort alphabetically if needed
     if (sortBy === "a-z") {
-      allOpportunities.sort((a: OpportunityData, b: OpportunityData) => a.title.localeCompare(b.title));
+      allOpportunities.sort((a, b) => a.title.localeCompare(b.title));
     } else if (sortBy === "z-a") {
-      allOpportunities.sort((a: OpportunityData, b: OpportunityData) => b.title.localeCompare(a.title));
+      allOpportunities.sort((a, b) => b.title.localeCompare(a.title));
     }
 
     return allOpportunities;
-  }, [data, wishlistedIds, sortBy]);
-
-  const handleWishlistToggle = (id: string) => {
-    toggleWishlist(id);
-  };
+  }, [data, sortBy]);
 
   const handleOpportunityClick = (id: string) => {
     router.push(`/monetise/opportunity?id=${id}`);
@@ -65,7 +56,6 @@ export default function MonetisePage() {
 
   return (
     <div className="flex flex-col gap-6 max-w-page">
-      {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <MonetiseStatsCard
           title="Your Dashboard"
@@ -81,8 +71,6 @@ export default function MonetisePage() {
           count={wishlistedIds.size}
         />
       </div>
-
-      {/* Filters and Sort */}
       <div className="flex items-center justify-between">
         <MonetiseFilterTabs
           activeFilter={activeFilter}
@@ -90,8 +78,6 @@ export default function MonetisePage() {
         />
         <SortSelect value={sortBy} onChange={setSortBy} />
       </div>
-
-      {/* Opportunities Grid */}
       {isLoading ? (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {Array.from({ length: 8 }).map((_, i) => (
@@ -105,7 +91,6 @@ export default function MonetisePage() {
       ) : (
         <OpportunitiesGrid
           opportunities={opportunities}
-          onWishlistToggle={handleWishlistToggle}
           onOpportunityClick={handleOpportunityClick}
         />
       )}

@@ -1,29 +1,19 @@
 "use client";
 
 import { OpportunityCard } from "@/features/monetise";
-
-interface OpportunityData {
-  id: string;
-  title: string;
-  brandName: string;
-  brandLogo?: string;
-  imageUrl: string;
-  category: string;
-  type: "sponsorship" | "partnership" | "affiliate";
-  isWishlisted?: boolean;
-}
+import { useWishlistStore } from "@/stores";
 
 interface OpportunitiesGridProps {
-  opportunities: OpportunityData[];
-  onWishlistToggle?: (id: string) => void;
+  opportunities: Opportunity[];
   onOpportunityClick?: (id: string) => void;
 }
 
 export function OpportunitiesGrid({
   opportunities,
-  onWishlistToggle,
   onOpportunityClick,
 }: OpportunitiesGridProps) {
+  const { wishlistedIds, toggleWishlist } = useWishlistStore();
+
   if (opportunities.length === 0) {
     return (
       <div className="flex items-center justify-center py-12">
@@ -36,14 +26,15 @@ export function OpportunitiesGrid({
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       {opportunities.map((opportunity) => (
         <OpportunityCard
-          key={opportunity.id}
-          {...opportunity}
-          onWishlistToggle={onWishlistToggle}
+          key={opportunity._id}
+          opportunity={opportunity}
+          isWishlisted={wishlistedIds.has(opportunity._id)}
+          onWishlistToggle={() => {
+            toggleWishlist(opportunity._id);
+          }}
           onClick={onOpportunityClick}
         />
       ))}
     </div>
   );
 }
-
-export type { OpportunityData };

@@ -4,42 +4,33 @@ import Image from "next/image";
 import { Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {Button} from "@/components/ui/button";
+import {Tag} from "@/components/ui/tag";
+import {capitalize} from "media-chrome/utils/utils";
 
 interface OpportunityCardProps {
-  id: string;
-  title: string;
-  brandName: string;
-  brandLogo?: string;
-  imageUrl: string;
-  category: string;
-  type: "sponsorship" | "partnership" | "affiliate";
+  opportunity: Opportunity;
   isWishlisted?: boolean;
   onWishlistToggle?: (id: string) => void;
   onClick?: (id: string) => void;
 }
 
 export function OpportunityCard({
-  id,
-  title,
-  brandName,
-  imageUrl,
-  category,
-  type,
+  opportunity,
   isWishlisted = false,
   onWishlistToggle,
   onClick,
 }: OpportunityCardProps) {
-  const typeLabel = type.charAt(0).toUpperCase() + type.slice(1);
+  const typeLabel = opportunity.type.charAt(0).toUpperCase() + opportunity.type.slice(1);
 
   return (
     <div
       className="flex flex-col group cursor-pointer gap-2"
-      onClick={() => onClick?.(id)}
+      onClick={() => onClick?.(opportunity._id)}
     >
       <div className="relative aspect-video rounded-lg overflow-hidden">
         <Image
-          src={imageUrl}
-          alt={title}
+          src={opportunity.brandLogo!}
+          alt={opportunity.title}
           fill
           className="object-cover transition-transform group-hover:scale-105"
         />
@@ -47,7 +38,7 @@ export function OpportunityCard({
           variant="secondary"
           onClick={(e) => {
             e.stopPropagation();
-            onWishlistToggle?.(id);
+            onWishlistToggle?.(opportunity._id);
           }}
           className={cn(
             "!p-0 aspect-square absolute bottom-2 right-2 rounded-md transition-colors",
@@ -63,9 +54,20 @@ export function OpportunityCard({
         </Button>
       </div>
       <div className="flex flex-col gap-1">
-        <h3 className="text-lg text-white truncate">{title}</h3>
-        <p className="text-xs text-base-800">{category}</p>
-        <p className="text-xs text-purple-400">{typeLabel}</p>
+        <h3 className="text-lg text-white truncate">{opportunity.title}</h3>
+        <div className="flex items-center gap-1">
+          <Tag className="!bg-base-300 !border-base-400">
+            {opportunity.brandName}
+          </Tag>
+          <Tag className="!bg-base-300 !border-base-400">
+            {capitalize(opportunity.category)}
+          </Tag>
+          <Tag className="!bg-base-300 !border-base-400">
+            {typeLabel}
+          </Tag>
+        </div>
+
+        {/*<p className="text-xs text-purple-400">{typeLabel}</p>*/}
       </div>
     </div>
   );

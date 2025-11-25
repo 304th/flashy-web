@@ -13,7 +13,7 @@ export const StreamLiveChatMessage = ({
 
   return (
     <div
-      className={`flex p-4 transition justify-between
+      className={`flex p-[2px] transition justify-between
         ${isHost ? "bg-amber-900/40" : "hover:bg-base-300"}`}
     >
       <div className="flex w-full gap-2 items-start">

@@ -13,6 +13,7 @@ class OpportunitySchema implements StaticSchema<Opportunity> {
       title: "",
       brandName: "",
       type: "sponsorship",
+      category: "lifestyle",
       description: "",
       deliverables: [],
       compensation: "",

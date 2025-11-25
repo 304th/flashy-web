@@ -2,7 +2,7 @@
 export { MonetiseStatsCard } from "./monetise-stats-card/monetise-stats-card";
 export { MonetiseFilterTabs, type FilterType } from "./monetise-filter-tabs/monetise-filter-tabs";
 export { OpportunityCard } from "./opportunity-card/opportunity-card";
-export { OpportunitiesGrid, type OpportunityData } from "./opportunities-grid/opportunities-grid";
+export { OpportunitiesGrid } from "./opportunities-grid/opportunities-grid";
 export { SortSelect, type SortOption } from "./sort-select/sort-select";
 
 // Detail page components

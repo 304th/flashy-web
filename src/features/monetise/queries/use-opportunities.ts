@@ -8,6 +8,7 @@ const PAGE_LIMIT = 20;
 
 interface UseOpportunitiesParams {
   type?: OpportunityType;
+  category?: OpportunityCategory;
   niche?: string | string[];
   minPayout?: number;
   search?: string;
@@ -24,6 +25,7 @@ export const useOpportunities = (params: UseOpportunitiesParams = {}) => {
         page: pageParam,
         limit: PAGE_LIMIT,
         type: params.type,
+        category: params.category,
         niche: params.niche,
         minPayout: params.minPayout,
         search: params.search,

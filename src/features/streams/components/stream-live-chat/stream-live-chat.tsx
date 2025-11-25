@@ -15,7 +15,6 @@ export const StreamLiveChat = ({ stream }: { stream: Stream }) => {
         <p className="text-white font-medium">Chat</p>
       </div>
       <StreamLiveChatFeed stream={stream} />
-
       <div>
         <StreamLiveChatSendMessage stream={stream} />
       </div>

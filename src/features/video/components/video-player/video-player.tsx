@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import ApiVideoPlayer from "@api.video/react-player";
-import {NotFound} from "@/components/ui/not-found";
+import { NotFound } from "@/components/ui/not-found";
 
 interface VideoPlayerProps {
   videoPost: VideoPost;

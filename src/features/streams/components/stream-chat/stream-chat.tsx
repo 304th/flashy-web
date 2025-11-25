@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from "react";
+import { formatDistanceToNow } from "date-fns";
+import { Send } from "lucide-react";
 import { usePartitionedQuery } from "@/lib/query-toolkit-v2";
 import { streamChatCollection } from "@/features/streams/entities/stream-chat.collection";
 import { useSendChatMessage } from "@/features/streams/mutations/use-send-chat-message";
 import { UserAvatar } from "@/components/ui/user-avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Send } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
 
 interface StreamChatProps {
   streamId: string;

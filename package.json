@@ -4,8 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
+    "dev:wrangler": "wrangler pages dev out --compatibility-flag=nodejs_compat",
     "build": "next build",
+    "build:wrangler": "next build && wrangler pages dev out --compatibility-flag=nodejs_compat",
     "start": "next start",
+    "deploy": "wrangler pages deploy out",
     "lint": "next lint",
     "fmt": "prettier ./src --write",
     "types": "tsc --noEmit"

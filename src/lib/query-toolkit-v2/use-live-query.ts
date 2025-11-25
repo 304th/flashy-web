@@ -151,10 +151,19 @@ export const useLiveQuery = <Entity, Params = undefined>({
 
   // Persist latest successful data to localStorage, only when changed
   useEffect(() => {
-    if (!cacheEnabled || !cacheKey) return;
-    if (query.status !== "success") return;
+    if (!cacheEnabled || !cacheKey) {
+      return;
+    }
+
+    if (query.status !== "success") {
+      return;
+    }
+
     const latest = query.data as unknown as Entity[] | undefined;
-    if (latest === undefined) return;
+
+    if (latest === undefined) {
+      return;
+    }
 
     const equal = cacheCfg?.compare
       ? cacheCfg.compare(

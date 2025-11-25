@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import ApiVideoPlayer from "@api.video/react-player";
+import { NotFound } from "@/components/ui/not-found";
 
 interface VideoPlayerProps {
   videoPost: VideoPost;
@@ -29,6 +30,12 @@ export const VideoPlayer = ({
   onPause,
 }: VideoPlayerProps) => {
   const token = useExtractPrivateToken(videoPost);
+
+  if (!token) {
+    return <div className="flex items-center justify-center aspect-video bg-base-200 rounded">
+      <NotFound>Video not available</NotFound>
+    </div>
+  }
 
   return (
     <ApiVideoPlayer

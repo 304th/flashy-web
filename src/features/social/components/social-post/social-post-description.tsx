@@ -17,9 +17,9 @@ export const SocialPostDescription = ({
 
   if (description) {
     return (
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 min-w-0 max-w-full">
         {description && (
-          <p className="text-lg whitespace-pre-wrap text-wrap">{description}</p>
+          <p className="text-lg whitespace-pre-wrap break-words max-w-full" style={{ overflowWrap: 'anywhere' }}>{description}</p>
         )}
         {linkPreviews && (
           <div className="flex flex-col gap-2">

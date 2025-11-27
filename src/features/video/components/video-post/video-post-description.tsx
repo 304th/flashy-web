@@ -15,7 +15,7 @@ export const VideoPostDescription = ({
       </p>
       <p className="text-sm">@{videoPost.username}</p>
       <p className="text-sm">
-        <VideoViews views={videoPost.views} /> -
+        <VideoViews views={videoPost.views} /> •{" "}
         <VideoTimestamp createdAt={videoPost.createdAt} />
       </p>
     </div>

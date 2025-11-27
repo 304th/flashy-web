@@ -407,7 +407,8 @@ const ContentEditableComponent = React.forwardRef<
         {/* Highlighted overlay */}
         <div
           className="pointer-events-none absolute inset-0 z-1 px-3 py-2
-            whitespace-pre-wrap break-all overflow-hidden max-w-full"
+            whitespace-pre-wrap break-words overflow-hidden max-w-full"
+          style={{ overflowWrap: 'anywhere' }}
           aria-hidden
         >
           {renderedContent}
@@ -429,13 +430,14 @@ const ContentEditableComponent = React.forwardRef<
           role="textbox"
           aria-multiline="true"
           aria-disabled={disabled}
+          style={{ overflowWrap: 'anywhere' }}
           className={cn(
             `bg-base-200 placeholder:text-muted-foreground selection:bg-primary
             dark:bg-input/30 border-base-400 flex w-full min-w-0 rounded-md
             border px-3 py-2 !text-base shadow-xs transition-colors duration-150
             outline-none disabled:pointer-events-none
             disabled:cursor-not-allowed disabled:opacity-50 md:text-sm
-            min-h-[80px] resize-none whitespace-pre-wrap break-all
+            min-h-[80px] resize-none whitespace-pre-wrap break-words
             overflow-y-auto overflow-x-hidden max-w-full`,
             `focus-visible:border-ring focus-visible:ring-ring/50
             focus-visible:ring-[3px] focus-visible:bg-base-400`,

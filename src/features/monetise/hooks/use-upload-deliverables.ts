@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { useGetPresignedUrls, uploadToPresignedUrl } from "../mutations/use-get-presigned-urls";
+import {
+  useGetPresignedUrls,
+  uploadToPresignedUrl,
+} from "../mutations/use-get-presigned-urls";
 
 interface UploadProgress {
   total: number;
@@ -27,7 +30,7 @@ export const useUploadDeliverables = (): UseUploadDeliverablesReturn => {
 
   const upload = async (
     opportunityId: string,
-    files: File[]
+    files: File[],
   ): Promise<SubmissionFile[]> => {
     if (files.length === 0) return [];
 
@@ -52,7 +55,11 @@ export const useUploadDeliverables = (): UseUploadDeliverablesReturn => {
         const file = files[i];
         const urlData = urls[i];
 
-        await uploadToPresignedUrl(urlData.uploadUrl, file, urlData.contentType);
+        await uploadToPresignedUrl(
+          urlData.uploadUrl,
+          file,
+          urlData.contentType,
+        );
 
         uploadedFiles.push({
           url: urlData.fileUrl,

@@ -1,39 +1,38 @@
 "use client";
 
-import { Lock } from "lucide-react";
+import { type ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 interface MonetiseStatsCardProps {
   title: string;
+  icon: ReactNode;
   count?: number;
-  isLocked?: boolean;
+  link: string;
   className?: string;
 }
 
 export function MonetiseStatsCard({
   title,
+  icon,
   count,
-  isLocked = false,
+  link,
   className,
 }: MonetiseStatsCardProps) {
   return (
-    <div
-      className={cn(
-        "flex flex-col items-center justify-center gap-3 rounded-lg border border-base-600 bg-base-200 p-6 min-h-[120px]",
-        className
-      )}
+    <Link
+      href={link}
+      className="flex flex-col items-center justify-center gap-3 rounded-lg
+        bg-base-300 p-3 min-h-[120px] transition hover:bg-base-400
+        cursor-pointer"
     >
-      {isLocked && (
-        <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-base-400">
-          <Lock className="w-6 h-6 text-base-800" />
-        </div>
-      )}
-      <div className="flex items-center gap-2">
-        <span className="text-sm text-white font-medium">{title}</span>
+      <div className="text-base-700">{icon}</div>
+      <div className="flex items-center gap-8">
+        <span className="text-lg text-white font-medium">{title}</span>
         {count !== undefined && (
-          <span className="text-sm text-base-800">{count}</span>
+          <span className="text-lg text-white">{count}</span>
         )}
       </div>
-    </div>
+    </Link>
   );
 }

@@ -45,7 +45,9 @@ class CreatorOpportunitySchema implements StaticSchema<CreatorOpportunity> {
     return "_id";
   }
 
-  createEntityFromParams(params: Partial<CreatorOpportunity>): CreatorOpportunity {
+  createEntityFromParams(
+    params: Partial<CreatorOpportunity>,
+  ): CreatorOpportunity {
     const id = nanoid();
 
     return {

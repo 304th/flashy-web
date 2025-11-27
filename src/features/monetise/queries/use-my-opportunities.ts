@@ -11,7 +11,10 @@ interface UseMyOpportunitiesParams {
 }
 
 export const useMyOpportunities = (params: UseMyOpportunitiesParams = {}) => {
-  return usePartitionedQuery<CreatorOpportunity, MyOpportunitiesCollectionParams>({
+  return usePartitionedQuery<
+    CreatorOpportunity,
+    MyOpportunitiesCollectionParams
+  >({
     collection: myOpportunitiesCollection,
     queryKey: ["monetise", "my-opportunities", params],
     getParams: ({ pageParam }) =>

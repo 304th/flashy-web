@@ -29,7 +29,7 @@ export const useUpdateOpportunity = () => {
         (item) => {
           Object.assign(item, params.data);
           item.updatedAt = new Date().toISOString();
-        }
+        },
       );
     },
   });

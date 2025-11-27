@@ -27,7 +27,10 @@ const submitDeliverablesMutation = createMutation<
 });
 
 export const useSubmitDeliverables = () => {
-  return useOptimisticMutation<SubmitDeliverablesParams, SubmitDeliverablesResponse>({
+  return useOptimisticMutation<
+    SubmitDeliverablesParams,
+    SubmitDeliverablesResponse
+  >({
     mutation: submitDeliverablesMutation,
     onOptimistic: (ch, params) => {
       return ch(myOpportunitiesCollection).update(
@@ -40,7 +43,7 @@ export const useSubmitDeliverables = () => {
             links: params.links,
             note: params.note,
           };
-        }
+        },
       );
     },
   });
@@ -64,7 +67,10 @@ const resubmitDeliverablesMutation = createMutation<
 });
 
 export const useResubmitDeliverables = () => {
-  return useOptimisticMutation<SubmitDeliverablesParams, SubmitDeliverablesResponse>({
+  return useOptimisticMutation<
+    SubmitDeliverablesParams,
+    SubmitDeliverablesResponse
+  >({
     mutation: resubmitDeliverablesMutation,
     onOptimistic: (ch, params) => {
       return ch(myOpportunitiesCollection).update(
@@ -78,7 +84,7 @@ export const useResubmitDeliverables = () => {
             links: params.links,
             note: params.note,
           };
-        }
+        },
       );
     },
   });

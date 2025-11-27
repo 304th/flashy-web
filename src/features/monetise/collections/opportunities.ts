@@ -32,7 +32,8 @@ export const opportunitiesCollection = createCollectionV2<
         searchParams.set("niche", params.niche);
       }
     }
-    if (params.minPayout) searchParams.set("minPayout", String(params.minPayout));
+    if (params.minPayout)
+      searchParams.set("minPayout", String(params.minPayout));
     if (params.search) searchParams.set("search", params.search);
     if (params.sortBy) searchParams.set("sortBy", params.sortBy);
     if (params.sortOrder) searchParams.set("sortOrder", params.sortOrder);

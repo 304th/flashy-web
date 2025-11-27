@@ -60,6 +60,6 @@ export const useWishlistStore = create<WishlistStore>()(
           return value;
         },
       }),
-    }
-  )
+    },
+  ),
 );

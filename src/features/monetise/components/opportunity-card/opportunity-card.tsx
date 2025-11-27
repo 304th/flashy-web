@@ -3,9 +3,9 @@
 import Image from "next/image";
 import { Star } from "lucide-react";
 import { cn } from "@/lib/utils";
-import {Button} from "@/components/ui/button";
-import {Tag} from "@/components/ui/tag";
-import {capitalize} from "media-chrome/utils/utils";
+import { Button } from "@/components/ui/button";
+import { Tag } from "@/components/ui/tag";
+import { capitalize } from "media-chrome/utils/utils";
 
 interface OpportunityCardProps {
   opportunity: Opportunity;
@@ -20,7 +20,8 @@ export function OpportunityCard({
   onWishlistToggle,
   onClick,
 }: OpportunityCardProps) {
-  const typeLabel = opportunity.type.charAt(0).toUpperCase() + opportunity.type.slice(1);
+  const typeLabel =
+    opportunity.type.charAt(0).toUpperCase() + opportunity.type.slice(1);
 
   return (
     <div
@@ -41,10 +42,9 @@ export function OpportunityCard({
             onWishlistToggle?.(opportunity._id);
           }}
           className={cn(
-            "!p-0 aspect-square absolute bottom-2 right-2 rounded-md transition-colors",
-            isWishlisted
-              ? "text-yellow-400"
-              : "text-white/70 hover:text-white"
+            `!p-0 aspect-square absolute bottom-2 right-2 rounded-md
+            transition-colors`,
+            isWishlisted ? "text-yellow-400" : "text-white/70 hover:text-white",
           )}
         >
           <Star
@@ -62,9 +62,7 @@ export function OpportunityCard({
           <Tag className="!bg-base-300 !border-base-400">
             {capitalize(opportunity.category)}
           </Tag>
-          <Tag className="!bg-base-300 !border-base-400">
-            {typeLabel}
-          </Tag>
+          <Tag className="!bg-base-300 !border-base-400">{typeLabel}</Tag>
         </div>
 
         {/*<p className="text-xs text-purple-400">{typeLabel}</p>*/}

@@ -29,7 +29,7 @@ export const useRejectSubmission = () => {
         (item) => {
           item.status = "rejected" as CreatorOpportunityStatus;
           item.feedback = params.feedback;
-        }
+        },
       );
     },
   });

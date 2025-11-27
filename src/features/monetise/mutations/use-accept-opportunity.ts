@@ -18,7 +18,10 @@ const acceptOpportunityMutation = createMutation<
 });
 
 export const useAcceptOpportunity = () => {
-  return useOptimisticMutation<AcceptOpportunityParams, AcceptOpportunityResponse>({
+  return useOptimisticMutation<
+    AcceptOpportunityParams,
+    AcceptOpportunityResponse
+  >({
     mutation: acceptOpportunityMutation,
     onOptimistic: (ch, params) => {
       // Add optimistic entry to my-opportunities

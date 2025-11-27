@@ -193,5 +193,3 @@ export class Channel<T> {
 export function channel<T>(collection: Collection<T> | Entity<T>) {
   return new Channel<T>(collection);
 }
-
-

@@ -11,7 +11,6 @@ import { MonetiseIcon } from "@/components/ui/icons/monetise";
 import { ChevronDownIcon } from "@/components/ui/icons/chevron-down";
 import { Separator } from "@/components/ui/separator";
 import { useSidebar } from "@/contexts/sidebar-context";
-import { Tag } from "@/components/ui/tag";
 import { useProfileFollowings } from "@/features/profile/queries/use-profile-followings";
 import { Loadable } from "@/components/ui/loadable";
 import { UserProfile } from "@/components/ui/user-profile";
@@ -69,22 +68,25 @@ export const Sidebar = () => {
           Social
         </NavItem>
       </div>
-      {
-        expanded && (
-          <>
-            <Separator />
-            <div className="flex flex-col w-full items-center gap-2">
-              <NavItem route="/monetise" icon={<MonetiseIcon />} className="text-xs" expanded={expanded}>
-                Monetise
-                {/*<Tag className="text-white">COMING SOON</Tag>*/}
-              </NavItem>
-            </div>
-            <Separator />
-            <Subscriptions />
-            <Separator />
-          </>
-        )
-      }
+      <Separator />
+      <div className="flex flex-col w-full items-center gap-2">
+        <NavItem
+          route="/monetise"
+          icon={<MonetiseIcon />}
+          className="text-xs"
+          expanded={expanded}
+        >
+          Monetise
+          {/*<Tag className="text-white">COMING SOON</Tag>*/}
+        </NavItem>
+      </div>
+      <Separator />
+      {expanded && (
+        <>
+          <Subscriptions />
+          <Separator />
+        </>
+      )}
     </div>
   );
 };

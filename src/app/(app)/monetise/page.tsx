@@ -11,6 +11,9 @@ import {
   type FilterType,
   type SortOption,
 } from "@/features/monetise";
+import { DashboardIcon } from "@/components/ui/icons/dashboard";
+import { SettingsIcon } from "@/components/ui/icons/settings";
+import { WatchlistIcon } from "@/components/ui/icons/watchlist";
 import { useWishlistStore } from "@/stores";
 
 export default function MonetisePage() {
@@ -23,14 +26,18 @@ export default function MonetisePage() {
   // Fetch opportunities based on filter
   const { data, query } = useOpportunities({
     type: activeFilter === "all" ? undefined : activeFilter,
-    sortBy: sortBy === "a-z" || sortBy === "z-a" ? undefined : sortBy === "newest" ? "createdAt" : "deadline",
+    sortBy:
+      sortBy === "a-z" || sortBy === "z-a"
+        ? undefined
+        : sortBy === "newest"
+          ? "createdAt"
+          : "deadline",
     sortOrder: sortBy === "z-a" ? "desc" : "asc",
   });
 
   const isLoading = query.isLoading;
 
-  // Transform API data to component format
-  const opportunities= useMemo(() => {
+  const opportunities = useMemo(() => {
     if (!data) {
       return [];
     }
@@ -40,7 +47,6 @@ export default function MonetisePage() {
       imageUrl: opportunity.brandLogo || "/placeholder-opportunity.jpg",
     }));
 
-    // Sort alphabetically if needed
     if (sortBy === "a-z") {
       allOpportunities.sort((a, b) => a.title.localeCompare(b.title));
     } else if (sortBy === "z-a") {
@@ -59,16 +65,20 @@ export default function MonetisePage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <MonetiseStatsCard
           title="Your Dashboard"
-          isLocked={true}
+          icon={<DashboardIcon />}
+          link="/monetise/creator-dashboard"
         />
         <MonetiseStatsCard
           title="Active Agreements"
+          icon={<SettingsIcon />}
           count={0}
-          isLocked={true}
+          link="/monetise/creator-dashboard/agreements"
         />
         <MonetiseStatsCard
-          title="Wishlist"
+          title="Favourites"
+          icon={<WatchlistIcon />}
           count={wishlistedIds.size}
+          link="/monetise/creator-dashboard/favourites"
         />
       </div>
       <div className="flex items-center justify-between">

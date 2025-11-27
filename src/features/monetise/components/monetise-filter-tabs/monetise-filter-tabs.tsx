@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { ContentTabs } from "@/components/ui/content-tabs";
 
 type FilterType = "all" | "sponsorship" | "partnership" | "affiliate";
 
@@ -21,22 +21,11 @@ export function MonetiseFilterTabs({
   onFilterChange,
 }: MonetiseFilterTabsProps) {
   return (
-    <div className="flex items-center gap-1">
-      {filters.map((filter) => (
-        <button
-          key={filter.value}
-          onClick={() => onFilterChange(filter.value)}
-          className={cn(
-            "cursor-pointer px-3 py-1.5 text-sm font-medium rounded-md transition-colors",
-            activeFilter === filter.value
-              ? "text-white bg-base-400"
-              : "text-base-800 hover:text-white hover:bg-base-300"
-          )}
-        >
-          {filter.label}
-        </button>
-      ))}
-    </div>
+    <ContentTabs
+      tabs={filters}
+      activeTab={activeFilter}
+      onTabChange={onFilterChange}
+    />
   );
 }
 

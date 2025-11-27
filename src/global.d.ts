@@ -352,31 +352,36 @@ declare global {
 
   // ==================== MONETISE TYPES ====================
 
-  type OpportunityType = 'sponsorship' | 'partnership' | 'affiliate';
+  type OpportunityType = "sponsorship" | "partnership" | "affiliate";
   type OpportunityCategory =
-    | 'lifestyle'
-    | 'health & well-being'
-    | 'technology'
-    | 'fashion & beauty'
-    | 'food & beverage'
-    | 'travel'
-    | 'finance'
-    | 'education'
-    | 'entertainment'
-    | 'sports & fitness'
-    | 'gaming'
-    | 'business';
-  type OpportunityStatus = 'active' | 'expired' | 'paused';
-  type CompensationType = 'fixed' | 'per-post' | 'commission' | 'product' | 'negotiable';
+    | "lifestyle"
+    | "health & well-being"
+    | "technology"
+    | "fashion & beauty"
+    | "food & beverage"
+    | "travel"
+    | "finance"
+    | "education"
+    | "entertainment"
+    | "sports & fitness"
+    | "gaming"
+    | "business";
+  type OpportunityStatus = "active" | "expired" | "paused";
+  type CompensationType =
+    | "fixed"
+    | "per-post"
+    | "commission"
+    | "product"
+    | "negotiable";
   type CreatorOpportunityStatus =
-    | 'accepted'
-    | 'pending-deliverables'
-    | 'submitted'
-    | 'under-review'
-    | 'approved'
-    | 'rejected'
-    | 'expired'
-    | 'completed';
+    | "accepted"
+    | "pending-deliverables"
+    | "submitted"
+    | "under-review"
+    | "approved"
+    | "rejected"
+    | "expired"
+    | "completed";
 
   interface OpportunityEligibility {
     minFollowers: number;
@@ -453,8 +458,8 @@ declare global {
     minPayout?: number;
     search?: string;
     status?: OpportunityStatus;
-    sortBy?: 'createdAt' | 'deadline' | 'compensation';
-    sortOrder?: 'asc' | 'desc';
+    sortBy?: "createdAt" | "deadline" | "compensation";
+    sortOrder?: "asc" | "desc";
   }
 
   interface OpportunityListResponse {

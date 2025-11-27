@@ -25,8 +25,15 @@ export function OpportunityApplySection({
           checked={agreed}
           onCheckedChange={(checked) => setAgreed(checked === true)}
         />
-        <label htmlFor="agreement" className="text-xs text-base-800 leading-relaxed cursor-pointer">
-          By accepting this collaboration, you agree to complete and submit the specified deliverables by the deadline. {brandName} retains the right to approve or request revisions to content that does not align with the brief. Payment will be issued within 7 business days after approval.
+        <label
+          htmlFor="agreement"
+          className="text-xs text-base-800 leading-relaxed cursor-pointer"
+        >
+          By accepting this collaboration, you agree to complete and submit the
+          specified deliverables by the deadline. {brandName} retains the right
+          to approve or request revisions to content that does not align with
+          the brief. Payment will be issued within 7 business days after
+          approval.
         </label>
       </div>
 

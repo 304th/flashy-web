@@ -10,8 +10,13 @@ interface UseSponsorSubmissionsParams {
   status?: CreatorOpportunityStatus | CreatorOpportunityStatus[];
 }
 
-export const useSponsorSubmissions = (params: UseSponsorSubmissionsParams = {}) => {
-  return usePartitionedQuery<CreatorOpportunity, SponsorSubmissionsCollectionParams>({
+export const useSponsorSubmissions = (
+  params: UseSponsorSubmissionsParams = {},
+) => {
+  return usePartitionedQuery<
+    CreatorOpportunity,
+    SponsorSubmissionsCollectionParams
+  >({
     collection: sponsorSubmissionsCollection,
     queryKey: ["monetise", "sponsor-submissions", params],
     getParams: ({ pageParam }) =>

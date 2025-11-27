@@ -26,7 +26,7 @@ export const useGetPresignedUrls = () => {
 export const uploadToPresignedUrl = async (
   uploadUrl: string,
   file: File,
-  contentType: string
+  contentType: string,
 ): Promise<void> => {
   await fetch(uploadUrl, {
     method: "PUT",

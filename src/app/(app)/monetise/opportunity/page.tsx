@@ -1,10 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import Image from "next/image";
-import { ArrowLeft } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import {
   useOpportunityById,
   useAcceptOpportunity,
@@ -16,16 +14,18 @@ import {
   type TabType,
 } from "@/features/monetise";
 import { useWishlistStore } from "@/stores";
+import {GoBackButton} from "@/components/ui/go-back-button";
 
 export default function OpportunityPage() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const opportunityId = searchParams.get("id");
 
   const [activeTab, setActiveTab] = useState<TabType>("description");
   const { isWishlisted, toggleWishlist } = useWishlistStore();
 
-  const { data: opportunity, query } = useOpportunityById(opportunityId || undefined);
+  const { data: opportunity, query } = useOpportunityById(
+    opportunityId || undefined,
+  );
   const acceptOpportunity = useAcceptOpportunity();
 
   const isLoading = query.isLoading;
@@ -58,9 +58,7 @@ export default function OpportunityPage() {
     return (
       <div className="flex flex-col items-center justify-center gap-4 p-6 min-h-[400px]">
         <p className="text-base-800">Opportunity not found</p>
-        <Button variant="outline" onClick={() => router.back()}>
-          Go Back
-        </Button>
+        <GoBackButton />
       </div>
     );
   }
@@ -82,17 +80,14 @@ export default function OpportunityPage() {
   return (
     <div className="flex flex-col gap-4 max-w-page">
       <div className="flex items-center gap-4">
-        <Button
-          variant="ghost"
-          onClick={() => router.back()}
-        >
-          <ArrowLeft />
-          Go Back
-        </Button>
+        <GoBackButton />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-[40%_60%] gap-4">
-        <div className="relative aspect-video rounded-lg overflow-hidden bg-base-400">
+        <div
+          className="relative aspect-video rounded-lg overflow-hidden
+            bg-base-400"
+        >
           {opportunity.brandLogo ? (
             <Image
               src={opportunity.brandLogo}
@@ -101,7 +96,9 @@ export default function OpportunityPage() {
               className="object-cover"
             />
           ) : (
-            <div className="flex items-center justify-center h-full text-base-600">
+            <div
+              className="flex items-center justify-center h-full text-base-600"
+            >
               No image available
             </div>
           )}
@@ -112,7 +109,10 @@ export default function OpportunityPage() {
             title={opportunity.title}
             brandName={opportunity.brandName}
             category={opportunity.category}
-            type={opportunity.type.charAt(0).toUpperCase() + opportunity.type.slice(1)}
+            type={
+              opportunity.type.charAt(0).toUpperCase() +
+              opportunity.type.slice(1)
+            }
             description={opportunity.description}
             isEligible={true}
             isFavourited={isWishlisted(opportunity._id)}
@@ -139,7 +139,10 @@ export default function OpportunityPage() {
           />
         ) : (
           <OpportunityTerms
-            terms={opportunity.termsAndConditions || "Terms and conditions will be provided upon acceptance of the opportunity."}
+            terms={
+              opportunity.termsAndConditions ||
+              "Terms and conditions will be provided upon acceptance of the opportunity."
+            }
           />
         )}
 

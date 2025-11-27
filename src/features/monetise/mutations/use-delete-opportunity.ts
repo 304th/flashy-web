@@ -23,7 +23,10 @@ const deleteOpportunityMutation = createMutation<
 });
 
 export const useDeleteOpportunity = () => {
-  return useOptimisticMutation<DeleteOpportunityParams, DeleteOpportunityResponse>({
+  return useOptimisticMutation<
+    DeleteOpportunityParams,
+    DeleteOpportunityResponse
+  >({
     mutation: deleteOpportunityMutation,
     onOptimistic: (ch, params) => {
       return ch(opportunitiesCollection).delete(params.opportunityId);

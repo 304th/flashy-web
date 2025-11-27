@@ -35,7 +35,7 @@ export const useCreateOpportunity = () => {
         },
         {
           sync: true,
-        }
+        },
       );
     },
   });

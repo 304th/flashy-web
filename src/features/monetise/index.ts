@@ -1,5 +1,8 @@
 // Schemas
-export { opportunitySchema, creatorOpportunitySchema } from "./schemas/opportunity.schema";
+export {
+  opportunitySchema,
+  creatorOpportunitySchema,
+} from "./schemas/opportunity.schema";
 
 // Collections
 export { opportunitiesCollection } from "./collections/opportunities";
@@ -9,15 +12,24 @@ export { adminOpportunitiesCollection } from "./collections/admin-opportunities"
 
 // Queries
 export { useOpportunities } from "./queries/use-opportunities";
-export { useOpportunityById, opportunityEntity } from "./queries/use-opportunity-by-id";
+export {
+  useOpportunityById,
+  opportunityEntity,
+} from "./queries/use-opportunity-by-id";
 export { useMyOpportunities } from "./queries/use-my-opportunities";
 export { useSponsorSubmissions } from "./queries/use-sponsor-submissions";
 export { useAdminOpportunities } from "./queries/use-admin-opportunities";
 
 // Creator Mutations
 export { useAcceptOpportunity } from "./mutations/use-accept-opportunity";
-export { useGetPresignedUrls, uploadToPresignedUrl } from "./mutations/use-get-presigned-urls";
-export { useSubmitDeliverables, useResubmitDeliverables } from "./mutations/use-submit-deliverables";
+export {
+  useGetPresignedUrls,
+  uploadToPresignedUrl,
+} from "./mutations/use-get-presigned-urls";
+export {
+  useSubmitDeliverables,
+  useResubmitDeliverables,
+} from "./mutations/use-submit-deliverables";
 
 // Sponsor Mutations
 export { useApproveSubmission } from "./mutations/use-approve-submission";

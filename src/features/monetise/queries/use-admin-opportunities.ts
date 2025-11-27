@@ -11,7 +11,9 @@ interface UseAdminOpportunitiesParams {
   createdBy?: string;
 }
 
-export const useAdminOpportunities = (params: UseAdminOpportunitiesParams = {}) => {
+export const useAdminOpportunities = (
+  params: UseAdminOpportunitiesParams = {},
+) => {
   return usePartitionedQuery<Opportunity, AdminOpportunitiesCollectionParams>({
     collection: adminOpportunitiesCollection,
     queryKey: ["monetise", "admin-opportunities", params],

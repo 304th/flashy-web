@@ -26,7 +26,7 @@ export const useApproveSubmission = () => {
         (item) => {
           item.status = "approved" as CreatorOpportunityStatus;
           item.approvedAt = new Date().toISOString();
-        }
+        },
       );
     },
   });

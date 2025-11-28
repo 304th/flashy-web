@@ -55,18 +55,22 @@ export const AccountDropdown = () => {
           align="end"
         >
           <div
-            className="flex p-3 h-[80px] bg-base-300 bg-cover
+            className="relative flex p-3 h-[80px] bg-base-300 bg-cover
               inset-shadow-[0_0_4px_0_rgba(0,0,0,0.1)] inset-shadow-base-200
               rounded mb-1"
             style={{
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
               backgroundImage: `url('${me?.banner ? me?.banner : "/images/channel-placeholder.png"}')`,
             }}
           >
             <UserProfile
               user={me!}
               truncateUsername
-              className="w-full flex backdrop-blur-xs items-center"
+              className="relative z-2 w-full flex backdrop-blur-xs items-center"
             />
+            <div className="absolute inset-0 z-1 bg-gradient-to-b rounded from-black/10 to-black/70" />
           </div>
           <DropdownMenuGroup>
             <Link href="/profile/social">

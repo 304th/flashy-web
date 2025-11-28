@@ -1,14 +1,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import {
-  UserIcon,
-  VideoIcon,
-  PlayIcon,
-  WalletIcon,
-  SettingsIcon,
-  LogOutIcon,
-} from "lucide-react";
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
@@ -85,14 +77,6 @@ export const AccountDropdown = () => {
                 </div>
               </DropdownMenuItem>
             </Link>
-            {/*<Link href="/profile/playlists">*/}
-            {/*  <DropdownMenuItem>*/}
-            {/*    <div className="flex items-center gap-2 p-1">*/}
-            {/*      <PlayIcon />*/}
-            {/*      <p>My Playlists</p>*/}
-            {/*    </div>*/}
-            {/*  </DropdownMenuItem>*/}
-            {/*</Link>*/}
             <Link href="/profile/wallet">
               <DropdownMenuItem className="[&_svg:not([class*='size-'])]:size-6">
                 <div className="flex items-center gap-2 p-1">

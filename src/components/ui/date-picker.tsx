@@ -1,4 +1,4 @@
-// FlokiUI DatePicker v0.0.0
+"use client";
 
 import * as React from "react";
 import { Time } from "@internationalized/date";
@@ -17,7 +17,7 @@ import { RiCalendarLine, RiSubtractFill } from "@remixicon/react";
 import { format, type Locale } from "date-fns";
 import { enUS } from "date-fns/locale";
 
-import { cn } from "@/utils/cn";
+import { cn } from "@/lib/utils";
 
 import { Button } from "./button";
 import { Calendar as CalendarPrimitive, type Matcher } from "./calendar";
@@ -416,7 +416,6 @@ const SingleDatePicker = ({
 
   return (
     <Popover.Root
-      tremor-id="tremor-raw"
       open={open}
       onOpenChange={onOpenChange}
     >
@@ -701,7 +700,6 @@ const RangeDatePicker = ({
 
   return (
     <Popover.Root
-      tremor-id="tremor-raw"
       open={open}
       onOpenChange={onOpenChange}
     >

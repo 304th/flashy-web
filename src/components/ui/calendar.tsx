@@ -1,12 +1,33 @@
-// FlokiUI Calendar v0.0.0
+"use client";
 
 import * as React from "react";
 import { RiArrowLeftSLine, RiArrowRightSLine } from "@remixicon/react";
 import { DayPicker } from "react-day-picker";
+import { cva } from "class-variance-authority";
 
-import { cn } from "@/utils/cn";
+import { cn } from "@/lib/utils";
 
-import { compactButtonVariants } from "./compact-button";
+const compactButtonVariants = cva(
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all outline-none cursor-pointer",
+  {
+    variants: {
+      variant: {
+        white: "bg-bg-white-0 hover:bg-bg-weak-50 text-text-sub-600 hover:text-text-strong-950",
+      },
+      size: {
+        large: "h-6 w-6",
+      },
+    },
+    defaultVariants: {
+      variant: "white",
+      size: "large",
+    },
+  },
+);
+
+const compactButton = {
+  root: ({ class: className }: { class?: string }) => cn(compactButtonVariants(), className),
+};
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
@@ -31,10 +52,7 @@ export function Calendar({
           "flex justify-center items-center relative rounded-lg bg-bg-weak-50 h-9",
         caption_label: "text-label-sm text-text-sub-600 select-none",
         nav: "flex items-center",
-        nav_button: compactButtonVariants({
-          variant: "white",
-          size: "large",
-        }).root({ class: "absolute" }),
+        nav_button: compactButton.root({ class: "absolute" }),
         nav_button_previous: "top-1/2 -translate-y-1/2 left-1.5",
         nav_button_next: "top-1/2 -translate-y-1/2 right-1.5",
         table: "w-full border-collapse",

@@ -548,6 +548,95 @@ declare global {
   }
 
   interface UpdateOpportunityParams extends Partial<CreateOpportunityParams> {}
+
+  // ==================== BUSINESS ACCOUNT TYPES ====================
+
+  type BusinessAccountStatus = "pending" | "approved" | "rejected";
+  type BusinessAccountCategory =
+    | "lifestyle"
+    | "health & well-being"
+    | "technology"
+    | "fashion & beauty"
+    | "food & beverage"
+    | "travel"
+    | "finance"
+    | "education"
+    | "entertainment"
+    | "sports & fitness"
+    | "gaming"
+    | "business";
+
+  interface BusinessAccount {
+    _id: string;
+    userId: string;
+    title: string;
+    description: string;
+    category: BusinessAccountCategory;
+    status: BusinessAccountStatus;
+    rejectionReason?: string;
+    createdAt: string;
+    updatedAt: string;
+    approvedAt?: string;
+    approvedBy?: string;
+    rejectedAt?: string;
+    rejectedBy?: string;
+  }
+
+  interface BusinessAccountWithUser extends BusinessAccount {
+    user?: {
+      fbId: string;
+      username: string;
+      email?: string;
+      userimage: string;
+    };
+  }
+
+  interface CreateBusinessAccountParams {
+    title: string;
+    description: string;
+    category: BusinessAccountCategory;
+  }
+
+  interface UpdateBusinessAccountParams {
+    title?: string;
+    description?: string;
+    category?: BusinessAccountCategory;
+  }
+
+  interface BusinessAccountListParams {
+    page?: number;
+    limit?: number;
+    status?: BusinessAccountStatus;
+    category?: BusinessAccountCategory;
+    userId?: string;
+    sortBy?: "createdAt" | "updatedAt";
+    sortOrder?: "asc" | "desc";
+  }
+
+  interface BusinessAccountListResponse {
+    businessAccounts: BusinessAccount[];
+    pagination: {
+      page: number;
+      limit: number;
+      total: number;
+      pages: number;
+      hasNext: boolean;
+      hasPrev: boolean;
+    };
+  }
+
+  interface BusinessAccountStatsResponse {
+    pending: number;
+    approved: number;
+    rejected: number;
+    total: number;
+  }
+
+  interface BusinessAccountActionResponse {
+    success: boolean;
+    businessAccount?: BusinessAccount;
+    message: string;
+  }
 }
 
 export {};

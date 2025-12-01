@@ -1,3 +1,3 @@
-export default function CreatorDashboardAgreementsPage(){
+export default function CreatorDashboardAgreementsPage() {
   return null;
 }

@@ -20,8 +20,8 @@ export function ContentTabs<T extends string>({
           key={tab.value}
           onClick={() => onTabChange(tab.value)}
           className={cn(
-            `cursor-pointer px-3 py-1.5 font-medium rounded-md
-            transition-colors text-lg`,
+            `cursor-pointer px-3 py-1.5 font-medium rounded-md transition-colors
+            text-lg`,
             activeTab === tab.value
               ? "text-white bg-base-400"
               : "text-base-800 hover:text-white hover:bg-base-300",

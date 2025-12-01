@@ -1,5 +1,5 @@
 import { useRouter } from "next/navigation";
-import {ArrowLeft} from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export const GoBackButton = () => {
@@ -10,5 +10,5 @@ export const GoBackButton = () => {
       <ArrowLeft />
       Go Back
     </Button>
-  )
-}
+  );
+};

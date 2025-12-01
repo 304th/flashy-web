@@ -14,7 +14,7 @@ import {
   type TabType,
 } from "@/features/monetise";
 import { useWishlistStore } from "@/stores";
-import {GoBackButton} from "@/components/ui/go-back-button";
+import { GoBackButton } from "@/components/ui/go-back-button";
 
 export default function OpportunityPage() {
   const searchParams = useSearchParams();

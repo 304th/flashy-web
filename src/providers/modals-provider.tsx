@@ -104,6 +104,10 @@ import {
   FollowingModal,
   FollowingModalProps,
 } from "@/features/channels/components/following-modal/following-modal";
+import {
+  CreateBusinessModal,
+  CreateBusinessModalProps,
+} from "@/features/business/components/create-business-modal/create-business-modal";
 
 const modalsConfig = {
   LoginModal,
@@ -132,6 +136,7 @@ const modalsConfig = {
   StreamSettingsModal,
   FollowersModal,
   FollowingModal,
+  CreateBusinessModal,
 };
 
 export type ModalPropsTypes =
@@ -238,6 +243,10 @@ export type ModalPropsTypes =
   | {
       type: "FollowingModal";
       props: FollowingModalProps;
+    }
+  | {
+      type: "CreateBusinessModal";
+      props: CreateBusinessModalProps;
     };
 
 export const ModalsProvider = ({ children }: PropsWithChildren<object>) => (

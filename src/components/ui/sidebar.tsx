@@ -15,19 +15,24 @@ import { useProfileFollowings } from "@/features/profile/queries/use-profile-fol
 import { Loadable } from "@/components/ui/loadable";
 import { UserProfile } from "@/components/ui/user-profile";
 import { NotFound } from "@/components/ui/not-found";
-import { useMe } from "@/features/auth/queries/use-me";
 import { Spinner } from "@/components/ui/spinner/spinner";
+import { useModals } from "@/hooks/use-modals";
+import { useMe } from "@/features/auth/queries/use-me";
+import { useMyBusinessAccount } from "@/features/business";
 
 interface NavItemProps {
-  route: string;
+  route?: string;
   icon: ReactNode;
   className?: string;
   expanded: boolean;
   disabled?: boolean;
+  onClick?: () => void;
 }
 
 export const Sidebar = () => {
   const { expanded } = useSidebar();
+  const { openModal } = useModals();
+  const { query: businessAccountQuery } = useMyBusinessAccount();
 
   return (
     <div
@@ -77,17 +82,33 @@ export const Sidebar = () => {
           expanded={expanded}
         >
           Monetise
-          {/*<Tag className="text-white">COMING SOON</Tag>*/}
         </NavItem>
-        <NavItem
-          route="/monetise"
-          icon={<MonetiseIcon />}
-          className="text-xs"
-          expanded={expanded}
+        <Loadable
+          queries={[businessAccountQuery]}
+          error={
+            <NavItem
+              icon={<MonetiseIcon />}
+              className="text-xs"
+              expanded={expanded}
+              onClick={() => {
+                openModal("CreateBusinessModal");
+              }}
+            >
+              Business
+            </NavItem>
+          }
         >
-          Business
-          {/*<Tag className="text-white">COMING SOON</Tag>*/}
-        </NavItem>
+          {() => (
+            <NavItem
+              route="/business/dashboard"
+              icon={<MonetiseIcon />}
+              className="text-xs"
+              expanded={expanded}
+            >
+              Business
+            </NavItem>
+          )}
+        </Loadable>
       </div>
       <Separator />
       {expanded && (
@@ -107,34 +128,44 @@ const NavItem = ({
   disabled,
   className,
   children,
+  onClick,
 }: PropsWithChildren<NavItemProps>) => {
   const pathname = usePathname();
+
+  const NavComponent = ({ onClick }: { onClick?: () => void }) => (
+    <div
+      role="button"
+      className={`w-full transition cursor cursor-pointer ${
+        expanded
+          ? "grid grid-cols-[40px_1fr] items-center gap-3 px-4 h-[44px]"
+          : "flex flex-col items-center justify-center gap-2 p-4 h-[60px]"
+        }
+        ${pathname === route ? "bg-base-300 text-white" : "hover:bg-base-300"}`}
+      onClick={onClick}
+    >
+      <div className="flex items-center justify-center">{icon}</div>
+      <span
+        className={
+          expanded ? "text-sm font-medium whitespace-nowrap" : "text-xs"
+        }
+      >
+        {children}
+      </span>
+    </div>
+  );
+
+  if (onClick) {
+    return <NavComponent onClick={onClick} />;
+  }
 
   return (
     <Link
       aria-disabled={disabled}
-      href={!disabled ? route : ""}
+      href={!disabled ? route || "" : ""}
       className={`w-full ${expanded ? "" : ""}
         ${disabled ? "cursor-not-allowed" : ""} ${className}`}
     >
-      <div
-        className={`w-full transition cursor ${
-          expanded
-            ? "grid grid-cols-[40px_1fr] items-center gap-3 px-4 h-[44px]"
-            : "flex flex-col items-center justify-center gap-2 p-4 h-[60px]"
-          } ${
-          pathname === route ? "bg-base-300 text-white" : "hover:bg-base-300"
-        }`}
-      >
-        <div className="flex items-center justify-center">{icon}</div>
-        <span
-          className={
-            expanded ? "text-sm font-medium whitespace-nowrap" : "text-xs"
-          }
-        >
-          {children}
-        </span>
-      </div>
+      <NavComponent />
     </Link>
   );
 };

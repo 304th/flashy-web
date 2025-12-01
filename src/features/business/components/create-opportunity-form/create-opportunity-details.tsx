@@ -26,11 +26,7 @@ export const CreateOpportunityDetails = () => {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input
-                    type="date"
-                    {...field}
-                    className="bg-base-200 h-10"
-                  />
+                  <Input type="date" {...field} className="bg-base-200 h-10" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -42,11 +38,7 @@ export const CreateOpportunityDetails = () => {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input
-                    type="date"
-                    {...field}
-                    className="bg-base-200 h-10"
-                  />
+                  <Input type="date" {...field} className="bg-base-200 h-10" />
                 </FormControl>
                 <FormMessage />
               </FormItem>

@@ -6,7 +6,7 @@ import { FileText } from "lucide-react";
 import { StatCard } from "@/features/business/components/stat-card/stat-card";
 import { BusinessOpportunityCard } from "@/features/business/components/business-opportunity-card/business-opportunity-card";
 import { Select } from "@/components/ui/select";
-import {CreateOpportunityIcon} from "@/components/ui/icons/create-opportunity";
+import { CreateOpportunityIcon } from "@/components/ui/icons/create-opportunity";
 
 // Mock data - replace with real data from API
 const mockStats = {
@@ -20,7 +20,8 @@ const mockOpportunities = [
   {
     _id: "1",
     title: "Hemp Rolling Papers",
-    brandLogo: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800&q=80",
+    brandLogo:
+      "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800&q=80",
     campaignValue: "$1000",
     deadline: "24/07/25",
     isExpiringSoon: false,
@@ -29,7 +30,8 @@ const mockOpportunities = [
   {
     _id: "2",
     title: "Hemp Rolling Papers",
-    brandLogo: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800&q=80",
+    brandLogo:
+      "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800&q=80",
     campaignValue: "10%",
     deadline: "24/07/25",
     isExpiringSoon: false,
@@ -38,7 +40,8 @@ const mockOpportunities = [
   {
     _id: "3",
     title: "Hemp Rolling Papers",
-    brandLogo: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800&q=80",
+    brandLogo:
+      "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800&q=80",
     campaignValue: "$1000",
     deadline: "24/07/25",
     isExpiringSoon: true,
@@ -118,7 +121,8 @@ export default function BusinessDashboardOpportunitiesPage() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <div
-          className="flex flex-col items-center justify-center gap-4 rounded-lg bg-base-300 p-6  cursor-pointer hover:bg-base-400 transition-colors"
+          className="flex flex-col items-center justify-center gap-4 rounded-lg
+            bg-base-300 p-6 cursor-pointer hover:bg-base-400 transition-colors"
           onClick={() => router.push("/business/opportunities/create")}
         >
           <div className="p-4 rounded-lg">

@@ -6,6 +6,7 @@ import { ImageUpload } from "@/components/ui/image-upload";
 
 export const CreateOpportunityMedia = () => {
   const form = useFormContext();
+  const thumbnail = form.watch("thumbnail");
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
   const [galleryFiles, setGalleryFiles] = useState<File[]>([]);
 
@@ -28,16 +29,21 @@ export const CreateOpportunityMedia = () => {
 
   return (
     <div className="grid grid-cols-2 gap-4">
-      <div>
+      <div className="flex flex-col gap-2">
         <FormLabel>
           Thumbnail <span className="text-red-500">*</span>
         </FormLabel>
         <ImageUpload
-          onChange={handleThumbnailChange}
-          initialPreview={
-            thumbnailFile ? URL.createObjectURL(thumbnailFile) : undefined
-          }
-          className="aspect-video rounded-lg"
+          title="Upload Thumbnail"
+          initialPreview={thumbnail}
+          className="w-full"
+          onChange={async (file) => {
+            if (file) {
+              form.setValue("thumbnailFile", file, { shouldDirty: true });
+            } else {
+              form.setValue("thumbnail", null, { shouldDirty: true });
+            }
+          }}
         />
         <div className="flex justify-between items-center mt-2">
           <span className="text-xs text-base-700">16:9 Aspect Ratio</span>
@@ -54,7 +60,8 @@ export const CreateOpportunityMedia = () => {
             {galleryFiles.map((file, index) => (
               <div
                 key={index}
-                className="relative aspect-square rounded-lg overflow-hidden bg-base-400"
+                className="relative aspect-square rounded-lg overflow-hidden
+                  bg-base-400"
               >
                 <img
                   src={URL.createObjectURL(file)}
@@ -64,7 +71,8 @@ export const CreateOpportunityMedia = () => {
                 <button
                   type="button"
                   onClick={() => removeGalleryImage(index)}
-                  className="absolute top-1 right-1 p-1 bg-red-500 rounded-full hover:bg-red-600"
+                  className="absolute top-1 right-1 p-1 bg-red-500 rounded-full
+                    hover:bg-red-600"
                 >
                   <X className="w-3 h-3 text-white" />
                 </button>

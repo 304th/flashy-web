@@ -13,7 +13,7 @@ export const PostLinkPreview = ({
     return (
       <div
         className="flex gap-4 bg-base-300 rounded-md border overflow-hidden
-        transition hover:bg-base-400"
+          transition hover:bg-base-400"
       >
         <PostLinkPreviewCore linkPreview={linkPreview} />
       </div>

@@ -26,9 +26,10 @@ export interface OptimisticUpdater<Entity, State> {
   ) => State;
 }
 
-export class PartitionedOptimisticUpdater<Entity>
-  implements OptimisticUpdater<Entity, Paginated<Entity[]>>
-{
+export class PartitionedOptimisticUpdater<Entity> implements OptimisticUpdater<
+  Entity,
+  Paginated<Entity[]>
+> {
   constructor(private readonly collection: Collection<Entity>) {}
 
   prepend(item: Entity, state: Paginated<Entity[]>): Paginated<Entity[]> {
@@ -211,9 +212,10 @@ export class PartitionedOptimisticUpdater<Entity>
   }
 }
 
-export class LiveOptimisticUpdater<Entity>
-  implements OptimisticUpdater<Entity, Entity[]>
-{
+export class LiveOptimisticUpdater<Entity> implements OptimisticUpdater<
+  Entity,
+  Entity[]
+> {
   constructor(private readonly collection: Collection<Entity>) {}
 
   prepend(item: Entity, state: Entity[]): Entity[] {

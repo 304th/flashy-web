@@ -73,7 +73,8 @@ export const CreateOpportunityDeliverables = () => {
                 {field.value.map((deliverable: string, index: number) => (
                   <div
                     key={index}
-                    className="flex items-center justify-between bg-base-200 rounded-lg px-4 py-3 border border-base-400"
+                    className="flex items-center justify-between bg-base-200
+                      rounded-lg px-4 py-3 border border-base-400"
                   >
                     <span className="text-sm text-white">{deliverable}</span>
                     <button

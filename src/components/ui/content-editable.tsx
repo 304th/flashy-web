@@ -11,11 +11,10 @@ export interface ContentSegment {
   key: string;
 }
 
-export interface ContentEditableProps
-  extends Omit<
-    React.HTMLAttributes<HTMLDivElement>,
-    "onChange" | "onInput" | "children"
-  > {
+export interface ContentEditableProps extends Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  "onChange" | "onInput" | "children"
+> {
   value?: string;
   onChange?: (value: string) => void;
   placeholder?: string;

@@ -51,10 +51,13 @@ export const CreateOpportunityBasic = () => {
                     type="button"
                     onClick={() => field.onChange(type)}
                     className={cn(
-                      "flex items-center justify-center px-4 h-10 py-3 rounded-lg border transition-colors capitalize text-base font-medium cursor-pointer",
+                      `flex items-center justify-center px-4 h-10 py-3
+                      rounded-lg border transition-colors capitalize text-base
+                      font-medium cursor-pointer`,
                       field.value === type
                         ? "border-brand-100 bg-green-500/10 text-white"
-                        : "border-base-400 bg-base-200 text-base-700 hover:border-base-600",
+                        : `border-base-400 bg-base-200 text-base-700
+                          hover:border-base-600`,
                     )}
                   >
                     {type}

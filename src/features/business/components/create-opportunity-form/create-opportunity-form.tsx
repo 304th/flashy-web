@@ -19,6 +19,7 @@ const formSchema = z.object({
   brandName: z.string().min(2, "Company name must be at least 2 characters"),
   category: z.string().min(1, "Please select a category"),
   productLink: z.string().url("Please enter a valid URL"),
+  thumbnail: z.string().nullable(),
   thumbnailFile: z.any().optional(),
   galleryFiles: z.any().optional(),
   startDate: z.string().min(1, "Start date is required"),
@@ -124,15 +125,10 @@ export const CreateOpportunityForm = ({
         className="flex flex-col gap-6"
       >
         <CreateOpportunityBasic />
-
         <CreateOpportunityMedia />
-
         <CreateOpportunityDetails />
-
         <CreateOpportunityDeliverables />
-
         <CreateOpportunityRequirements />
-
         <div className="grid grid-cols-2 gap-4">
           <Button
             type="button"

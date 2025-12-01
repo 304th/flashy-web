@@ -79,7 +79,10 @@ export const LoadableError = ({
     if (fullScreen) {
       return (
         <div className="flex w-full h-full justify-center items-center">
-          <div className="flex justify-center items-center p-2 gap-1 rounded bg-[#ff000010] text-red-500">
+          <div
+            className="flex justify-center items-center p-2 gap-1 rounded
+              bg-[#ff000010] text-red-500"
+          >
             <TriangleAlertIcon size={16} />
             <p>{error}</p>
           </div>
@@ -88,7 +91,10 @@ export const LoadableError = ({
     }
 
     return (
-      <div className="flex justify-center items-center p-2 gap-1 rounded bg-[#ff000010] text-red-500">
+      <div
+        className="flex justify-center items-center p-2 gap-1 rounded
+          bg-[#ff000010] text-red-500"
+      >
         <TriangleAlertIcon size={16} />
         <p>{error}</p>
       </div>

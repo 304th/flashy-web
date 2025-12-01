@@ -33,7 +33,10 @@ export const VideoPlayer = ({
 
   if (!token) {
     return (
-      <div className="flex items-center justify-center aspect-video bg-base-200 rounded">
+      <div
+        className="flex items-center justify-center aspect-video bg-base-200
+          rounded"
+      >
         <NotFound>Video not available</NotFound>
       </div>
     );

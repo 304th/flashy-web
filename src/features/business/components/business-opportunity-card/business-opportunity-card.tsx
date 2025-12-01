@@ -48,7 +48,9 @@ export function BusinessOpportunityCard({
           />
         </div>
       </div>
-      <div className="relative aspect-video rounded-lg overflow-hidden bg-base-400">
+      <div
+        className="relative aspect-video rounded-lg overflow-hidden bg-base-400"
+      >
         {opportunity.brandLogo && (
           <Image
             src={opportunity.brandLogo}
@@ -65,7 +67,8 @@ export function BusinessOpportunityCard({
             onWishlistToggle?.(opportunity._id);
           }}
           className={cn(
-            "!p-0 aspect-square absolute bottom-3 right-3 rounded-md transition-colors",
+            `!p-0 aspect-square absolute bottom-3 right-3 rounded-md
+            transition-colors`,
             isWishlisted ? "text-yellow-400" : "text-white/70 hover:text-white",
           )}
         >
@@ -76,7 +79,9 @@ export function BusinessOpportunityCard({
         </Button>
       </div>
       <div className="flex flex-col gap-2">
-        <h3 className="text-base text-white font-medium">{opportunity.title}</h3>
+        <h3 className="text-base text-white font-medium">
+          {opportunity.title}
+        </h3>
         <div className="flex items-center gap-2 flex-wrap">
           {opportunity.tags.map((tag, index) => (
             <Tag key={index} className="!bg-base-300 !border-base-400 text-xs">

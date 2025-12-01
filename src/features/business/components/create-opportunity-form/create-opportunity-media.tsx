@@ -53,7 +53,7 @@ export const CreateOpportunityMedia = () => {
 
       <div>
         <FormLabel>
-          Gallery <span className="text-red-500">*</span>
+          Media Assets <span className="text-red-500">*</span>
         </FormLabel>
         <div className="space-y-2">
           <div className="grid grid-cols-4 gap-2">

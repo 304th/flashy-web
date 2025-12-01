@@ -79,6 +79,15 @@ export const Sidebar = () => {
           Monetise
           {/*<Tag className="text-white">COMING SOON</Tag>*/}
         </NavItem>
+        <NavItem
+          route="/monetise"
+          icon={<MonetiseIcon />}
+          className="text-xs"
+          expanded={expanded}
+        >
+          Business
+          {/*<Tag className="text-white">COMING SOON</Tag>*/}
+        </NavItem>
       </div>
       <Separator />
       {expanded && (

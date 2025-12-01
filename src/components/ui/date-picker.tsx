@@ -167,9 +167,9 @@ const Trigger = React.forwardRef<HTMLButtonElement, TriggerProps>(
             "w-full data-[state=open]:shadow-button-important-focus",
             className,
           )}
-          variant="neutral"
+          variant="secondary"
           mode="stroke"
-          leadingIcon={RiCalendarLine}
+          // leadingIcon={RiCalendarLine}
           {...props}
         >
           <span
@@ -459,7 +459,7 @@ const SingleDatePicker = ({
               )}
               <div className="flex items-center gap-x-2 border-t p-3">
                 <Button
-                  variant="neutral"
+                  variant="secondary"
                   mode="stroke"
                   className="h-8 w-full"
                   type="button"
@@ -468,7 +468,6 @@ const SingleDatePicker = ({
                   {translations?.cancel ?? "Cancel"}
                 </Button>
                 <Button
-                  variant="primary"
                   className="h-8 w-full"
                   type="button"
                   onClick={onApply}
@@ -780,14 +779,14 @@ const RangeDatePicker = ({
                 </p>
                 <div className="grid grid-cols-2 gap-x-2">
                   <Button
-                    variant="neutral"
+                    variant="secondary"
                     mode="stroke"
-                    size="small"
+                    size="sm"
                     onClick={onCancel}
                   >
                     {translations?.cancel ?? "Cancel"}
                   </Button>
-                  <Button variant="primary" size="small" onClick={onApply}>
+                  <Button variant="default" size="sm" onClick={onApply}>
                     {translations?.apply ?? "Apply"}
                   </Button>
                 </div>

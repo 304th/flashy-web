@@ -26,15 +26,15 @@ export const useUpdateBusinessAccountByAdmin = () => {
     BusinessAccount
   >({
     mutation: updateBusinessAccountByAdminMutation,
-    onOptimistic: (ch, { id, data }) => {
-      return ch(businessAccountsCollection).update(
-        (item) => item._id === id,
-        (item) => ({
-          ...item,
-          ...data,
-          updatedAt: new Date().toISOString(),
-        }),
-      );
-    },
+    // onOptimistic: (ch, { id, data }) => {
+    //   return ch(businessAccountsCollection).update(
+    //     (item) => item._id === id,
+    //     (item) => ({
+    //       ...item,
+    //       ...data,
+    //       updatedAt: new Date().toISOString(),
+    //     }),
+    //   );
+    // },
   });
 };

@@ -82,9 +82,9 @@ export const CreateOpportunityBasic = () => {
               </FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Placeholder Name"
+                  placeholder="Agreement Name..."
                   {...field}
-                  className="bg-base-200 h-10"
+                  className="h-10"
                 />
               </FormControl>
               <FormMessage />
@@ -102,9 +102,9 @@ export const CreateOpportunityBasic = () => {
               </FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Placeholder Name"
+                  placeholder="Company Name"
                   {...field}
-                  className="bg-base-200 h-10"
+                  className="h-10"
                 />
               </FormControl>
               <FormMessage />

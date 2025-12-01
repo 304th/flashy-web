@@ -1,8 +1,14 @@
-import { useState } from "react";
+import config from "@/config";
+import { useState, type ChangeEvent } from "react";
 import { useFormContext } from "react-hook-form";
-import { X } from "lucide-react";
+import { toast } from "sonner";
+import { X , UploadCloudIcon } from "lucide-react";
 import { FormLabel } from "@/components/ui/form";
 import { ImageUpload } from "@/components/ui/image-upload";
+import { FileUpload } from "@/components/ui/file-upload";
+import { useDragAndDrop } from "@/hooks/use-drag-n-drop";
+
+const MAX_GALLERY_IMAGES = 8;
 
 export const CreateOpportunityMedia = () => {
   const form = useFormContext();
@@ -10,10 +16,57 @@ export const CreateOpportunityMedia = () => {
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
   const [galleryFiles, setGalleryFiles] = useState<File[]>([]);
 
-  const handleGalleryUpload = (file: File) => {
-    const newGallery = [...galleryFiles, file];
-    setGalleryFiles(newGallery);
-    form.setValue("galleryFiles", newGallery, { shouldDirty: true });
+  const handleGalleryFilesUpload = (files: File[]) => {
+    if (files.length === 0) return;
+
+    const currentGallery = galleryFiles;
+    const remainingSlots = MAX_GALLERY_IMAGES - currentGallery.length;
+
+    if (remainingSlots <= 0) {
+      toast.error(`You can only upload up to ${MAX_GALLERY_IMAGES} images.`);
+      return;
+    }
+
+    const validFiles: File[] = [];
+    let hasError = false;
+
+    for (const file of files) {
+      if (file.type && !file.type.startsWith("image/")) {
+        toast.error(`"${file.name}" is not an image.`);
+        hasError = true;
+        continue;
+      }
+
+      if (file.size > config.content.uploads.image.maxSize) {
+        toast.error(
+          `File "${file.name}" size must be less than ${config.content.uploads.image.maxSize / (1024 * 1024)} MB.`,
+        );
+        hasError = true;
+      } else {
+        validFiles.push(file);
+      }
+    }
+
+    if (validFiles.length > 0) {
+      const filesToAdd = validFiles.slice(0, remainingSlots);
+      if (filesToAdd.length < validFiles.length) {
+        toast.error(
+          `Only ${filesToAdd.length} image(s) added. You can upload up to ${MAX_GALLERY_IMAGES} images total.`,
+        );
+      }
+      const newGallery = [...currentGallery, ...filesToAdd];
+      setGalleryFiles(newGallery);
+      form.setValue("galleryFiles", newGallery, { shouldDirty: true });
+    } else if (!hasError) {
+      toast.error("No valid files selected.");
+    }
+  };
+
+  const handleGalleryFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      handleGalleryFilesUpload(Array.from(e.target.files));
+      e.target.value = "";
+    }
   };
 
   const removeGalleryImage = (index: number) => {
@@ -26,6 +79,10 @@ export const CreateOpportunityMedia = () => {
     setThumbnailFile(file);
     form.setValue("thumbnailFile", file, { shouldDirty: true });
   };
+
+  const { isDragActive, dragHandlers } = useDragAndDrop(
+    handleGalleryFilesUpload,
+  );
 
   return (
     <div className="grid grid-cols-2 gap-4">
@@ -45,22 +102,38 @@ export const CreateOpportunityMedia = () => {
             }
           }}
         />
-        <div className="flex justify-between items-center mt-2">
-          <span className="text-xs text-base-700">16:9 Aspect Ratio</span>
-          <span className="text-xs text-green-500">Upload</span>
-        </div>
       </div>
 
-      <div>
+      <div className="flex flex-col gap-2">
         <FormLabel>
           Media Assets <span className="text-red-500">*</span>
         </FormLabel>
-        <div className="space-y-2">
-          <div className="grid grid-cols-4 gap-2">
+        <div
+          className={`relative rounded-lg transition-all duration-150 ${
+            isDragActive
+              ? "p-2 border-2 border-blue-500 border-dashed bg-blue-500/10"
+              : "p-0"
+          }`}
+          onDragEnter={dragHandlers.onDragEnter}
+          onDragOver={dragHandlers.onDragOver}
+          onDragLeave={dragHandlers.onDragLeave}
+          onDrop={dragHandlers.onDrop}
+        >
+          {isDragActive && (
+            <div
+              className="absolute inset-0 flex items-center justify-center
+                bg-blue-500/20 rounded-lg z-10 pointer-events-none"
+            >
+              <p className="text-white text-sm font-semibold">
+                Drop images here (up to {MAX_GALLERY_IMAGES} images)
+              </p>
+            </div>
+          )}
+          <div className={`grid grid-cols-4 gap-2 ${galleryFiles.length === 0 ? '!flex w-full' : ''}`}>
             {galleryFiles.map((file, index) => (
               <div
                 key={index}
-                className="relative aspect-square rounded-lg overflow-hidden
+                className="relative rounded-lg overflow-hidden
                   bg-base-400"
               >
                 <img
@@ -72,23 +145,46 @@ export const CreateOpportunityMedia = () => {
                   type="button"
                   onClick={() => removeGalleryImage(index)}
                   className="absolute top-1 right-1 p-1 bg-red-500 rounded-full
-                    hover:bg-red-600"
+                    hover:bg-red-600 transition-colors cursor-pointer"
                 >
                   <X className="w-3 h-3 text-white" />
                 </button>
               </div>
             ))}
+            <button
+              type="button"
+              onClick={() => document.getElementById("gallery-upload")?.click()}
+              className="w-full aspect-square rounded-lg h-39 bg-base-200 cursor-pointer
+              hover:bg-base-300 transition-colors flex flex-col items-center
+              justify-center gap-2 border-1 border-dashed border-base-400
+              hover:border-base-700"
+            >
+              <FileUpload.Icon
+                className="relative z-2 text-white"
+                as={UploadCloudIcon}
+              />
+              <span className="text-white">
+              Upload Media Assets
+            </span>
+              <span className="text-xs text-base-800">
+              .png, .jpg, .svg, .pdf, .doc, .docx, (up to {MAX_GALLERY_IMAGES} files)
+            </span>
+            </button>
           </div>
-          <ImageUpload
-            onChange={(file) => {
-              if (file) handleGalleryUpload(file);
-            }}
-            className="aspect-square rounded-lg h-24"
+          <input
+            id="gallery-upload"
+            type="file"
+            accept="image/jpeg,image/png,image/jpg,image/gif"
+            multiple
+            tabIndex={-1}
+            className="hidden"
+            onChange={handleGalleryFileChange}
           />
         </div>
-        <div className="flex justify-between items-center mt-2">
-          <span className="text-xs text-base-700">1:1 Aspect Ratio</span>
-          <span className="text-xs text-green-500">Upload</span>
+        <div className="flex justify-between items-center">
+          <span className="text-xs text-base-700">
+            {galleryFiles.length} / {MAX_GALLERY_IMAGES} images
+          </span>
         </div>
       </div>
     </div>

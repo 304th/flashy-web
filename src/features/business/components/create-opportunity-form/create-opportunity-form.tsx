@@ -122,13 +122,14 @@ export const CreateOpportunityForm = ({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleSubmit)}
-        className="flex flex-col gap-6"
+        className="flex flex-col gap-4"
       >
         <CreateOpportunityBasic />
         <CreateOpportunityMedia />
-        <CreateOpportunityDetails />
+
         <CreateOpportunityDeliverables />
         <CreateOpportunityRequirements />
+        <CreateOpportunityDetails />
         <div className="grid grid-cols-2 gap-4">
           <Button
             type="button"

@@ -7,6 +7,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { DateRange, DateRangePicker } from "@/components/ui/date-picker";
 import { Textarea } from "@/components/ui/textarea";
 
 export const CreateOpportunityDetails = () => {
@@ -26,19 +27,13 @@ export const CreateOpportunityDetails = () => {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input type="date" {...field} className="bg-base-200 h-10" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="endDate"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Input type="date" {...field} className="bg-base-200 h-10" />
+                  <DateRangePicker
+                    className="w-[320px]"
+                    // value={date}
+                    // onChange={setDate}
+                    showTimePicker
+                  />
+                  {/*<Input type="date" {...field} className="bg-base-200 h-10" />*/}
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -46,7 +41,6 @@ export const CreateOpportunityDetails = () => {
           />
         </div>
       </FormItem>
-
       {/* Product/Service Description */}
       <FormField
         control={form.control}

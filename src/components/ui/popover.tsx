@@ -19,7 +19,7 @@ const PopoverContent = React.forwardRef<
       ref={forwardedRef}
       sideOffset={sideOffset}
       className={cn(
-        "z-50 w-[300px] overflow-hidden rounded-2xl bg-bg-white-0 p-2 shadow-regular-md ring-1 ring-inset ring-stroke-soft-200",
+        "z-50 w-[300px] overflow-hidden rounded-md bg-base-200 p-2 shadow-md border border-base-400",
         "flex flex-col gap-1",
         // origin
         "data-[side=bottom]:origin-top data-[side=left]:origin-right data-[side=right]:origin-left data-[side=top]:origin-bottom",

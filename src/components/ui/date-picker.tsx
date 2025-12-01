@@ -59,32 +59,32 @@ const TimeSegment = ({ segment, state }: TimeSegmentProps) => {
       className={cn(
         // base
         `relative flex h-9 w-full cursor-text appearance-none items-center
-        rounded-lg border border-stroke-soft-200 bg-bg-white-0 px-2 text-left
-        text-paragraph-sm uppercase tabular-nums text-text-strong-950 shadow-sm
-        outline-none transition`,
+        rounded-md border border-base-400 bg-base-200 px-2 text-left
+        text-sm uppercase tabular-nums text-white shadow-xs
+        outline-none transition-colors`,
         // focus
-        "focus:border-stroke-strong-950 focus:shadow-button-important-focus",
+        "focus:border-ring focus:ring-ring/50 focus:ring-[3px] focus:bg-base-400",
         // invalid (optional)
-        `group-aria-invalid/time-input:dark:ring-red-400/20
-        invalid:border-red-500 invalid:ring-2 invalid:ring-red-200
-        group-aria-invalid/time-input:border-red-500
+        `group-aria-invalid/time-input:ring-destructive/20
+        invalid:border-destructive invalid:ring-2 invalid:ring-destructive/20
+        group-aria-invalid/time-input:border-destructive
         group-aria-invalid/time-input:ring-2
-        group-aria-invalid/time-input:ring-red-200`,
+        group-aria-invalid/time-input:ring-destructive/20`,
         {
-          "w-fit! border-none bg-transparent px-0 text-text-sub-600 shadow-none":
+          "w-fit! border-none bg-transparent px-0 text-muted-foreground shadow-none":
             isDecorator,
           hidden: isSpace,
-          "shadow-none border-transparent text-text-disabled-300":
+          "shadow-none border-transparent text-muted-foreground opacity-50":
             state.isDisabled || !segment.isEditable,
-          "bg-bg-weak-50": state.isDisabled && segment.isEditable,
+          "bg-base-300": state.isDisabled && segment.isEditable,
         },
       )}
     >
       <span
         aria-hidden="true"
         className={cn(
-          `pointer-events-none block w-full text-left text-paragraph-md
-          text-text-sub-600`,
+          `pointer-events-none block w-full text-left text-sm
+          text-muted-foreground`,
           {
             hidden: !segment.isPlaceholder,
             "h-0": !segment.isPlaceholder,
@@ -164,20 +164,17 @@ const Trigger = React.forwardRef<HTMLButtonElement, TriggerProps>(
         <Button
           ref={forwardedRef}
           className={cn(
-            "w-full data-[state=open]:shadow-button-important-focus",
+            "w-full justify-start text-left font-normal data-[state=open]:ring-ring/50 data-[state=open]:ring-[3px]",
+            !children && "text-muted-foreground",
             className,
           )}
           variant="secondary"
           mode="stroke"
-          // leadingIcon={RiCalendarLine}
           {...props}
         >
-          <span
-            className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap
-              text-left"
-          >
-            {children ||
-              (placeholder ? <span className="">{placeholder}</span> : null)}
+          <RiCalendarLine className="mr-2 h-4 w-4" />
+          <span className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap">
+            {children || placeholder || "Select date"}
           </span>
         </Button>
       </Popover.Trigger>
@@ -204,7 +201,7 @@ const CalendarPopover = React.forwardRef<
       onOpenAutoFocus={(e) => e.preventDefault()}
       className={cn(
         `w-full min-w-[calc(var(--radix-select-trigger-width)-2px)] max-w-[95vw]
-        p-0`,
+        p-0 bg-base-200 border border-base-400 rounded-md shadow-md`,
         className,
       )}
       {...props}

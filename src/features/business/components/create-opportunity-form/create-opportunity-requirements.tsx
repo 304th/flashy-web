@@ -22,6 +22,50 @@ export const CreateOpportunityRequirements = () => {
 
   return (
     <div className="flex flex-col gap-6">
+      {/* Compensation Type and Compensation */}
+      <div className="grid grid-cols-2 gap-4">
+        <FormField
+          control={form.control}
+          name="compensationType"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                Compensation Type <span className="text-red-500">*</span>
+              </FormLabel>
+              <FormControl>
+                <Select.Root value={field.value} onValueChange={field.onChange} >
+                  {COMPENSATION_TYPES.map((type) => (
+                    <Select.Item key={type.value} value={type.value}>
+                      {type.label}
+                    </Select.Item>
+                  ))}
+                </Select.Root>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="compensation"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                Compensation <span className="text-red-500">*</span>
+              </FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="10%"
+                  {...field}
+                  className="bg-base-200 h-10"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
       {/* Agreement Requirements */}
       <FormItem>
         <FormLabel>
@@ -72,51 +116,6 @@ export const CreateOpportunityRequirements = () => {
           />
         </div>
       </FormItem>
-
-      {/* Compensation Type and Compensation */}
-      <div className="grid grid-cols-2 gap-4">
-        <FormField
-          control={form.control}
-          name="compensationType"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>
-                Compensation Type <span className="text-red-500">*</span>
-              </FormLabel>
-              <FormControl>
-                <Select.Root value={field.value} onValueChange={field.onChange}>
-                  {COMPENSATION_TYPES.map((type) => (
-                    <Select.Item key={type.value} value={type.value}>
-                      {type.label}
-                    </Select.Item>
-                  ))}
-                </Select.Root>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="compensation"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>
-                Compensation <span className="text-red-500">*</span>
-              </FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="10%"
-                  {...field}
-                  className="bg-base-200 h-10"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </div>
     </div>
   );
 };

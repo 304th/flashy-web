@@ -5,11 +5,12 @@ import { myBusinessAccountCollection } from "@/features/business/collections/my-
 export const useMyBusinessAccount = () => {
   const { data: me } = useMe();
 
-  return useLiveQuery({
+  return useLiveQuery<BusinessAccount, never>({
     collection: myBusinessAccountCollection,
-    queryKey: ["me", "my-business-account"],
+    queryKey: ["me", me?.fbId, "business-accounts"],
     options: {
       enabled: Boolean(me?.fbId),
+      staleTime: 60 * 1000,
     },
   });
 };

@@ -616,7 +616,7 @@ declare global {
   }
 
   interface BusinessAccountListResponse {
-    businessAccounts: BusinessAccount[];
+    businessAccounts: BusinessAccountWithUser[];
     pagination: {
       page: number;
       limit: number;

@@ -59,11 +59,12 @@ const TimeSegment = ({ segment, state }: TimeSegmentProps) => {
       className={cn(
         // base
         `relative flex h-9 w-full cursor-text appearance-none items-center
-        rounded-md border border-base-400 bg-base-200 px-2 text-left
-        text-sm uppercase tabular-nums text-white shadow-xs
-        outline-none transition-colors`,
+        rounded-md border border-base-400 bg-base-200 px-2 text-left text-sm
+        uppercase tabular-nums text-white shadow-xs outline-none
+        transition-colors`,
         // focus
-        "focus:border-ring focus:ring-ring/50 focus:ring-[3px] focus:bg-base-400",
+        `focus:border-ring focus:ring-ring/50 focus:ring-[3px]
+        focus:bg-base-400`,
         // invalid (optional)
         `group-aria-invalid/time-input:ring-destructive/20
         invalid:border-destructive invalid:ring-2 invalid:ring-destructive/20
@@ -71,8 +72,8 @@ const TimeSegment = ({ segment, state }: TimeSegmentProps) => {
         group-aria-invalid/time-input:ring-2
         group-aria-invalid/time-input:ring-destructive/20`,
         {
-          "w-fit! border-none bg-transparent px-0 text-muted-foreground shadow-none":
-            isDecorator,
+          [`w-fit! border-none bg-transparent px-0 text-muted-foreground
+          shadow-none`]: isDecorator,
           hidden: isSpace,
           "shadow-none border-transparent text-muted-foreground opacity-50":
             state.isDisabled || !segment.isEditable,
@@ -164,7 +165,9 @@ const Trigger = React.forwardRef<HTMLButtonElement, TriggerProps>(
         <Button
           ref={forwardedRef}
           className={cn(
-            "w-full justify-start text-left font-normal data-[state=open]:ring-ring/50 data-[state=open]:ring-[3px] bg-base-200 hover:bg-base-300 hover:border-base-600",
+            `w-full justify-start text-left font-normal
+            data-[state=open]:ring-ring/50 data-[state=open]:ring-[3px]
+            bg-base-200 hover:bg-base-300 hover:border-base-600`,
             !children && "text-muted-foreground",
             className,
           )}
@@ -173,7 +176,9 @@ const Trigger = React.forwardRef<HTMLButtonElement, TriggerProps>(
           {...props}
         >
           <RiCalendarLine className="mr-2 h-4 w-4" />
-          <span className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap">
+          <span
+            className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap"
+          >
             {children || placeholder || "Select date"}
           </span>
         </Button>
@@ -412,10 +417,7 @@ const SingleDatePicker = ({
   }, [value, defaultValue]);
 
   return (
-    <Popover.Root
-      open={open}
-      onOpenChange={onOpenChange}
-    >
+    <Popover.Root open={open} onOpenChange={onOpenChange}>
       <Trigger
         placeholder={placeholder}
         disabled={disabled}
@@ -464,11 +466,7 @@ const SingleDatePicker = ({
                 >
                   {translations?.cancel ?? "Cancel"}
                 </Button>
-                <Button
-                  className="h-8 w-full"
-                  type="button"
-                  onClick={onApply}
-                >
+                <Button className="h-8 w-full" type="button" onClick={onApply}>
                   {translations?.apply ?? "Apply"}
                 </Button>
               </div>
@@ -695,10 +693,7 @@ const RangeDatePicker = ({
   };
 
   return (
-    <Popover.Root
-      open={open}
-      onOpenChange={onOpenChange}
-    >
+    <Popover.Root open={open} onOpenChange={onOpenChange}>
       <Trigger
         placeholder={placeholder}
         disabled={disabled}

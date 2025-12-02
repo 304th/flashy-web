@@ -32,7 +32,7 @@ export const CreateOpportunityRequirements = () => {
                 Compensation Type <span className="text-red-500">*</span>
               </FormLabel>
               <FormControl>
-                <Select.Root value={field.value} onValueChange={field.onChange} >
+                <Select.Root value={field.value} onValueChange={field.onChange}>
                   {COMPENSATION_TYPES.map((type) => (
                     <Select.Item key={type.value} value={type.value}>
                       {type.label}

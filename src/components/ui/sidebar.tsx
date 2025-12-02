@@ -10,6 +10,7 @@ import { StreamsIcon } from "@/components/ui/icons/streams";
 import { MonetiseIcon } from "@/components/ui/icons/monetise";
 import { ChevronDownIcon } from "@/components/ui/icons/chevron-down";
 import { Separator } from "@/components/ui/separator";
+import { StoreIcon } from "@/components/ui/icons/store";
 import { useSidebar } from "@/contexts/sidebar-context";
 import { useProfileFollowings } from "@/features/profile/queries/use-profile-followings";
 import { Loadable } from "@/components/ui/loadable";
@@ -32,7 +33,7 @@ interface NavItemProps {
 export const Sidebar = () => {
   const { expanded } = useSidebar();
   const { openModal } = useModals();
-  const { query: businessAccountQuery } = useMyBusinessAccount();
+  const { data: businessAccounts } = useMyBusinessAccount();
 
   return (
     <div
@@ -83,32 +84,21 @@ export const Sidebar = () => {
         >
           Monetise
         </NavItem>
-        <Loadable
-          queries={[businessAccountQuery]}
-          error={
+        {
+          businessAccounts && (
             <NavItem
-              icon={<MonetiseIcon />}
+              route="/business/dashboard"
+              icon={<StoreIcon />}
               className="text-xs"
               expanded={expanded}
-              onClick={() => {
+              onClick={businessAccounts?.[0]?.status === 'approved' ? undefined : () => {
                 openModal("CreateBusinessModal");
               }}
             >
               Business
             </NavItem>
-          }
-        >
-          {() => (
-            <NavItem
-              route="/business/dashboard"
-              icon={<MonetiseIcon />}
-              className="text-xs"
-              expanded={expanded}
-            >
-              Business
-            </NavItem>
-          )}
-        </Loadable>
+          )
+        }
       </div>
       <Separator />
       {expanded && (

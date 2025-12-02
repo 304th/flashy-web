@@ -15,20 +15,21 @@ interface UseBusinessAccountsParams {
 }
 
 export const useBusinessAccounts = (params: UseBusinessAccountsParams = {}) => {
-  return usePartitionedQuery<BusinessAccount, BusinessAccountsCollectionParams>(
-    {
-      collection: businessAccountsCollection,
-      queryKey: ["business", "accounts", params],
-      getParams: ({ pageParam }) =>
-        ({
-          page: pageParam,
-          limit: PAGE_LIMIT,
-          status: params.status,
-          category: params.category,
-          userId: params.userId,
-          sortBy: params.sortBy,
-          sortOrder: params.sortOrder,
-        }) as any,
-    },
-  );
+  return usePartitionedQuery<
+    BusinessAccountWithUser,
+    BusinessAccountsCollectionParams
+  >({
+    collection: businessAccountsCollection,
+    queryKey: ["business", "accounts", params],
+    getParams: ({ pageParam }) =>
+      ({
+        page: pageParam,
+        limit: PAGE_LIMIT,
+        status: params.status,
+        category: params.category,
+        userId: params.userId,
+        sortBy: params.sortBy,
+        sortOrder: params.sortOrder,
+      }) as any,
+  });
 };

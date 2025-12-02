@@ -13,7 +13,7 @@ export interface BusinessAccountsCollectionParams {
 }
 
 export const businessAccountsCollection = createCollectionV2<
-  BusinessAccount,
+  BusinessAccountWithUser,
   BusinessAccountsCollectionParams
 >({
   async sourceFrom(params) {

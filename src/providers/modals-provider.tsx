@@ -108,6 +108,10 @@ import {
   CreateBusinessModal,
   CreateBusinessModalProps,
 } from "@/features/business/components/create-business-modal/create-business-modal";
+import {
+  AdminModal,
+  AdminModalProps,
+} from "@/features/admin/components/admin-modal/admin-modal";
 
 const modalsConfig = {
   LoginModal,
@@ -137,6 +141,7 @@ const modalsConfig = {
   FollowersModal,
   FollowingModal,
   CreateBusinessModal,
+  AdminModal,
 };
 
 export type ModalPropsTypes =
@@ -247,6 +252,10 @@ export type ModalPropsTypes =
   | {
       type: "CreateBusinessModal";
       props: CreateBusinessModalProps;
+    }
+  | {
+      type: "AdminModal";
+      props: AdminModalProps;
     };
 
 export const ModalsProvider = ({ children }: PropsWithChildren<object>) => (

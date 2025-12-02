@@ -20,12 +20,15 @@ export const useCreateBusinessAccount = () => {
   return useOptimisticMutation<CreateBusinessAccountParams, BusinessAccount>({
     mutation: createBusinessAccountMutation,
     onOptimistic: (ch, params) => {
-      return Promise.all([
-        ch(myBusinessAccountCollection).prepend(params, {
-          sync: true,
-        }),
-        ch(businessAccountsCollection).prepend(params, { sync: true }),
-      ]);
+      return ch(myBusinessAccountCollection).prepend(params, {
+        sync: true,
+      })
+      // return Promise.all([
+      //   ch(myBusinessAccountCollection).prepend(params, {
+      //     sync: true,
+      //   }),
+      //   ch(businessAccountsCollection).prepend(params, { sync: true }),
+      // ]);
     },
   });
 };

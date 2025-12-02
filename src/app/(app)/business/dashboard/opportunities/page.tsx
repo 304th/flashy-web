@@ -129,7 +129,7 @@ export default function BusinessDashboardOpportunitiesPage() {
             <CreateOpportunityIcon />
           </div>
           <span className="text-lg text-white font-medium">
-            Create Agreement
+            Create Opportunity
           </span>
         </div>
 

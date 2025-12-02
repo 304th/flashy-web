@@ -8,6 +8,7 @@ export { sponsorOpportunitiesCollection } from "./collections/sponsor-opportunit
 
 // Queries
 export { useBusinessAccounts } from "./queries/use-business-accounts";
+export { useBusinessAccountsWithUsers } from "./queries/use-business-accounts-with-users";
 export { useMyBusinessAccount } from "./queries/use-my-business-account";
 export {
   useBusinessAccountById,

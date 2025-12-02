@@ -11,7 +11,7 @@ import { CreateOpportunityMedia } from "./create-opportunity-media";
 import { CreateOpportunityDetails } from "./create-opportunity-details";
 import { CreateOpportunityDeliverables } from "./create-opportunity-deliverables";
 import { CreateOpportunityRequirements } from "./create-opportunity-requirements";
-import {useCreateSponsorOpportunity} from "@/features/business";
+import { useCreateSponsorOpportunity } from "@/features/business";
 
 const formSchema = z.object({
   type: z.enum(["sponsorship", "affiliate", "partnership"] as const),
@@ -152,7 +152,7 @@ export const CreateOpportunityForm = ({
             disabled={createOpportunity.isPending || !form.formState.isValid}
             className="w-full h-12 bg-green-600 hover:bg-green-700"
           >
-            Create Agreement
+            Create Opportunity
           </Button>
         </div>
       </form>

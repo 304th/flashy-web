@@ -79,11 +79,7 @@ export const CreateOpportunityBasic = () => {
                 Opportunity Name <span className="text-red-500">*</span>
               </FormLabel>
               <FormControl>
-                <Input
-                  placeholder="Name..."
-                  {...field}
-                  className="h-10"
-                />
+                <Input placeholder="Name..." {...field} className="h-10" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -99,11 +95,7 @@ export const CreateOpportunityBasic = () => {
                 Company Name <span className="text-red-500">*</span>
               </FormLabel>
               <FormControl>
-                <Input
-                  placeholder="Company Name"
-                  {...field}
-                  className="h-10"
-                />
+                <Input placeholder="Company Name" {...field} className="h-10" />
               </FormControl>
               <FormMessage />
             </FormItem>

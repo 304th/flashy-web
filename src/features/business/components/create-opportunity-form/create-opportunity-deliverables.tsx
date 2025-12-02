@@ -83,7 +83,9 @@ export const CreateOpportunityDeliverables = () => {
                     <button
                       type="button"
                       onClick={() => removeDeliverable(index)}
-                      className="text-red-500 hover:text-red-600 cursor-pointer p-2 rounded-md transition hover:bg-base-300 inline-flex justify-center items-center"
+                      className="text-red-500 hover:text-red-600 cursor-pointer
+                        p-2 rounded-md transition hover:bg-base-300 inline-flex
+                        justify-center items-center"
                     >
                       <X className="w-4 h-4" />
                     </button>

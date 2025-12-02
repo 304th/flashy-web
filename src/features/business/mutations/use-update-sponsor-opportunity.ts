@@ -4,8 +4,10 @@ import { createSignedUploadUrlMutation } from "@/features/common/mutations/use-c
 import { uploadImage } from "@/features/common/mutations/use-upload-image";
 import { opportunitiesCollection } from "@/features/monetise/collections/opportunities";
 
-export interface UpdateSponsorOpportunityData
-  extends Omit<UpdateOpportunityParams, "brandLogo" | "mediaAssets"> {
+export interface UpdateSponsorOpportunityData extends Omit<
+  UpdateOpportunityParams,
+  "brandLogo" | "mediaAssets"
+> {
   brandLogo?: File | string;
   mediaAssets?: (File | string)[];
 }
@@ -25,11 +27,12 @@ const updateSponsorOpportunityMutation = createMutation<
 
     // Handle brandLogo upload if it's a File
     if (params.data.brandLogo instanceof File) {
-      const { uploadUrl, fileType } =
-        await createSignedUploadUrlMutation.write({
+      const { uploadUrl, fileType } = await createSignedUploadUrlMutation.write(
+        {
           fileName: params.data.brandLogo.name,
           fileType: params.data.brandLogo.type,
-        });
+        },
+      );
 
       brandLogoUrl = await uploadImage.write({
         file: params.data.brandLogo,

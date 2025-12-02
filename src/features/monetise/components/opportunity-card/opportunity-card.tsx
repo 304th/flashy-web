@@ -23,7 +23,8 @@ export function OpportunityCard({
   const typeLabel =
     opportunity.type.charAt(0).toUpperCase() + opportunity.type.slice(1);
 
-  const totalMediaCount = (opportunity.mediaAssets?.length || 0) + (opportunity.brandLogo ? 1 : 0);
+  const totalMediaCount =
+    (opportunity.mediaAssets?.length || 0) + (opportunity.brandLogo ? 1 : 0);
 
   return (
     <div
@@ -38,7 +39,10 @@ export function OpportunityCard({
           className="object-cover transition-transform group-hover:scale-105"
         />
         {totalMediaCount > 1 && (
-          <div className="absolute top-2 left-2 bg-black/60 backdrop-blur-sm px-2 py-1 rounded-md">
+          <div
+            className="absolute top-2 left-2 bg-black/60 backdrop-blur-sm px-2
+              py-1 rounded-md"
+          >
             <span className="text-white text-xs font-medium">
               +{totalMediaCount - 1} more
             </span>

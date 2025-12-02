@@ -2,7 +2,7 @@ import config from "@/config";
 import { useState, type ChangeEvent } from "react";
 import { useFormContext } from "react-hook-form";
 import { toast } from "sonner";
-import { X , UploadCloudIcon } from "lucide-react";
+import { X, UploadCloudIcon } from "lucide-react";
 import { FormLabel } from "@/components/ui/form";
 import { ImageUpload } from "@/components/ui/image-upload";
 import { FileUpload } from "@/components/ui/file-upload";
@@ -115,7 +115,7 @@ export const CreateOpportunityMedia = () => {
             isDragActive
               ? "p-2 border-2 border-blue-500 border-dashed bg-blue-500/10"
               : "p-0"
-          }`}
+            }`}
           onDragEnter={dragHandlers.onDragEnter}
           onDragOver={dragHandlers.onDragOver}
           onDragLeave={dragHandlers.onDragLeave}
@@ -131,12 +131,14 @@ export const CreateOpportunityMedia = () => {
               </p>
             </div>
           )}
-          <div className={`grid grid-cols-4 gap-2 ${galleryFiles.length === 0 ? '!flex w-full' : ''}`}>
+          <div
+            className={`grid grid-cols-4 gap-2
+              ${galleryFiles.length === 0 ? "!flex w-full" : ""}`}
+          >
             {galleryFiles.map((file, index) => (
               <div
                 key={index}
-                className="relative rounded-lg overflow-hidden
-                  bg-base-400"
+                className="relative rounded-lg overflow-hidden bg-base-400"
               >
                 <img
                   src={URL.createObjectURL(file)}
@@ -156,21 +158,20 @@ export const CreateOpportunityMedia = () => {
             <button
               type="button"
               onClick={() => document.getElementById("gallery-upload")?.click()}
-              className="w-full aspect-square rounded-lg h-39 bg-base-200 cursor-pointer
-              hover:bg-base-300 transition-colors flex flex-col items-center
-              justify-center gap-2 border-1 border-dashed border-base-400
-              hover:border-base-700"
+              className="w-full aspect-square rounded-lg h-39 bg-base-200
+                cursor-pointer hover:bg-base-300 transition-colors flex flex-col
+                items-center justify-center gap-2 border-1 border-dashed
+                border-base-400 hover:border-base-700"
             >
               <FileUpload.Icon
                 className="relative z-2 text-white"
                 as={UploadCloudIcon}
               />
-              <span className="text-white">
-              Upload Media Assets
-            </span>
+              <span className="text-white">Upload Media Assets</span>
               <span className="text-xs text-base-800">
-              .png, .jpg, .svg, .pdf, .doc, .docx, (up to {MAX_GALLERY_IMAGES} files)
-            </span>
+                .png, .jpg, .svg, .pdf, .doc, .docx, (up to {MAX_GALLERY_IMAGES}{" "}
+                files)
+              </span>
             </button>
           </div>
           <input

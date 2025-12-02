@@ -11,8 +11,8 @@ import { Textarea } from "@/components/ui/textarea";
 
 export const CreateOpportunityDetails = () => {
   const form = useFormContext();
-  const startDate = form.watch('startDate');
-  const endDate = form.watch('endDate');
+  const startDate = form.watch("startDate");
+  const endDate = form.watch("endDate");
   const isEmptyDates = !startDate && !endDate;
 
   return (
@@ -30,17 +30,25 @@ export const CreateOpportunityDetails = () => {
                 <FormControl>
                   <DateRangePicker
                     className="w-[320px] h-10"
-                    value={isEmptyDates ? undefined : {
-                      from: startDate,
-                      to: endDate,
-                    }}
+                    value={
+                      isEmptyDates
+                        ? undefined
+                        : {
+                            from: startDate,
+                            to: endDate,
+                          }
+                    }
                     onChange={(dateRange) => {
                       if (dateRange?.from) {
-                        form.setValue("startDate", dateRange.from, { shouldDirty: true });
+                        form.setValue("startDate", dateRange.from, {
+                          shouldDirty: true,
+                        });
                       }
 
                       if (dateRange?.to) {
-                        form.setValue("endDate", dateRange.to, { shouldDirty: true });
+                        form.setValue("endDate", dateRange.to, {
+                          shouldDirty: true,
+                        });
                       }
                     }}
                     showTimePicker

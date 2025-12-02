@@ -7,7 +7,7 @@ export const useWalletBalance = () => {
 
   return useLiveEntity<WalletBalance>({
     entity: walletBalanceEntity,
-    queryKey: ["me", "wallet", "balance"],
+    queryKey: ["me", me?.fbId, "wallet", "balance"],
     options: {
       enabled: Boolean(me),
     },

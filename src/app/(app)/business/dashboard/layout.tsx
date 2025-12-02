@@ -6,6 +6,7 @@ import { GoBackButton } from "@/components/ui/go-back-button";
 import { Button } from "@/components/ui/button";
 import { CreatorDashboardMenuButton } from "@/features/monetise/components/creator-dashboard-menu-button/creator-dashboard-menu-button";
 import { ContentTabs } from "@/components/ui/content-tabs";
+import { useProtectedRedirect } from "@/features/auth/hooks/use-protected-redirect";
 
 type TabValue = "opportunities" | "payments" | "analytics";
 
@@ -20,6 +21,7 @@ export default function BusinessDashboardLayout({
 }: {
   children: ReactNode;
 }) {
+  useProtectedRedirect();
   const pathname = usePathname();
   const router = useRouter();
 

@@ -19,6 +19,7 @@ import { ChannelVideosIcon } from "@/components/ui/icons/channel-videos";
 import { ChannelWalletIcon } from "@/components/ui/icons/channel-wallet";
 import { ChannelSettingsIcon } from "@/components/ui/icons/channel-settings";
 import { ChannelLogoutIcon } from "@/components/ui/icons/channel-logout";
+import { AdminIcon } from "@/components/ui/icons/admin";
 
 export const AccountDropdown = () => {
   const { data: me } = useMe();
@@ -99,6 +100,23 @@ export const AccountDropdown = () => {
               <p className="text-white">Settings</p>
             </div>
           </DropdownMenuItem>
+          {me?.superAdmin && (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => {
+                  openModal("AdminModal");
+                  setOpen(false);
+                }}
+                className="[&_svg:not([class*='size-'])]:size-6"
+              >
+                <div className="flex items-center gap-2 p-1 text-white">
+                  <AdminIcon />
+                  <p>Admin</p>
+                </div>
+              </DropdownMenuItem>
+            </>
+          )}
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() =>

@@ -12,7 +12,8 @@ const compactButtonVariants = cva(
   {
     variants: {
       variant: {
-        white: "bg-base-200 hover:bg-base-400 text-foreground hover:text-white border border-base-400",
+        white:
+          "bg-base-200 hover:bg-base-400 text-foreground hover:text-white border border-base-400",
       },
       size: {
         large: "h-6 w-6",
@@ -26,7 +27,8 @@ const compactButtonVariants = cva(
 );
 
 const compactButton = {
-  root: ({ class: className }: { class?: string }) => cn(compactButtonVariants(), className),
+  root: ({ class: className }: { class?: string }) =>
+    cn(compactButtonVariants(), className),
 };
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;

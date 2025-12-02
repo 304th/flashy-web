@@ -57,6 +57,7 @@ export const CreateOpportunityMedia = () => {
       const newGallery = [...currentGallery, ...filesToAdd];
       setGalleryFiles(newGallery);
       form.setValue("galleryFiles", newGallery, { shouldDirty: true });
+      form.setValue("mediaAssetFiles", newGallery, { shouldDirty: true });
     } else if (!hasError) {
       toast.error("No valid files selected.");
     }
@@ -73,6 +74,7 @@ export const CreateOpportunityMedia = () => {
     const newGallery = galleryFiles.filter((_, i) => i !== index);
     setGalleryFiles(newGallery);
     form.setValue("galleryFiles", newGallery, { shouldDirty: true });
+    form.setValue("mediaAssetFiles", newGallery, { shouldDirty: true });
   };
 
   const handleThumbnailChange = (file: File | null) => {
@@ -183,7 +185,7 @@ export const CreateOpportunityMedia = () => {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-xs text-base-700">
-            {galleryFiles.length} / {MAX_GALLERY_IMAGES} images
+            {galleryFiles.length} / {MAX_GALLERY_IMAGES} files
           </span>
         </div>
       </div>

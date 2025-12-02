@@ -42,7 +42,7 @@ export const CreateOpportunityBasic = () => {
         name="type"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Agreement Type</FormLabel>
+            <FormLabel>Type</FormLabel>
             <FormControl>
               <div className="grid grid-cols-3 gap-3">
                 {OPPORTUNITY_TYPES.map((type) => (
@@ -69,8 +69,6 @@ export const CreateOpportunityBasic = () => {
           </FormItem>
         )}
       />
-
-      {/* Agreement Name, Company Name, Category */}
       <div className="grid grid-cols-3 gap-4">
         <FormField
           control={form.control}
@@ -78,11 +76,11 @@ export const CreateOpportunityBasic = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                Agreement Name <span className="text-red-500">*</span>
+                Opportunity Name <span className="text-red-500">*</span>
               </FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Agreement Name..."
+                  placeholder="Name..."
                   {...field}
                   className="h-10"
                 />
@@ -118,7 +116,7 @@ export const CreateOpportunityBasic = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                Agreement Category <span className="text-red-500">*</span>
+                Opportunity Category <span className="text-red-500">*</span>
               </FormLabel>
               <FormControl>
                 <Select.Root

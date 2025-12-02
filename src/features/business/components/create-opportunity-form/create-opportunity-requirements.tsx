@@ -22,7 +22,6 @@ export const CreateOpportunityRequirements = () => {
 
   return (
     <div className="flex flex-col gap-6">
-      {/* Compensation Type and Compensation */}
       <div className="grid grid-cols-2 gap-4">
         <FormField
           control={form.control}
@@ -69,7 +68,7 @@ export const CreateOpportunityRequirements = () => {
       {/* Agreement Requirements */}
       <FormItem>
         <FormLabel>
-          Agreement Requirements <span className="text-red-500">*</span>
+          Requirements <span className="text-red-500">*</span>
         </FormLabel>
         <div className="grid grid-cols-2 gap-4">
           <FormField

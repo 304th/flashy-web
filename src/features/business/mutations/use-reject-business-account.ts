@@ -27,16 +27,12 @@ export const useRejectBusinessAccount = () => {
   >({
     mutation: rejectBusinessAccountMutation,
     onOptimistic: (ch, { id, rejectionReason }) => {
-      return ch(businessAccountsCollection).update(
-        (item) => item._id === id,
-        (item) => ({
-          ...item,
-          status: "rejected",
-          rejectionReason,
-          rejectedAt: new Date().toISOString(),
-          approvedAt: undefined,
-        }),
-      );
+      return ch(businessAccountsCollection).update(id, (item) => {
+        item.status = "rejected";
+        item.rejectionReason = rejectionReason;
+        item.rejectedAt = new Date().toISOString();
+        item.approvedAt = undefined;
+      });
     },
   });
 };

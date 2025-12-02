@@ -6,34 +6,45 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { DateRange, DateRangePicker } from "@/components/ui/date-picker";
+import { DateRangePicker } from "@/components/ui/date-picker";
 import { Textarea } from "@/components/ui/textarea";
 
 export const CreateOpportunityDetails = () => {
   const form = useFormContext();
+  const startDate = form.watch('startDate');
+  const endDate = form.watch('endDate');
+  const isEmptyDates = !startDate && !endDate;
 
   return (
     <div className="flex flex-col gap-6">
-      {/* Agreement Date */}
       <FormItem>
         <FormLabel>
-          Agreement Date <span className="text-red-500">*</span>
+          Opportunity Dates <span className="text-red-500">*</span>
         </FormLabel>
         <div className="grid grid-cols-2 gap-4">
           <FormField
             control={form.control}
             name="startDate"
-            render={({ field }) => (
+            render={() => (
               <FormItem>
                 <FormControl>
                   <DateRangePicker
-                    className="w-[320px]"
-                    // value={date}
-                    // onChange={setDate}
+                    className="w-[320px] h-10"
+                    value={isEmptyDates ? undefined : {
+                      from: startDate,
+                      to: endDate,
+                    }}
+                    onChange={(dateRange) => {
+                      if (dateRange?.from) {
+                        form.setValue("startDate", dateRange.from, { shouldDirty: true });
+                      }
+
+                      if (dateRange?.to) {
+                        form.setValue("endDate", dateRange.to, { shouldDirty: true });
+                      }
+                    }}
                     showTimePicker
                   />
-                  {/*<Input type="date" {...field} className="bg-base-200 h-10" />*/}
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -63,15 +74,13 @@ export const CreateOpportunityDetails = () => {
           </FormItem>
         )}
       />
-
-      {/* Agreement Description */}
       <FormField
         control={form.control}
         name="description"
         render={({ field }) => (
           <FormItem>
             <FormLabel>
-              Agreement Description <span className="text-red-500">*</span>
+              Opportunity Description <span className="text-red-500">*</span>
             </FormLabel>
             <FormControl>
               <Textarea
@@ -85,8 +94,6 @@ export const CreateOpportunityDetails = () => {
           </FormItem>
         )}
       />
-
-      {/* Terms & Conditions */}
       <FormField
         control={form.control}
         name="termsAndConditions"

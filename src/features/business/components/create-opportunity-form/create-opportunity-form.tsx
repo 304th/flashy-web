@@ -6,12 +6,12 @@ import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { useCreateOpportunity } from "@/features/monetise/mutations/use-create-opportunity";
 import { CreateOpportunityBasic } from "./create-opportunity-basic";
 import { CreateOpportunityMedia } from "./create-opportunity-media";
 import { CreateOpportunityDetails } from "./create-opportunity-details";
 import { CreateOpportunityDeliverables } from "./create-opportunity-deliverables";
 import { CreateOpportunityRequirements } from "./create-opportunity-requirements";
+import {useCreateSponsorOpportunity} from "@/features/business";
 
 const formSchema = z.object({
   type: z.enum(["sponsorship", "affiliate", "partnership"] as const),
@@ -19,8 +19,9 @@ const formSchema = z.object({
   brandName: z.string().min(2, "Company name must be at least 2 characters"),
   category: z.string().min(1, "Please select a category"),
   productLink: z.string().url("Please enter a valid URL"),
-  thumbnail: z.string().nullable(),
+  thumbnail: z.string().nullable().optional(),
   thumbnailFile: z.any().optional(),
+  mediaAssetFiles: z.array(z.any()).optional().default([]),
   galleryFiles: z.any().optional(),
   startDate: z.string().min(1, "Start date is required"),
   endDate: z.string().min(1, "End date is required"),
@@ -48,7 +49,10 @@ const formSchema = z.object({
   compensation: z.string().min(1, "Compensation is required"),
 });
 
-type FormData = z.infer<typeof formSchema>;
+type FormData = z.infer<typeof formSchema> & {
+  thumbnailFile?: File;
+  mediaAssetFiles?: File[];
+};
 
 export interface CreateOpportunityFormProps {
   onCancel?: () => void;
@@ -58,16 +62,20 @@ export const CreateOpportunityForm = ({
   onCancel,
 }: CreateOpportunityFormProps) => {
   const router = useRouter();
-  const createOpportunity = useCreateOpportunity();
+  const createOpportunity = useCreateSponsorOpportunity();
 
   const form = useForm<FormData>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(formSchema) as any,
     defaultValues: {
       type: "sponsorship",
       title: "",
       brandName: "",
       category: "",
       productLink: "",
+      thumbnail: null,
+      thumbnailFile: undefined,
+      mediaAssetFiles: [],
+      galleryFiles: undefined,
       startDate: "",
       endDate: "",
       productDescription: "",
@@ -84,11 +92,11 @@ export const CreateOpportunityForm = ({
 
   const handleSubmit = async (data: FormData) => {
     try {
-      // TODO: Upload thumbnail and gallery images to presigned URLs
-      // For now, we'll create the opportunity without images
       await createOpportunity.mutateAsync({
         title: data.title,
         brandName: data.brandName,
+        brandLogo: data.thumbnailFile,
+        mediaAssets: data.mediaAssetFiles || [],
         type: data.type,
         category: data.category as OpportunityCategory,
         description: data.description,
@@ -126,11 +134,10 @@ export const CreateOpportunityForm = ({
       >
         <CreateOpportunityBasic />
         <CreateOpportunityMedia />
-
         <CreateOpportunityDeliverables />
         <CreateOpportunityRequirements />
         <CreateOpportunityDetails />
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4 mt-6">
           <Button
             type="button"
             variant="secondary"

@@ -395,6 +395,7 @@ declare global {
     title: string;
     brandName: string;
     brandLogo?: string;
+    mediaAssets?: string[];
     type: OpportunityType;
     category: OpportunityCategory;
     description: string;
@@ -532,6 +533,7 @@ declare global {
     title: string;
     brandName: string;
     brandLogo?: string;
+    mediaAssets?: string[];
     type: OpportunityType;
     category: OpportunityCategory;
     description: string;

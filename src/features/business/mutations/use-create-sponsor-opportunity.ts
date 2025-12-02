@@ -4,14 +4,14 @@ import { createSignedUploadUrlMutation } from "@/features/common/mutations/use-c
 import { uploadImage } from "@/features/common/mutations/use-upload-image";
 import { opportunitiesCollection } from "@/features/monetise/collections/opportunities";
 
-export interface CreateOpportunityMutationParams
+export interface CreateSponsorOpportunityParams
   extends Omit<CreateOpportunityParams, "brandLogo" | "mediaAssets"> {
   brandLogo?: File | string;
   mediaAssets?: (File | string)[];
 }
 
-const createOpportunityMutation = createMutation<
-  CreateOpportunityMutationParams,
+const createSponsorOpportunityMutation = createMutation<
+  CreateSponsorOpportunityParams,
   Opportunity
 >({
   write: async (params) => {
@@ -58,7 +58,7 @@ const createOpportunityMutation = createMutation<
     }
 
     return api
-      .post("admin/opportunities", {
+      .post("sponsor/opportunities", {
         json: {
           ...params,
           brandLogo: brandLogoUrl,
@@ -69,35 +69,35 @@ const createOpportunityMutation = createMutation<
   },
 });
 
-export const useCreateOpportunity = () => {
-  return useOptimisticMutation<CreateOpportunityMutationParams, Opportunity>({
-    mutation: createOpportunityMutation,
-    onOptimistic: (ch, params) => {
-      return ch(opportunitiesCollection).prepend(
-        {
-          ...params,
-          brandLogo:
-            params.brandLogo instanceof File
-              ? URL.createObjectURL(params.brandLogo)
-              : params.brandLogo,
-          mediaAssets: params.mediaAssets?.map((asset) =>
-            asset instanceof File ? URL.createObjectURL(asset) : asset,
-          ),
-          status: params.status || "active",
-          compensationType: params.compensationType || "fixed",
-          eligibility: {
-            minFollowers: params.eligibility?.minFollowers || 0,
-            niches: params.eligibility?.niches || [],
-            platforms: params.eligibility?.platforms || [],
-            countries: params.eligibility?.countries || [],
-          },
-          maxParticipants: params.maxParticipants || 0,
-          currentParticipants: 0,
-        },
-        {
-          sync: true,
-        },
-      );
-    },
+export const useCreateSponsorOpportunity = () => {
+  return useOptimisticMutation<CreateSponsorOpportunityParams, Opportunity>({
+    mutation: createSponsorOpportunityMutation,
+    // onOptimistic: (ch, params) => {
+    //   return ch(opportunitiesCollection).prepend(
+    //     {
+    //       ...params,
+    //       brandLogo:
+    //         params.brandLogo instanceof File
+    //           ? URL.createObjectURL(params.brandLogo)
+    //           : params.brandLogo,
+    //       mediaAssets: params.mediaAssets?.map((asset) =>
+    //         asset instanceof File ? URL.createObjectURL(asset) : asset,
+    //       ),
+    //       status: params.status || "active",
+    //       compensationType: params.compensationType || "fixed",
+    //       eligibility: {
+    //         minFollowers: params.eligibility?.minFollowers || 0,
+    //         niches: params.eligibility?.niches || [],
+    //         platforms: params.eligibility?.platforms || [],
+    //         countries: params.eligibility?.countries || [],
+    //       },
+    //       maxParticipants: params.maxParticipants || 0,
+    //       currentParticipants: 0,
+    //     },
+    //     {
+    //       sync: true,
+    //     },
+    //   );
+    // },
   });
 };

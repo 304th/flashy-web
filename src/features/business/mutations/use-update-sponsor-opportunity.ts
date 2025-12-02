@@ -4,19 +4,19 @@ import { createSignedUploadUrlMutation } from "@/features/common/mutations/use-c
 import { uploadImage } from "@/features/common/mutations/use-upload-image";
 import { opportunitiesCollection } from "@/features/monetise/collections/opportunities";
 
-export interface UpdateOpportunityData
+export interface UpdateSponsorOpportunityData
   extends Omit<UpdateOpportunityParams, "brandLogo" | "mediaAssets"> {
   brandLogo?: File | string;
   mediaAssets?: (File | string)[];
 }
 
-export interface UpdateOpportunityMutationParams {
+export interface UpdateSponsorOpportunityMutationParams {
   opportunityId: string;
-  data: UpdateOpportunityData;
+  data: UpdateSponsorOpportunityData;
 }
 
-const updateOpportunityMutation = createMutation<
-  UpdateOpportunityMutationParams,
+const updateSponsorOpportunityMutation = createMutation<
+  UpdateSponsorOpportunityMutationParams,
   Opportunity
 >({
   write: async (params) => {
@@ -66,7 +66,7 @@ const updateOpportunityMutation = createMutation<
     }
 
     return api
-      .put(`admin/opportunities/${params.opportunityId}`, {
+      .put(`sponsor/opportunities/${params.opportunityId}`, {
         json: {
           ...params.data,
           brandLogo: brandLogoUrl,
@@ -77,9 +77,12 @@ const updateOpportunityMutation = createMutation<
   },
 });
 
-export const useUpdateOpportunity = () => {
-  return useOptimisticMutation<UpdateOpportunityMutationParams, Opportunity>({
-    mutation: updateOpportunityMutation,
+export const useUpdateSponsorOpportunity = () => {
+  return useOptimisticMutation<
+    UpdateSponsorOpportunityMutationParams,
+    Opportunity
+  >({
+    mutation: updateSponsorOpportunityMutation,
     onOptimistic: (ch, params) => {
       return ch(opportunitiesCollection).update(
         params.opportunityId,

@@ -43,11 +43,11 @@ export const CreateOpportunityDeliverables = () => {
       render={({ field }) => (
         <FormItem>
           <FormLabel>
-            Agreement Deliverables <span className="text-red-500">*</span>
+            Deliverables <span className="text-red-500">*</span>
           </FormLabel>
           <FormControl>
             <div className="space-y-2">
-              <div className="flex gap-2">
+              <div className="flex gap-2 w-full">
                 <Input
                   placeholder="Add Deliverable"
                   value={newDeliverable}
@@ -58,13 +58,16 @@ export const CreateOpportunityDeliverables = () => {
                       addDeliverable();
                     }
                   }}
-                  className="bg-base-200 h-10"
+                  className="bg-base-200 h-10 !w-full"
+                  containerClassname="w-full"
                 />
                 <Button
                   type="button"
                   onClick={addDeliverable}
                   variant="secondary"
-                  className="shrink-0"
+                  size="lg"
+                  className="shrink-0 aspect-square !p-0"
+                  disabled={!Boolean(newDeliverable)}
                 >
                   <Plus className="w-4 h-4" />
                 </Button>
@@ -80,7 +83,7 @@ export const CreateOpportunityDeliverables = () => {
                     <button
                       type="button"
                       onClick={() => removeDeliverable(index)}
-                      className="text-red-500 hover:text-red-600"
+                      className="text-red-500 hover:text-red-600 cursor-pointer p-2 rounded-md transition hover:bg-base-300 inline-flex justify-center items-center"
                     >
                       <X className="w-4 h-4" />
                     </button>

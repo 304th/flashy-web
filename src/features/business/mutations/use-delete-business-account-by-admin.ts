@@ -17,7 +17,7 @@ export const useDeleteBusinessAccountByAdmin = () => {
   return useOptimisticMutation<string, BusinessAccountActionResponse>({
     mutation: deleteBusinessAccountByAdminMutation,
     onOptimistic: (ch, id) => {
-      return ch(businessAccountsCollection).remove((item) => item._id === id);
+      return ch(businessAccountsCollection).delete(id);
     },
   });
 };

@@ -164,7 +164,7 @@ const Trigger = React.forwardRef<HTMLButtonElement, TriggerProps>(
         <Button
           ref={forwardedRef}
           className={cn(
-            "w-full justify-start text-left font-normal data-[state=open]:ring-ring/50 data-[state=open]:ring-[3px]",
+            "w-full justify-start text-left font-normal data-[state=open]:ring-ring/50 data-[state=open]:ring-[3px] bg-base-200 hover:bg-base-300 hover:border-base-600",
             !children && "text-muted-foreground",
             className,
           )}

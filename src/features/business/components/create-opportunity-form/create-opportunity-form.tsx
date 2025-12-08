@@ -16,15 +16,14 @@ import { useCreateSponsorOpportunity } from "@/features/business";
 const formSchema = z.object({
   type: z.enum(["sponsorship", "affiliate", "partnership"] as const),
   title: z.string().min(3, "Agreement name must be at least 3 characters"),
-  brandName: z.string().min(2, "Company name must be at least 2 characters"),
-  category: z.string().min(1, "Please select a category"),
-  productLink: z.string().url("Please enter a valid URL"),
+  brandName: z.string().min(2, "Company name must be at least 2 characters").optional(),
+  category: z.string().min(1, "Please select a category").optional(),
+  productLink: z.string().url("Please enter a valid URL").optional(),
   thumbnail: z.string().nullable().optional(),
   thumbnailFile: z.any().optional(),
   mediaAssetFiles: z.array(z.any()).optional().default([]),
-  galleryFiles: z.any().optional(),
-  startDate: z.string().min(1, "Start date is required"),
-  endDate: z.string().min(1, "End date is required"),
+  startDate: z.custom<any>(),
+  endDate: z.custom<any>().optional(),
   productDescription: z
     .string()
     .min(10, "Product description must be at least 10 characters"),
@@ -38,14 +37,12 @@ const formSchema = z.object({
     .array(z.string().min(1))
     .min(1, "At least one deliverable is required"),
   ccv: z.number().min(50, "Must be at least 50"),
-  minFollowers: z.number().min(0, "Must be at least 0"),
+  // minFollowers: z.number().min(0, "Must be at least 0"),
   avgViews: z.number().min(0, "Must be at least 0"),
   compensationType: z.enum([
     "fixed",
-    "per-post",
     "commission",
     "product",
-    "negotiable",
   ] as const),
   compensation: z.string().min(1, "Compensation is required"),
 });
@@ -76,16 +73,15 @@ export const CreateOpportunityForm = ({
       thumbnail: null,
       thumbnailFile: undefined,
       mediaAssetFiles: [],
-      galleryFiles: undefined,
       startDate: "",
       endDate: "",
       productDescription: "",
       description: "",
       termsAndConditions: "",
       deliverables: [],
-      minFollowers: 0,
+      // minFollowers: 0,
       ccv: 50,
-      avgViews: 0,
+      avgViews: 50,
       compensationType: "commission",
       compensation: "",
     },
@@ -96,7 +92,7 @@ export const CreateOpportunityForm = ({
     try {
       await createOpportunity.mutateAsync({
         title: data.title,
-        brandName: data.brandName,
+        brandName: data.brandName ?? '',
         brandLogo: data.thumbnailFile,
         mediaAssets: data.mediaAssetFiles || [],
         type: data.type,
@@ -105,10 +101,11 @@ export const CreateOpportunityForm = ({
         deliverables: data.deliverables,
         compensation: data.compensation,
         compensationType: data.compensationType,
-        deadline: data.endDate,
+        startDate: data.startDate,
+        endDate: data.endDate,
         termsAndConditions: data.termsAndConditions,
         eligibility: {
-          minFollowers: data.minFollowers,
+          // minFollowers: data.minFollowers,
           niches: [],
           platforms: [],
           countries: [],
@@ -127,6 +124,7 @@ export const CreateOpportunityForm = ({
       router.back();
     }
   };
+  console.log(form.formState)
 
   return (
     <Form {...form}>
@@ -151,8 +149,9 @@ export const CreateOpportunityForm = ({
           </Button>
           <Button
             type="submit"
-            disabled={createOpportunity.isPending || !form.formState.isValid}
-            className="w-full h-12 bg-green-600 hover:bg-green-700"
+            pending={createOpportunity.isPending}
+            disabled={!form.formState.isValid}
+            className="w-full h-12"
           >
             Create Opportunity
           </Button>

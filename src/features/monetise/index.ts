@@ -17,6 +17,7 @@ export {
   opportunityEntity,
 } from "./queries/use-opportunity-by-id";
 export { useMyOpportunities } from "./queries/use-my-opportunities";
+export { useMyOpportunityStatus } from "./queries/use-my-opportunity-status";
 export { useSponsorSubmissions } from "./queries/use-sponsor-submissions";
 export { useAdminOpportunities } from "./queries/use-admin-opportunities";
 

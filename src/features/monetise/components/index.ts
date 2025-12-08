@@ -17,3 +17,7 @@ export {
 export { OpportunityDetails } from "./opportunity-details/opportunity-details";
 export { OpportunityTerms } from "./opportunity-terms/opportunity-terms";
 export { OpportunityApplySection } from "./opportunity-apply-section/opportunity-apply-section";
+
+// Creator dashboard components
+export { CreatorDashboardTabs } from "./creator-dashboard-tabs/creator-dashboard-tabs";
+export { CreatorOpportunityCard } from "./creator-opportunity-card/creator-opportunity-card";

@@ -103,19 +103,16 @@ export const PostForm = ({ onSuccess }: PostFormProps) => {
         <DragDropArea isDragActive={isDragActive} dragHandlers={dragHandlers}>
           <DescriptionField isDragActive={isDragActive} />
         </DragDropArea>
-
         <LinkPreviewsSection
           previewLinks={previewLinks}
           parsedUrls={parsedUrls}
         />
-
         <FormFooter
           optionsMenuRef={optionsMenuRef}
           descriptionLength={description.length}
           isFormDirty={form.formState.isDirty}
           isFormValid={form.formState.isValid}
         />
-
         <input
           id="file-upload"
           type="file"
@@ -130,7 +127,6 @@ export const PostForm = ({ onSuccess }: PostFormProps) => {
   );
 };
 
-// Sub-components
 interface DragDropAreaProps {
   isDragActive: boolean;
   dragHandlers: {

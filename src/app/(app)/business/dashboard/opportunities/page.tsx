@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { FileText } from "lucide-react";
 import { StatCard } from "@/features/business/components/stat-card/stat-card";
 import { BusinessOpportunityCard } from "@/features/business/components/business-opportunity-card/business-opportunity-card";
 import { Select } from "@/components/ui/select";
 import { CreateOpportunityIcon } from "@/components/ui/icons/create-opportunity";
+import { useSponsorOpportunities } from "@/features/business";
 
 // Mock data - replace with real data from API
 const mockStats = {
@@ -16,38 +16,23 @@ const mockStats = {
   paidCommissions: { value: "$13,000", change: "+1,074%" },
 };
 
-const mockOpportunities = [
-  {
-    _id: "1",
-    title: "Hemp Rolling Papers",
-    brandLogo:
-      "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800&q=80",
-    campaignValue: "$1000",
-    deadline: "24/07/25",
-    isExpiringSoon: false,
-    tags: ["HempRoll", "Lifestyle", "Sponsorship"],
-  },
-  {
-    _id: "2",
-    title: "Hemp Rolling Papers",
-    brandLogo:
-      "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800&q=80",
-    campaignValue: "10%",
-    deadline: "24/07/25",
-    isExpiringSoon: false,
-    tags: ["HempRoll", "Lifestyle", "Sponsorship"],
-  },
-  {
-    _id: "3",
-    title: "Hemp Rolling Papers",
-    brandLogo:
-      "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800&q=80",
-    campaignValue: "$1000",
-    deadline: "24/07/25",
-    isExpiringSoon: true,
-    tags: ["HempRoll", "Lifestyle", "Sponsorship"],
-  },
-];
+const formatDeadline = (deadline: string) => {
+  const date = new Date(deadline);
+  return date.toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "2-digit",
+  });
+};
+
+const isExpiringSoon = (deadline: string) => {
+  const deadlineDate = new Date(deadline);
+  const now = new Date();
+  const daysUntilDeadline = Math.ceil(
+    (deadlineDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)
+  );
+  return daysUntilDeadline <= 7 && daysUntilDeadline >= 0;
+};
 
 export default function BusinessDashboardOpportunitiesPage() {
   const router = useRouter();
@@ -56,6 +41,9 @@ export default function BusinessDashboardOpportunitiesPage() {
   const [wishlistedOpportunities, setWishlistedOpportunities] = useState<
     Set<string>
   >(new Set());
+
+  const { data: opportunities, query } = useSponsorOpportunities();
+  const isLoading = query.isLoading;
 
   const handleWishlistToggle = (opportunityId: string) => {
     setWishlistedOpportunities((prev) => {
@@ -133,15 +121,33 @@ export default function BusinessDashboardOpportunitiesPage() {
           </span>
         </div>
 
-        {mockOpportunities.map((opportunity) => (
-          <BusinessOpportunityCard
-            key={opportunity._id}
-            opportunity={opportunity}
-            isWishlisted={wishlistedOpportunities.has(opportunity._id)}
-            onWishlistToggle={handleWishlistToggle}
-            onClick={(id) => console.log("Clicked opportunity:", id)}
-          />
-        ))}
+        {isLoading ? (
+          <div className="col-span-3 flex items-center justify-center py-12 text-base-700">
+            Loading opportunities...
+          </div>
+        ) : opportunities && opportunities.length > 0 ? (
+          opportunities.map((opportunity) => (
+            <BusinessOpportunityCard
+              key={opportunity._id}
+              opportunity={{
+                _id: opportunity._id,
+                title: opportunity.title,
+                brandLogo: opportunity.brandLogo,
+                campaignValue: opportunity.compensation,
+                deadline: formatDeadline(opportunity.deadline),
+                isExpiringSoon: isExpiringSoon(opportunity.deadline),
+                tags: [opportunity.brandName, opportunity.category, opportunity.type],
+              }}
+              isWishlisted={wishlistedOpportunities.has(opportunity._id)}
+              onWishlistToggle={handleWishlistToggle}
+              onClick={(id) => router.push(`/business/opportunities?id=${id}`)}
+            />
+          ))
+        ) : (
+          <div className="col-span-3 flex items-center justify-center py-12 text-base-700">
+            No opportunities yet
+          </div>
+        )}
       </div>
     </div>
   );

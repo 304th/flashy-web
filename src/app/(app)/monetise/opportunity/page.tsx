@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import Image from "next/image";
+import { Check } from "lucide-react";
 import {
   useOpportunityById,
   useAcceptOpportunity,
+  useMyOpportunityStatus,
   OpportunityHeader,
   OpportunityTabs,
   OpportunityDetails,
@@ -15,9 +17,11 @@ import {
 } from "@/features/monetise";
 import { useWishlistStore } from "@/stores";
 import { GoBackButton } from "@/components/ui/go-back-button";
+import { Button } from "@/components/ui/button";
 
 export default function OpportunityPage() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const opportunityId = searchParams.get("id");
 
   const [activeTab, setActiveTab] = useState<TabType>("description");
@@ -26,13 +30,23 @@ export default function OpportunityPage() {
   const { data: opportunity, query } = useOpportunityById(
     opportunityId || undefined,
   );
+  const { data: myStatus, isLoading: isStatusLoading } = useMyOpportunityStatus(
+    opportunityId || undefined,
+  );
   const acceptOpportunity = useAcceptOpportunity();
 
   const isLoading = query.isLoading;
 
   const handleApply = () => {
     if (!opportunityId) return;
-    acceptOpportunity.mutate({ opportunityId });
+    acceptOpportunity.mutate(
+      { opportunityId },
+      {
+        onSuccess: () => {
+          router.push("/monetise/creator-dashboard");
+        },
+      },
+    );
   };
 
   if (isLoading) {
@@ -149,11 +163,31 @@ export default function OpportunityPage() {
           />
         )}
 
-        <OpportunityApplySection
-          brandName={opportunity.brandName}
-          onApply={handleApply}
-          isApplying={acceptOpportunity.isPending}
-        />
+        {myStatus?.hasApplied ? (
+          <div className="space-y-4 pt-4 border-t border-base-600">
+            <div className="flex items-center gap-2 text-brand-100">
+              <Check className="w-5 h-5" />
+              <span className="text-sm font-medium">
+                You have already applied to this opportunity
+              </span>
+            </div>
+            <p className="text-xs text-base-800">
+              Status: <span className="text-white capitalize">{myStatus.status?.replace(/-/g, " ")}</span>
+            </p>
+            <Button
+              variant="outline"
+              onClick={() => router.push("/monetise/creator-dashboard")}
+            >
+              View My Opportunities
+            </Button>
+          </div>
+        ) : (
+          <OpportunityApplySection
+            brandName={opportunity.brandName}
+            onApply={handleApply}
+            isApplying={acceptOpportunity.isPending}
+          />
+        )}
       </div>
     </div>
   );

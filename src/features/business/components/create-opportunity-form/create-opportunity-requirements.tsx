@@ -75,10 +75,14 @@ export const CreateOpportunityRequirements = () => {
                 <FormControl>
                   <Input
                     type="number"
-                    placeholder=">50"
+                    placeholder=">=50"
                     min={50}
                     {...field}
-                    onChange={(e) => field.onChange(Number(e.target.value))}
+                    value={field.value ?? ""}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      field.onChange(value === "" ? "" : Number(value));
+                    }}
                     className="bg-base-200 h-10"
                     trailingIcon={
                       <span className="text-sm text-base-700">CCV</span>
@@ -97,9 +101,14 @@ export const CreateOpportunityRequirements = () => {
                 <FormControl>
                   <Input
                     type="number"
-                    placeholder=">0"
+                    placeholder=">=50"
+                    min={50}
                     {...field}
-                    onChange={(e) => field.onChange(Number(e.target.value))}
+                    value={field.value ?? ""}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      field.onChange(value === "" ? "" : Number(value));
+                    }}
                     className="bg-base-200 h-10"
                     trailingIcon={
                       <span className="text-sm text-base-700">AVG Views</span>

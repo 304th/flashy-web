@@ -516,6 +516,12 @@ declare global {
     message: string;
   }
 
+  interface MyOpportunityStatusResponse {
+    hasApplied: boolean;
+    status: CreatorOpportunityStatus | null;
+    creatorOpportunity: CreatorOpportunity | null;
+  }
+
   interface SubmitDeliverablesResponse {
     success: boolean;
     creatorOpportunity: CreatorOpportunity;
@@ -541,7 +547,8 @@ declare global {
     compensation: string;
     compensationType?: CompensationType;
     eligibility?: Partial<OpportunityEligibility>;
-    deadline: string;
+    startDate: string;
+    endDate: string;
     requiresApplication?: boolean;
     termsAndConditions: string;
     status?: OpportunityStatus;

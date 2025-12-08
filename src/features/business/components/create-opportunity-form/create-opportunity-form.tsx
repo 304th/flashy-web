@@ -37,6 +37,7 @@ const formSchema = z.object({
   deliverables: z
     .array(z.string().min(1))
     .min(1, "At least one deliverable is required"),
+  ccv: z.number().min(50, "Must be at least 50"),
   minFollowers: z.number().min(0, "Must be at least 0"),
   avgViews: z.number().min(0, "Must be at least 0"),
   compensationType: z.enum([
@@ -83,6 +84,7 @@ export const CreateOpportunityForm = ({
       termsAndConditions: "",
       deliverables: [],
       minFollowers: 0,
+      ccv: 50,
       avgViews: 0,
       compensationType: "commission",
       compensation: "",

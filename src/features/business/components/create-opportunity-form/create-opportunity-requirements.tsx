@@ -10,11 +10,9 @@ import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 
 const COMPENSATION_TYPES: { value: CompensationType; label: string }[] = [
-  { value: "fixed", label: "Fixed" },
-  { value: "per-post", label: "Per Post" },
+  { value: "fixed", label: "Monetary" },
   { value: "commission", label: "Commission" },
   { value: "product", label: "Product" },
-  { value: "negotiable", label: "Negotiable" },
 ];
 
 export const CreateOpportunityRequirements = () => {
@@ -44,7 +42,6 @@ export const CreateOpportunityRequirements = () => {
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
           name="compensation"
@@ -65,21 +62,21 @@ export const CreateOpportunityRequirements = () => {
           )}
         />
       </div>
-      {/* Agreement Requirements */}
       <FormItem>
         <FormLabel>
-          Requirements <span className="text-red-500">*</span>
+          Agreement Requirements <span className="text-red-500">*</span>
         </FormLabel>
         <div className="grid grid-cols-2 gap-4">
           <FormField
             control={form.control}
-            name="minFollowers"
+            name="ccv"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
                   <Input
                     type="number"
                     placeholder=">50"
+                    min={50}
                     {...field}
                     onChange={(e) => field.onChange(Number(e.target.value))}
                     className="bg-base-200 h-10"

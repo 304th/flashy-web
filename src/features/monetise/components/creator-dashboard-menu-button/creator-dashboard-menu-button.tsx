@@ -27,13 +27,12 @@ export const CreatorDashboardMenuButton = () => {
       <DropdownMenu modal={false} open={open}>
         <DropdownMenuTrigger asChild className="relative z-1">
           <IconButton
-            size="lg"
             variant="secondary"
             onClick={(e) => {
               e.preventDefault();
               setOpen(true);
             }}
-            className="relative z-1"
+            className="relative z-1 h-9"
           >
             <MeatballIcon />
           </IconButton>
@@ -45,23 +44,15 @@ export const CreatorDashboardMenuButton = () => {
           <DropdownMenuGroup className="flex flex-col gap-[2px]">
             {/*<DropdownMenuItem>Edit</DropdownMenuItem>*/}
             <DropdownMenuItem
-              variant="destructive"
               onClick={(e) => {
                 setOpen(false);
                 e.preventDefault();
-                // openModal("ConfirmModal", {
-                //   title: "Delete post",
-                //   description: "Are you sure you want to delete this post?",
-                //   destructive: true,
-                //   onConfirm: () => {
-                //     deleteSocialPost.mutate({
-                //       id: socialPost._id,
-                //     });
-                //   },
-                // });
+                openModal("EditBusinessModal", {
+                  onClose: () => {},
+                });
               }}
             >
-              View
+              Edit Account
             </DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>

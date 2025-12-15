@@ -1,6 +1,6 @@
 import { useState } from "react";
 import {
-  useGetPresignedUrls,
+  useGetPresignedUrl,
   uploadToPresignedUrl,
 } from "../mutations/use-get-presigned-urls";
 
@@ -26,7 +26,7 @@ export const useUploadDeliverables = (): UseUploadDeliverablesReturn => {
   });
   const [error, setError] = useState<Error | null>(null);
 
-  const getPresignedUrls = useGetPresignedUrls();
+  const getPresignedUrl = useGetPresignedUrl();
 
   const upload = async (
     opportunityId: string,
@@ -39,32 +39,29 @@ export const useUploadDeliverables = (): UseUploadDeliverablesReturn => {
     setProgress({ total: files.length, completed: 0, percentage: 0 });
 
     try {
-      // Get presigned URLs for all files
-      const { urls } = await getPresignedUrls.mutateAsync({
-        opportunityId,
-        files: files.map((file) => ({
-          filename: file.name,
-          contentType: file.type || "application/octet-stream",
-        })),
-      });
-
-      // Upload each file to its presigned URL
       const uploadedFiles: SubmissionFile[] = [];
 
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
-        const urlData = urls[i];
 
+        // Get presigned URL for this file
+        const presignedResponse = await getPresignedUrl.mutateAsync({
+          opportunityId,
+          filename: file.name,
+          contentType: file.type || "application/octet-stream",
+        });
+
+        // Upload file to presigned URL
         await uploadToPresignedUrl(
-          urlData.uploadUrl,
+          presignedResponse.uploadUrl,
           file,
-          urlData.contentType,
+          file.type || "application/octet-stream",
         );
 
         uploadedFiles.push({
-          url: urlData.fileUrl,
-          filename: urlData.originalFilename,
-          type: urlData.contentType,
+          url: presignedResponse.fileUrl,
+          filename: file.name,
+          type: file.type || "application/octet-stream",
           size: file.size,
         });
 

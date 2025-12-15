@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Image from "next/image";
-import { Check } from "lucide-react";
+import { Check, XCircle, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   useOpportunityById,
@@ -17,6 +17,7 @@ import {
   type TabType,
 } from "@/features/monetise";
 import { BusinessOpportunityMedia } from "@/features/business/components/business-opportunity-media/business-opportunity-media";
+import { AgreementDeliverables } from "@/features/business/components/agreement-deliverables/agreement-deliverables";
 import { useMe } from "@/features/auth/queries/use-me";
 import { useWishlistStore } from "@/stores";
 import { GoBackButton } from "@/components/ui/go-back-button";
@@ -32,9 +33,11 @@ export default function OpportunityPage() {
   const { data: opportunity, query } = useOpportunityById(
     opportunityId || undefined,
   );
-  const { data: myStatus, isLoading: isStatusLoading } = useMyOpportunityStatus(
-    opportunityId || undefined,
-  );
+  const {
+    data: myStatus,
+    isLoading: isStatusLoading,
+    refetch: refetchStatus,
+  } = useMyOpportunityStatus(opportunityId || undefined);
   const { data: me } = useMe();
   const acceptOpportunity = useAcceptOpportunity();
 
@@ -139,13 +142,19 @@ export default function OpportunityPage() {
             isEligible={!isCreator}
             isFavourited={isWishlisted(opportunity._id)}
             hasApplied={myStatus?.hasApplied}
+            status={myStatus?.status ?? undefined}
             onToggleFavourite={() => toggleWishlist(opportunity._id)}
+            onSubmitSuccess={() => refetchStatus()}
           />
         </div>
       </div>
 
       <div className="space-y-6">
-        <OpportunityTabs activeTab={activeTab} onTabChange={setActiveTab} />
+        <OpportunityTabs
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+          showDeliverables={myStatus?.hasApplied}
+        />
 
         {activeTab === "description" && (
           <OpportunityDetails
@@ -188,22 +197,73 @@ export default function OpportunityPage() {
             }
           />
         )}
+        {activeTab === "deliverables" && myStatus?.creatorOpportunity && (
+          <AgreementDeliverables
+            files={myStatus.creatorOpportunity.submission?.files as string[] | undefined}
+            links={myStatus.creatorOpportunity.submission?.links}
+            note={myStatus.creatorOpportunity.submission?.note}
+          />
+        )}
 
         {!isCreator && (
           myStatus?.hasApplied ? (
             <div className="space-y-4 pt-4 border-t border-base-600">
-              <div className="flex items-center gap-2 text-brand-100">
-                <Check className="w-5 h-5" />
-                <span className="text-sm font-medium">
-                  You have already applied to this opportunity
-                </span>
-              </div>
-              <p className="text-xs text-base-800">
-                Status:{" "}
-                <span className="text-white capitalize">
-                  {myStatus.status?.replace(/-/g, " ")}
-                </span>
-              </p>
+              {myStatus.status === "rejected" ? (
+                <>
+                  <div className="flex items-center gap-2 text-red-500">
+                    <XCircle className="w-5 h-5" />
+                    <span className="text-sm font-medium">
+                      Your submission was rejected
+                    </span>
+                  </div>
+                  {myStatus.creatorOpportunity?.feedback && (
+                    <div className="bg-base-300 rounded-lg p-4">
+                      <p className="text-xs text-base-700 mb-1">
+                        Reason for rejection:
+                      </p>
+                      <p className="text-sm text-white">
+                        {myStatus.creatorOpportunity.feedback}
+                      </p>
+                    </div>
+                  )}
+                </>
+              ) : myStatus.status === "approved" ? (
+                <div className="flex items-center gap-2 text-green-500">
+                  <Check className="w-5 h-5" />
+                  <span className="text-sm font-medium">
+                    Your submission has been approved!
+                  </span>
+                </div>
+              ) : myStatus.status === "accepted" ? (
+                <div className="flex items-center gap-2 text-brand-100">
+                  <AlertCircle className="w-5 h-5" />
+                  <span className="text-sm font-medium">
+                    Accepted - Pending deliverables submission
+                  </span>
+                </div>
+              ) : myStatus.status === "submitted" ? (
+                <div className="flex items-center gap-2 text-yellow-500">
+                  <AlertCircle className="w-5 h-5" />
+                  <span className="text-sm font-medium">
+                    Deliverables submitted - Awaiting review
+                  </span>
+                </div>
+              ) : (
+                <>
+                  <div className="flex items-center gap-2 text-brand-100">
+                    <Check className="w-5 h-5" />
+                    <span className="text-sm font-medium">
+                      You have already applied to this opportunity
+                    </span>
+                  </div>
+                  <p className="text-xs text-base-800">
+                    Status:{" "}
+                    <span className="text-white capitalize">
+                      {myStatus.status?.replace(/-/g, " ")}
+                    </span>
+                  </p>
+                </>
+              )}
               <Button
                 variant="outline"
                 onClick={() => router.push("/monetise/creator-dashboard")}

@@ -1,27 +1,18 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
+import { usePathname, useRouter } from "next/navigation";
+import { ContentTabs } from "@/components/ui/content-tabs";
 
-const tabs = [
-  // {
-  //   id: "analytics",
-  //   label: "Analytics",
-  //   href: "/monetise/creator-dashboard/analytics",
-  // },
+type TabId = "agreements" | "favourites";
+
+const tabs: { value: TabId; label: string; href: string }[] = [
   {
-    id: "agreements",
+    value: "agreements",
     label: "Agreements",
     href: "/monetise/creator-dashboard/agreements",
   },
-  // {
-  //   id: "payments",
-  //   label: "Payments",
-  //   href: "/monetise/creator-dashboard/payments",
-  // },
   {
-    id: "favourites",
+    value: "favourites",
     label: "Watchlist",
     href: "/monetise/creator-dashboard/favourites",
   },
@@ -29,26 +20,24 @@ const tabs = [
 
 export function CreatorDashboardTabs() {
   const pathname = usePathname();
+  const router = useRouter();
 
   const activeTab =
-    tabs.find((tab) => pathname.includes(tab.id))?.id || "agreements";
+    (tabs.find((tab) => pathname.includes(tab.value))?.value as TabId) ||
+    "agreements";
+
+  const handleTabChange = (tabId: TabId) => {
+    const tab = tabs.find((t) => t.value === tabId);
+    if (tab) {
+      router.push(tab.href);
+    }
+  };
 
   return (
-    <div className="flex items-center gap-6">
-      {tabs.map((tab) => (
-        <Link
-          key={tab.id}
-          href={tab.href}
-          className={cn(
-            "text-lg font-medium transition-colors",
-            activeTab === tab.id
-              ? "text-white"
-              : "text-base-700 hover:text-white",
-          )}
-        >
-          {tab.label}
-        </Link>
-      ))}
-    </div>
+    <ContentTabs<TabId>
+      tabs={tabs}
+      activeTab={activeTab}
+      onTabChange={handleTabChange}
+    />
   );
 }

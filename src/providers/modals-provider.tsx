@@ -109,9 +109,21 @@ import {
   CreateBusinessModalProps,
 } from "@/features/business/components/create-business-modal/create-business-modal";
 import {
+  EditBusinessModal,
+  EditBusinessModalProps,
+} from "@/features/business/components/edit-business-modal/edit-business-modal";
+import {
   AdminModal,
   AdminModalProps,
 } from "@/features/admin/components/admin-modal/admin-modal";
+import {
+  SubmitDeliverablesModal,
+  SubmitDeliverablesModalProps,
+} from "@/features/monetise/components/submit-deliverables-modal/submit-deliverables-modal";
+import {
+  RejectSubmissionModal,
+  RejectSubmissionModalProps,
+} from "@/features/business/components/reject-submission-modal/reject-submission-modal";
 
 const modalsConfig = {
   LoginModal,
@@ -141,7 +153,10 @@ const modalsConfig = {
   FollowersModal,
   FollowingModal,
   CreateBusinessModal,
+  EditBusinessModal,
   AdminModal,
+  SubmitDeliverablesModal,
+  RejectSubmissionModal,
 };
 
 export type ModalPropsTypes =
@@ -254,8 +269,20 @@ export type ModalPropsTypes =
       props: CreateBusinessModalProps;
     }
   | {
+      type: "EditBusinessModal";
+      props: EditBusinessModalProps;
+    }
+  | {
       type: "AdminModal";
       props: AdminModalProps;
+    }
+  | {
+      type: "SubmitDeliverablesModal";
+      props: SubmitDeliverablesModalProps;
+    }
+  | {
+      type: "RejectSubmissionModal";
+      props: RejectSubmissionModalProps;
     };
 
 export const ModalsProvider = ({ children }: PropsWithChildren<object>) => (

@@ -25,6 +25,7 @@ export { useOpportunitiesByIds } from "./queries/use-opportunities-by-ids";
 // Creator Mutations
 export { useAcceptOpportunity } from "./mutations/use-accept-opportunity";
 export {
+  useGetPresignedUrl,
   useGetPresignedUrls,
   uploadToPresignedUrl,
 } from "./mutations/use-get-presigned-urls";

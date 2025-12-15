@@ -8,6 +8,7 @@ import {
   OpportunitiesGrid,
   SortSelect,
   useOpportunities,
+  useMyOpportunities,
   type FilterType,
   type SortOption,
 } from "@/features/monetise";
@@ -22,6 +23,15 @@ export default function MonetisePage() {
   const [sortBy, setSortBy] = useState<SortOption>("a-z");
 
   const { wishlistedIds } = useWishlistStore();
+
+  // Fetch user's active agreements
+  const { data: myOpportunities } = useMyOpportunities({});
+  const activeAgreementsCount = useMemo(() => {
+    if (!myOpportunities) return 0;
+    return myOpportunities.filter(
+      (opp) => opp.status === "accepted" || opp.status === "submitted",
+    ).length;
+  }, [myOpportunities]);
 
   // Fetch opportunities based on filter
   const { data, query } = useOpportunities({
@@ -71,7 +81,7 @@ export default function MonetisePage() {
         <MonetiseStatsCard
           title="Active Agreements"
           icon={<SettingsIcon />}
-          count={0}
+          count={activeAgreementsCount}
           link="/monetise/creator-dashboard/agreements"
         />
         <MonetiseStatsCard

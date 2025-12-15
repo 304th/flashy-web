@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useOpportunitySubmissions } from "@/features/business";
 import type { OpportunitySubmissionWithCreator } from "@/features/business";
+import Link from "next/link";
 
 interface BusinessOpportunityAgreementsProps {
   opportunityId: string;
@@ -92,7 +93,7 @@ export function BusinessOpportunityAgreements({
       <div className="flex items-center justify-between gap-4">
         <div className="relative w-64">
           <Search
-            className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4
+            className="absolute z-1 left-3 top-1/2 -translate-y-1/2 w-4 h-4
               text-base-700"
           />
           <Input
@@ -204,13 +205,16 @@ export function BusinessOpportunityAgreements({
                     </div>
                   </td>
                   <td className="py-4 px-4">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="w-8 h-8 text-base-700 hover:text-white"
-                    >
-                      <Eye className="w-4 h-4" />
-                    </Button>
+                    <Link href={`/business/agreements?id=${submission._id}`}>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="w-8 h-8 text-base-700 hover:text-white"
+                      >
+                        <Eye className="w-4 h-4" />
+                      </Button>
+                    </Link>
+
                   </td>
                 </tr>
               ))

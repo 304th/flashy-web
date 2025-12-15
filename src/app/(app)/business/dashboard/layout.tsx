@@ -47,8 +47,8 @@ export default function BusinessDashboardLayout({
               Business Dashboard
             </h1>
             <div className="flex gap-3 items-center">
-              <Button size="lg">Withdraw Funds</Button>
-              <Button size="lg">Add Funds</Button>
+              <Button>Withdraw Funds</Button>
+              <Button>Add Funds</Button>
               <CreatorDashboardMenuButton />
             </div>
           </div>

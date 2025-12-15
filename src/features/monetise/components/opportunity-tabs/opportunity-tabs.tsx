@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 
-type TabType = "description" | "terms";
+type TabType = "description" | "media" | "terms";
 
 interface OpportunityTabsProps {
   activeTab: TabType;
@@ -26,6 +26,18 @@ export function OpportunityTabs({
         )}
       >
         Description & Deliverables
+      </button>
+      <button
+        onClick={() => onTabChange("media")}
+        className={cn(
+          `cursor-pointer pb-3 text-sm font-medium transition-colors border-b-2
+          -mb-px`,
+          activeTab === "media"
+            ? "text-white border-brand-100"
+            : "text-base-800 border-transparent hover:text-white",
+        )}
+      >
+        Media
       </button>
       <button
         onClick={() => onTabChange("terms")}

@@ -38,16 +38,16 @@ export function OpportunityCard({
           fill
           className="object-cover transition-transform group-hover:scale-105"
         />
-        {totalMediaCount > 1 && (
-          <div
-            className="absolute top-2 left-2 bg-black/60 backdrop-blur-sm px-2
-              py-1 rounded-md"
-          >
-            <span className="text-white text-xs font-medium">
-              +{totalMediaCount - 1} more
-            </span>
-          </div>
-        )}
+        {/*{totalMediaCount > 1 && (*/}
+        {/*  <div*/}
+        {/*    className="absolute top-2 left-2 bg-black/60 backdrop-blur-sm px-2*/}
+        {/*      py-1 rounded-md"*/}
+        {/*  >*/}
+        {/*    <span className="text-white text-xs font-medium">*/}
+        {/*      +{totalMediaCount - 1} more*/}
+        {/*    </span>*/}
+        {/*  </div>*/}
+        {/*)}*/}
         <Button
           variant="secondary"
           onClick={(e) => {
@@ -68,7 +68,7 @@ export function OpportunityCard({
       </div>
       <div className="flex flex-col gap-1">
         <h3 className="text-lg text-white truncate">{opportunity.title}</h3>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-2 flex-wrap">
           <Tag className="!bg-base-300 !border-base-400">
             {opportunity.brandName}
           </Tag>
@@ -77,8 +77,6 @@ export function OpportunityCard({
           </Tag>
           <Tag className="!bg-base-300 !border-base-400">{typeLabel}</Tag>
         </div>
-
-        {/*<p className="text-xs text-purple-400">{typeLabel}</p>*/}
       </div>
     </div>
   );

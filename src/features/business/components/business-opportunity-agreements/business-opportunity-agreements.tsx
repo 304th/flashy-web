@@ -1,65 +1,28 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Search, Eye } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-
-interface Agreement {
-  _id: string;
-  opportunityTitle: string;
-  agreementType: string;
-  username: string;
-  email: string;
-  dateCreated: string;
-  status: "active" | "pending" | "completed" | "rejected";
-}
+import { useOpportunitySubmissions } from "@/features/business";
+import type { OpportunitySubmissionWithCreator } from "@/features/business";
 
 interface BusinessOpportunityAgreementsProps {
   opportunityId: string;
 }
 
-// Mock data - will be replaced with real API data
-const mockAgreements: Agreement[] = [
-  {
-    _id: "1",
-    opportunityTitle: "Hemp Rolling Papers",
-    agreementType: "Sponsorship",
-    username: "WAGMI 2026",
-    email: "wagmi@gmail.com",
-    dateCreated: "25/11/2025",
-    status: "active",
-  },
-  {
-    _id: "2",
-    opportunityTitle: "Hemp Rolling Papers",
-    agreementType: "Sponsorship",
-    username: "example name",
-    email: "example@gmail.com",
-    dateCreated: "25/11/2025",
-    status: "active",
-  },
-  {
-    _id: "3",
-    opportunityTitle: "Hemp Rolling Papers",
-    agreementType: "Sponsorship",
-    username: "JosephFlex",
-    email: "joe72@example.com",
-    dateCreated: "25/11/2025",
-    status: "active",
-  },
-  {
-    _id: "4",
-    opportunityTitle: "Hemp Rolling Papers",
-    agreementType: "Sponsorship",
-    username: "another name",
-    email: "anutha@gmail.com",
-    dateCreated: "25/11/2025",
-    status: "active",
-  },
-];
+const STATUS_MAP: Record<CreatorOpportunityStatus, string> = {
+  accepted: "active",
+  "pending-deliverables": "pending",
+  submitted: "pending",
+  "under-review": "pending",
+  approved: "completed",
+  rejected: "rejected",
+  expired: "rejected",
+  completed: "completed",
+};
 
 export function BusinessOpportunityAgreements({
   opportunityId,
@@ -68,24 +31,35 @@ export function BusinessOpportunityAgreements({
   const [statusFilter, setStatusFilter] = useState("all");
   const [timeFilter, setTimeFilter] = useState("past-12-months");
 
-  // TODO: Replace with real API call
-  const agreements = mockAgreements;
-  const isLoading = false;
-
-  const filteredAgreements = agreements.filter((agreement) => {
-    const matchesSearch =
-      searchQuery === "" ||
-      agreement.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      agreement.email.toLowerCase().includes(searchQuery.toLowerCase());
-
-    const matchesStatus =
-      statusFilter === "all" || agreement.status === statusFilter;
-
-    return matchesSearch && matchesStatus;
+  const { data: submissions, query } = useOpportunitySubmissions({
+    opportunityId,
   });
+  const isLoading = query.isLoading;
 
-  const getStatusColor = (status: Agreement["status"]) => {
-    switch (status) {
+  const filteredSubmissions = useMemo(() => {
+    if (!submissions) return [];
+
+    return submissions.filter((submission) => {
+      const matchesSearch =
+        searchQuery === "" ||
+        submission.creator?.username
+          ?.toLowerCase()
+          .includes(searchQuery.toLowerCase()) ||
+        submission.creator?.email
+          ?.toLowerCase()
+          .includes(searchQuery.toLowerCase());
+
+      const mappedStatus = STATUS_MAP[submission.status] || "pending";
+      const matchesStatus =
+        statusFilter === "all" || mappedStatus === statusFilter;
+
+      return matchesSearch && matchesStatus;
+    });
+  }, [submissions, searchQuery, statusFilter]);
+
+  const getStatusColor = (status: CreatorOpportunityStatus) => {
+    const mappedStatus = STATUS_MAP[status] || "pending";
+    switch (mappedStatus) {
       case "active":
         return "bg-brand-100";
       case "pending":
@@ -97,6 +71,12 @@ export function BusinessOpportunityAgreements({
       default:
         return "bg-base-600";
     }
+  };
+
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return "-";
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-GB");
   };
 
   if (isLoading) {
@@ -119,7 +99,7 @@ export function BusinessOpportunityAgreements({
             placeholder="Search"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-9 bg-base-200 border-base-400"
+            className="pl-9 bg-base-200 border-base-400 h-8"
           />
         </div>
 
@@ -128,6 +108,7 @@ export function BusinessOpportunityAgreements({
             value={statusFilter}
             onValueChange={setStatusFilter}
             variant="compact"
+            size="xsmall"
           >
             <Select.Item value="all">All</Select.Item>
             <Select.Item value="active">Active</Select.Item>
@@ -140,6 +121,7 @@ export function BusinessOpportunityAgreements({
             value={timeFilter}
             onValueChange={setTimeFilter}
             variant="compact"
+            size="xsmall"
           >
             <Select.Item value="past-12-months">Past 12 Months</Select.Item>
             <Select.Item value="past-6-months">Past 6 Months</Select.Item>
@@ -157,19 +139,7 @@ export function BusinessOpportunityAgreements({
                 className="text-left py-3 px-4 text-sm font-medium
                   text-base-800"
               >
-                Agreement ID
-              </th>
-              <th
-                className="text-left py-3 px-4 text-sm font-medium
-                  text-base-800"
-              >
-                Agreement Type
-              </th>
-              <th
-                className="text-left py-3 px-4 text-sm font-medium
-                  text-base-800"
-              >
-                Username
+                Creator
               </th>
               <th
                 className="text-left py-3 px-4 text-sm font-medium
@@ -181,7 +151,7 @@ export function BusinessOpportunityAgreements({
                 className="text-left py-3 px-4 text-sm font-medium
                   text-base-800"
               >
-                Date Created
+                Applied Date
               </th>
               <th
                 className="text-left py-3 px-4 text-sm font-medium
@@ -198,41 +168,40 @@ export function BusinessOpportunityAgreements({
             </tr>
           </thead>
           <tbody>
-            {filteredAgreements.length === 0 ? (
+            {filteredSubmissions.length === 0 ? (
               <tr>
-                <td colSpan={7} className="text-center py-12 text-base-700">
+                <td colSpan={5} className="text-center py-12 text-base-700">
                   No agreements found
                 </td>
               </tr>
             ) : (
-              filteredAgreements.map((agreement) => (
+              filteredSubmissions.map((submission) => (
                 <tr
-                  key={agreement._id}
+                  key={submission._id}
                   className="border-b border-base-600 hover:bg-base-300/50
                     transition-colors"
                 >
                   <td className="py-4 px-4 text-sm text-white">
-                    {agreement.opportunityTitle}
+                    {submission.creator?.username || "Unknown"}
                   </td>
                   <td className="py-4 px-4 text-sm text-brand-100">
-                    {agreement.agreementType}
+                    {submission.creator?.email || "-"}
                   </td>
                   <td className="py-4 px-4 text-sm text-white">
-                    {agreement.username}
-                  </td>
-                  <td className="py-4 px-4 text-sm text-brand-100">
-                    {agreement.email}
-                  </td>
-                  <td className="py-4 px-4 text-sm text-white">
-                    {agreement.dateCreated}
+                    {formatDate(submission.appliedAt)}
                   </td>
                   <td className="py-4 px-4">
-                    <div
-                      className={cn(
-                        "w-3 h-3 rounded-full",
-                        getStatusColor(agreement.status),
-                      )}
-                    />
+                    <div className="flex items-center gap-2">
+                      <div
+                        className={cn(
+                          "w-3 h-3 rounded-full",
+                          getStatusColor(submission.status),
+                        )}
+                      />
+                      <span className="text-sm text-base-700 capitalize">
+                        {submission.status.replace(/-/g, " ")}
+                      </span>
+                    </div>
                   </td>
                   <td className="py-4 px-4">
                     <Button

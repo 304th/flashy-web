@@ -17,10 +17,35 @@ const COMPENSATION_TYPES: { value: CompensationType; label: string }[] = [
 
 export const CreateOpportunityRequirements = () => {
   const form = useFormContext();
+  const compensationType = form.watch("compensationType");
+
+  const getCompensationConfig = () => {
+    switch (compensationType) {
+      case "commission":
+        return {
+          placeholder: "e.g. 15",
+          type: "number",
+          min: 0,
+          max: 100,
+          trailingIcon: <span className="text-sm text-base-700">%</span>,
+        };
+      case "fixed":
+        return {
+          placeholder: "e.g. 500",
+          type: "number",
+          min: 0,
+          trailingIcon: <span className="text-sm text-base-700">$</span>,
+        };
+      default:
+        return null;
+    }
+  };
+
+  const compensationConfig = getCompensationConfig();
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="grid grid-cols-2 gap-4">
+      <div className={`grid gap-4 grid-cols-2`}>
         <FormField
           control={form.control}
           name="compensationType"
@@ -30,7 +55,15 @@ export const CreateOpportunityRequirements = () => {
                 Compensation Type <span className="text-red-500">*</span>
               </FormLabel>
               <FormControl>
-                <Select.Root value={field.value} onValueChange={field.onChange}>
+                <Select.Root
+                  value={field.value}
+                  onValueChange={(value) => {
+                    field.onChange(value);
+                    if (value === "product") {
+                      form.setValue("compensation", "");
+                    }
+                  }}
+                >
                   {COMPENSATION_TYPES.map((type) => (
                     <Select.Item key={type.value} value={type.value}>
                       {type.label}
@@ -42,25 +75,32 @@ export const CreateOpportunityRequirements = () => {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="compensation"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>
-                Compensation <span className="text-red-500">*</span>
-              </FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="10%"
-                  {...field}
-                  className="bg-base-200 h-10"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {compensationType !== "product" && compensationConfig && (
+          <FormField
+            control={form.control}
+            name="compensation"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  {compensationType === "commission" ? "Commission Rate" : "Amount"}{" "}
+                  <span className="text-red-500">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    type={compensationConfig.type}
+                    placeholder={compensationConfig.placeholder}
+                    min={compensationConfig.min}
+                    max={compensationConfig.max}
+                    {...field}
+                    className="bg-base-200 h-10"
+                    trailingIcon={compensationConfig.trailingIcon}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
       </div>
       <FormItem>
         <FormLabel>

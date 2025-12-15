@@ -6,6 +6,8 @@ interface BusinessOpportunityDetailsProps {
   compensationType: CompensationType;
   endDate: string;
   eligibility: OpportunityEligibility;
+  ccv?: number;
+  avgViews?: number;
   deliverables?: string[];
   description?: string;
   showDeliverables?: boolean;
@@ -17,6 +19,8 @@ export function BusinessOpportunityDetails({
   compensationType,
   endDate,
   eligibility,
+  ccv,
+  avgViews,
   deliverables = [],
   description,
   showDeliverables = false,
@@ -84,6 +88,18 @@ export function BusinessOpportunityDetails({
               Eligibility Requirements
             </h3>
             <ul className="space-y-1.5">
+              {ccv !== undefined && ccv > 0 && (
+                <li className="text-sm text-brand-100 flex items-start gap-2">
+                  <span className="text-base-600">•</span>
+                  <span>Minimum CCV: {ccv}</span>
+                </li>
+              )}
+              {avgViews !== undefined && avgViews > 0 && (
+                <li className="text-sm text-brand-100 flex items-start gap-2">
+                  <span className="text-base-600">•</span>
+                  <span>Minimum Average Views: {avgViews.toLocaleString()}</span>
+                </li>
+              )}
               {eligibility.niches?.length > 0 && (
                 <li className="text-sm text-brand-100 flex items-start gap-2">
                   <span className="text-base-600">•</span>

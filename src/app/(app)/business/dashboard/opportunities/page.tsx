@@ -139,6 +139,7 @@ export default function BusinessDashboardOpportunitiesPage() {
             value={statusFilter}
             onValueChange={(value) => setStatusFilter(value as StatusFilter)}
             variant="compact"
+            size="xsmall"
           >
             <Select.Item value="all">All Status</Select.Item>
             <Select.Item value="active">Active</Select.Item>
@@ -150,6 +151,7 @@ export default function BusinessDashboardOpportunitiesPage() {
             value={timeFilter}
             onValueChange={setTimeFilter}
             variant="compact"
+            size="xsmall"
           >
             <Select.Item value="past-12-months">Past 12 Months</Select.Item>
             <Select.Item value="past-6-months">Past 6 Months</Select.Item>

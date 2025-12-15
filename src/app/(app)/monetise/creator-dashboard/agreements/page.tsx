@@ -2,33 +2,29 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { MoreVertical } from "lucide-react";
 import { GoBackButton } from "@/components/ui/go-back-button";
 import { Button } from "@/components/ui/button";
 import { Select } from "@/components/ui/select";
-import { StatCard } from "@/features/business/components/stat-card/stat-card";
 import {
   CreatorDashboardTabs,
   CreatorOpportunityCard,
   useMyOpportunities,
 } from "@/features/monetise";
+import { TimeRange } from "@/features/monetise/collections/my-opportunities";
 import { useWishlistStore } from "@/stores";
 
-// Mock stats - replace with real data from API
-const mockStats = {
-  balance: { value: "$17,032", change: "+1,205%" },
-  revenue: { value: "$27,300", change: "+1,500%" },
-  pendingCommissions: { value: "$1,000", change: "+3,000%" },
-  paidCommissions: { value: "$13,000", change: "+1,074%" },
-};
+type StatusFilter = "all" | CreatorOpportunityStatus;
 
 export default function CreatorDashboardAgreementsPage() {
   const router = useRouter();
-  const [statusFilter, setStatusFilter] = useState("all");
-  const [timeFilter, setTimeFilter] = useState("past-12-months");
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
+  const [timeFilter, setTimeFilter] = useState<TimeRange>("past-12-months");
   const { isWishlisted, toggleWishlist } = useWishlistStore();
 
-  const { data: creatorOpportunities, query } = useMyOpportunities();
+  const { data: creatorOpportunities, query } = useMyOpportunities({
+    status: statusFilter === "all" ? undefined : statusFilter,
+    timeRange: timeFilter,
+  });
   const isLoading = query.isLoading;
 
   const handleOpportunityClick = (creatorOpportunityId: string) => {
@@ -53,14 +49,14 @@ export default function CreatorDashboardAgreementsPage() {
 
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-white">Creator Dashboard</h1>
-        <div className="flex items-center gap-2">
-          <Button className="bg-brand-100 hover:bg-brand-200 text-black">
-            Withdraw Funds
-          </Button>
-          <Button variant="ghost" size="icon">
-            <MoreVertical className="w-5 h-5" />
-          </Button>
-        </div>
+        {/*<div className="flex items-center gap-2">*/}
+        {/*  <Button>*/}
+        {/*    Withdraw Funds*/}
+        {/*  </Button>*/}
+        {/*  <Button variant="secondary" size="icon">*/}
+        {/*    <MoreVertical className="w-5 h-5" />*/}
+        {/*  </Button>*/}
+        {/*</div>*/}
       </div>
 
       <div className="flex items-center justify-between">
@@ -68,20 +64,27 @@ export default function CreatorDashboardAgreementsPage() {
         <div className="flex items-center gap-3">
           <Select.Root
             value={statusFilter}
-            onValueChange={setStatusFilter}
+            onValueChange={(value) => setStatusFilter(value as StatusFilter)}
             variant="compact"
+            size="xsmall"
           >
             <Select.Item value="all">All</Select.Item>
             <Select.Item value="accepted">Active</Select.Item>
+            <Select.Item value="pending-deliverables">
+              Pending Deliverables
+            </Select.Item>
             <Select.Item value="submitted">Submitted</Select.Item>
             <Select.Item value="approved">Approved</Select.Item>
             <Select.Item value="completed">Completed</Select.Item>
+            <Select.Item value="rejected">Rejected</Select.Item>
+            <Select.Item value="expired">Expired</Select.Item>
           </Select.Root>
 
           <Select.Root
             value={timeFilter}
-            onValueChange={setTimeFilter}
+            onValueChange={(value) => setTimeFilter(value as TimeRange)}
             variant="compact"
+            size="xsmall"
           >
             <Select.Item value="past-12-months">Past 12 Months</Select.Item>
             <Select.Item value="past-6-months">Past 6 Months</Select.Item>
@@ -91,28 +94,28 @@ export default function CreatorDashboardAgreementsPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard
-          title="Balance"
-          value={mockStats.balance.value}
-          changePercentage={mockStats.balance.change}
-        />
-        <StatCard
-          title="Revenue"
-          value={mockStats.revenue.value}
-          changePercentage={mockStats.revenue.change}
-        />
-        <StatCard
-          title="Pending Commissions"
-          value={mockStats.pendingCommissions.value}
-          changePercentage={mockStats.pendingCommissions.change}
-        />
-        <StatCard
-          title="Paid Commissions"
-          value={mockStats.paidCommissions.value}
-          changePercentage={mockStats.paidCommissions.change}
-        />
-      </div>
+      {/*<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">*/}
+      {/*  <StatCard*/}
+      {/*    title="Balance"*/}
+      {/*    value={mockStats.balance.value}*/}
+      {/*    changePercentage={mockStats.balance.change}*/}
+      {/*  />*/}
+      {/*  <StatCard*/}
+      {/*    title="Revenue"*/}
+      {/*    value={mockStats.revenue.value}*/}
+      {/*    changePercentage={mockStats.revenue.change}*/}
+      {/*  />*/}
+      {/*  <StatCard*/}
+      {/*    title="Pending Commissions"*/}
+      {/*    value={mockStats.pendingCommissions.value}*/}
+      {/*    changePercentage={mockStats.pendingCommissions.change}*/}
+      {/*  />*/}
+      {/*  <StatCard*/}
+      {/*    title="Paid Commissions"*/}
+      {/*    value={mockStats.paidCommissions.value}*/}
+      {/*    changePercentage={mockStats.paidCommissions.change}*/}
+      {/*  />*/}
+      {/*</div>*/}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {isLoading ? (

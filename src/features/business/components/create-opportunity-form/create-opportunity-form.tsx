@@ -23,7 +23,7 @@ const formSchema = z.object({
   category: z.string().min(1, "Please select a category").optional(),
   productLink: z.string().url("Please enter a valid URL").optional(),
   thumbnail: z.string().nullable().optional(),
-  thumbnailFile: z.any().optional(),
+  thumbnailFile: z.instanceof(File, { message: "Thumbnail is required" }),
   mediaAssetFiles: z.array(z.any()).optional().default([]),
   startDate: z.custom<any>(),
   endDate: z.custom<any>().optional(),
@@ -47,7 +47,27 @@ const formSchema = z.object({
     "commission",
     "product",
   ] as const),
-  compensation: z.string().min(1, "Compensation is required"),
+  compensation: z.string().optional(),
+}).superRefine((data, ctx) => {
+  if (data.compensationType === "commission") {
+    const value = Number(data.compensation);
+    if (!data.compensation || isNaN(value) || value < 0 || value > 100) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Commission must be a percentage between 0 and 100",
+        path: ["compensation"],
+      });
+    }
+  } else if (data.compensationType === "fixed") {
+    const value = Number(data.compensation);
+    if (!data.compensation || isNaN(value) || value <= 0) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Please enter a valid dollar amount",
+        path: ["compensation"],
+      });
+    }
+  }
 });
 
 type FormData = z.infer<typeof formSchema> & {
@@ -107,6 +127,8 @@ export const CreateOpportunityForm = ({
         startDate: data.startDate,
         endDate: data.endDate,
         termsAndConditions: data.termsAndConditions,
+        ccv: data.ccv,
+        avgViews: data.avgViews,
         eligibility: {
           // minFollowers: data.minFollowers,
           niches: [],
@@ -127,7 +149,6 @@ export const CreateOpportunityForm = ({
       router.back();
     }
   };
-  console.log(form.formState);
 
   return (
     <Form {...form}>

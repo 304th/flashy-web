@@ -2,10 +2,17 @@ import { api } from "@/services/api";
 import { createCollection as createCollectionV2 } from "@/lib/query-toolkit-v2/collection";
 import { creatorOpportunitySchema } from "@/features/monetise/schemas/opportunity.schema";
 
+export type TimeRange =
+  | "past-month"
+  | "past-3-months"
+  | "past-6-months"
+  | "past-12-months";
+
 export interface MyOpportunitiesCollectionParams {
   page?: number;
   limit?: number;
   status?: CreatorOpportunityStatus | CreatorOpportunityStatus[];
+  timeRange?: TimeRange;
 }
 
 export const myOpportunitiesCollection = createCollectionV2<
@@ -24,6 +31,7 @@ export const myOpportunitiesCollection = createCollectionV2<
         searchParams.set("status", params.status);
       }
     }
+    if (params.timeRange) searchParams.set("timeRange", params.timeRange);
 
     const response = await api
       .get(`me/opportunities?${searchParams.toString()}`)

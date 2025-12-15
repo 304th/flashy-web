@@ -31,6 +31,8 @@ class OpportunitySchema implements StaticSchema<Opportunity> {
       createdBy: "",
       maxParticipants: 0,
       currentParticipants: 0,
+      ccv: 50,
+      avgViews: 0,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       ...params,

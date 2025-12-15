@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Image from "next/image";
-import { Check } from "lucide-react";
+import { Check, Clock, Ban } from "lucide-react";
 import { useOpportunityById } from "@/features/monetise";
 import { GoBackButton } from "@/components/ui/go-back-button";
 import { Button } from "@/components/ui/button";
@@ -79,8 +79,40 @@ export default function BusinessOpportunityPage() {
     return days > 0 ? days : 0;
   };
 
+  const getOpportunityStatus = (startDate: string, endDate: string) => {
+    const now = new Date();
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    if (now < start) {
+      return {
+        status: "upcoming" as const,
+        message: `Starting on ${formatDate(startDate)}`,
+        color: "text-base-700",
+        icon: Clock,
+      };
+    } else if (now > end) {
+      return {
+        status: "expired" as const,
+        message: `Ended on ${formatDate(endDate)}`,
+        color: "text-red-500",
+        icon: Ban,
+      };
+    } else {
+      return {
+        status: "active" as const,
+        message: `Active since ${formatDate(startDate)}`,
+        color: "text-green-500",
+        icon: Check,
+      };
+    }
+  };
+
   const daysRemaining = getDaysRemaining(opportunity.endDate);
-  const isActive = opportunity.status === "active";
+  const opportunityStatus = getOpportunityStatus(
+    opportunity.startDate,
+    opportunity.endDate,
+  );
 
   return (
     <div className="flex flex-col gap-6 max-w-page">
@@ -107,33 +139,36 @@ export default function BusinessOpportunityPage() {
             </div>
           )}
         </div>
-        <div className="flex flex-col gap-4">
-          <div className="flex items-center gap-2 text-brand-100 text-sm">
-            <Check className="w-4 h-4" />
-            <span>Active since {formatDate(opportunity.createdAt)}</span>
-            <span className="text-base-600 ml-2">
-              {daysRemaining} days remaining
-            </span>
+        <div className="flex flex-col gap-4 justify-between">
+          <div className="flex flex-col gap-3 grow-1">
+            <div className={`flex items-center gap-2 text-sm ${opportunityStatus.color}`}>
+              <opportunityStatus.icon className="w-4 h-4" />
+              <span>{opportunityStatus.message}</span>
+              {opportunityStatus.status === "active" && (
+                <span className="text-base-600 ml-2">
+                {daysRemaining} days remaining
+              </span>
+              )}
+            </div>
+            <h1 className="text-3xl font-bold text-white">{opportunity.title}</h1>
+            <div className="flex items-center gap-2">
+              <Tag className="!bg-base-300 !border-base-400 text-sm">
+                {opportunity.brandName}
+              </Tag>
+              <Tag className="!bg-base-300 !border-base-400 text-sm">
+                {opportunity.category}
+              </Tag>
+              <Tag className="!bg-base-300 !border-base-400 text-sm">
+                {opportunity.type.charAt(0).toUpperCase() +
+                  opportunity.type.slice(1)}
+              </Tag>
+            </div>
+            <p className="text-white leading-relaxed">
+              {opportunity.description}
+            </p>
           </div>
-          <h1 className="text-2xl font-bold text-white">{opportunity.title}</h1>
-          <div className="flex items-center gap-2">
-            <Tag className="!bg-base-300 !border-base-400 text-sm">
-              {opportunity.brandName}
-            </Tag>
-            <Tag className="!bg-base-300 !border-base-400 text-sm">
-              {opportunity.category}
-            </Tag>
-            <Tag className="!bg-base-300 !border-base-400 text-sm">
-              {opportunity.type.charAt(0).toUpperCase() +
-                opportunity.type.slice(1)}
-            </Tag>
-          </div>
-          <p className="text-sm text-base-800 leading-relaxed">
-            {opportunity.description}
-          </p>
+
           <Button
-            variant="outline"
-            size="sm"
             className="w-fit"
             onClick={() =>
               router.push(`/business/opportunities/edit?id=${opportunity._id}`)
@@ -154,11 +189,12 @@ export default function BusinessOpportunityPage() {
           compensationType={opportunity.compensationType}
           endDate={opportunity.endDate}
           eligibility={opportunity.eligibility}
+          ccv={opportunity.ccv}
+          avgViews={opportunity.avgViews}
         />
       )}
       {activeTab === "media" && (
         <BusinessOpportunityMedia
-          brandLogo={opportunity.brandLogo}
           mediaAssets={opportunity.mediaAssets}
           brandName={opportunity.brandName}
         />

@@ -5,6 +5,10 @@ export { businessAccountSchema } from "./schemas/business-account.schema";
 export { businessAccountsCollection } from "./collections/business-accounts";
 export { myBusinessAccountCollection } from "./collections/my-business-account.collection";
 export { sponsorOpportunitiesCollection } from "./collections/sponsor-opportunities";
+export {
+  opportunitySubmissionsCollection,
+  type OpportunitySubmissionWithCreator,
+} from "./collections/opportunity-submissions";
 
 // Queries
 export { useBusinessAccounts } from "./queries/use-business-accounts";
@@ -16,6 +20,7 @@ export {
 } from "./queries/use-business-account-by-id";
 export { useBusinessAccountStats } from "./queries/use-business-account-stats";
 export { useSponsorOpportunities } from "./queries/use-sponsor-opportunities";
+export { useOpportunitySubmissions } from "./queries/use-opportunity-submissions";
 
 // User Mutations
 export { useCreateBusinessAccount } from "./mutations/use-create-business-account";

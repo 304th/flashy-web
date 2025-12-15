@@ -2,13 +2,32 @@ import config from "@/config";
 import { useState, type ChangeEvent } from "react";
 import { useFormContext } from "react-hook-form";
 import { toast } from "sonner";
-import { X, UploadCloudIcon } from "lucide-react";
+import { X, UploadCloudIcon, FileText } from "lucide-react";
 import { FormLabel } from "@/components/ui/form";
 import { ImageUpload } from "@/components/ui/image-upload";
 import { FileUpload } from "@/components/ui/file-upload";
 import { useDragAndDrop } from "@/hooks/use-drag-n-drop";
 
-const MAX_GALLERY_IMAGES = 8;
+const MAX_GALLERY_FILES = 8;
+
+const ALLOWED_FILE_TYPES = [
+  "image/png",
+  "image/jpeg",
+  "image/jpg",
+  "image/svg+xml",
+  "application/pdf",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+];
+
+const ALLOWED_EXTENSIONS = [".png", ".jpg", ".jpeg", ".svg", ".pdf", ".doc", ".docx"];
+
+const isImageFile = (file: File) => file.type.startsWith("image/");
+
+const getFileExtension = (filename: string) => {
+  const ext = filename.split(".").pop()?.toLowerCase();
+  return ext ? `.${ext}` : "";
+};
 
 export const CreateOpportunityMedia = () => {
   const form = useFormContext();
@@ -20,10 +39,10 @@ export const CreateOpportunityMedia = () => {
     if (files.length === 0) return;
 
     const currentGallery = galleryFiles;
-    const remainingSlots = MAX_GALLERY_IMAGES - currentGallery.length;
+    const remainingSlots = MAX_GALLERY_FILES - currentGallery.length;
 
     if (remainingSlots <= 0) {
-      toast.error(`You can only upload up to ${MAX_GALLERY_IMAGES} images.`);
+      toast.error(`You can only upload up to ${MAX_GALLERY_FILES} files.`);
       return;
     }
 
@@ -31,8 +50,14 @@ export const CreateOpportunityMedia = () => {
     let hasError = false;
 
     for (const file of files) {
-      if (file.type && !file.type.startsWith("image/")) {
-        toast.error(`"${file.name}" is not an image.`);
+      const extension = getFileExtension(file.name);
+      const isValidType = ALLOWED_FILE_TYPES.includes(file.type) ||
+        ALLOWED_EXTENSIONS.includes(extension);
+
+      if (!isValidType) {
+        toast.error(
+          `"${file.name}" is not a supported file type. Allowed: ${ALLOWED_EXTENSIONS.join(", ")}`,
+        );
         hasError = true;
         continue;
       }
@@ -51,7 +76,7 @@ export const CreateOpportunityMedia = () => {
       const filesToAdd = validFiles.slice(0, remainingSlots);
       if (filesToAdd.length < validFiles.length) {
         toast.error(
-          `Only ${filesToAdd.length} image(s) added. You can upload up to ${MAX_GALLERY_IMAGES} images total.`,
+          `Only ${filesToAdd.length} file(s) added. You can upload up to ${MAX_GALLERY_FILES} files total.`,
         );
       }
       const newGallery = [...currentGallery, ...filesToAdd];
@@ -127,7 +152,7 @@ export const CreateOpportunityMedia = () => {
                 bg-blue-500/20 rounded-lg z-10 pointer-events-none"
             >
               <p className="text-white text-sm font-semibold">
-                Drop images here (up to {MAX_GALLERY_IMAGES} images)
+                Drop files here (up to {MAX_GALLERY_FILES} files)
               </p>
             </div>
           )}
@@ -138,13 +163,25 @@ export const CreateOpportunityMedia = () => {
             {galleryFiles.map((file, index) => (
               <div
                 key={index}
-                className="relative rounded-lg overflow-hidden bg-base-400"
+                className="relative rounded-lg overflow-hidden bg-base-400 aspect-square"
               >
-                <img
-                  src={URL.createObjectURL(file)}
-                  alt={`Gallery ${index + 1}`}
-                  className="w-full h-full object-cover"
-                />
+                {isImageFile(file) ? (
+                  <img
+                    src={URL.createObjectURL(file)}
+                    alt={`Gallery ${index + 1}`}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full flex flex-col items-center justify-center p-2 bg-base-300">
+                    <FileText className="w-8 h-8 text-base-700 mb-1" />
+                    <span className="text-xs text-base-700 text-center truncate w-full">
+                      {file.name}
+                    </span>
+                    <span className="text-xs text-base-600 uppercase">
+                      {getFileExtension(file.name).replace(".", "")}
+                    </span>
+                  </div>
+                )}
                 <button
                   type="button"
                   onClick={() => removeGalleryImage(index)}
@@ -169,7 +206,7 @@ export const CreateOpportunityMedia = () => {
               />
               <span className="text-white">Upload Media Assets</span>
               <span className="text-xs text-base-800">
-                .png, .jpg, .svg, .pdf, .doc, .docx, (up to {MAX_GALLERY_IMAGES}{" "}
+                .png, .jpg, .svg, .pdf, .doc, .docx (up to {MAX_GALLERY_FILES}{" "}
                 files)
               </span>
             </button>
@@ -177,7 +214,7 @@ export const CreateOpportunityMedia = () => {
           <input
             id="gallery-upload"
             type="file"
-            accept="image/jpeg,image/png,image/jpg,image/gif"
+            accept=".png,.jpg,.jpeg,.svg,.pdf,.doc,.docx,image/png,image/jpeg,image/svg+xml,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
             multiple
             tabIndex={-1}
             className="hidden"
@@ -186,7 +223,7 @@ export const CreateOpportunityMedia = () => {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-xs text-base-700">
-            {galleryFiles.length} / {MAX_GALLERY_IMAGES} files
+            {galleryFiles.length} / {MAX_GALLERY_FILES} files
           </span>
         </div>
       </div>

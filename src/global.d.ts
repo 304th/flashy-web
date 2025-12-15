@@ -369,10 +369,8 @@ declare global {
   type OpportunityStatus = "active" | "expired" | "paused";
   type CompensationType =
     | "fixed"
-    | "per-post"
     | "commission"
-    | "product"
-    | "negotiable";
+    | "product";
   type CreatorOpportunityStatus =
     | "accepted"
     | "pending-deliverables"
@@ -411,6 +409,8 @@ declare global {
     sponsorId?: string;
     maxParticipants: number;
     currentParticipants: number;
+    ccv: number;
+    avgViews: number;
     createdAt: string;
     updatedAt: string;
   }
@@ -544,7 +544,7 @@ declare global {
     category: OpportunityCategory;
     description: string;
     deliverables: string[];
-    compensation: string;
+    compensation?: string;
     compensationType?: CompensationType;
     eligibility?: Partial<OpportunityEligibility>;
     startDate: string;
@@ -554,6 +554,8 @@ declare global {
     status?: OpportunityStatus;
     sponsorId?: string;
     maxParticipants?: number;
+    ccv?: number;
+    avgViews?: number;
   }
 
   interface UpdateOpportunityParams extends Partial<CreateOpportunityParams> {}

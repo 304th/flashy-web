@@ -5,23 +5,23 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 const tabs = [
-  {
-    id: "analytics",
-    label: "Analytics",
-    href: "/monetise/creator-dashboard/analytics",
-  },
+  // {
+  //   id: "analytics",
+  //   label: "Analytics",
+  //   href: "/monetise/creator-dashboard/analytics",
+  // },
   {
     id: "agreements",
     label: "Agreements",
     href: "/monetise/creator-dashboard/agreements",
   },
+  // {
+  //   id: "payments",
+  //   label: "Payments",
+  //   href: "/monetise/creator-dashboard/payments",
+  // },
   {
-    id: "payments",
-    label: "Payments",
-    href: "/monetise/creator-dashboard/payments",
-  },
-  {
-    id: "watchlist",
+    id: "favourites",
     label: "Watchlist",
     href: "/monetise/creator-dashboard/favourites",
   },

@@ -48,12 +48,30 @@ const formSchema = z.object({
   avgViews: z.number().min(0, "Must be at least 0"),
   compensationType: z.enum([
     "fixed",
-    "per-post",
     "commission",
     "product",
-    "negotiable",
   ] as const),
-  compensation: z.string().min(1, "Compensation is required"),
+  compensation: z.string().optional(),
+}).superRefine((data, ctx) => {
+  if (data.compensationType === "commission") {
+    const value = Number(data.compensation);
+    if (!data.compensation || isNaN(value) || value < 0 || value > 100) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Commission must be a percentage between 0 and 100",
+        path: ["compensation"],
+      });
+    }
+  } else if (data.compensationType === "fixed") {
+    const value = Number(data.compensation);
+    if (!data.compensation || isNaN(value) || value <= 0) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Please enter a valid dollar amount",
+        path: ["compensation"],
+      });
+    }
+  }
 });
 
 type FormData = z.infer<typeof formSchema> & {
@@ -92,8 +110,8 @@ export const EditOpportunityForm = ({
       description: opportunity.description || "",
       termsAndConditions: opportunity.termsAndConditions || "",
       deliverables: opportunity.deliverables || [],
-      ccv: 50,
-      avgViews: 50,
+      ccv: opportunity.ccv ?? 50,
+      avgViews: opportunity.avgViews ?? 50,
       compensationType: opportunity.compensationType || "commission",
       compensation: opportunity.compensation || "",
     },
@@ -124,6 +142,8 @@ export const EditOpportunityForm = ({
           startDate: data.startDate,
           endDate: data.endDate,
           termsAndConditions: data.termsAndConditions,
+          ccv: data.ccv,
+          avgViews: data.avgViews,
           eligibility: {
             niches: opportunity.eligibility?.niches || [],
             platforms: opportunity.eligibility?.platforms || [],

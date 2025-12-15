@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import { Check } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   useOpportunityById,
   useAcceptOpportunity,
@@ -15,9 +16,10 @@ import {
   OpportunityApplySection,
   type TabType,
 } from "@/features/monetise";
+import { BusinessOpportunityMedia } from "@/features/business/components/business-opportunity-media/business-opportunity-media";
+import { useMe } from "@/features/auth/queries/use-me";
 import { useWishlistStore } from "@/stores";
 import { GoBackButton } from "@/components/ui/go-back-button";
-import { Button } from "@/components/ui/button";
 
 export default function OpportunityPage() {
   const searchParams = useSearchParams();
@@ -33,9 +35,11 @@ export default function OpportunityPage() {
   const { data: myStatus, isLoading: isStatusLoading } = useMyOpportunityStatus(
     opportunityId || undefined,
   );
+  const { data: me } = useMe();
   const acceptOpportunity = useAcceptOpportunity();
 
   const isLoading = query.isLoading;
+  const isCreator = me?.fbId && opportunity?.createdBy === me.fbId;
 
   const handleApply = () => {
     if (!opportunityId) return;
@@ -123,6 +127,7 @@ export default function OpportunityPage() {
 
         <div className="space-y-6">
           <OpportunityHeader
+            opportunity={opportunity}
             title={opportunity.title}
             brandName={opportunity.brandName}
             category={opportunity.category}
@@ -131,8 +136,9 @@ export default function OpportunityPage() {
               opportunity.type.slice(1)
             }
             description={opportunity.description}
-            isEligible={true}
+            isEligible={!isCreator}
             isFavourited={isWishlisted(opportunity._id)}
+            hasApplied={myStatus?.hasApplied}
             onToggleFavourite={() => toggleWishlist(opportunity._id)}
           />
         </div>
@@ -141,14 +147,20 @@ export default function OpportunityPage() {
       <div className="space-y-6">
         <OpportunityTabs activeTab={activeTab} onTabChange={setActiveTab} />
 
-        {activeTab === "description" ? (
+        {activeTab === "description" && (
           <OpportunityDetails
-            featureDescription={`Feature our premium ${opportunity.title} on your YouTube channel. Focus on what sets them apart: ${opportunity.description}`}
+            featureDescription={opportunity.description}
             deliverables={opportunity.deliverables || []}
             postingDeadline={endDateDisplay}
             compensation={compensationDisplay}
             payoutMethod="Direct Bank Transfer (via Flashy Social's payment portal)"
             eligibility={[
+              ...(opportunity.ccv && opportunity.ccv > 0
+                ? [`Minimum CCV: ${opportunity.ccv}`]
+                : []),
+              ...(opportunity.avgViews && opportunity.avgViews > 0
+                ? [`Minimum Average Views: ${opportunity.avgViews.toLocaleString()}`]
+                : []),
               ...(opportunity.eligibility?.niches?.length
                 ? [`Niches: ${opportunity.eligibility.niches.join(", ")}`]
                 : []),
@@ -161,7 +173,14 @@ export default function OpportunityPage() {
               "Content must be 18+ friendly and in accordance with local legal guidelines",
             ]}
           />
-        ) : (
+        )}
+        {activeTab === "media" && (
+          <BusinessOpportunityMedia
+            mediaAssets={opportunity.mediaAssets}
+            brandName={opportunity.brandName}
+          />
+        )}
+        {activeTab === "terms" && (
           <OpportunityTerms
             terms={
               opportunity.termsAndConditions ||
@@ -170,33 +189,35 @@ export default function OpportunityPage() {
           />
         )}
 
-        {myStatus?.hasApplied ? (
-          <div className="space-y-4 pt-4 border-t border-base-600">
-            <div className="flex items-center gap-2 text-brand-100">
-              <Check className="w-5 h-5" />
-              <span className="text-sm font-medium">
-                You have already applied to this opportunity
-              </span>
+        {!isCreator && (
+          myStatus?.hasApplied ? (
+            <div className="space-y-4 pt-4 border-t border-base-600">
+              <div className="flex items-center gap-2 text-brand-100">
+                <Check className="w-5 h-5" />
+                <span className="text-sm font-medium">
+                  You have already applied to this opportunity
+                </span>
+              </div>
+              <p className="text-xs text-base-800">
+                Status:{" "}
+                <span className="text-white capitalize">
+                  {myStatus.status?.replace(/-/g, " ")}
+                </span>
+              </p>
+              <Button
+                variant="outline"
+                onClick={() => router.push("/monetise/creator-dashboard")}
+              >
+                View My Opportunities
+              </Button>
             </div>
-            <p className="text-xs text-base-800">
-              Status:{" "}
-              <span className="text-white capitalize">
-                {myStatus.status?.replace(/-/g, " ")}
-              </span>
-            </p>
-            <Button
-              variant="outline"
-              onClick={() => router.push("/monetise/creator-dashboard")}
-            >
-              View My Opportunities
-            </Button>
-          </div>
-        ) : (
-          <OpportunityApplySection
-            brandName={opportunity.brandName}
-            onApply={handleApply}
-            isApplying={acceptOpportunity.isPending}
-          />
+          ) : (
+            <OpportunityApplySection
+              brandName={opportunity.brandName}
+              onApply={handleApply}
+              isApplying={acceptOpportunity.isPending}
+            />
+          )
         )}
       </div>
     </div>

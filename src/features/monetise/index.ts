@@ -20,6 +20,7 @@ export { useMyOpportunities } from "./queries/use-my-opportunities";
 export { useMyOpportunityStatus } from "./queries/use-my-opportunity-status";
 export { useSponsorSubmissions } from "./queries/use-sponsor-submissions";
 export { useAdminOpportunities } from "./queries/use-admin-opportunities";
+export { useOpportunitiesByIds } from "./queries/use-opportunities-by-ids";
 
 // Creator Mutations
 export { useAcceptOpportunity } from "./mutations/use-accept-opportunity";

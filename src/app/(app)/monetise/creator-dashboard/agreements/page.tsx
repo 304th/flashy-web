@@ -4,7 +4,10 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Select } from "@/components/ui/select";
-import { CreatorOpportunityCard, useMyOpportunities } from "@/features/monetise";
+import {
+  CreatorOpportunityCard,
+  useMyOpportunities,
+} from "@/features/monetise";
 import { TimeRange } from "@/features/monetise/collections/my-opportunities";
 import { useWishlistStore } from "@/stores";
 
@@ -75,7 +78,9 @@ export default function CreatorDashboardAgreementsPage() {
             {[1, 2, 3, 4].map((i) => (
               <div key={i} className="flex flex-col gap-3">
                 <div className="h-4 bg-base-400 rounded animate-pulse" />
-                <div className="aspect-video bg-base-400 rounded-lg animate-pulse" />
+                <div
+                  className="aspect-video bg-base-400 rounded-lg animate-pulse"
+                />
                 <div className="h-5 bg-base-400 rounded w-3/4 animate-pulse" />
                 <div className="h-4 bg-base-400 rounded w-1/2 animate-pulse" />
               </div>
@@ -102,7 +107,10 @@ export default function CreatorDashboardAgreementsPage() {
             );
           })
         ) : (
-          <div className="col-span-4 flex flex-col items-center justify-center py-12 text-base-700">
+          <div
+            className="col-span-4 flex flex-col items-center justify-center
+              py-12 text-base-700"
+          >
             <p>No agreements yet</p>
             <Button
               variant="outline"

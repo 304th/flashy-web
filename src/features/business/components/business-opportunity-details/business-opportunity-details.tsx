@@ -97,7 +97,9 @@ export function BusinessOpportunityDetails({
               {avgViews !== undefined && avgViews > 0 && (
                 <li className="text-sm text-brand-100 flex items-start gap-2">
                   <span className="text-base-600">•</span>
-                  <span>Minimum Average Views: {avgViews.toLocaleString()}</span>
+                  <span>
+                    Minimum Average Views: {avgViews.toLocaleString()}
+                  </span>
                 </li>
               )}
               {eligibility.niches?.length > 0 && (

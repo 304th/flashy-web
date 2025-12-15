@@ -214,7 +214,6 @@ export function BusinessOpportunityAgreements({
                         <Eye className="w-4 h-4" />
                       </Button>
                     </Link>
-
                   </td>
                 </tr>
               ))

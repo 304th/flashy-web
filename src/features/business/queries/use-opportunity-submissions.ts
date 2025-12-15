@@ -20,7 +20,12 @@ export const useOpportunitySubmissions = (
     OpportunitySubmissionsCollectionParams
   >({
     collection: opportunitySubmissionsCollection,
-    queryKey: ["business", "opportunity-submissions", params.opportunityId, params.status],
+    queryKey: [
+      "business",
+      "opportunity-submissions",
+      params.opportunityId,
+      params.status,
+    ],
     getParams: ({ pageParam }) =>
       ({
         opportunityId: params.opportunityId,

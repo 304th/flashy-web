@@ -13,66 +13,64 @@ import { CreateOpportunityDeliverables } from "../create-opportunity-form/create
 import { CreateOpportunityRequirements } from "../create-opportunity-form/create-opportunity-requirements";
 import { useUpdateSponsorOpportunity } from "@/features/business";
 
-const formSchema = z.object({
-  type: z.enum(["sponsorship", "affiliate", "partnership"] as const),
-  title: z.string().min(3, "Agreement name must be at least 3 characters"),
-  brandName: z
-    .string()
-    .min(2, "Company name must be at least 2 characters")
-    .optional(),
-  category: z.string().min(1, "Please select a category").optional(),
-  productLink: z
-    .string()
-    .url("Please enter a valid URL")
-    .optional()
-    .or(z.literal("")),
-  thumbnail: z.string().nullable().optional(),
-  thumbnailFile: z.any().optional(),
-  mediaAssetFiles: z.array(z.any()).optional().default([]),
-  existingMediaAssets: z.array(z.string()).optional().default([]),
-  startDate: z.custom<any>(),
-  endDate: z.custom<any>().optional(),
-  productDescription: z
-    .string()
-    .min(10, "Product description must be at least 10 characters"),
-  description: z
-    .string()
-    .min(10, "Agreement description must be at least 10 characters"),
-  termsAndConditions: z
-    .string()
-    .min(10, "Terms & conditions must be at least 10 characters"),
-  deliverables: z
-    .array(z.string().min(1))
-    .min(1, "At least one deliverable is required"),
-  ccv: z.number().min(50, "Must be at least 50"),
-  avgViews: z.number().min(0, "Must be at least 0"),
-  compensationType: z.enum([
-    "fixed",
-    "commission",
-    "product",
-  ] as const),
-  compensation: z.string().optional(),
-}).superRefine((data, ctx) => {
-  if (data.compensationType === "commission") {
-    const value = Number(data.compensation);
-    if (!data.compensation || isNaN(value) || value < 0 || value > 100) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "Commission must be a percentage between 0 and 100",
-        path: ["compensation"],
-      });
+const formSchema = z
+  .object({
+    type: z.enum(["sponsorship", "affiliate", "partnership"] as const),
+    title: z.string().min(3, "Agreement name must be at least 3 characters"),
+    brandName: z
+      .string()
+      .min(2, "Company name must be at least 2 characters")
+      .optional(),
+    category: z.string().min(1, "Please select a category").optional(),
+    productLink: z
+      .string()
+      .url("Please enter a valid URL")
+      .optional()
+      .or(z.literal("")),
+    thumbnail: z.string().nullable().optional(),
+    thumbnailFile: z.any().optional(),
+    mediaAssetFiles: z.array(z.any()).optional().default([]),
+    existingMediaAssets: z.array(z.string()).optional().default([]),
+    startDate: z.custom<any>(),
+    endDate: z.custom<any>().optional(),
+    productDescription: z
+      .string()
+      .min(10, "Product description must be at least 10 characters"),
+    description: z
+      .string()
+      .min(10, "Agreement description must be at least 10 characters"),
+    termsAndConditions: z
+      .string()
+      .min(10, "Terms & conditions must be at least 10 characters"),
+    deliverables: z
+      .array(z.string().min(1))
+      .min(1, "At least one deliverable is required"),
+    ccv: z.number().min(50, "Must be at least 50"),
+    avgViews: z.number().min(0, "Must be at least 0"),
+    compensationType: z.enum(["fixed", "commission", "product"] as const),
+    compensation: z.string().optional(),
+  })
+  .superRefine((data, ctx) => {
+    if (data.compensationType === "commission") {
+      const value = Number(data.compensation);
+      if (!data.compensation || isNaN(value) || value < 0 || value > 100) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Commission must be a percentage between 0 and 100",
+          path: ["compensation"],
+        });
+      }
+    } else if (data.compensationType === "fixed") {
+      const value = Number(data.compensation);
+      if (!data.compensation || isNaN(value) || value <= 0) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Please enter a valid dollar amount",
+          path: ["compensation"],
+        });
+      }
     }
-  } else if (data.compensationType === "fixed") {
-    const value = Number(data.compensation);
-    if (!data.compensation || isNaN(value) || value <= 0) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "Please enter a valid dollar amount",
-        path: ["compensation"],
-      });
-    }
-  }
-});
+  });
 
 type FormData = z.infer<typeof formSchema> & {
   thumbnailFile?: File;

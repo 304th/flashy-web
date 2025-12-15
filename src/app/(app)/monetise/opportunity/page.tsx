@@ -133,7 +133,9 @@ function OpportunityPageContent() {
   // Check if opportunity is active (between startDate and endDate)
   const getOpportunityStatus = () => {
     const now = new Date();
-    const start = opportunity.startDate ? new Date(opportunity.startDate) : null;
+    const start = opportunity.startDate
+      ? new Date(opportunity.startDate)
+      : null;
     const end = opportunity.endDate ? new Date(opportunity.endDate) : null;
 
     if (start && now < start) {
@@ -171,7 +173,7 @@ function OpportunityPageContent() {
     if (opportunity.ccv && opportunity.ccv > 0) {
       if (myStats.peakViewers < opportunity.ccv) {
         reasons.push(
-          `Minimum CCV required: ${opportunity.ccv} (Your CCV: ${myStats.peakViewers})`
+          `Minimum CCV required: ${opportunity.ccv} (Your CCV: ${myStats.peakViewers})`,
         );
       }
     }
@@ -180,7 +182,7 @@ function OpportunityPageContent() {
     if (opportunity.avgViews && opportunity.avgViews > 0) {
       if (myStats.avgViews < opportunity.avgViews) {
         reasons.push(
-          `Minimum Average Views required: ${opportunity.avgViews.toLocaleString()} (Your Average Views: ${myStats.avgViews.toLocaleString()})`
+          `Minimum Average Views required: ${opportunity.avgViews.toLocaleString()} (Your Average Views: ${myStats.avgViews.toLocaleString()})`,
         );
       }
     }
@@ -231,7 +233,7 @@ function OpportunityPageContent() {
               opportunity.type.slice(1)
             }
             description={opportunity.description}
-            isEligible={(!isCreator && eligibility.isEligible)}
+            isEligible={!isCreator && eligibility.isEligible}
             isFavourited={isWishlisted(opportunity._id)}
             hasApplied={myStatus?.hasApplied}
             status={myStatus?.status ?? undefined}
@@ -261,16 +263,22 @@ function OpportunityPageContent() {
                   ? [`Minimum CCV: ${opportunity.ccv}`]
                   : []),
                 ...(opportunity.avgViews && opportunity.avgViews > 0
-                  ? [`Minimum Average Views: ${opportunity.avgViews.toLocaleString()}`]
+                  ? [
+                      `Minimum Average Views: ${opportunity.avgViews.toLocaleString()}`,
+                    ]
                   : []),
                 ...(opportunity.eligibility?.niches?.length
                   ? [`Niches: ${opportunity.eligibility.niches.join(", ")}`]
                   : []),
                 ...(opportunity.eligibility?.platforms?.length
-                  ? [`Platforms: ${opportunity.eligibility.platforms.join(", ")}`]
+                  ? [
+                      `Platforms: ${opportunity.eligibility.platforms.join(", ")}`,
+                    ]
                   : []),
                 ...(opportunity.eligibility?.countries?.length
-                  ? [`Countries: ${opportunity.eligibility.countries.join(", ")}`]
+                  ? [
+                      `Countries: ${opportunity.eligibility.countries.join(", ")}`,
+                    ]
                   : []),
                 "Content must be 18+ friendly and in accordance with local legal guidelines",
               ]}
@@ -292,16 +300,19 @@ function OpportunityPageContent() {
           )}
           {activeTab === "deliverables" && myStatus?.creatorOpportunity && (
             <AgreementDeliverables
-              files={myStatus.creatorOpportunity.submission?.files as string[] | undefined}
+              files={
+                myStatus.creatorOpportunity.submission?.files as
+                  | string[]
+                  | undefined
+              }
               links={myStatus.creatorOpportunity.submission?.links}
               note={myStatus.creatorOpportunity.submission?.note}
             />
           )}
         </div>
 
-
-        {!isCreator && (
-          myStatus?.hasApplied ? (
+        {!isCreator &&
+          (myStatus?.hasApplied ? (
             <div className="space-y-4 pt-4 border-t border-base-600">
               {myStatus.status === "rejected" ? (
                 <>
@@ -368,7 +379,10 @@ function OpportunityPageContent() {
             </div>
           ) : !opportunityStatus.isActive ? (
             <div className="space-y-4 pt-4 border-t border-base-600">
-              <div className={`flex items-center gap-2 ${opportunityStatus.status === "upcoming" ? "text-base-700" : "text-red-500"}`}>
+              <div
+                className={`flex items-center gap-2
+                  ${opportunityStatus.status === "upcoming" ? "text-base-700" : "text-red-500"}`}
+              >
                 {opportunityStatus.status === "upcoming" ? (
                   <Clock className="w-5 h-5" />
                 ) : (
@@ -409,8 +423,7 @@ function OpportunityPageContent() {
                 isApplying={acceptOpportunity.isPending}
               />
             </div>
-          )
-        )}
+          ))}
       </div>
     </div>
   );

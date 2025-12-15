@@ -88,9 +88,9 @@ export function BusinessOpportunityMedia({
             {allMedia.map((media, index) => (
               <button
                 key={index}
-                className="relative rounded-lg overflow-hidden
-                  bg-base-300 cursor-pointer hover:opacity-80
-                  transition-opacity p-4 aspect-square"
+                className="relative rounded-lg overflow-hidden bg-base-300
+                  cursor-pointer hover:opacity-80 transition-opacity p-4
+                  aspect-square"
                 onClick={() => window.open(media, "_blank")}
               >
                 {isImageUrl(media) ? (
@@ -101,9 +101,15 @@ export function BusinessOpportunityMedia({
                     className="object-contain"
                   />
                 ) : (
-                  <div className="w-full h-full flex flex-col items-center justify-center p-4 aspect-square">
+                  <div
+                    className="w-full h-full flex flex-col items-center
+                      justify-center p-4 aspect-square"
+                  >
                     <FileText className="w-16 h-16 text-base-700 mb-1" />
-                    <span className="text-base-700 text-[10px] truncate w-full text-center">
+                    <span
+                      className="text-base-700 text-[10px] truncate w-full
+                        text-center"
+                    >
                       {getFileName(media)}
                     </span>
                     <span className="text-base-600 text-[10px] uppercase">
@@ -175,9 +181,14 @@ export function BusinessOpportunityMedia({
                 className="object-contain"
               />
             ) : (
-              <div className="w-full h-full flex flex-col items-center justify-center">
+              <div
+                className="w-full h-full flex flex-col items-center
+                  justify-center"
+              >
                 <FileText className="w-24 h-24 text-white mb-4" />
-                <span className="text-white text-lg truncate max-w-[90%] px-4 mb-2">
+                <span
+                  className="text-white text-lg truncate max-w-[90%] px-4 mb-2"
+                >
                   {getFileName(allMedia[selectedIndex])}
                 </span>
                 <span className="text-base-400 text-sm uppercase mb-4">

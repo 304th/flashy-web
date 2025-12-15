@@ -62,7 +62,9 @@ export function OpportunityHeader({
       return (
         <div className="flex items-center gap-2 text-red-500">
           <Check className="w-4 h-4" />
-          <span className="text-sm">You are not eligible for this opportunity</span>
+          <span className="text-sm">
+            You are not eligible for this opportunity
+          </span>
         </div>
       );
     }
@@ -95,14 +97,18 @@ export function OpportunityHeader({
         return (
           <div className="flex items-center gap-2 text-yellow-500">
             <Clock className="w-4 h-4" />
-            <span className="text-sm">Deliverables submitted - Awaiting review</span>
+            <span className="text-sm">
+              Deliverables submitted - Awaiting review
+            </span>
           </div>
         );
       case "accepted":
         return (
           <div className="flex items-center gap-2 text-brand-100">
             <AlertCircle className="w-4 h-4" />
-            <span className="text-sm">Accepted - Pending deliverables submission</span>
+            <span className="text-sm">
+              Accepted - Pending deliverables submission
+            </span>
           </div>
         );
       default:

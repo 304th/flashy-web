@@ -20,7 +20,15 @@ const ALLOWED_FILE_TYPES = [
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 ];
 
-const ALLOWED_EXTENSIONS = [".png", ".jpg", ".jpeg", ".svg", ".pdf", ".doc", ".docx"];
+const ALLOWED_EXTENSIONS = [
+  ".png",
+  ".jpg",
+  ".jpeg",
+  ".svg",
+  ".pdf",
+  ".doc",
+  ".docx",
+];
 
 const isImageFile = (file: File) => file.type.startsWith("image/");
 
@@ -51,7 +59,8 @@ export const CreateOpportunityMedia = () => {
 
     for (const file of files) {
       const extension = getFileExtension(file.name);
-      const isValidType = ALLOWED_FILE_TYPES.includes(file.type) ||
+      const isValidType =
+        ALLOWED_FILE_TYPES.includes(file.type) ||
         ALLOWED_EXTENSIONS.includes(extension);
 
       if (!isValidType) {
@@ -163,7 +172,8 @@ export const CreateOpportunityMedia = () => {
             {galleryFiles.map((file, index) => (
               <div
                 key={index}
-                className="relative rounded-lg overflow-hidden bg-base-400 aspect-square"
+                className="relative rounded-lg overflow-hidden bg-base-400
+                  aspect-square"
               >
                 {isImageFile(file) ? (
                   <img
@@ -172,9 +182,15 @@ export const CreateOpportunityMedia = () => {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <div className="w-full h-full flex flex-col items-center justify-center p-2 bg-base-300">
+                  <div
+                    className="w-full h-full flex flex-col items-center
+                      justify-center p-2 bg-base-300"
+                  >
                     <FileText className="w-8 h-8 text-base-700 mb-1" />
-                    <span className="text-xs text-base-700 text-center truncate w-full">
+                    <span
+                      className="text-xs text-base-700 text-center truncate
+                        w-full"
+                    >
                       {file.name}
                     </span>
                     <span className="text-xs text-base-600 uppercase">

@@ -112,7 +112,9 @@ export const RejectSubmissionModal = ({
               variant="destructive"
               disabled={!isDirty || !isValid || rejectSubmission.isPending}
             >
-              {rejectSubmission.isPending ? "Rejecting..." : "Reject Submission"}
+              {rejectSubmission.isPending
+                ? "Rejecting..."
+                : "Reject Submission"}
             </Button>
           </div>
         </form>

@@ -219,7 +219,8 @@ export const SubmitDeliverablesModal = ({
       <motion.div
         initial="hidden"
         animate="show"
-        className="relative flex flex-col p-4 gap-4 rounded-md max-h-[80vh] overflow-y-auto"
+        className="relative flex flex-col p-4 gap-4 rounded-md max-h-[80vh]
+          overflow-y-auto"
       >
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-bold text-white">Submit Deliverables</h2>
@@ -239,14 +240,17 @@ export const SubmitDeliverablesModal = ({
                 isDragActive
                   ? "p-2 border-2 border-blue-500 border-dashed bg-blue-500/10"
                   : "p-0"
-              }`}
+                }`}
               onDragEnter={dragHandlers.onDragEnter}
               onDragOver={dragHandlers.onDragOver}
               onDragLeave={dragHandlers.onDragLeave}
               onDrop={dragHandlers.onDrop}
             >
               {isDragActive && (
-                <div className="absolute inset-0 flex items-center justify-center bg-blue-500/20 rounded-lg z-10 pointer-events-none">
+                <div
+                  className="absolute inset-0 flex items-center justify-center
+                    bg-blue-500/20 rounded-lg z-10 pointer-events-none"
+                >
                   <p className="text-white text-sm font-semibold">
                     Drop files here
                   </p>
@@ -258,7 +262,8 @@ export const SubmitDeliverablesModal = ({
                   {files.map((file, index) => (
                     <div
                       key={index}
-                      className="relative rounded-lg overflow-hidden bg-base-400 p-4 aspect-square"
+                      className="relative rounded-lg overflow-hidden bg-base-400
+                        p-4 aspect-square"
                     >
                       {isImageFile(file) ? (
                         <img
@@ -272,9 +277,15 @@ export const SubmitDeliverablesModal = ({
                           className="w-full h-full object-contain"
                         />
                       ) : (
-                        <div className="w-full h-full flex flex-col items-center justify-center">
+                        <div
+                          className="w-full h-full flex flex-col items-center
+                            justify-center"
+                        >
                           <FileText className="w-12 h-12 text-base-700 mb-1" />
-                          <span className="text-[10px] text-base-700 text-center truncate w-full">
+                          <span
+                            className="text-[10px] text-base-700 text-center
+                              truncate w-full"
+                          >
                             {file.name}
                           </span>
                           <span className="text-[10px] text-base-600 uppercase">
@@ -285,7 +296,9 @@ export const SubmitDeliverablesModal = ({
                       <button
                         type="button"
                         onClick={() => removeFile(index)}
-                        className="absolute top-1 right-1 p-1 bg-red-500 rounded-full hover:bg-red-600 transition-colors cursor-pointer"
+                        className="absolute top-1 right-1 p-1 bg-red-500
+                          rounded-full hover:bg-red-600 transition-colors
+                          cursor-pointer"
                       >
                         <X className="w-3 h-3 text-white" />
                       </button>
@@ -299,7 +312,10 @@ export const SubmitDeliverablesModal = ({
                 onClick={() =>
                   document.getElementById("deliverables-upload")?.click()
                 }
-                className="w-full rounded-lg h-24 bg-base-200 cursor-pointer hover:bg-base-300 transition-colors flex flex-col items-center justify-center gap-2 border-1 border-dashed border-base-400 hover:border-base-700"
+                className="w-full rounded-lg h-24 bg-base-200 cursor-pointer
+                  hover:bg-base-300 transition-colors flex flex-col items-center
+                  justify-center gap-2 border-1 border-dashed border-base-400
+                  hover:border-base-700"
               >
                 <UploadCloudIcon className="w-6 h-6 text-white" />
                 <span className="text-white text-sm">
@@ -359,20 +375,24 @@ export const SubmitDeliverablesModal = ({
                 {linkFields.map((field, index) => (
                   <div
                     key={field.id}
-                    className="flex items-center justify-between bg-base-200 rounded-lg px-4 py-3 border border-base-400"
+                    className="flex items-center justify-between bg-base-200
+                      rounded-lg px-4 py-3 border border-base-400"
                   >
                     <a
                       href={field.value}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-sm text-brand-100 truncate hover:underline"
+                      className="text-sm text-brand-100 truncate
+                        hover:underline"
                     >
                       {field.value}
                     </a>
                     <button
                       type="button"
                       onClick={() => removeLink(index)}
-                      className="text-red-500 hover:text-red-600 cursor-pointer p-2 rounded-md transition hover:bg-base-300 inline-flex justify-center items-center ml-2"
+                      className="text-red-500 hover:text-red-600 cursor-pointer
+                        p-2 rounded-md transition hover:bg-base-300 inline-flex
+                        justify-center items-center ml-2"
                     >
                       <X className="w-4 h-4" />
                     </button>

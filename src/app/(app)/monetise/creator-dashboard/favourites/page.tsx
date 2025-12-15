@@ -41,7 +41,10 @@ export default function FavouritesPage() {
           />
         ))
       ) : (
-        <div className="col-span-4 flex flex-col items-center justify-center py-12 text-base-700">
+        <div
+          className="col-span-4 flex flex-col items-center justify-center py-12
+            text-base-700"
+        >
           <p>No favourites yet</p>
           <Button
             variant="outline"

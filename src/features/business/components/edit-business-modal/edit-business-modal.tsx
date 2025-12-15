@@ -18,7 +18,10 @@ import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { useMyBusinessAccount, useUpdateBusinessAccount } from "@/features/business";
+import {
+  useMyBusinessAccount,
+  useUpdateBusinessAccount,
+} from "@/features/business";
 
 const BUSINESS_CATEGORIES = [
   { value: "lifestyle", label: "Lifestyle" },
@@ -134,7 +137,8 @@ export const EditBusinessModal = ({ onClose }: EditBusinessModalProps) => {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>
-                        Business Category <span className="text-red-500">*</span>
+                        Business Category{" "}
+                        <span className="text-red-500">*</span>
                       </FormLabel>
                       <FormControl>
                         <Select.Root
@@ -164,7 +168,8 @@ export const EditBusinessModal = ({ onClose }: EditBusinessModalProps) => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      Business Description <span className="text-red-500">*</span>
+                      Business Description{" "}
+                      <span className="text-red-500">*</span>
                     </FormLabel>
                     <FormControl>
                       <Textarea
@@ -196,7 +201,9 @@ export const EditBusinessModal = ({ onClose }: EditBusinessModalProps) => {
                     !form.formState.isDirty
                   }
                 >
-                  {updateBusinessAccount.isPending ? "Saving..." : "Save Changes"}
+                  {updateBusinessAccount.isPending
+                    ? "Saving..."
+                    : "Save Changes"}
                 </Button>
               </div>
             </div>

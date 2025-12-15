@@ -5,10 +5,10 @@ import { Check, Clock, Ban } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tag } from "@/components/ui/tag";
 import { SubmissionCreator } from "@/features/business/queries/use-submission-by-id";
-import {UserProfile} from "@/components/ui/user-profile";
+import { UserProfile } from "@/components/ui/user-profile";
 import Link from "next/link";
-import {MessagesButton} from "@/features/auth/components/account-login/messages-button";
-import {ChannelMessageButton} from "@/features/channels/components/channel-header/channel-message-button";
+import { MessagesButton } from "@/features/auth/components/account-login/messages-button";
+import { ChannelMessageButton } from "@/features/channels/components/channel-header/channel-message-button";
 
 interface AgreementHeaderProps {
   creator: SubmissionCreator | null | undefined;
@@ -29,7 +29,11 @@ const statusConfig: Record<
     icon: Clock,
   },
   submitted: { label: "Submitted on", color: "text-orange-500", icon: Check },
-  "under-review": { label: "Under Review since", color: "text-blue-500", icon: Clock },
+  "under-review": {
+    label: "Under Review since",
+    color: "text-blue-500",
+    icon: Clock,
+  },
   approved: { label: "Approved on", color: "text-green-500", icon: Check },
   rejected: { label: "Rejected on", color: "text-red-500", icon: Ban },
   expired: { label: "Expired on", color: "text-red-500", icon: Ban },
@@ -56,11 +60,17 @@ export function AgreementHeader({
   };
 
   return (
-    <div className="flex items-center justify-between p-4 bg-base-200 rounded-lg">
+    <div
+      className="flex items-center justify-between p-4 bg-base-200 rounded-lg"
+    >
       <div className="flex items-center gap-4">
-        {
-          creator && <UserProfile user={creator} withoutUsername avatarClassname="h-16 w-16" />
-        }
+        {creator && (
+          <UserProfile
+            user={creator}
+            withoutUsername
+            avatarClassname="h-16 w-16"
+          />
+        )}
 
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-2">
@@ -80,8 +90,17 @@ export function AgreementHeader({
         </div>
       </div>
       <div className="flex flex-col items-center gap-3">
-        {creator && <ChannelMessageButton channel={creator} title="Contact" variant="default" className="!w-full min-w-[242px]" />}
-        <div className="flex items-center gap-4 text-right w-full justify-between">
+        {creator && (
+          <ChannelMessageButton
+            channel={creator}
+            title="Contact"
+            variant="default"
+            className="!w-full min-w-[242px]"
+          />
+        )}
+        <div
+          className="flex items-center gap-4 text-right w-full justify-between"
+        >
           <div>
             <span className="text-2xl font-bold text-white">
               {creator?.followersCount?.toLocaleString() || 0}

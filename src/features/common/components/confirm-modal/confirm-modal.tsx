@@ -70,7 +70,7 @@ export const ConfirmModal = ({
 const Modal = (props: any) => (
   <ModalComponent
     {...props}
-    className={`max-sm:min-w-unset max-w-[550px] min-w-[500px] !bg-base-300 !rounded-md
-      max-sm:w-full shadow-2xl overflow-hidden ${props.className}`}
+    className={`max-sm:min-w-unset max-w-[550px] min-w-[500px] !bg-base-300
+      !rounded-md max-sm:w-full shadow-2xl overflow-hidden ${props.className}`}
   />
 );

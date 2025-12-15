@@ -4,7 +4,11 @@ import { Suspense, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import { Check, Clock, Ban } from "lucide-react";
-import {OpportunityDetails, OpportunityTerms, useOpportunityById} from "@/features/monetise";
+import {
+  OpportunityDetails,
+  OpportunityTerms,
+  useOpportunityById,
+} from "@/features/monetise";
 import { GoBackButton } from "@/components/ui/go-back-button";
 import { Button } from "@/components/ui/button";
 import { Tag } from "@/components/ui/tag";
@@ -16,7 +20,7 @@ import { BusinessOpportunityDetails } from "@/features/business/components/busin
 import { BusinessOpportunityMedia } from "@/features/business/components/business-opportunity-media/business-opportunity-media";
 import { BusinessOpportunityTerms } from "@/features/business/components/business-opportunity-terms/business-opportunity-terms";
 import { BusinessOpportunityAgreements } from "@/features/business/components/business-opportunity-agreements/business-opportunity-agreements";
-import {AgreementDeliverables} from "@/features/business/components/agreement-deliverables/agreement-deliverables";
+import { AgreementDeliverables } from "@/features/business/components/agreement-deliverables/agreement-deliverables";
 
 export default function BusinessOpportunityPage() {
   return (
@@ -169,16 +173,21 @@ function BusinessOpportunityPageContent() {
         </div>
         <div className="flex flex-col gap-4 justify-between">
           <div className="flex flex-col gap-3 grow-1">
-            <div className={`flex items-center gap-2 text-sm ${opportunityStatus.color}`}>
+            <div
+              className={`flex items-center gap-2 text-sm
+                ${opportunityStatus.color}`}
+            >
               <opportunityStatus.icon className="w-4 h-4" />
               <span>{opportunityStatus.message}</span>
               {opportunityStatus.status === "active" && (
                 <span className="text-base-600 ml-2">
-                {daysRemaining} days remaining
-              </span>
+                  {daysRemaining} days remaining
+                </span>
               )}
             </div>
-            <h1 className="text-3xl font-bold text-white">{opportunity.title}</h1>
+            <h1 className="text-3xl font-bold text-white">
+              {opportunity.title}
+            </h1>
             <div className="flex items-center gap-2">
               <Tag className="!bg-base-300 !border-base-400 text-sm">
                 {opportunity.brandName}
@@ -247,7 +256,6 @@ function BusinessOpportunityPageContent() {
           <BusinessOpportunityAgreements opportunityId={opportunity._id} />
         )}
       </div>
-
     </div>
   );
 }

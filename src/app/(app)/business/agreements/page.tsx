@@ -72,7 +72,10 @@ function BusinessAgreementPageContent() {
 
   if (!submission) {
     return (
-      <div className="flex flex-col items-center justify-center gap-4 p-6 min-h-[400px]">
+      <div
+        className="flex flex-col items-center justify-center gap-4 p-6
+          min-h-[400px]"
+      >
         <p className="text-base-800">Agreement not found</p>
         <GoBackButton />
       </div>
@@ -149,7 +152,10 @@ function BusinessAgreementPageContent() {
       <div className="flex items-center gap-3">
         {isSubmitted && (
           <>
-            <Button onClick={handleApprove} disabled={approveSubmission.isPending}>
+            <Button
+              onClick={handleApprove}
+              disabled={approveSubmission.isPending}
+            >
               {approveSubmission.isPending ? "Approving..." : "Approve"}
             </Button>
             <Button variant="destructive" onClick={handleReject}>
@@ -162,7 +168,9 @@ function BusinessAgreementPageContent() {
           onClick={handleTerminate}
           disabled={terminateAgreement.isPending}
         >
-          {terminateAgreement.isPending ? "Terminating..." : "Terminate Agreement"}
+          {terminateAgreement.isPending
+            ? "Terminating..."
+            : "Terminate Agreement"}
         </Button>
       </div>
 

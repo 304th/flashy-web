@@ -46,7 +46,7 @@ export const CreateOpportunityRequirements = () => {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className={`grid gap-4 grid-cols-2`}>
+      <div className={"grid gap-4 grid-cols-2"}>
         <FormField
           control={form.control}
           name="compensationType"
@@ -83,7 +83,9 @@ export const CreateOpportunityRequirements = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>
-                  {compensationType === "commission" ? "Commission Rate" : "Amount"}{" "}
+                  {compensationType === "commission"
+                    ? "Commission Rate"
+                    : "Amount"}{" "}
                   <span className="text-red-500">*</span>
                 </FormLabel>
                 <FormControl>

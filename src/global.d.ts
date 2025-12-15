@@ -368,10 +368,7 @@ declare global {
     | "gaming"
     | "business";
   type OpportunityStatus = "active" | "expired" | "paused";
-  type CompensationType =
-    | "fixed"
-    | "commission"
-    | "product";
+  type CompensationType = "fixed" | "commission" | "product";
   type CreatorOpportunityStatus =
     | "accepted"
     | "pending-deliverables"

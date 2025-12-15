@@ -1,8 +1,8 @@
 import { api } from "@/services/api";
 import { createMutation, useOptimisticMutation } from "@/lib/query-toolkit-v2";
 import { myOpportunitiesCollection } from "@/features/monetise/collections/my-opportunities";
-import {createSignedUploadUrlMutation} from "@/features/common/mutations/use-create-signed-upload-url";
-import {uploadImage} from "@/features/common/mutations/use-upload-image";
+import { createSignedUploadUrlMutation } from "@/features/common/mutations/use-create-signed-upload-url";
+import { uploadImage } from "@/features/common/mutations/use-upload-image";
 
 export interface SubmitDeliverablesParams {
   opportunityId: string;
@@ -38,7 +38,6 @@ const submitDeliverablesMutation = createMutation<
         }),
       );
     }
-
 
     return api
       .post(`opportunities/${params.opportunityId}/submit`, {

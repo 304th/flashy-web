@@ -1,6 +1,7 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { useMemo } from "react";
+import { ContentTabs } from "@/components/ui/content-tabs";
 
 type TabType = "description" | "media" | "terms" | "deliverables";
 
@@ -15,59 +16,26 @@ export function OpportunityTabs({
   onTabChange,
   showDeliverables = false,
 }: OpportunityTabsProps) {
+  const tabs = useMemo(() => {
+    const baseTabs: { value: TabType; label: string }[] = [
+      { value: "description", label: "Description & Deliverables" },
+      { value: "media", label: "Media" },
+      { value: "terms", label: "Terms & Conditions" },
+    ];
+
+    if (showDeliverables) {
+      baseTabs.push({ value: "deliverables", label: "My Submission" });
+    }
+
+    return baseTabs;
+  }, [showDeliverables]);
+
   return (
-    <div className="flex items-center gap-6 border-b border-base-600">
-      <button
-        onClick={() => onTabChange("description")}
-        className={cn(
-          `cursor-pointer pb-3 text-sm font-medium transition-colors border-b-2
-          -mb-px`,
-          activeTab === "description"
-            ? "text-white border-brand-100"
-            : "text-base-800 border-transparent hover:text-white",
-        )}
-      >
-        Description & Deliverables
-      </button>
-      <button
-        onClick={() => onTabChange("media")}
-        className={cn(
-          `cursor-pointer pb-3 text-sm font-medium transition-colors border-b-2
-          -mb-px`,
-          activeTab === "media"
-            ? "text-white border-brand-100"
-            : "text-base-800 border-transparent hover:text-white",
-        )}
-      >
-        Media
-      </button>
-      <button
-        onClick={() => onTabChange("terms")}
-        className={cn(
-          `cursor-pointer pb-3 text-sm font-medium transition-colors border-b-2
-          -mb-px`,
-          activeTab === "terms"
-            ? "text-white border-brand-100"
-            : "text-base-800 border-transparent hover:text-white",
-        )}
-      >
-        Terms & Conditions
-      </button>
-      {showDeliverables && (
-        <button
-          onClick={() => onTabChange("deliverables")}
-          className={cn(
-            `cursor-pointer pb-3 text-sm font-medium transition-colors border-b-2
-            -mb-px`,
-            activeTab === "deliverables"
-              ? "text-white border-brand-100"
-              : "text-base-800 border-transparent hover:text-white",
-          )}
-        >
-          My Submission
-        </button>
-      )}
-    </div>
+    <ContentTabs<TabType>
+      tabs={tabs}
+      activeTab={activeTab}
+      onTabChange={onTabChange}
+    />
   );
 }
 

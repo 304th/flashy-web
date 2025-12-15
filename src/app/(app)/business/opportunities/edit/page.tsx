@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -7,6 +8,30 @@ import { EditOpportunityForm } from "@/features/business/components/edit-opportu
 import { useOpportunityById } from "@/features/monetise";
 
 export default function EditOpportunityPage() {
+  return (
+    <Suspense fallback={<EditOpportunityPageSkeleton />}>
+      <EditOpportunityPageContent />
+    </Suspense>
+  );
+}
+
+function EditOpportunityPageSkeleton() {
+  return (
+    <div className="flex flex-col gap-8 max-w-page">
+      <div className="flex items-center gap-4 shrink-0">
+        <div className="w-10 h-10 bg-base-400 rounded animate-pulse" />
+        <div className="h-8 bg-base-400 rounded w-48 animate-pulse" />
+      </div>
+      <div className="space-y-4">
+        <div className="h-12 bg-base-400 rounded animate-pulse" />
+        <div className="h-12 bg-base-400 rounded animate-pulse" />
+        <div className="h-32 bg-base-400 rounded animate-pulse" />
+      </div>
+    </div>
+  );
+}
+
+function EditOpportunityPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const opportunityId = searchParams.get("id");

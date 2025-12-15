@@ -100,7 +100,7 @@ export const AccountDropdown = () => {
               <p className="text-white">Settings</p>
             </div>
           </DropdownMenuItem>
-          {me?.superAdmin && (
+          {(me?.superAdmin || me?.manager) && (
             <>
               <DropdownMenuSeparator />
               <DropdownMenuItem

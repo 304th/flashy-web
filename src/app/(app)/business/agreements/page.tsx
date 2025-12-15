@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { GoBackButton } from "@/components/ui/go-back-button";
 import { Button } from "@/components/ui/button";
@@ -19,6 +19,28 @@ import { useModals } from "@/hooks/use-modals";
 import { toast } from "sonner";
 
 export default function BusinessAgreementPage() {
+  return (
+    <Suspense fallback={<BusinessAgreementPageSkeleton />}>
+      <BusinessAgreementPageContent />
+    </Suspense>
+  );
+}
+
+function BusinessAgreementPageSkeleton() {
+  return (
+    <div className="flex flex-col gap-6 max-w-page">
+      <div className="flex items-center gap-4">
+        <div className="w-8 h-8 bg-base-400 rounded animate-pulse" />
+        <div className="h-4 bg-base-400 rounded w-20 animate-pulse" />
+      </div>
+      <div className="h-24 bg-base-400 rounded-lg animate-pulse" />
+      <div className="h-10 bg-base-400 rounded animate-pulse w-1/2" />
+      <div className="h-64 bg-base-400 rounded-lg animate-pulse" />
+    </div>
+  );
+}
+
+function BusinessAgreementPageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const modals = useModals();

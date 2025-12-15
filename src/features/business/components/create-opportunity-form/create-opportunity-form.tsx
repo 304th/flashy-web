@@ -1,5 +1,6 @@
 "use client";
 
+import config from '@/config'
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -39,9 +40,9 @@ const formSchema = z.object({
   deliverables: z
     .array(z.string().min(1))
     .min(1, "At least one deliverable is required"),
-  ccv: z.number().min(50, "Must be at least 50"),
+  ccv: z.number().min(config.monetise.ccv, `Must be at least ${config.monetise.ccv}`),
   // minFollowers: z.number().min(0, "Must be at least 0"),
-  avgViews: z.number().min(0, "Must be at least 0"),
+  avgViews: z.number().min(config.monetise.ccv, `Must be at least ${config.monetise.avgViews}`),
   compensationType: z.enum([
     "fixed",
     "commission",
@@ -103,8 +104,8 @@ export const CreateOpportunityForm = ({
       termsAndConditions: "",
       deliverables: [],
       // minFollowers: 0,
-      ccv: 50,
-      avgViews: 50,
+      ccv: config.monetise.ccv,
+      avgViews: config.monetise.avgViews,
       compensationType: "commission",
       compensation: "",
     },

@@ -49,6 +49,7 @@ declare global {
     moderator?: boolean;
     representative?: boolean;
     superAdmin?: boolean;
+    manager?: boolean;
     mutedUsers?: string[];
     bio?: string;
     banner?: string;

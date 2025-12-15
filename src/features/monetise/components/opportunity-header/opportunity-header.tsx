@@ -58,13 +58,20 @@ export function OpportunityHeader({
   };
 
   const getStatusDisplay = () => {
-    if (!isEligible) return null;
+    if (!isEligible) {
+      return (
+        <div className="flex items-center gap-2 text-red-500">
+          <Check className="w-4 h-4" />
+          <span className="text-sm">You are not eligible for this opportunity</span>
+        </div>
+      );
+    }
 
     if (!hasApplied) {
       return (
         <div className="flex items-center gap-2 text-brand-100">
           <Check className="w-4 h-4" />
-          <span className="text-sm">You Are Eligible For This Opportunity</span>
+          <span className="text-sm">You are eligible for this opportunity</span>
         </div>
       );
     }

@@ -1,14 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Image from "next/image";
-import { Check, XCircle, AlertCircle } from "lucide-react";
+import { Check, XCircle, AlertCircle, Clock, Ban } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   useOpportunityById,
   useAcceptOpportunity,
   useMyOpportunityStatus,
+  useMyStats,
   OpportunityHeader,
   OpportunityTabs,
   OpportunityDetails,
@@ -23,6 +24,33 @@ import { useWishlistStore } from "@/stores";
 import { GoBackButton } from "@/components/ui/go-back-button";
 
 export default function OpportunityPage() {
+  return (
+    <Suspense fallback={<OpportunityPageSkeleton />}>
+      <OpportunityPageContent />
+    </Suspense>
+  );
+}
+
+function OpportunityPageSkeleton() {
+  return (
+    <div className="flex flex-col gap-6 max-w-page">
+      <div className="flex items-center gap-4">
+        <div className="w-8 h-8 bg-base-400 rounded animate-pulse" />
+        <div className="h-4 bg-base-400 rounded w-20 animate-pulse" />
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="aspect-video bg-base-400 rounded-lg animate-pulse" />
+        <div className="space-y-4">
+          <div className="h-6 bg-base-400 rounded w-3/4 animate-pulse" />
+          <div className="h-4 bg-base-400 rounded w-1/2 animate-pulse" />
+          <div className="h-20 bg-base-400 rounded animate-pulse" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function OpportunityPageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const opportunityId = searchParams.get("id");
@@ -39,6 +67,7 @@ export default function OpportunityPage() {
     refetch: refetchStatus,
   } = useMyOpportunityStatus(opportunityId || undefined);
   const { data: me } = useMe();
+  const { data: myStats } = useMyStats();
   const acceptOpportunity = useAcceptOpportunity();
 
   const isLoading = query.isLoading;
@@ -101,6 +130,69 @@ export default function OpportunityPage() {
       })
     : "No end date";
 
+  // Check if opportunity is active (between startDate and endDate)
+  const getOpportunityStatus = () => {
+    const now = new Date();
+    const start = opportunity.startDate ? new Date(opportunity.startDate) : null;
+    const end = opportunity.endDate ? new Date(opportunity.endDate) : null;
+
+    if (start && now < start) {
+      return {
+        isActive: false,
+        status: "upcoming" as const,
+        message: `This opportunity starts on ${start.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}`,
+      };
+    }
+    if (end && now > end) {
+      return {
+        isActive: false,
+        status: "expired" as const,
+        message: "This opportunity has ended",
+      };
+    }
+    return {
+      isActive: true,
+      status: "active" as const,
+      message: null,
+    };
+  };
+
+  const opportunityStatus = getOpportunityStatus();
+
+  // Check eligibility based on user stats
+  const checkEligibility = () => {
+    if (!myStats || !opportunity) {
+      return { isEligible: false, reasons: [] };
+    }
+
+    const reasons: string[] = [];
+
+    // Check CCV requirement
+    if (opportunity.ccv && opportunity.ccv > 0) {
+      if (myStats.peakViewers < opportunity.ccv) {
+        reasons.push(
+          `Minimum CCV required: ${opportunity.ccv} (Your CCV: ${myStats.peakViewers})`
+        );
+      }
+    }
+
+    // Check average views requirement
+    if (opportunity.avgViews && opportunity.avgViews > 0) {
+      if (myStats.avgViews < opportunity.avgViews) {
+        reasons.push(
+          `Minimum Average Views required: ${opportunity.avgViews.toLocaleString()} (Your Average Views: ${myStats.avgViews.toLocaleString()})`
+        );
+      }
+    }
+
+    return {
+      isEligible: reasons.length === 0,
+      reasons,
+    };
+  };
+
+  const eligibility = checkEligibility();
+
   return (
     <div className="flex flex-col gap-4 max-w-page">
       <div className="flex items-center gap-4">
@@ -139,7 +231,7 @@ export default function OpportunityPage() {
               opportunity.type.slice(1)
             }
             description={opportunity.description}
-            isEligible={!isCreator}
+            isEligible={(!isCreator && eligibility.isEligible)}
             isFavourited={isWishlisted(opportunity._id)}
             hasApplied={myStatus?.hasApplied}
             status={myStatus?.status ?? undefined}
@@ -156,54 +248,57 @@ export default function OpportunityPage() {
           showDeliverables={myStatus?.hasApplied}
         />
 
-        {activeTab === "description" && (
-          <OpportunityDetails
-            featureDescription={opportunity.description}
-            deliverables={opportunity.deliverables || []}
-            postingDeadline={endDateDisplay}
-            compensation={compensationDisplay}
-            payoutMethod="Direct Bank Transfer (via Flashy Social's payment portal)"
-            eligibility={[
-              ...(opportunity.ccv && opportunity.ccv > 0
-                ? [`Minimum CCV: ${opportunity.ccv}`]
-                : []),
-              ...(opportunity.avgViews && opportunity.avgViews > 0
-                ? [`Minimum Average Views: ${opportunity.avgViews.toLocaleString()}`]
-                : []),
-              ...(opportunity.eligibility?.niches?.length
-                ? [`Niches: ${opportunity.eligibility.niches.join(", ")}`]
-                : []),
-              ...(opportunity.eligibility?.platforms?.length
-                ? [`Platforms: ${opportunity.eligibility.platforms.join(", ")}`]
-                : []),
-              ...(opportunity.eligibility?.countries?.length
-                ? [`Countries: ${opportunity.eligibility.countries.join(", ")}`]
-                : []),
-              "Content must be 18+ friendly and in accordance with local legal guidelines",
-            ]}
-          />
-        )}
-        {activeTab === "media" && (
-          <BusinessOpportunityMedia
-            mediaAssets={opportunity.mediaAssets}
-            brandName={opportunity.brandName}
-          />
-        )}
-        {activeTab === "terms" && (
-          <OpportunityTerms
-            terms={
-              opportunity.termsAndConditions ||
-              "Terms and conditions will be provided upon acceptance of the opportunity."
-            }
-          />
-        )}
-        {activeTab === "deliverables" && myStatus?.creatorOpportunity && (
-          <AgreementDeliverables
-            files={myStatus.creatorOpportunity.submission?.files as string[] | undefined}
-            links={myStatus.creatorOpportunity.submission?.links}
-            note={myStatus.creatorOpportunity.submission?.note}
-          />
-        )}
+        <div className="flex flex-col rounded-md border bg-base-200 p-4">
+          {activeTab === "description" && (
+            <OpportunityDetails
+              featureDescription={opportunity.description}
+              deliverables={opportunity.deliverables || []}
+              postingDeadline={endDateDisplay}
+              compensation={compensationDisplay}
+              payoutMethod="Direct Bank Transfer (via Flashy Social's payment portal)"
+              eligibility={[
+                ...(opportunity.ccv && opportunity.ccv > 0
+                  ? [`Minimum CCV: ${opportunity.ccv}`]
+                  : []),
+                ...(opportunity.avgViews && opportunity.avgViews > 0
+                  ? [`Minimum Average Views: ${opportunity.avgViews.toLocaleString()}`]
+                  : []),
+                ...(opportunity.eligibility?.niches?.length
+                  ? [`Niches: ${opportunity.eligibility.niches.join(", ")}`]
+                  : []),
+                ...(opportunity.eligibility?.platforms?.length
+                  ? [`Platforms: ${opportunity.eligibility.platforms.join(", ")}`]
+                  : []),
+                ...(opportunity.eligibility?.countries?.length
+                  ? [`Countries: ${opportunity.eligibility.countries.join(", ")}`]
+                  : []),
+                "Content must be 18+ friendly and in accordance with local legal guidelines",
+              ]}
+            />
+          )}
+          {activeTab === "media" && (
+            <BusinessOpportunityMedia
+              mediaAssets={opportunity.mediaAssets}
+              brandName={opportunity.brandName}
+            />
+          )}
+          {activeTab === "terms" && (
+            <OpportunityTerms
+              terms={
+                opportunity.termsAndConditions ||
+                "Terms and conditions will be provided upon acceptance of the opportunity."
+              }
+            />
+          )}
+          {activeTab === "deliverables" && myStatus?.creatorOpportunity && (
+            <AgreementDeliverables
+              files={myStatus.creatorOpportunity.submission?.files as string[] | undefined}
+              links={myStatus.creatorOpportunity.submission?.links}
+              note={myStatus.creatorOpportunity.submission?.note}
+            />
+          )}
+        </div>
+
 
         {!isCreator && (
           myStatus?.hasApplied ? (
@@ -271,12 +366,49 @@ export default function OpportunityPage() {
                 View My Opportunities
               </Button>
             </div>
+          ) : !opportunityStatus.isActive ? (
+            <div className="space-y-4 pt-4 border-t border-base-600">
+              <div className={`flex items-center gap-2 ${opportunityStatus.status === "upcoming" ? "text-base-700" : "text-red-500"}`}>
+                {opportunityStatus.status === "upcoming" ? (
+                  <Clock className="w-5 h-5" />
+                ) : (
+                  <Ban className="w-5 h-5" />
+                )}
+                <span className="text-sm font-medium">
+                  {opportunityStatus.message}
+                </span>
+              </div>
+            </div>
+          ) : !eligibility.isEligible ? (
+            <div className="space-y-4 pt-4 border-t border-base-600">
+              <div className="flex items-center gap-2 text-red-500">
+                <Ban className="w-5 h-5" />
+                <span className="text-sm font-medium">
+                  You are not eligible for this opportunity
+                </span>
+              </div>
+              <div className="bg-base-300 rounded-lg p-4 space-y-2">
+                {eligibility.reasons.map((reason, index) => (
+                  <p key={index} className="text-sm text-red-400">
+                    {reason}
+                  </p>
+                ))}
+              </div>
+            </div>
           ) : (
-            <OpportunityApplySection
-              brandName={opportunity.brandName}
-              onApply={handleApply}
-              isApplying={acceptOpportunity.isPending}
-            />
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 text-green-500">
+                <Check className="w-5 h-5" />
+                <span className="text-sm font-medium">
+                  You are eligible for this opportunity
+                </span>
+              </div>
+              <OpportunityApplySection
+                brandName={opportunity.brandName}
+                onApply={handleApply}
+                isApplying={acceptOpportunity.isPending}
+              />
+            </div>
           )
         )}
       </div>

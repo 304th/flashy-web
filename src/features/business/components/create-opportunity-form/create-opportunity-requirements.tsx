@@ -1,3 +1,4 @@
+import config from "@/config";
 import { useFormContext } from "react-hook-form";
 import {
   FormControl,
@@ -115,8 +116,8 @@ export const CreateOpportunityRequirements = () => {
                 <FormControl>
                   <Input
                     type="number"
-                    placeholder=">=50"
-                    min={50}
+                    placeholder={`>=${config.monetise.ccv}`}
+                    min={config.monetise.ccv}
                     {...field}
                     value={field.value ?? ""}
                     onChange={(e) => {
@@ -141,8 +142,8 @@ export const CreateOpportunityRequirements = () => {
                 <FormControl>
                   <Input
                     type="number"
-                    placeholder=">=50"
-                    min={50}
+                    placeholder={`>=${config.monetise.avgViews}`}
+                    min={config.monetise.avgViews}
                     {...field}
                     value={field.value ?? ""}
                     onChange={(e) => {

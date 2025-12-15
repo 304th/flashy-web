@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import { Check, Clock, Ban } from "lucide-react";
-import { useOpportunityById } from "@/features/monetise";
+import {OpportunityDetails, OpportunityTerms, useOpportunityById} from "@/features/monetise";
 import { GoBackButton } from "@/components/ui/go-back-button";
 import { Button } from "@/components/ui/button";
 import { Tag } from "@/components/ui/tag";
@@ -16,8 +16,36 @@ import { BusinessOpportunityDetails } from "@/features/business/components/busin
 import { BusinessOpportunityMedia } from "@/features/business/components/business-opportunity-media/business-opportunity-media";
 import { BusinessOpportunityTerms } from "@/features/business/components/business-opportunity-terms/business-opportunity-terms";
 import { BusinessOpportunityAgreements } from "@/features/business/components/business-opportunity-agreements/business-opportunity-agreements";
+import {AgreementDeliverables} from "@/features/business/components/agreement-deliverables/agreement-deliverables";
 
 export default function BusinessOpportunityPage() {
+  return (
+    <Suspense fallback={<BusinessOpportunityPageSkeleton />}>
+      <BusinessOpportunityPageContent />
+    </Suspense>
+  );
+}
+
+function BusinessOpportunityPageSkeleton() {
+  return (
+    <div className="flex flex-col gap-6 max-w-page">
+      <div className="flex items-center gap-4">
+        <div className="w-8 h-8 bg-base-400 rounded animate-pulse" />
+        <div className="h-4 bg-base-400 rounded w-20 animate-pulse" />
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="aspect-video bg-base-400 rounded-lg animate-pulse" />
+        <div className="space-y-4">
+          <div className="h-6 bg-base-400 rounded w-3/4 animate-pulse" />
+          <div className="h-4 bg-base-400 rounded w-1/2 animate-pulse" />
+          <div className="h-20 bg-base-400 rounded animate-pulse" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function BusinessOpportunityPageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const opportunityId = searchParams.get("id");
@@ -182,41 +210,44 @@ export default function BusinessOpportunityPage() {
         activeTab={activeTab}
         onTabChange={setActiveTab}
       />
-      {activeTab === "account" && (
-        <BusinessOpportunityDetails
-          brandName={opportunity.brandName}
-          compensation={opportunity.compensation}
-          compensationType={opportunity.compensationType}
-          endDate={opportunity.endDate}
-          eligibility={opportunity.eligibility}
-          ccv={opportunity.ccv}
-          avgViews={opportunity.avgViews}
-        />
-      )}
-      {activeTab === "media" && (
-        <BusinessOpportunityMedia
-          mediaAssets={opportunity.mediaAssets}
-          brandName={opportunity.brandName}
-        />
-      )}
-      {activeTab === "description" && (
-        <BusinessOpportunityDetails
-          brandName={opportunity.brandName}
-          compensation={opportunity.compensation}
-          compensationType={opportunity.compensationType}
-          endDate={opportunity.endDate}
-          eligibility={opportunity.eligibility}
-          deliverables={opportunity.deliverables}
-          description={opportunity.description}
-          showDeliverables
-        />
-      )}
-      {activeTab === "terms" && (
-        <BusinessOpportunityTerms terms={opportunity.termsAndConditions} />
-      )}
-      {activeTab === "agreements" && (
-        <BusinessOpportunityAgreements opportunityId={opportunity._id} />
-      )}
+      <div className="flex flex-col rounded-md border bg-base-200 p-4">
+        {activeTab === "account" && (
+          <BusinessOpportunityDetails
+            brandName={opportunity.brandName}
+            compensation={opportunity.compensation}
+            compensationType={opportunity.compensationType}
+            endDate={opportunity.endDate}
+            eligibility={opportunity.eligibility}
+            ccv={opportunity.ccv}
+            avgViews={opportunity.avgViews}
+          />
+        )}
+        {activeTab === "media" && (
+          <BusinessOpportunityMedia
+            mediaAssets={opportunity.mediaAssets}
+            brandName={opportunity.brandName}
+          />
+        )}
+        {activeTab === "description" && (
+          <BusinessOpportunityDetails
+            brandName={opportunity.brandName}
+            compensation={opportunity.compensation}
+            compensationType={opportunity.compensationType}
+            endDate={opportunity.endDate}
+            eligibility={opportunity.eligibility}
+            deliverables={opportunity.deliverables}
+            description={opportunity.description}
+            showDeliverables
+          />
+        )}
+        {activeTab === "terms" && (
+          <BusinessOpportunityTerms terms={opportunity.termsAndConditions} />
+        )}
+        {activeTab === "agreements" && (
+          <BusinessOpportunityAgreements opportunityId={opportunity._id} />
+        )}
+      </div>
+
     </div>
   );
 }

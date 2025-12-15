@@ -85,14 +85,14 @@ export default function OpportunityPage() {
     ? `$${opportunity.compensation} ${opportunity.compensationType === "fixed" ? "Flat Fee" : opportunity.compensationType}`
     : "Negotiable";
 
-  // Format deadline
-  const deadlineDisplay = opportunity.deadline
-    ? new Date(opportunity.deadline).toLocaleDateString("en-US", {
+  // Format end date
+  const endDateDisplay = opportunity.endDate
+    ? new Date(opportunity.endDate).toLocaleDateString("en-US", {
         month: "long",
         day: "numeric",
         year: "numeric",
       })
-    : "No deadline";
+    : "No end date";
 
   return (
     <div className="flex flex-col gap-4 max-w-page">
@@ -145,12 +145,19 @@ export default function OpportunityPage() {
           <OpportunityDetails
             featureDescription={`Feature our premium ${opportunity.title} on your YouTube channel. Focus on what sets them apart: ${opportunity.description}`}
             deliverables={opportunity.deliverables || []}
-            postingDeadline={deadlineDisplay}
+            postingDeadline={endDateDisplay}
             compensation={compensationDisplay}
             payoutMethod="Direct Bank Transfer (via Flashy Social's payment portal)"
             eligibility={[
-              `YouTube channel with ${opportunity.eligibility?.minFollowers?.toLocaleString() || "1,000"}+ subscribers`,
-              "Instagram account with 1,000+ followers",
+              ...(opportunity.eligibility?.niches?.length
+                ? [`Niches: ${opportunity.eligibility.niches.join(", ")}`]
+                : []),
+              ...(opportunity.eligibility?.platforms?.length
+                ? [`Platforms: ${opportunity.eligibility.platforms.join(", ")}`]
+                : []),
+              ...(opportunity.eligibility?.countries?.length
+                ? [`Countries: ${opportunity.eligibility.countries.join(", ")}`]
+                : []),
               "Content must be 18+ friendly and in accordance with local legal guidelines",
             ]}
           />
@@ -172,7 +179,10 @@ export default function OpportunityPage() {
               </span>
             </div>
             <p className="text-xs text-base-800">
-              Status: <span className="text-white capitalize">{myStatus.status?.replace(/-/g, " ")}</span>
+              Status:{" "}
+              <span className="text-white capitalize">
+                {myStatus.status?.replace(/-/g, " ")}
+              </span>
             </p>
             <Button
               variant="outline"

@@ -84,21 +84,23 @@ export const Sidebar = () => {
         >
           Monetise
         </NavItem>
-        {
-          businessAccounts && (
-            <NavItem
-              route="/business/dashboard"
-              icon={<StoreIcon />}
-              className="text-xs"
-              expanded={expanded}
-              onClick={businessAccounts?.[0]?.status === 'approved' ? undefined : () => {
-                openModal("CreateBusinessModal");
-              }}
-            >
-              Business
-            </NavItem>
-          )
-        }
+        {businessAccounts && (
+          <NavItem
+            route="/business/dashboard"
+            icon={<StoreIcon />}
+            className="text-xs"
+            expanded={expanded}
+            onClick={
+              businessAccounts?.[0]?.status === "approved"
+                ? undefined
+                : () => {
+                    openModal("CreateBusinessModal");
+                  }
+            }
+          >
+            Business
+          </NavItem>
+        )}
       </div>
       <Separator />
       {expanded && (

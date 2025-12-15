@@ -34,7 +34,7 @@ export default function CreatorDashboardAgreementsPage() {
   const handleOpportunityClick = (creatorOpportunityId: string) => {
     // Find the opportunity ID from the creator opportunity
     const creatorOpp = creatorOpportunities?.find(
-      (co) => co._id === creatorOpportunityId
+      (co) => co._id === creatorOpportunityId,
     );
     if (creatorOpp) {
       const oppId =
@@ -120,7 +120,9 @@ export default function CreatorDashboardAgreementsPage() {
             {[1, 2, 3, 4].map((i) => (
               <div key={i} className="flex flex-col gap-3">
                 <div className="h-4 bg-base-400 rounded animate-pulse" />
-                <div className="aspect-video bg-base-400 rounded-lg animate-pulse" />
+                <div
+                  className="aspect-video bg-base-400 rounded-lg animate-pulse"
+                />
                 <div className="h-5 bg-base-400 rounded w-3/4 animate-pulse" />
                 <div className="h-4 bg-base-400 rounded w-1/2 animate-pulse" />
               </div>
@@ -147,7 +149,10 @@ export default function CreatorDashboardAgreementsPage() {
             );
           })
         ) : (
-          <div className="col-span-4 flex flex-col items-center justify-center py-12 text-base-700">
+          <div
+            className="col-span-4 flex flex-col items-center justify-center
+              py-12 text-base-700"
+          >
             <p>No agreements yet</p>
             <Button
               variant="outline"

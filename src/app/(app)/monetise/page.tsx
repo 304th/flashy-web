@@ -31,7 +31,7 @@ export default function MonetisePage() {
         ? undefined
         : sortBy === "newest"
           ? "createdAt"
-          : "deadline",
+          : "endDate",
     sortOrder: sortBy === "z-a" ? "desc" : "asc",
   });
 

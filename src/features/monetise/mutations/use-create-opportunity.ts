@@ -89,7 +89,6 @@ export const useCreateOpportunity = () => {
           status: params.status || "active",
           compensationType: params.compensationType || "fixed",
           eligibility: {
-            minFollowers: params.eligibility?.minFollowers || 0,
             niches: params.eligibility?.niches || [],
             platforms: params.eligibility?.platforms || [],
             countries: params.eligibility?.countries || [],

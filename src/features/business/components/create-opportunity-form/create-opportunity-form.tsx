@@ -16,7 +16,10 @@ import { useCreateSponsorOpportunity } from "@/features/business";
 const formSchema = z.object({
   type: z.enum(["sponsorship", "affiliate", "partnership"] as const),
   title: z.string().min(3, "Agreement name must be at least 3 characters"),
-  brandName: z.string().min(2, "Company name must be at least 2 characters").optional(),
+  brandName: z
+    .string()
+    .min(2, "Company name must be at least 2 characters")
+    .optional(),
   category: z.string().min(1, "Please select a category").optional(),
   productLink: z.string().url("Please enter a valid URL").optional(),
   thumbnail: z.string().nullable().optional(),
@@ -92,7 +95,7 @@ export const CreateOpportunityForm = ({
     try {
       await createOpportunity.mutateAsync({
         title: data.title,
-        brandName: data.brandName ?? '',
+        brandName: data.brandName ?? "",
         brandLogo: data.thumbnailFile,
         mediaAssets: data.mediaAssetFiles || [],
         type: data.type,
@@ -124,7 +127,7 @@ export const CreateOpportunityForm = ({
       router.back();
     }
   };
-  console.log(form.formState)
+  console.log(form.formState);
 
   return (
     <Form {...form}>

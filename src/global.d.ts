@@ -384,7 +384,6 @@ declare global {
     | "completed";
 
   interface OpportunityEligibility {
-    minFollowers: number;
     niches: string[];
     platforms: string[];
     countries: string[];
@@ -403,7 +402,8 @@ declare global {
     compensation: string;
     compensationType: CompensationType;
     eligibility: OpportunityEligibility;
-    deadline: string;
+    startDate: string;
+    endDate: string;
     requiresApplication: boolean;
     termsAndConditions: string;
     status: OpportunityStatus;
@@ -459,7 +459,7 @@ declare global {
     minPayout?: number;
     search?: string;
     status?: OpportunityStatus;
-    sortBy?: "createdAt" | "deadline" | "compensation";
+    sortBy?: "createdAt" | "startDate" | "endDate" | "compensation";
     sortOrder?: "asc" | "desc";
   }
 

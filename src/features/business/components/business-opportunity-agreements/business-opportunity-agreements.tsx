@@ -111,7 +111,10 @@ export function BusinessOpportunityAgreements({
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-4">
         <div className="relative w-64">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-base-700" />
+          <Search
+            className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4
+              text-base-700"
+          />
           <Input
             placeholder="Search"
             value={searchQuery}
@@ -150,25 +153,46 @@ export function BusinessOpportunityAgreements({
         <table className="w-full">
           <thead>
             <tr className="border-b border-base-600">
-              <th className="text-left py-3 px-4 text-sm font-medium text-base-800">
+              <th
+                className="text-left py-3 px-4 text-sm font-medium
+                  text-base-800"
+              >
                 Agreement ID
               </th>
-              <th className="text-left py-3 px-4 text-sm font-medium text-base-800">
+              <th
+                className="text-left py-3 px-4 text-sm font-medium
+                  text-base-800"
+              >
                 Agreement Type
               </th>
-              <th className="text-left py-3 px-4 text-sm font-medium text-base-800">
+              <th
+                className="text-left py-3 px-4 text-sm font-medium
+                  text-base-800"
+              >
                 Username
               </th>
-              <th className="text-left py-3 px-4 text-sm font-medium text-base-800">
+              <th
+                className="text-left py-3 px-4 text-sm font-medium
+                  text-base-800"
+              >
                 Email
               </th>
-              <th className="text-left py-3 px-4 text-sm font-medium text-base-800">
+              <th
+                className="text-left py-3 px-4 text-sm font-medium
+                  text-base-800"
+              >
                 Date Created
               </th>
-              <th className="text-left py-3 px-4 text-sm font-medium text-base-800">
+              <th
+                className="text-left py-3 px-4 text-sm font-medium
+                  text-base-800"
+              >
                 Status
               </th>
-              <th className="text-left py-3 px-4 text-sm font-medium text-base-800">
+              <th
+                className="text-left py-3 px-4 text-sm font-medium
+                  text-base-800"
+              >
                 View
               </th>
             </tr>
@@ -176,10 +200,7 @@ export function BusinessOpportunityAgreements({
           <tbody>
             {filteredAgreements.length === 0 ? (
               <tr>
-                <td
-                  colSpan={7}
-                  className="text-center py-12 text-base-700"
-                >
+                <td colSpan={7} className="text-center py-12 text-base-700">
                   No agreements found
                 </td>
               </tr>
@@ -187,7 +208,8 @@ export function BusinessOpportunityAgreements({
               filteredAgreements.map((agreement) => (
                 <tr
                   key={agreement._id}
-                  className="border-b border-base-600 hover:bg-base-300/50 transition-colors"
+                  className="border-b border-base-600 hover:bg-base-300/50
+                    transition-colors"
                 >
                   <td className="py-4 px-4 text-sm text-white">
                     {agreement.opportunityTitle}
@@ -208,7 +230,7 @@ export function BusinessOpportunityAgreements({
                     <div
                       className={cn(
                         "w-3 h-3 rounded-full",
-                        getStatusColor(agreement.status)
+                        getStatusColor(agreement.status),
                       )}
                     />
                   </td>

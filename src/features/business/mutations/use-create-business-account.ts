@@ -22,7 +22,7 @@ export const useCreateBusinessAccount = () => {
     onOptimistic: (ch, params) => {
       return ch(myBusinessAccountCollection).prepend(params, {
         sync: true,
-      })
+      });
       // return Promise.all([
       //   ch(myBusinessAccountCollection).prepend(params, {
       //     sync: true,

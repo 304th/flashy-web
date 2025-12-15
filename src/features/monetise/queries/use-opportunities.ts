@@ -12,7 +12,7 @@ interface UseOpportunitiesParams {
   niche?: string | string[];
   minPayout?: number;
   search?: string;
-  sortBy?: "createdAt" | "deadline" | "compensation";
+  sortBy?: "createdAt" | "startDate" | "endDate" | "compensation";
   sortOrder?: "asc" | "desc";
 }
 

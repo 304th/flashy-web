@@ -33,11 +33,11 @@ export function BusinessOpportunityTabs({
           key={tab.id}
           onClick={() => onTabChange(tab.id)}
           className={cn(
-            `cursor-pointer pb-3 text-sm font-medium transition-colors border-b-2
-            -mb-px whitespace-nowrap`,
+            `cursor-pointer pb-3 text-sm font-medium transition-colors
+            border-b-2 -mb-px whitespace-nowrap`,
             activeTab === tab.id
               ? "text-white border-brand-100"
-              : "text-base-800 border-transparent hover:text-white"
+              : "text-base-800 border-transparent hover:text-white",
           )}
         >
           {tab.label}

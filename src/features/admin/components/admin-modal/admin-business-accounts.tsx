@@ -5,7 +5,7 @@ import { useApproveBusinessAccount } from "@/features/business/mutations/use-app
 import { useRejectBusinessAccount } from "@/features/business/mutations/use-reject-business-account";
 import { UserAvatar } from "@/components/ui/user-avatar";
 import { formatDistanceToNow } from "date-fns";
-import {timeAgo} from "@/lib/utils";
+import { timeAgo } from "@/lib/utils";
 
 export const AdminBusinessAccounts = () => {
   const [statusFilter, setStatusFilter] = useState<
@@ -138,9 +138,7 @@ export const AdminBusinessAccounts = () => {
                         >
                           {account.status}
                         </span>
-                        <span>
-                          {timeAgo(account.createdAt, false)}
-                        </span>
+                        <span>{timeAgo(account.createdAt, false)}</span>
                       </div>
                       {account.rejectionReason && (
                         <div

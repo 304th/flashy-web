@@ -42,7 +42,8 @@ export function BusinessOpportunityMedia({
     <>
       <div className="space-y-4">
         <div
-          className="relative aspect-video rounded-lg overflow-hidden bg-base-200 cursor-pointer max-w-2xl"
+          className="relative aspect-video rounded-lg overflow-hidden
+            bg-base-200 cursor-pointer max-w-2xl"
           onClick={() => setSelectedIndex(0)}
         >
           <Image
@@ -58,7 +59,9 @@ export function BusinessOpportunityMedia({
             {allMedia.slice(1, 6).map((media, index) => (
               <button
                 key={index}
-                className="relative aspect-video rounded-lg overflow-hidden bg-base-200 cursor-pointer hover:opacity-80 transition-opacity"
+                className="relative aspect-video rounded-lg overflow-hidden
+                  bg-base-200 cursor-pointer hover:opacity-80
+                  transition-opacity"
                 onClick={() => setSelectedIndex(index + 1)}
               >
                 <Image
@@ -68,7 +71,10 @@ export function BusinessOpportunityMedia({
                   className="object-cover"
                 />
                 {index === 4 && allMedia.length > 6 && (
-                  <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                  <div
+                    className="absolute inset-0 bg-black/60 flex items-center
+                      justify-center"
+                  >
                     <span className="text-white text-lg font-semibold">
                       +{allMedia.length - 6}
                     </span>
@@ -82,7 +88,8 @@ export function BusinessOpportunityMedia({
 
       {selectedIndex !== null && (
         <div
-          className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center"
+          className="fixed inset-0 z-50 bg-black/90 flex items-center
+            justify-center"
           onClick={() => setSelectedIndex(null)}
         >
           <Button
@@ -138,7 +145,10 @@ export function BusinessOpportunityMedia({
           </div>
 
           {allMedia.length > 1 && (
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white text-sm">
+            <div
+              className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white
+                text-sm"
+            >
               {selectedIndex + 1} / {allMedia.length}
             </div>
           )}

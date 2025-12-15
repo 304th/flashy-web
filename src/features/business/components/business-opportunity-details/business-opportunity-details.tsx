@@ -4,7 +4,7 @@ interface BusinessOpportunityDetailsProps {
   brandName: string;
   compensation: string;
   compensationType: CompensationType;
-  deadline: string;
+  endDate: string;
   eligibility: OpportunityEligibility;
   deliverables?: string[];
   description?: string;
@@ -15,7 +15,7 @@ export function BusinessOpportunityDetails({
   brandName,
   compensation,
   compensationType,
-  deadline,
+  endDate,
   eligibility,
   deliverables = [],
   description,
@@ -75,8 +75,8 @@ export function BusinessOpportunityDetails({
           </div>
 
           <div className="space-y-1">
-            <h3 className="text-sm font-semibold text-white">Deadline</h3>
-            <p className="text-sm text-base-800">{formatDate(deadline)}</p>
+            <h3 className="text-sm font-semibold text-white">End Date</h3>
+            <p className="text-sm text-base-800">{formatDate(endDate)}</p>
           </div>
 
           <div className="space-y-2">
@@ -84,14 +84,6 @@ export function BusinessOpportunityDetails({
               Eligibility Requirements
             </h3>
             <ul className="space-y-1.5">
-              {eligibility.minFollowers > 0 && (
-                <li className="text-sm text-brand-100 flex items-start gap-2">
-                  <span className="text-base-600">•</span>
-                  <span>
-                    Minimum {eligibility.minFollowers.toLocaleString()} followers
-                  </span>
-                </li>
-              )}
               {eligibility.niches?.length > 0 && (
                 <li className="text-sm text-brand-100 flex items-start gap-2">
                   <span className="text-base-600">•</span>

@@ -21,8 +21,8 @@ export function CreatorOpportunityCard({
   onWishlistToggle,
   onClick,
 }: CreatorOpportunityCardProps) {
-  const formatDeadline = (deadline: string) => {
-    const date = new Date(deadline);
+  const formatEndDate = (endDate: string) => {
+    const date = new Date(endDate);
     return date.toLocaleDateString("en-GB", {
       day: "2-digit",
       month: "2-digit",
@@ -30,13 +30,13 @@ export function CreatorOpportunityCard({
     });
   };
 
-  const isExpiringSoon = (deadline: string) => {
-    const deadlineDate = new Date(deadline);
+  const isExpiringSoon = (endDate: string) => {
+    const endDateObj = new Date(endDate);
     const now = new Date();
-    const daysUntilDeadline = Math.ceil(
-      (deadlineDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)
+    const daysUntilEnd = Math.ceil(
+      (endDateObj.getTime() - now.getTime()) / (1000 * 60 * 60 * 24),
     );
-    return daysUntilDeadline <= 7 && daysUntilDeadline >= 0;
+    return daysUntilEnd <= 7 && daysUntilEnd >= 0;
   };
 
   const getStatusColor = (status: CreatorOpportunityStatus) => {
@@ -71,18 +71,20 @@ export function CreatorOpportunityCard({
         </div>
         <div className="flex items-center gap-2">
           <span className="text-xs text-white/90">
-            {formatDeadline(opportunity.deadline)}
+            {formatEndDate(opportunity.endDate)}
           </span>
           <div
             className={cn(
               "w-2 h-2 rounded-full",
-              getStatusColor(creatorOpportunity.status)
+              getStatusColor(creatorOpportunity.status),
             )}
           />
         </div>
       </div>
 
-      <div className="relative aspect-video rounded-lg overflow-hidden bg-base-400">
+      <div
+        className="relative aspect-video rounded-lg overflow-hidden bg-base-400"
+      >
         {opportunity.brandLogo ? (
           <Image
             src={opportunity.brandLogo}
@@ -105,7 +107,7 @@ export function CreatorOpportunityCard({
           className={cn(
             `!p-0 aspect-square absolute bottom-3 right-3 rounded-md
             transition-colors`,
-            isWishlisted ? "text-yellow-400" : "text-white/70 hover:text-white"
+            isWishlisted ? "text-yellow-400" : "text-white/70 hover:text-white",
           )}
         >
           <Star
@@ -116,7 +118,9 @@ export function CreatorOpportunityCard({
       </div>
 
       <div className="flex flex-col gap-2">
-        <h3 className="text-base text-white font-medium">{opportunity.title}</h3>
+        <h3 className="text-base text-white font-medium">
+          {opportunity.title}
+        </h3>
         <div className="flex items-center gap-2 flex-wrap">
           <Tag className="!bg-base-300 !border-base-400 text-xs">
             {opportunity.brandName}

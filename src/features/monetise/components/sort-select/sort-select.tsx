@@ -2,7 +2,7 @@
 
 import { Select } from "@/components/ui/select";
 
-type SortOption = "a-z" | "z-a" | "newest" | "deadline";
+type SortOption = "a-z" | "z-a" | "newest" | "endDate";
 
 interface SortSelectProps {
   value: SortOption;
@@ -13,7 +13,7 @@ const sortOptions: { value: SortOption; label: string }[] = [
   { value: "a-z", label: "A/Z" },
   { value: "z-a", label: "Z/A" },
   { value: "newest", label: "Newest" },
-  { value: "deadline", label: "Deadline" },
+  { value: "endDate", label: "End Date" },
 ];
 
 export function SortSelect({ value, onChange }: SortSelectProps) {

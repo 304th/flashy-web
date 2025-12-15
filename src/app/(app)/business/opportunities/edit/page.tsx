@@ -12,7 +12,7 @@ export default function EditOpportunityPage() {
   const opportunityId = searchParams.get("id");
 
   const { data: opportunity, query } = useOpportunityById(
-    opportunityId || undefined
+    opportunityId || undefined,
   );
 
   const handleCancel = () => {
@@ -37,7 +37,10 @@ export default function EditOpportunityPage() {
 
   if (!opportunity) {
     return (
-      <div className="flex flex-col items-center justify-center gap-4 p-6 min-h-[400px]">
+      <div
+        className="flex flex-col items-center justify-center gap-4 p-6
+          min-h-[400px]"
+      >
         <p className="text-base-800">Opportunity not found</p>
         <Button variant="secondary" onClick={handleCancel}>
           Go Back

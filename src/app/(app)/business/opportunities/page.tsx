@@ -25,7 +25,7 @@ export default function BusinessOpportunityPage() {
   const [activeTab, setActiveTab] = useState<BusinessTabType>("account");
 
   const { data: opportunity, query } = useOpportunityById(
-    opportunityId || undefined
+    opportunityId || undefined,
   );
 
   const isLoading = query.isLoading;
@@ -51,7 +51,10 @@ export default function BusinessOpportunityPage() {
 
   if (!opportunity) {
     return (
-      <div className="flex flex-col items-center justify-center gap-4 p-6 min-h-[400px]">
+      <div
+        className="flex flex-col items-center justify-center gap-4 p-6
+          min-h-[400px]"
+      >
         <p className="text-base-800">Opportunity not found</p>
         <GoBackButton />
       </div>
@@ -67,16 +70,16 @@ export default function BusinessOpportunityPage() {
     });
   };
 
-  const getDaysRemaining = (deadline: string) => {
-    const deadlineDate = new Date(deadline);
+  const getDaysRemaining = (endDate: string) => {
+    const endDateObj = new Date(endDate);
     const now = new Date();
     const days = Math.ceil(
-      (deadlineDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)
+      (endDateObj.getTime() - now.getTime()) / (1000 * 60 * 60 * 24),
     );
     return days > 0 ? days : 0;
   };
 
-  const daysRemaining = getDaysRemaining(opportunity.deadline);
+  const daysRemaining = getDaysRemaining(opportunity.endDate);
   const isActive = opportunity.status === "active";
 
   return (
@@ -85,7 +88,10 @@ export default function BusinessOpportunityPage() {
         <GoBackButton />
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-[40%_60%] gap-6">
-        <div className="relative aspect-video rounded-lg overflow-hidden bg-base-400">
+        <div
+          className="relative aspect-video rounded-lg overflow-hidden
+            bg-base-400"
+        >
           {opportunity.brandLogo ? (
             <Image
               src={opportunity.brandLogo}
@@ -94,7 +100,9 @@ export default function BusinessOpportunityPage() {
               className="object-cover"
             />
           ) : (
-            <div className="flex items-center justify-center h-full text-base-600">
+            <div
+              className="flex items-center justify-center h-full text-base-600"
+            >
               No image available
             </div>
           )}
@@ -102,9 +110,7 @@ export default function BusinessOpportunityPage() {
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-2 text-brand-100 text-sm">
             <Check className="w-4 h-4" />
-            <span>
-              Active since {formatDate(opportunity.createdAt)}
-            </span>
+            <span>Active since {formatDate(opportunity.createdAt)}</span>
             <span className="text-base-600 ml-2">
               {daysRemaining} days remaining
             </span>
@@ -137,13 +143,16 @@ export default function BusinessOpportunityPage() {
           </Button>
         </div>
       </div>
-      <BusinessOpportunityTabs activeTab={activeTab} onTabChange={setActiveTab} />
+      <BusinessOpportunityTabs
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+      />
       {activeTab === "account" && (
         <BusinessOpportunityDetails
           brandName={opportunity.brandName}
           compensation={opportunity.compensation}
           compensationType={opportunity.compensationType}
-          deadline={opportunity.deadline}
+          endDate={opportunity.endDate}
           eligibility={opportunity.eligibility}
         />
       )}
@@ -159,7 +168,7 @@ export default function BusinessOpportunityPage() {
           brandName={opportunity.brandName}
           compensation={opportunity.compensation}
           compensationType={opportunity.compensationType}
-          deadline={opportunity.deadline}
+          endDate={opportunity.endDate}
           eligibility={opportunity.eligibility}
           deliverables={opportunity.deliverables}
           description={opportunity.description}

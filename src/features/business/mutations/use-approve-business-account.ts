@@ -17,16 +17,13 @@ export const useApproveBusinessAccount = () => {
   return useOptimisticMutation<string, BusinessAccountActionResponse>({
     mutation: approveBusinessAccountMutation,
     onOptimistic: (ch, id) => {
-      return ch(businessAccountsCollection).update(
-        id,
-        (item) => ({
-          ...item,
-          status: "approved",
-          approvedAt: new Date().toISOString(),
-          rejectionReason: undefined,
-          rejectedAt: undefined,
-        }),
-      );
+      return ch(businessAccountsCollection).update(id, (item) => ({
+        ...item,
+        status: "approved",
+        approvedAt: new Date().toISOString(),
+        rejectionReason: undefined,
+        rejectedAt: undefined,
+      }));
     },
   });
 };

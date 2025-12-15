@@ -44,7 +44,7 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>;
 
-export const CreateBusinessForm = ({ onClose }: { onClose: () => void; }) => {
+export const CreateBusinessForm = ({ onClose }: { onClose: () => void }) => {
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {

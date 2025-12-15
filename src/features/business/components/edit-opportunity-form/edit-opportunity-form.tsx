@@ -16,9 +16,16 @@ import { useUpdateSponsorOpportunity } from "@/features/business";
 const formSchema = z.object({
   type: z.enum(["sponsorship", "affiliate", "partnership"] as const),
   title: z.string().min(3, "Agreement name must be at least 3 characters"),
-  brandName: z.string().min(2, "Company name must be at least 2 characters").optional(),
+  brandName: z
+    .string()
+    .min(2, "Company name must be at least 2 characters")
+    .optional(),
   category: z.string().min(1, "Please select a category").optional(),
-  productLink: z.string().url("Please enter a valid URL").optional().or(z.literal("")),
+  productLink: z
+    .string()
+    .url("Please enter a valid URL")
+    .optional()
+    .or(z.literal("")),
   thumbnail: z.string().nullable().optional(),
   thumbnailFile: z.any().optional(),
   mediaAssetFiles: z.array(z.any()).optional().default([]),
@@ -39,7 +46,13 @@ const formSchema = z.object({
     .min(1, "At least one deliverable is required"),
   ccv: z.number().min(50, "Must be at least 50"),
   avgViews: z.number().min(0, "Must be at least 0"),
-  compensationType: z.enum(["fixed", "per-post", "commission", "product", "negotiable"] as const),
+  compensationType: z.enum([
+    "fixed",
+    "per-post",
+    "commission",
+    "product",
+    "negotiable",
+  ] as const),
   compensation: z.string().min(1, "Compensation is required"),
 });
 
@@ -73,13 +86,13 @@ export const EditOpportunityForm = ({
       thumbnailFile: undefined,
       mediaAssetFiles: [],
       existingMediaAssets: opportunity.mediaAssets || [],
-      startDate: opportunity.createdAt ? new Date(opportunity.createdAt) : "",
-      endDate: opportunity.deadline ? new Date(opportunity.deadline) : "",
+      startDate: opportunity.startDate ? new Date(opportunity.startDate) : "",
+      endDate: opportunity.endDate ? new Date(opportunity.endDate) : "",
       productDescription: opportunity.description || "",
       description: opportunity.description || "",
       termsAndConditions: opportunity.termsAndConditions || "",
       deliverables: opportunity.deliverables || [],
-      ccv: opportunity.eligibility?.minFollowers || 50,
+      ccv: 50,
       avgViews: 50,
       compensationType: opportunity.compensationType || "commission",
       compensation: opportunity.compensation || "",
@@ -112,7 +125,6 @@ export const EditOpportunityForm = ({
           endDate: data.endDate,
           termsAndConditions: data.termsAndConditions,
           eligibility: {
-            minFollowers: data.ccv,
             niches: opportunity.eligibility?.niches || [],
             platforms: opportunity.eligibility?.platforms || [],
             countries: opportunity.eligibility?.countries || [],

@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { GoBackButton } from "@/components/ui/go-back-button";
 import { Button } from "@/components/ui/button";
 import { useSubmissionById } from "@/features/business/queries/use-submission-by-id";
+import { useUserStats } from "@/features/business/queries/use-user-stats";
 import { useTerminateAgreement } from "@/features/business/mutations/use-terminate-agreement";
 import { useApproveSubmission } from "@/features/monetise";
 import {
@@ -55,6 +56,8 @@ function BusinessAgreementPageContent() {
     isLoading,
     refetch,
   } = useSubmissionById(submissionId || undefined);
+
+  const { data: userStats } = useUserStats(submission?.creator?.fbId);
 
   if (isLoading) {
     return (
@@ -144,7 +147,7 @@ function BusinessAgreementPageContent() {
         creator={submission.creator}
         status={submission.status}
         acceptedAt={submission.acceptedAt}
-        ccv={opportunity?.ccv}
+        ccv={userStats?.peakViewers}
         onContact={handleContact}
       />
 

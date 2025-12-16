@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { useRouter } from "next/navigation";
 import { Search, Eye } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
@@ -8,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useOpportunitySubmissions } from "@/features/business";
 import type { OpportunitySubmissionWithCreator } from "@/features/business";
-import Link from "next/link";
 
 interface BusinessOpportunityAgreementsProps {
   opportunityId: string;
@@ -28,6 +28,7 @@ const STATUS_MAP: Record<CreatorOpportunityStatus, string> = {
 export function BusinessOpportunityAgreements({
   opportunityId,
 }: BusinessOpportunityAgreementsProps) {
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [timeFilter, setTimeFilter] = useState("past-12-months");
@@ -160,15 +161,9 @@ export function BusinessOpportunityAgreements({
               >
                 Status
               </th>
-              <th
-                className="text-left py-3 px-4 text-sm font-medium
-                  text-base-800"
-              >
-                View
-              </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="w-full">
             {filteredSubmissions.length === 0 ? (
               <tr>
                 <td colSpan={5} className="text-center py-12 text-base-700">
@@ -179,8 +174,11 @@ export function BusinessOpportunityAgreements({
               filteredSubmissions.map((submission) => (
                 <tr
                   key={submission._id}
+                  onClick={() =>
+                    router.push(`/business/agreements?id=${submission._id}`)
+                  }
                   className="border-b border-base-600 hover:bg-base-300/50
-                    transition-colors"
+                    transition-colors cursor-pointer"
                 >
                   <td className="py-4 px-4 text-sm text-white">
                     {submission.creator?.username || "Unknown"}
@@ -203,17 +201,6 @@ export function BusinessOpportunityAgreements({
                         {submission.status.replace(/-/g, " ")}
                       </span>
                     </div>
-                  </td>
-                  <td className="py-4 px-4">
-                    <Link href={`/business/agreements?id=${submission._id}`}>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="w-8 h-8 text-base-700 hover:text-white"
-                      >
-                        <Eye className="w-4 h-4" />
-                      </Button>
-                    </Link>
                   </td>
                 </tr>
               ))

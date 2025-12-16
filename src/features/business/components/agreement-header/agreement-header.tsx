@@ -101,14 +101,14 @@ export function AgreementHeader({
         <div
           className="flex items-center gap-4 text-right w-full justify-between"
         >
-          <div>
+          <div className="flex items-center gap-1">
             <span className="text-2xl font-bold text-white">
               {creator?.followersCount?.toLocaleString() || 0}
             </span>
             <span className="text-sm text-base-700 ml-1">Subscribers</span>
           </div>
           {ccv !== undefined && (
-            <div>
+            <div className="flex items-center gap-1">
               <span className="text-2xl font-bold text-white">{ccv}</span>
               <span className="text-sm text-base-700 ml-1">CCV</span>
             </div>

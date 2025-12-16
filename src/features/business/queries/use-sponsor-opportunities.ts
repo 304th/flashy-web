@@ -16,7 +16,7 @@ export const useSponsorOpportunities = (
   return usePartitionedQuery<Opportunity, SponsorOpportunitiesCollectionParams>(
     {
       collection: sponsorOpportunitiesCollection,
-      queryKey: ["business", "sponsor-opportunities", params],
+      queryKey: ["me", "business", "sponsor-opportunities", params],
       getParams: ({ pageParam }) =>
         ({
           page: pageParam,

@@ -3,6 +3,7 @@ import { createMutation, useOptimisticMutation } from "@/lib/query-toolkit-v2";
 import { createSignedUploadUrlMutation } from "@/features/common/mutations/use-create-signed-upload-url";
 import { uploadImage } from "@/features/common/mutations/use-upload-image";
 import { opportunitiesCollection } from "@/features/monetise/collections/opportunities";
+import {useQueryClient} from "@tanstack/react-query";
 
 export interface CreateSponsorOpportunityParams extends Omit<
   CreateOpportunityParams,
@@ -73,8 +74,13 @@ const createSponsorOpportunityMutation = createMutation<
 });
 
 export const useCreateSponsorOpportunity = () => {
+  const queryClient = useQueryClient()
+
   return useOptimisticMutation<CreateSponsorOpportunityParams, Opportunity>({
     mutation: createSponsorOpportunityMutation,
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["me", "business"] })
+    },
     // onOptimistic: (ch, params) => {
     //   return ch(opportunitiesCollection).prepend(
     //     {

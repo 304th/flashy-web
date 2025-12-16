@@ -61,13 +61,10 @@ const ExistingConversationHeader = () => {
         conversationQuery.data ? (
           <>
             <div className="flex items-center gap-3 w-full">
-
               <ConversationThumbnail conversation={conversationQuery.data} />
               <div className="flex flex-col gap-0">
-
                 <ConversationTitle conversation={conversationQuery.data} />
                 <ConversationOnline conversation={conversationQuery.data} />
-
               </div>
             </div>
             <AgreementBanner conversation={conversationQuery.data} />
@@ -96,7 +93,10 @@ const AgreementBanner = ({
   }
 
   return (
-    <div className="absolute w-full left-0 -bottom-8 rounded-b-md flex gap-2 bg-base-200 justify-center items-center text-sm text-base-700 h-9">
+    <div
+      className="absolute w-full left-0 -bottom-8 rounded-b-md flex gap-2
+        bg-base-200 justify-center items-center text-sm text-base-700 h-9"
+    >
       The user is an approved partner with a signed agreement.{" "}
       <Link
         href={`/business/agreements?id=${agreementData.agreement._id}`}

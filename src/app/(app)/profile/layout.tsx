@@ -10,8 +10,8 @@ import { useAuthed } from "@/features/auth/hooks/use-authed";
 import { useMe } from "@/features/auth/queries/use-me";
 import { getTabNameFromPathname } from "@/features/channels/utils/get-tab-name-from-pathname";
 import { useProtectedRedirect } from "@/features/auth/hooks/use-protected-redirect";
-import { capitalize } from "media-chrome/utils/utils";
 import { useProfileStream } from "@/features/profile/queries/use-profile-stream";
+import { capitalize } from "@/lib/utils";
 
 const profileTabs = [
   {

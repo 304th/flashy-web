@@ -13,13 +13,14 @@ import { ChannelContextProvider } from "@/features/profile/components/channel-co
 import { ChannelHeader } from "@/features/channels/components/channel-header/channel-header";
 import { ChannelPageTabs } from "@/features/channels/components/channel-page-tabs/channel-page-tabs";
 import { getTabNameFromPathname } from "@/features/channels/utils/get-tab-name-from-pathname";
-import { capitalize } from "media-chrome/utils/utils";
+
 import { useQueryParams } from "@/hooks/use-query-params";
 import { ChannelNotFound } from "@/features/channels/components/channel-not-found/channel-not-found";
 import { useMe } from "@/features/auth/queries/use-me";
 import { useChannelById } from "@/features/channels/queries/use-channel-by-id";
 import { useProfileStream } from "@/features/profile/queries/use-profile-stream";
 import { useChannelStream } from "@/features/channels/queries/use-channel-stream";
+import { capitalize } from "@/lib/utils";
 
 const channelTabs = [
   {

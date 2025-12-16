@@ -5,7 +5,7 @@ import { Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Tag } from "@/components/ui/tag";
-import { capitalize } from "media-chrome/utils/utils";
+import { capitalize } from "@/lib/utils";
 
 interface OpportunityCardProps {
   opportunity: Opportunity;

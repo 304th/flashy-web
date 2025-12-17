@@ -98,4 +98,5 @@ export const uniqBy = <T, K>(array: T[], keyFn: (item: T) => K): T[] => {
   return result;
 };
 
-export const capitalize = (value: string) => value.charAt(0).toUpperCase() + value.slice(1);
+export const capitalize = (value: string) =>
+  value.charAt(0).toUpperCase() + value.slice(1);

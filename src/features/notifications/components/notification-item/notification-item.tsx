@@ -30,9 +30,13 @@ const getNotificationLink = (notification: UserNotification): string | null => {
       return pushData.post_id ? `/social/post?id=${pushData.post_id}` : null;
     // Sponsorship notification types
     case "opportunity_application":
-      return pushData.creator_opportunity_id ? `/business/agreements?id=${pushData.creator_opportunity_id}` : `/business/dashboard`
+      return pushData.creator_opportunity_id
+        ? `/business/agreements?id=${pushData.creator_opportunity_id}`
+        : `/business/dashboard`;
     case "deliverable_submitted":
-      return pushData.creator_opportunity_id ? `/business/agreements?id=${pushData.creator_opportunity_id}` : `/business/dashboard`
+      return pushData.creator_opportunity_id
+        ? `/business/agreements?id=${pushData.creator_opportunity_id}`
+        : `/business/dashboard`;
     case "submission_approved":
     case "submission_rejected":
       return pushData.opportunity_id
@@ -77,7 +81,7 @@ const getShortTimeAgo = (timestamp: number) => {
 
 const getNotificationIcon = (
   text: string,
-  type?: string
+  type?: string,
 ): React.ReactNode | null => {
   // Handle sponsorship notification types
   if (type === "opportunity_application") {
@@ -181,7 +185,10 @@ const formatNotificationText = (text: string, usernames: string[]) => {
 };
 
 export const NotificationItem = ({ notification }: NotificationItemProps) => {
-  const icon = getNotificationIcon(notification.text, notification.pushData?.type);
+  const icon = getNotificationIcon(
+    notification.text,
+    notification.pushData?.type,
+  );
   const relativeTime = getShortTimeAgo(notification.time);
   const link = getNotificationLink(notification);
 

@@ -18,10 +18,6 @@ const formSchema = z
   .object({
     type: z.enum(["sponsorship", "affiliate", "partnership"] as const),
     title: z.string().min(3, "Agreement name must be at least 3 characters"),
-    brandName: z
-      .string()
-      .min(2, "Company name must be at least 2 characters")
-      .optional(),
     category: z.string().min(1, "Please select a category").optional(),
     productLink: z
       .string()
@@ -103,7 +99,6 @@ export const EditOpportunityForm = ({
     defaultValues: {
       type: opportunity.type,
       title: opportunity.title,
-      brandName: opportunity.brandName || "",
       category: opportunity.category || "",
       productLink: "",
       thumbnail: opportunity.brandLogo || null,
@@ -136,7 +131,6 @@ export const EditOpportunityForm = ({
         opportunityId: opportunity._id,
         data: {
           title: data.title,
-          brandName: data.brandName,
           brandLogo: data.thumbnailFile || data.thumbnail || undefined,
           mediaAssets: allMediaAssets.length > 0 ? allMediaAssets : undefined,
           type: data.type,

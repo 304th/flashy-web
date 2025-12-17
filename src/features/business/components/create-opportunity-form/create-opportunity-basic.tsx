@@ -69,7 +69,7 @@ export const CreateOpportunityBasic = () => {
           </FormItem>
         )}
       />
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 gap-4">
         <FormField
           control={form.control}
           name="title"
@@ -80,22 +80,6 @@ export const CreateOpportunityBasic = () => {
               </FormLabel>
               <FormControl>
                 <Input placeholder="Name..." {...field} className="h-10" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="brandName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>
-                Company Name <span className="text-red-500">*</span>
-              </FormLabel>
-              <FormControl>
-                <Input placeholder="Company Name" {...field} className="h-10" />
               </FormControl>
               <FormMessage />
             </FormItem>

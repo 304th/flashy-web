@@ -1,6 +1,14 @@
 import Link from "next/link";
 import { UserAvatar } from "@/components/ui/user-avatar";
-import { Heart, Flame, MessageCircle } from "lucide-react";
+import {
+  Heart,
+  Flame,
+  MessageCircle,
+  Briefcase,
+  FileCheck,
+  CheckCircle,
+  XCircle,
+} from "lucide-react";
 
 interface NotificationItemProps {
   notification: UserNotification;
@@ -20,6 +28,16 @@ const getNotificationLink = (notification: UserNotification): string | null => {
       return pushData.item_id ? `/social/post?id=${pushData.item_id}` : null;
     case "new master post":
       return pushData.post_id ? `/social/post?id=${pushData.post_id}` : null;
+    // Sponsorship notification types
+    case "opportunity_application":
+      return pushData.creator_opportunity_id ? `/business/agreements?id=${pushData.creator_opportunity_id}` : `/business/dashboard`
+    case "deliverable_submitted":
+      return pushData.creator_opportunity_id ? `/business/agreements?id=${pushData.creator_opportunity_id}` : `/business/dashboard`
+    case "submission_approved":
+    case "submission_rejected":
+      return pushData.opportunity_id
+        ? `/monetise/opportunity?id=${pushData.opportunity_id}`
+        : "/monetise";
     default:
       return null;
   }
@@ -57,7 +75,25 @@ const getShortTimeAgo = (timestamp: number) => {
   return `${monthsAgo}mo`;
 };
 
-const getNotificationIcon = (text: string) => {
+const getNotificationIcon = (
+  text: string,
+  type?: string
+): React.ReactNode | null => {
+  // Handle sponsorship notification types
+  if (type === "opportunity_application") {
+    return <Briefcase className="w-4 h-4 text-blue-500" />;
+  }
+  if (type === "deliverable_submitted") {
+    return <FileCheck className="w-4 h-4 text-purple-500" />;
+  }
+  if (type === "submission_approved") {
+    return <CheckCircle className="w-4 h-4 text-green-500" />;
+  }
+  if (type === "submission_rejected") {
+    return <XCircle className="w-4 h-4 text-orange-500" />;
+  }
+
+  // Handle other notification types by text
   if (text.includes("liked")) {
     return <Heart className="w-4 h-4 fill-red-500 text-red-500" />;
   }
@@ -145,7 +181,7 @@ const formatNotificationText = (text: string, usernames: string[]) => {
 };
 
 export const NotificationItem = ({ notification }: NotificationItemProps) => {
-  const icon = getNotificationIcon(notification.text);
+  const icon = getNotificationIcon(notification.text, notification.pushData?.type);
   const relativeTime = getShortTimeAgo(notification.time);
   const link = getNotificationLink(notification);
 

@@ -338,6 +338,9 @@ declare global {
       type: string;
       post_id?: string;
       item_id?: string;
+      // Sponsorship notification fields
+      opportunity_id?: string;
+      creator_opportunity_id?: string;
     };
     text: string;
     time: number;
@@ -535,7 +538,7 @@ declare global {
 
   interface CreateOpportunityParams {
     title: string;
-    brandName: string;
+    // brandName is set automatically from business account title on the backend
     brandLogo?: string;
     mediaAssets?: string[];
     type: OpportunityType;

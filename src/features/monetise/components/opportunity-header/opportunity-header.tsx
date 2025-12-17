@@ -58,26 +58,6 @@ export function OpportunityHeader({
   };
 
   const getStatusDisplay = () => {
-    if (!isEligible) {
-      return (
-        <div className="flex items-center gap-2 text-red-500">
-          <Check className="w-4 h-4" />
-          <span className="text-sm">
-            You are not eligible for this opportunity
-          </span>
-        </div>
-      );
-    }
-
-    if (!hasApplied) {
-      return (
-        <div className="flex items-center gap-2 text-brand-100">
-          <Check className="w-4 h-4" />
-          <span className="text-sm">You are eligible for this opportunity</span>
-        </div>
-      );
-    }
-
     switch (status) {
       case "rejected":
         return (
@@ -111,13 +91,26 @@ export function OpportunityHeader({
             </span>
           </div>
         );
-      default:
-        return (
-          <div className="flex items-center gap-2 text-brand-100">
-            <Check className="w-4 h-4" />
-            <span className="text-sm">Applied</span>
-          </div>
-        );
+    }
+
+    if (!isEligible) {
+      return (
+        <div className="flex items-center gap-2 text-red-500">
+          <Check className="w-4 h-4" />
+          <span className="text-sm">
+            You are not eligible for this opportunity
+          </span>
+        </div>
+      );
+    }
+
+    if (!hasApplied) {
+      return (
+        <div className="flex items-center gap-2 text-brand-100">
+          <Check className="w-4 h-4" />
+          <span className="text-sm">You are eligible for this opportunity</span>
+        </div>
+      );
     }
   };
 

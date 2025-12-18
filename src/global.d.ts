@@ -57,6 +57,7 @@ declare global {
     followersCount?: number;
     followingCount?: number;
     receivesMessagesFromAnyone?: boolean;
+    isAssociate?: boolean;
   }
 
   interface Author {

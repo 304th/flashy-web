@@ -3,16 +3,20 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Modal as ModalComponent } from "@/packages/modals";
 import { CloseButton } from "@/components/ui/close-button";
 import { AdminIcon } from "@/components/ui/icons/admin";
+import { PersonIcon } from "@/components/ui/icons/person";
 import { AdminBusinessAccounts } from "@/features/admin/components/admin-modal/admin-business-accounts";
+import { AdminUsers } from "@/features/admin/components/admin-modal/admin-users";
+import { useIsSuperAdmin } from "@/features/auth/hooks/use-is-super-admin";
 
 export interface AdminModalProps {
   onClose(): void;
 }
 
-export type AdminTab = "business-accounts";
+export type AdminTab = "business-accounts" | "users";
 
 export const AdminModal = ({ onClose, ...props }: AdminModalProps) => {
   const [curTab, setCurTab] = useState<AdminTab>(() => "business-accounts");
+  const isSuperAdmin = useIsSuperAdmin();
 
   return (
     <Modal onClose={onClose} className="!p-0" {...props}>
@@ -39,6 +43,16 @@ export const AdminModal = ({ onClose, ...props }: AdminModalProps) => {
               selected={curTab === "business-accounts"}
               onChange={setCurTab}
             />
+            {isSuperAdmin && (
+              <NavLink
+                value="users"
+                title="Users"
+                description="Manage user roles and status"
+                icon={<PersonIcon />}
+                selected={curTab === "users"}
+                onChange={setCurTab}
+              />
+            )}
           </div>
           <div className="flex flex-col grow w-2/3 overflow-hidden">
             <AnimatePresence initial={false}>
@@ -50,6 +64,16 @@ export const AdminModal = ({ onClose, ...props }: AdminModalProps) => {
                   className="flex grow shrink overflow-hidden"
                 >
                   <AdminBusinessAccounts />
+                </motion.div>
+              )}
+              {curTab === "users" && (
+                <motion.div
+                  key="users"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="flex grow shrink overflow-hidden"
+                >
+                  <AdminUsers />
                 </motion.div>
               )}
             </AnimatePresence>

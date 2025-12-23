@@ -125,13 +125,12 @@ const NavLink = ({
 }) => {
   return (
     <div
-      className={`flex w-full p-3 items-start justify-between gap-3
-        cursor-pointer transition
+      className={`grid grid-cols-6 w-full p-3 cursor-pointer transition
         ${selected ? "bg-base-300" : "hover:bg-base-250"}`}
       onClick={() => onChange(value)}
     >
-      <div className="flex shrink-0 text-white">{icon}</div>
-      <div className="flex flex-col">
+      <div className="flex col-span-1 text-white">{icon}</div>
+      <div className="flex flex-col col-span-5">
         <p className="text-md text-white font-bold">{title}</p>
         <p className="text-sm">{description}</p>
       </div>

@@ -4,19 +4,23 @@ import { Modal as ModalComponent } from "@/packages/modals";
 import { CloseButton } from "@/components/ui/close-button";
 import { AdminIcon } from "@/components/ui/icons/admin";
 import { PersonIcon } from "@/components/ui/icons/person";
+import { PictureIcon } from "@/components/ui/icons/picture";
 import { AdminBusinessAccounts } from "@/features/admin/components/admin-modal/admin-business-accounts";
 import { AdminUsers } from "@/features/admin/components/admin-modal/admin-users";
+import { AdminHomeBanners } from "@/features/admin/components/admin-modal/admin-home-banners";
 import { useIsSuperAdmin } from "@/features/auth/hooks/use-is-super-admin";
+import { useIsManager } from "@/features/auth/hooks/use-is-manager";
 
 export interface AdminModalProps {
   onClose(): void;
 }
 
-export type AdminTab = "business-accounts" | "users";
+export type AdminTab = "business-accounts" | "users" | "home-banners";
 
 export const AdminModal = ({ onClose, ...props }: AdminModalProps) => {
   const [curTab, setCurTab] = useState<AdminTab>(() => "business-accounts");
   const isSuperAdmin = useIsSuperAdmin();
+  const isManager = useIsManager()
 
   return (
     <Modal onClose={onClose} className="!p-0" {...props}>
@@ -53,6 +57,16 @@ export const AdminModal = ({ onClose, ...props }: AdminModalProps) => {
                 onChange={setCurTab}
               />
             )}
+            {(isSuperAdmin || isManager) && (
+              <NavLink
+                value="home-banners"
+                title="Home Banners"
+                description="Manage home page banners"
+                icon={<PictureIcon />}
+                selected={curTab === "home-banners"}
+                onChange={setCurTab}
+              />
+            )}
           </div>
           <div className="flex flex-col grow w-2/3 overflow-hidden">
             <AnimatePresence initial={false}>
@@ -74,6 +88,16 @@ export const AdminModal = ({ onClose, ...props }: AdminModalProps) => {
                   className="flex grow shrink overflow-hidden"
                 >
                   <AdminUsers />
+                </motion.div>
+              )}
+              {curTab === "home-banners" && (
+                <motion.div
+                  key="home-banners"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="flex grow shrink overflow-hidden"
+                >
+                  <AdminHomeBanners />
                 </motion.div>
               )}
             </AnimatePresence>

@@ -75,34 +75,34 @@ export const Sidebar = () => {
         </NavItem>
       </div>
       <Separator />
-      <div className="flex flex-col w-full items-center gap-2">
-        <NavItem
-          route="/monetise"
-          icon={<MonetiseIcon />}
-          className="text-xs"
-          expanded={expanded}
-        >
-          Monetise
-        </NavItem>
-        {businessAccounts && (
-          <NavItem
-            route="/business/dashboard"
-            icon={<StoreIcon />}
-            className="text-xs"
-            expanded={expanded}
-            onClick={
-              businessAccounts?.[0]?.status === "approved"
-                ? undefined
-                : () => {
-                    openModal("CreateBusinessModal");
-                  }
-            }
-          >
-            Business
-          </NavItem>
-        )}
-      </div>
-      <Separator />
+      {/*<div className="flex flex-col w-full items-center gap-2">*/}
+      {/*  <NavItem*/}
+      {/*    route="/monetise"*/}
+      {/*    icon={<MonetiseIcon />}*/}
+      {/*    className="text-xs"*/}
+      {/*    expanded={expanded}*/}
+      {/*  >*/}
+      {/*    Monetise*/}
+      {/*  </NavItem>*/}
+      {/*  {businessAccounts && (*/}
+      {/*    <NavItem*/}
+      {/*      route="/business/dashboard"*/}
+      {/*      icon={<StoreIcon />}*/}
+      {/*      className="text-xs"*/}
+      {/*      expanded={expanded}*/}
+      {/*      onClick={*/}
+      {/*        businessAccounts?.[0]?.status === "approved"*/}
+      {/*          ? undefined*/}
+      {/*          : () => {*/}
+      {/*              openModal("CreateBusinessModal");*/}
+      {/*            }*/}
+      {/*      }*/}
+      {/*    >*/}
+      {/*      Business*/}
+      {/*    </NavItem>*/}
+      {/*  )}*/}
+      {/*</div>*/}
+      {/*<Separator />*/}
       {expanded && (
         <>
           <Subscriptions />

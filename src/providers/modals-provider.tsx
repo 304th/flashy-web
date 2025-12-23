@@ -117,6 +117,10 @@ import {
   AdminModalProps,
 } from "@/features/admin/components/admin-modal/admin-modal";
 import {
+  CreateHomeBannerModal,
+  CreateHomeBannerModalProps,
+} from "@/features/admin/components/admin-modal/create-home-banner-modal";
+import {
   SubmitDeliverablesModal,
   SubmitDeliverablesModalProps,
 } from "@/features/monetise/components/submit-deliverables-modal/submit-deliverables-modal";
@@ -155,6 +159,7 @@ const modalsConfig = {
   CreateBusinessModal,
   EditBusinessModal,
   AdminModal,
+  CreateHomeBannerModal,
   SubmitDeliverablesModal,
   RejectSubmissionModal,
 };
@@ -275,6 +280,10 @@ export type ModalPropsTypes =
   | {
       type: "AdminModal";
       props: AdminModalProps;
+    }
+  | {
+      type: "CreateHomeBannerModal";
+      props: CreateHomeBannerModalProps;
     }
   | {
       type: "SubmitDeliverablesModal";

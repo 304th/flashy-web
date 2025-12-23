@@ -62,7 +62,7 @@
     "lucide-react": "^0.525.0",
     "mathjs": "^14.7.0",
     "nanoid": "^5.1.5",
-    "next": "^15.5.4",
+    "next": "^15.5.9",
     "nprogress": "^0.2.0",
     "react": "^19.2.0",
     "react-day-picker": "8.10.1",

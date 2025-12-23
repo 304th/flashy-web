@@ -650,6 +650,40 @@ declare global {
     businessAccount?: BusinessAccount;
     message: string;
   }
+
+  // ==================== HOME BANNER TYPES ====================
+
+  type HomeBannerStatus = "active" | "paused";
+
+  interface HomeBanner {
+    _id: string;
+    bannerImage: string;
+    callToActionTitle: string;
+    link: string;
+    logoIcon?: string;
+    isPinned: boolean;
+    status: HomeBannerStatus;
+    createdAt: string;
+    updatedAt: string;
+  }
+
+  interface CreateHomeBannerParams {
+    bannerImage: string;
+    callToActionTitle: string;
+    link: string;
+    logoIcon?: string;
+    isPinned?: boolean;
+    status?: HomeBannerStatus;
+  }
+
+  interface UpdateHomeBannerParams {
+    bannerImage?: string;
+    callToActionTitle?: string;
+    link?: string;
+    logoIcon?: string;
+    isPinned?: boolean;
+    status?: HomeBannerStatus;
+  }
 }
 
 export {};

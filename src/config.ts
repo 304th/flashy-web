@@ -40,6 +40,10 @@ const config = {
       },
     },
   },
+  monetise: {
+    ccv: Number(process.env.NEXT_PUBLIC_MONETISE_MIN_CCV) ?? 50,
+    avgViews: Number(process.env.NEXT_PUBLIC_MONETISE_MIN_AVG_VIEWS) ?? 5,
+  },
 } as const;
 
 export const env = {

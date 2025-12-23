@@ -40,7 +40,7 @@ const SwitchRoot = React.forwardRef<
           ],
           // disabled
           disabled && [
-            "bg-bg-white-0 p-[3px] ring-1 ring-inset ring-stroke-soft-200",
+            "bg-bg-white-0  ring-1 ring-inset ring-stroke-soft-200 opacity-50",
           ],
         )}
       >
@@ -64,7 +64,7 @@ const SwitchRoot = React.forwardRef<
               "group-active/switch:scale-[.833]",
             ],
             // disabled,
-            disabled && ["size-2.5 rounded-full bg-base-400 shadow-none"],
+            disabled && ["rounded-full bg-base-400 shadow-none"],
           )}
           style={{
             ["--mask" as any]:

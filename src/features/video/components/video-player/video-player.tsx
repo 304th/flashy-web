@@ -32,9 +32,14 @@ export const VideoPlayer = ({
   const token = useExtractPrivateToken(videoPost);
 
   if (!token) {
-    return <div className="flex items-center justify-center aspect-video bg-base-200 rounded">
-      <NotFound>Video not available</NotFound>
-    </div>
+    return (
+      <div
+        className="flex items-center justify-center aspect-video bg-base-200
+          rounded"
+      >
+        <NotFound>Video not available</NotFound>
+      </div>
+    );
   }
 
   return (

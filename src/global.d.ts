@@ -49,6 +49,7 @@ declare global {
     moderator?: boolean;
     representative?: boolean;
     superAdmin?: boolean;
+    manager?: boolean;
     mutedUsers?: string[];
     bio?: string;
     banner?: string;
@@ -56,6 +57,7 @@ declare global {
     followersCount?: number;
     followingCount?: number;
     receivesMessagesFromAnyone?: boolean;
+    isAssociate?: boolean;
   }
 
   interface Author {
@@ -337,6 +339,9 @@ declare global {
       type: string;
       post_id?: string;
       item_id?: string;
+      // Sponsorship notification fields
+      opportunity_id?: string;
+      creator_opportunity_id?: string;
     };
     text: string;
     time: number;
@@ -349,6 +354,302 @@ declare global {
   // Example:
   // declare global { interface QueryToolkitChannels { posts: true; profile: true } }
   interface QueryToolkitChannels {}
+
+  // ==================== MONETISE TYPES ====================
+
+  type OpportunityType = "sponsorship" | "partnership" | "affiliate";
+  type OpportunityCategory =
+    | "lifestyle"
+    | "health & well-being"
+    | "technology"
+    | "fashion & beauty"
+    | "food & beverage"
+    | "travel"
+    | "finance"
+    | "education"
+    | "entertainment"
+    | "sports & fitness"
+    | "gaming"
+    | "business";
+  type OpportunityStatus = "active" | "expired" | "paused";
+  type CompensationType = "fixed" | "commission" | "product";
+  type CreatorOpportunityStatus =
+    | "accepted"
+    | "pending-deliverables"
+    | "submitted"
+    | "under-review"
+    | "approved"
+    | "rejected"
+    | "expired"
+    | "completed";
+
+  interface OpportunityEligibility {
+    niches: string[];
+    platforms: string[];
+    countries: string[];
+  }
+
+  interface Opportunity {
+    _id: string;
+    title: string;
+    brandName: string;
+    brandLogo?: string;
+    mediaAssets?: string[];
+    type: OpportunityType;
+    category: OpportunityCategory;
+    description: string;
+    deliverables: string[];
+    compensation: string;
+    compensationType: CompensationType;
+    eligibility: OpportunityEligibility;
+    startDate: string;
+    endDate: string;
+    requiresApplication: boolean;
+    termsAndConditions: string;
+    status: OpportunityStatus;
+    createdBy: string;
+    sponsorId?: string;
+    maxParticipants: number;
+    currentParticipants: number;
+    ccv: number;
+    avgViews: number;
+    createdAt: string;
+    updatedAt: string;
+  }
+
+  interface SubmissionFile {
+    url: string;
+    filename: string;
+    type?: string;
+    size?: number;
+    uploadedAt?: string;
+  }
+
+  interface Submission {
+    files: SubmissionFile[];
+    links: string[];
+    note?: string;
+  }
+
+  interface CreatorOpportunity {
+    _id: string;
+    creatorId: string;
+    opportunityId: string | Opportunity;
+    status: CreatorOpportunityStatus;
+    appliedAt: string;
+    acceptedAt?: string;
+    submittedAt?: string;
+    approvedAt?: string;
+    completedAt?: string;
+    submission?: Submission;
+    feedback?: string;
+    resubmitCount: number;
+    tcAgreedAt?: string;
+    tcVersion?: string;
+    reminder5DaySent?: boolean;
+    reminder1DaySent?: boolean;
+    createdAt: string;
+    updatedAt: string;
+  }
+
+  interface OpportunityListParams {
+    page?: number;
+    limit?: number;
+    type?: OpportunityType;
+    category?: OpportunityCategory;
+    niche?: string | string[];
+    minPayout?: number;
+    search?: string;
+    status?: OpportunityStatus;
+    sortBy?: "createdAt" | "startDate" | "endDate" | "compensation";
+    sortOrder?: "asc" | "desc";
+  }
+
+  interface OpportunityListResponse {
+    opportunities: Opportunity[];
+    pagination: {
+      page: number;
+      limit: number;
+      total: number;
+      pages: number;
+      hasNext: boolean;
+      hasPrev: boolean;
+    };
+  }
+
+  interface CreatorOpportunityListResponse {
+    creatorOpportunities: CreatorOpportunity[];
+    pagination: {
+      page: number;
+      limit: number;
+      total: number;
+      pages: number;
+    };
+  }
+
+  interface SponsorSubmissionsResponse {
+    submissions: CreatorOpportunity[];
+    pagination: {
+      page: number;
+      limit: number;
+      total: number;
+      pages: number;
+    };
+  }
+
+  interface PresignedUrlRequest {
+    filename: string;
+    contentType: string;
+  }
+
+  interface PresignedUrlResponse {
+    uploadUrl: string;
+    fileUrl: string;
+    key: string;
+    filename: string;
+    originalFilename: string;
+    expiresIn: number;
+    contentType: string;
+  }
+
+  interface AcceptOpportunityResponse {
+    success: boolean;
+    creatorOpportunity: CreatorOpportunity;
+    message: string;
+  }
+
+  interface MyOpportunityStatusResponse {
+    hasApplied: boolean;
+    status: CreatorOpportunityStatus | null;
+    creatorOpportunity: CreatorOpportunity | null;
+  }
+
+  interface SubmitDeliverablesResponse {
+    success: boolean;
+    creatorOpportunity: CreatorOpportunity;
+    message: string;
+    resubmitsRemaining?: number;
+  }
+
+  interface ApproveRejectResponse {
+    success: boolean;
+    creatorOpportunity: CreatorOpportunity;
+    message: string;
+  }
+
+  interface CreateOpportunityParams {
+    title: string;
+    // brandName is set automatically from business account title on the backend
+    brandLogo?: string;
+    mediaAssets?: string[];
+    type: OpportunityType;
+    category: OpportunityCategory;
+    description: string;
+    deliverables: string[];
+    compensation?: string;
+    compensationType?: CompensationType;
+    eligibility?: Partial<OpportunityEligibility>;
+    startDate: string;
+    endDate: string;
+    requiresApplication?: boolean;
+    termsAndConditions: string;
+    status?: OpportunityStatus;
+    sponsorId?: string;
+    maxParticipants?: number;
+    ccv?: number;
+    avgViews?: number;
+  }
+
+  interface UpdateOpportunityParams extends Partial<CreateOpportunityParams> {}
+
+  // ==================== BUSINESS ACCOUNT TYPES ====================
+
+  type BusinessAccountStatus = "pending" | "approved" | "rejected";
+  type BusinessAccountCategory =
+    | "lifestyle"
+    | "health & well-being"
+    | "technology"
+    | "fashion & beauty"
+    | "food & beverage"
+    | "travel"
+    | "finance"
+    | "education"
+    | "entertainment"
+    | "sports & fitness"
+    | "gaming"
+    | "business";
+
+  interface BusinessAccount {
+    _id: string;
+    userId: string;
+    title: string;
+    description: string;
+    category: BusinessAccountCategory;
+    status: BusinessAccountStatus;
+    rejectionReason?: string;
+    createdAt: string;
+    updatedAt: string;
+    approvedAt?: string;
+    approvedBy?: string;
+    rejectedAt?: string;
+    rejectedBy?: string;
+  }
+
+  interface BusinessAccountWithUser extends BusinessAccount {
+    user?: {
+      fbId: string;
+      username: string;
+      email?: string;
+      userimage: string;
+    };
+  }
+
+  interface CreateBusinessAccountParams {
+    title: string;
+    description: string;
+    category: BusinessAccountCategory;
+  }
+
+  interface UpdateBusinessAccountParams {
+    title?: string;
+    description?: string;
+    category?: BusinessAccountCategory;
+  }
+
+  interface BusinessAccountListParams {
+    page?: number;
+    limit?: number;
+    status?: BusinessAccountStatus;
+    category?: BusinessAccountCategory;
+    userId?: string;
+    sortBy?: "createdAt" | "updatedAt";
+    sortOrder?: "asc" | "desc";
+  }
+
+  interface BusinessAccountListResponse {
+    businessAccounts: BusinessAccountWithUser[];
+    pagination: {
+      page: number;
+      limit: number;
+      total: number;
+      pages: number;
+      hasNext: boolean;
+      hasPrev: boolean;
+    };
+  }
+
+  interface BusinessAccountStatsResponse {
+    pending: number;
+    approved: number;
+    rejected: number;
+    total: number;
+  }
+
+  interface BusinessAccountActionResponse {
+    success: boolean;
+    businessAccount?: BusinessAccount;
+    message: string;
+  }
 }
 
 export {};

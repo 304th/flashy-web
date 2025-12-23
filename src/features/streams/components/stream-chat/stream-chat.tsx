@@ -60,7 +60,10 @@ export const StreamChat = ({ streamId, enabled = true }: StreamChatProps) => {
 
   if (!enabled) {
     return (
-      <div className="flex h-full items-center justify-center text-muted-foreground">
+      <div
+        className="flex h-full items-center justify-center
+          text-muted-foreground"
+      >
         Chat is disabled for this stream
       </div>
     );

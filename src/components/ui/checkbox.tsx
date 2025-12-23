@@ -5,17 +5,19 @@ import { cn } from "@/lib/utils";
 function IconCheck({ ...rest }: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
-      width="10"
-      height="8"
-      viewBox="0 0 10 8"
+      width="14"
+      height="11"
+      viewBox="0 0 14 11"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       {...rest}
     >
       <path
-        d="M1 3.5L4 6.5L9 1.5"
-        strokeWidth="1.5"
-        className="stroke-static-white"
+        d="M1 5L5.5 9.5L13 1.5"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="stroke-white"
       />
     </svg>
   );
@@ -43,7 +45,7 @@ export const Checkbox = React.forwardRef<
   const filterId = React.useId();
 
   // precalculated by .getTotalLength()
-  const TOTAL_LENGTH_CHECK = 11.313708305358887;
+  const TOTAL_LENGTH_CHECK = 16;
   const TOTAL_LENGTH_INDETERMINATE = 8;
 
   return (
@@ -51,8 +53,8 @@ export const Checkbox = React.forwardRef<
       ref={forwardedRef}
       checked={checked}
       className={cn(
-        `group/checkbox relative flex size-5 shrink-0 items-center
-        justify-center outline-none`,
+        `group/checkbox relative flex size-6 shrink-0 items-center
+        justify-center outline-none cursor-pointer`,
         "focus:outline-none",
         className,
       )}
@@ -72,25 +74,25 @@ export const Checkbox = React.forwardRef<
           height="16"
           rx="4"
           className={cn(
-            "fill-bg-soft-200 transition duration-200 ease-out",
+            "fill-base-600 transition duration-200 ease-out cursor-pointer",
             // hover
-            "group-hover/checkbox:fill-bg-sub-300",
+            "group-hover/checkbox:fill-base-500",
             // focus
-            "group-focus/checkbox:fill-primary-base",
+            "group-focus/checkbox:fill-base-500",
             // disabled
-            "group-disabled/checkbox:fill-bg-soft-200",
+            "group-disabled/checkbox:fill-base-600",
             // hover
-            "group-hover/checkbox:group-data-[state=checked]/checkbox:fill-primary-darker",
-            "group-hover/checkbox:group-data-[state=indeterminate]/checkbox:fill-primary-darker",
+            "group-hover/checkbox:group-data-[state=checked]/checkbox:fill-brand-200/50",
+            "group-hover/checkbox:group-data-[state=indeterminate]/checkbox:fill-brand-200/50",
             // focus
-            "group-focus/checkbox:group-data-[state=checked]/checkbox:fill-primary-dark",
-            "group-focus/checkbox:group-data-[state=indeterminate]/checkbox:fill-primary-dark",
+            "group-focus/checkbox:group-data-[state=checked]/checkbox:fill-brand-200/60",
+            "group-focus/checkbox:group-data-[state=indeterminate]/checkbox:fill-brand-200/60",
             // checked
-            "group-data-[state=checked]/checkbox:fill-primary-base",
-            "group-data-[state=indeterminate]/checkbox:fill-primary-base",
+            "group-data-[state=checked]/checkbox:fill-brand-200/60",
+            "group-data-[state=indeterminate]/checkbox:fill-brand-100",
             // disabled checked
-            "group-disabled/checkbox:group-data-[state=checked]/checkbox:fill-bg-soft-200",
-            "group-disabled/checkbox:group-data-[state=indeterminate]/checkbox:fill-bg-soft-200",
+            "group-disabled/checkbox:group-data-[state=checked]/checkbox:fill-base-600",
+            "group-disabled/checkbox:group-data-[state=indeterminate]/checkbox:fill-base-600",
           )}
         />
         <g filter={`url(#${filterId})`}>
@@ -101,7 +103,7 @@ export const Checkbox = React.forwardRef<
             height="13"
             rx="2.6"
             className={cn(
-              "fill-bg-white-0 transition duration-200 ease-out",
+              "fill-base-200 transition duration-200 ease-out",
               // disabled
               "group-disabled/checkbox:hidden",
               // checked

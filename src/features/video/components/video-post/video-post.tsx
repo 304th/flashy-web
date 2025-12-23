@@ -2,6 +2,7 @@ import Link from "next/link";
 import { VideoPostDescription } from "@/features/video/components/video-post/video-post-description";
 import { VideoPostDuration } from "@/features/video/components/video-post/video-post-duration";
 import { VideoPostMenu } from "@/features/video/components/video-post/video-post-menu";
+import Image from "next/image";
 
 export const VideoPost = ({
   videoPost,
@@ -26,12 +27,15 @@ export const VideoPost = ({
       >
         <div
           className={`relative w-full h-[180px] shrink-0 bg-cover bg-center
-            rounded
+            rounded overflow-hidden
             ${horizontal ? "h-[110px]! !shrink-0 !w-fit aspect-video" : ""}`}
-          style={{ backgroundImage: `url(${videoPost.storyImage})` }}
-          role="img"
-          aria-label="Video Post Thumbnail"
         >
+          <Image
+            src={videoPost.storyImage}
+            alt="Video Thumbnail"
+            fill
+            className="object-cover transition-transform group-hover:scale-105"
+          />
           <VideoPostDuration videoPost={videoPost} />
         </div>
         <VideoPostDescription

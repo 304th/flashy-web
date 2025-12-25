@@ -1,7 +1,7 @@
 import { api } from "@/services/api";
 import { createMutation, useOptimisticMutation } from "@/lib/query-toolkit-v2";
 import { businessAccountsCollection } from "@/features/business/collections/business-accounts";
-import {useQueryClient} from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface RejectBusinessAccountParams {
   id: string;
@@ -38,7 +38,9 @@ export const useRejectBusinessAccount = () => {
     //   });
     // },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["business", "accounts", "admin"] })
+      await queryClient.invalidateQueries({
+        queryKey: ["business", "accounts", "admin"],
+      });
     },
   });
 };

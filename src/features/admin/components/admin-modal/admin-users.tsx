@@ -75,7 +75,10 @@ const UserRow = ({ user }: { user: User }) => {
     isAssociate: user.isAssociate || false,
   });
 
-  const handleToggle = async (field: UserStatusField["key"], checked: boolean) => {
+  const handleToggle = async (
+    field: UserStatusField["key"],
+    checked: boolean,
+  ) => {
     const previousValue = statuses[field];
     setStatuses((prev) => ({ ...prev, [field]: checked }));
 

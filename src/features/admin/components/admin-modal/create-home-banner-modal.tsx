@@ -122,8 +122,13 @@ export const CreateHomeBannerModal = ({
   return (
     <Modal onClose={onClose} {...props}>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleSubmit)} className="flex flex-col gap-4">
-          <div className="flex w-full items-center justify-between border-b pb-4">
+        <form
+          onSubmit={form.handleSubmit(handleSubmit)}
+          className="flex flex-col gap-4"
+        >
+          <div
+            className="flex w-full items-center justify-between border-b pb-4"
+          >
             <p className="text-xl font-bold text-white">
               {isEditing ? "Edit Home Banner" : "Create Home Banner"}
             </p>
@@ -212,7 +217,9 @@ export const CreateHomeBannerModal = ({
                 name="logoIconUpload"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-white">Logo (Optional)</FormLabel>
+                    <FormLabel className="text-white">
+                      Logo (Optional)
+                    </FormLabel>
                     <ImageUpload
                       title="Upload Logo"
                       initialPreview={banner?.logoIcon}
@@ -229,9 +236,14 @@ export const CreateHomeBannerModal = ({
                     <Checkbox
                       id="isPinned"
                       checked={field.value}
-                      onCheckedChange={(checked) => field.onChange(checked === true)}
+                      onCheckedChange={(checked) =>
+                        field.onChange(checked === true)
+                      }
                     />
-                    <FormLabel htmlFor="isPinned" className="text-white !mt-0 cursor-pointer">
+                    <FormLabel
+                      htmlFor="isPinned"
+                      className="text-white !mt-0 cursor-pointer"
+                    >
                       Pinned
                     </FormLabel>
                   </FormItem>
@@ -268,7 +280,6 @@ export const CreateHomeBannerModal = ({
               {/*  )}*/}
               {/*/>*/}
             </div>
-
           </div>
 
           <div className="flex justify-end gap-2 pt-4 border-t">

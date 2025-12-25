@@ -17,7 +17,9 @@ export const useCreateHomeBanner = () => {
   return useOptimisticMutation<CreateHomeBannerParams, HomeBanner>({
     mutation: createHomeBannerMutation,
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["admin", "home-banners"] });
+      await queryClient.invalidateQueries({
+        queryKey: ["admin", "home-banners"],
+      });
     },
   });
 };

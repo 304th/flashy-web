@@ -20,7 +20,7 @@ export type AdminTab = "business-accounts" | "users" | "home-banners";
 export const AdminModal = ({ onClose, ...props }: AdminModalProps) => {
   const [curTab, setCurTab] = useState<AdminTab>(() => "business-accounts");
   const isSuperAdmin = useIsSuperAdmin();
-  const isManager = useIsManager()
+  const isManager = useIsManager();
 
   return (
     <Modal onClose={onClose} className="!p-0" {...props}>

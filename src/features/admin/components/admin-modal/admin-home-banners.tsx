@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { PlayIcon, PauseCircleIcon } from 'lucide-react'
+import { PlayIcon, PauseCircleIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useHomeBanners } from "@/features/admin/queries/use-home-banners";
 import { useDeleteHomeBanner } from "@/features/admin/mutations/use-delete-home-banner";
@@ -37,9 +37,13 @@ export const AdminHomeBanners = () => {
   const isLoading = bannersQuery.isLoading;
 
   const handleCreate = () => {
-    openModal("CreateHomeBannerModal", {}, {
-      subModal: true
-    });
+    openModal(
+      "CreateHomeBannerModal",
+      {},
+      {
+        subModal: true,
+      },
+    );
   };
 
   const handleEdit = (banner: HomeBanner) => {
@@ -88,7 +92,8 @@ export const AdminHomeBanners = () => {
             {banners.map((banner: HomeBanner) => (
               <div
                 key={banner._id}
-                className="flex flex-col gap-3 p-4 bg-base-200 rounded-lg border border-base-400"
+                className="flex flex-col gap-3 p-4 bg-base-200 rounded-lg border
+                  border-base-400"
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex items-start gap-3 flex-1">
@@ -98,7 +103,6 @@ export const AdminHomeBanners = () => {
                         alt="Banner"
                         className="w-full h-full object-cover"
                       />
-
                     </div>
                     <div className="flex flex-col gap-1 flex-1 min-w-0">
                       <div className="flex items-center gap-2">
@@ -110,7 +114,7 @@ export const AdminHomeBanners = () => {
                             banner.status === "active"
                               ? "bg-green-500/20 text-green-400"
                               : "bg-yellow-500/20 text-yellow-400"
-                          }`}
+                            }`}
                         >
                           {banner.status === "active" ? "Active" : "Paused"}
                         </span>
@@ -146,14 +150,20 @@ export const AdminHomeBanners = () => {
 
                   <div className="grid grid-cols-2 gap-2 shrink-0">
                     <Button
-                      variant={banner.status !== "active" ? "default" : "destructive"}
+                      variant={
+                        banner.status !== "active" ? "default" : "destructive"
+                      }
                       size="sm"
                       onClick={() => handleToggleStatus(banner)}
                       pending={updateBanner.isPending}
                       title={banner.status === "active" ? "Pause" : "Activate"}
                       className="aspect-square !p-0"
                     >
-                      {banner.status === "active" ? <PauseCircleIcon /> : <PlayIcon />}
+                      {banner.status === "active" ? (
+                        <PauseCircleIcon />
+                      ) : (
+                        <PlayIcon />
+                      )}
                     </Button>
                     <Button
                       variant={banner.isPinned ? "default" : "secondary"}
@@ -187,7 +197,10 @@ export const AdminHomeBanners = () => {
                 </div>
 
                 {deletingId === banner._id && (
-                  <div className="flex flex-col gap-2 pt-3 border-t border-base-400">
+                  <div
+                    className="flex flex-col gap-2 pt-3 border-t
+                      border-base-400"
+                  >
                     <p className="text-sm text-white">
                       Are you sure you want to delete this banner?
                     </p>

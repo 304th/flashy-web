@@ -63,7 +63,10 @@ export const AccountDropdown = () => {
               truncateUsername
               className="relative z-2 w-full flex backdrop-blur-xs items-center"
             />
-            <div className="absolute inset-0 z-1 bg-gradient-to-b rounded from-black/10 to-black/70" />
+            <div
+              className="absolute inset-0 z-1 bg-gradient-to-b rounded
+                from-black/10 to-black/70"
+            />
           </div>
           <DropdownMenuGroup>
             <Link href="/profile/social">

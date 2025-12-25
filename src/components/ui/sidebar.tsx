@@ -20,6 +20,7 @@ import { Spinner } from "@/components/ui/spinner/spinner";
 import { useModals } from "@/hooks/use-modals";
 import { useMe } from "@/features/auth/queries/use-me";
 import { useMyBusinessAccount } from "@/features/business";
+import { HelpIcon } from "@/components/ui/icons/help";
 
 interface NavItemProps {
   route?: string;
@@ -109,6 +110,7 @@ export const Sidebar = () => {
           <Separator />
         </>
       )}
+      <More expanded={expanded} />
     </div>
   );
 };
@@ -208,6 +210,42 @@ const Subscriptions = () => {
               );
             }}
           </Loadable>
+        </div>
+      )}
+    </div>
+  );
+};
+
+const More = ({ expanded }: { expanded: boolean }) => {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  if (!expanded) {
+    return (
+      <NavItem route="/about" icon={<HelpIcon />} expanded={expanded}>
+        About
+      </NavItem>
+    );
+  }
+
+  return (
+    <div className="flex w-full flex-col gap-2">
+      <div
+        className="flex items-center justify-between !h-[40px] px-4
+          cursor-pointer transition hover:bg-base-300"
+        onClick={() => setIsCollapsed(!isCollapsed)}
+      >
+        <p>More</p>
+        <div
+          className={`transition-transform ${isCollapsed ? "" : "rotate-180"}`}
+        >
+          <ChevronDownIcon />
+        </div>
+      </div>
+      {!isCollapsed && (
+        <div className="flex flex-col w-full">
+          <NavItem route="/about" icon={<HelpIcon />} expanded={expanded}>
+            About
+          </NavItem>
         </div>
       )}
     </div>

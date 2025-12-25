@@ -14,7 +14,9 @@ export const useDeleteHomeBanner = () => {
   return useOptimisticMutation<string, { success: boolean }>({
     mutation: deleteHomeBannerMutation,
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["admin", "home-banners"] });
+      await queryClient.invalidateQueries({
+        queryKey: ["admin", "home-banners"],
+      });
     },
   });
 };

@@ -40,7 +40,7 @@ const SwitchRoot = React.forwardRef<
           ],
           // disabled
           disabled && [
-            "bg-bg-white-0  ring-1 ring-inset ring-stroke-soft-200 opacity-50",
+            "bg-bg-white-0 ring-1 ring-inset ring-stroke-soft-200 opacity-50",
           ],
         )}
       >

@@ -11,6 +11,7 @@ import { MonetiseIcon } from "@/components/ui/icons/monetise";
 import { ChevronDownIcon } from "@/components/ui/icons/chevron-down";
 import { Separator } from "@/components/ui/separator";
 import { StoreIcon } from "@/components/ui/icons/store";
+import { WarningIcon } from "@/components/ui/icons/warning";
 import { useSidebar } from "@/contexts/sidebar-context";
 import { useProfileFollowings } from "@/features/profile/queries/use-profile-followings";
 import { Loadable } from "@/components/ui/loadable";
@@ -222,9 +223,14 @@ const More = ({ expanded }: { expanded: boolean }) => {
 
   if (!expanded) {
     return (
-      <NavItem route="/about" icon={<RepsIcon />} expanded={expanded}>
-        About
-      </NavItem>
+      <>
+        <NavItem route="/about" icon={<RepsIcon />} expanded={expanded}>
+          About
+        </NavItem>
+        <NavItem route="/privacy" icon={<WarningIcon />} expanded={expanded}>
+          Privacy
+        </NavItem>
+      </>
     );
   }
 
@@ -240,6 +246,9 @@ const More = ({ expanded }: { expanded: boolean }) => {
         <div className="flex flex-col w-full">
           <NavItem route="/about" icon={<RepsIcon />} expanded={expanded}>
             About
+          </NavItem>
+          <NavItem route="/privacy" icon={<WarningIcon />} expanded={expanded}>
+            Privacy Policy
           </NavItem>
         </div>
       )}

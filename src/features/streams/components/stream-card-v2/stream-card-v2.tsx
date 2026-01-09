@@ -27,7 +27,7 @@ export const StreamCardV2 = ({
           group-hover:bg-base-300 p-2 ${horizontal ? "flex-row" : ""}`}
       >
         <div
-          className={`relative w-full h-[180px] shrink-0 bg-cover bg-center
+          className={`relative w-full aspect-video shrink-0 bg-cover bg-center
             rounded
             ${horizontal ? "h-[110px]! !shrink-0 !w-fit aspect-video" : ""}'}
             ${stream.status === "ended" ? "bg-base-500" : ""}`}

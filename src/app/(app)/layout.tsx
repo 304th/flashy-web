@@ -1,7 +1,7 @@
 import "@/app/globals.css";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Figtree } from "next/font/google";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Layout } from "@/components/ui/layout";
 import { ApiProvider } from "@/providers/api-provider";
@@ -13,13 +13,8 @@ import { LiveEventsProvider } from "@/providers/live-events-provider";
 import { FingerprintProvider } from "@/providers/fingerprint-provider";
 import { SidebarProvider } from "@/contexts/sidebar-context";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const figtree = Figtree({
+  variable: "--font-figtree",
   subsets: ["latin"],
 });
 
@@ -36,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="overscroll-y-none">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${figtree.variable} antialiased`}
       >
         <GoogleOAuthProvider
           clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}

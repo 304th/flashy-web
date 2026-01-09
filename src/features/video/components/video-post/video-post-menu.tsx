@@ -61,7 +61,7 @@ export const VideoPostMenu = ({
           className="flex flex-col bg-base-300 border-base-400 p-1 gap-1"
           align="end"
         >
-          {isOwned && (
+          {(isOwned || isSuperAdmin) && (
             <DropdownMenuGroup className="flex flex-col gap-[2px]">
               <DropdownMenuItem
                 onClick={(e) => {

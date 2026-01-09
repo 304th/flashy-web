@@ -21,7 +21,7 @@ export const ConversationHeader = () => {
   return (
     <div
       className="relative flex w-full rounded-md bg-base-250 min-h-[72px]
-        z-[1000]"
+        z-1"
     >
       <div className="flex flex-col p-4 gap-0 w-full">
         {isNewConversation ? (

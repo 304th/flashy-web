@@ -27,17 +27,10 @@ export const Header = () => {
           </div>
           <Link
             href="/"
-            className="inline-flex items-center p-2 rounded transition
+            className="inline-flex items-center p-2 transition
               hover:bg-base-300"
           >
-            <img src="/logo.svg" alt="Logo" height={36} width={90} />
-            <img
-              src="/app.svg"
-              alt="App"
-              height={36}
-              width={90}
-              className="relative scale-90 top-[1px]"
-            />
+            <img src="/logo.svg" alt="Logo" height={20} width={200} />
           </Link>
         </div>
         <div

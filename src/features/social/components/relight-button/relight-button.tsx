@@ -1,5 +1,5 @@
 import Lottie from "lottie-react";
-import { RelightIcon } from "@/components/ui/icons/relight";
+import { RelightIcon } from "@/components/ui/icons/bolt-relight";
 import { useHasRelighted } from "@/features/social/hooks/use-has-relighted";
 import { useRelightSocialPost } from "@/features/social/mutations/use-relight-social-post";
 import { useMe } from "@/features/auth/queries/use-me";
@@ -17,7 +17,7 @@ export const RelightButton = ({ post }: { post: Relightable }) => {
   return (
     <div
       className="group flex rounded-md items-center min-w-14 gap-1 px-1 py-[2px]
-        cursor-pointer transition hover:text-[#FD980F] hover:bg-[#FD980F10]"
+        cursor-pointer transition hover:text-brand-100 hover:bg-brand-100/10"
       onClick={requireAuth((e) => {
         e.preventDefault();
         relightPost.mutate({
@@ -28,21 +28,15 @@ export const RelightButton = ({ post }: { post: Relightable }) => {
       })}
     >
       {isRelighted ? (
-        <Lottie
-          animationData={relightAnimation}
-          loop={false}
-          autoplay={true}
-          style={{
-            width: "30px",
-            height: "31px",
-          }}
-        />
+        <div className="relative flex rounded-full text-brand-100">
+          <RelightIcon />
+        </div>
       ) : (
         <div className="relative flex rounded-full">
           <RelightIcon />
         </div>
       )}
-      <p className="transition">{relitsCount}</p>
+      <p className={`transition ${isRelighted ? 'text-brand-100' : ''}`}>{relitsCount}</p>
     </div>
   );
 };

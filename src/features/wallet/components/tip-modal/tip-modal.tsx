@@ -12,6 +12,8 @@ import { UserProfile } from "@/components/ui/user-profile";
 import { useModals } from "@/hooks/use-modals";
 import { useWalletBalance } from "@/features/wallet/queries/use-wallet-balance";
 import { useTipChannel } from "@/features/wallet/mutations/use-tip-channel";
+import {BoltTipIcon} from "@/components/ui/icons/bolt-tip";
+import {BoltIcon} from "@/components/ui/icons/bolt";
 
 const PREDEFINED_AMOUNTS = ["1", "5", "10", "25", "50", "100"];
 
@@ -100,7 +102,7 @@ export const TipModal = ({ user, post, onClose, ...props }: TipModalProps) => {
             </div>
           </div>
           <div className="flex flex-col gap-2 items-center w-full text-center">
-            <BlazeTipIcon />
+            <BoltTipIcon />
             <p>
               Show your appreciation by sending a tip to{" "}
               <span className="text-white font-bold">@{user.username}</span>
@@ -123,7 +125,7 @@ export const TipModal = ({ user, post, onClose, ...props }: TipModalProps) => {
                   </div>
                 )}
               </Loadable>
-              <BlazeIcon />
+              <BoltIcon />
             </div>
           </div>
           <div className="flex flex-col gap-4 w-full p-4">

@@ -3,12 +3,12 @@ import { LikeButton } from "@/features/reactions/components/like-button/like-but
 import { RelightButton } from "@/features/social/components/relight-button/relight-button";
 import { IconButton } from "@/components/ui/icon-button";
 import { ShareIcon } from "@/components/ui/icons/share";
-import { BlazeTipIcon } from "@/components/ui/icons/blaze-tip";
 import { useSocialPostContext } from "@/features/social/components/social-post/social-post-context";
 import { useIsSocialPostLocked } from "@/features/social/hooks/use-is-social-post-locked";
 import { useIsSocialPostOwned } from "@/features/social/hooks/use-is-social-post-owned";
 import { useModals } from "@/hooks/use-modals";
 import { useProtectedAction } from "@/features/auth/hooks/use-protected-action";
+import {BoltTipIcon} from "@/components/ui/icons/bolt-tip";
 
 export const SocialPostActions = ({
   socialPost,
@@ -59,7 +59,7 @@ export const SocialPostActions = ({
             })}
           >
             <div className="scale-75">
-              <BlazeTipIcon />
+              <BoltTipIcon />
             </div>
           </IconButton>
         )}

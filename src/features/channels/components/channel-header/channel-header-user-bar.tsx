@@ -4,7 +4,7 @@ import { Loadable } from "@/components/ui/loadable";
 import { Button } from "@/components/ui/button";
 import { UserProfile } from "@/components/ui/user-profile";
 import { ShareIcon } from "@/components/ui/icons/share2";
-import { BlazeTipIcon } from "@/components/ui/icons/blaze-tip";
+import { BoltTipIcon } from "@/components/ui/icons/bolt-tip";
 import { ChannelMenu } from "@/features/channels/components/channel-header/channel-menu";
 import { ChannelSubscribeButton } from "@/features/channels/components/channel-subscribe-button/channel-subscribe-button";
 import { ChannelMessageButton } from "@/features/channels/components/channel-header/channel-message-button";
@@ -31,6 +31,7 @@ export const ChannelHeaderUserBar = ({ className }: { className?: string }) => {
               stream={stream}
               isLive={stream?.isLive}
               isLinkable={false}
+              showImage={true}
               avatarClassname="size-20"
             >
               <div className="flex items-center gap-2">
@@ -48,7 +49,7 @@ export const ChannelHeaderUserBar = ({ className }: { className?: string }) => {
                     });
                   })}
                 >
-                  <BlazeTipIcon />
+                  <BoltTipIcon />
                   Tip
                 </Button>
                 <Button

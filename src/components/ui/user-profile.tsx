@@ -106,19 +106,21 @@ const BaseUserProfile = ({
   };
 
   return (
-    <div
-      className={`relative flex items-center gap-2 p-[2px] ${className}`}
-      onClick={handleImageClick}
-    >
-      <UserAvatar
-        avatar={user.userimage}
-        className={`size-8 ${avatarClassname}
-          ${isLive ? "border-3 border-red-600" : ""}`}
+    <div className={`relative flex items-center gap-2 p-[2px] ${className}`}>
+      <div
+        onClick={handleImageClick}
+        className={showImage && user.userimage ? "cursor-pointer" : ""}
       >
-        {isLive && (
-          <LiveTag className="absolute -bottom-1 left-1/2 -translate-x-1/2" />
-        )}
-      </UserAvatar>
+        <UserAvatar
+          avatar={user.userimage}
+          className={`size-8 ${avatarClassname}
+            ${isLive ? "border-3 border-red-600" : ""}`}
+        >
+          {isLive && (
+            <LiveTag className="absolute -bottom-1 left-1/2 -translate-x-1/2" />
+          )}
+        </UserAvatar>
+      </div>
       {withoutUsername ? null : (
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-1">

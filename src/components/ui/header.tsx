@@ -30,7 +30,7 @@ export const Header = () => {
             className="inline-flex items-center p-2 transition
               hover:bg-base-300"
           >
-            <img src="/logo.svg" alt="Logo" height={20} width={200} />
+            <img src="/logo-new.svg" alt="Logo" height={20} width={200} />
           </Link>
         </div>
         <div

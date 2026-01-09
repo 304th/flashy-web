@@ -86,6 +86,7 @@ declare global {
     streamKey?: string;
     rtmpUrl?: string;
     recordingUrl?: string;
+    banned?: boolean;
     createdAt: string;
     updatedAt: string;
   }

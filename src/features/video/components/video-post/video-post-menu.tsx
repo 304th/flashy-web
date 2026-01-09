@@ -11,6 +11,7 @@ import { MeatballIcon } from "@/components/ui/icons/meatball";
 import { useModals } from "@/hooks/use-modals";
 import { useMe } from "@/features/auth/queries/use-me";
 import { useIsSuperAdmin } from "@/features/auth/hooks/use-is-super-admin";
+import { useIsModerator } from "@/features/auth/hooks/use-is-moderator";
 import { useIsChannelMuted } from "@/features/auth/hooks/use-is-channel-muted";
 import { useMuteChannel } from "@/features/channels/mutations/use-mute-channel";
 import { useUnmuteChannel } from "@/features/channels/mutations/use-unmute-channel";
@@ -33,6 +34,7 @@ export const VideoPostMenu = ({
   const muteUser = useMuteChannel();
   const unmuteUser = useUnmuteChannel();
   const isSuperAdmin = useIsSuperAdmin();
+  const isModerator = useIsModerator();
   const isOwned = useVideoPostOwned(videoPost);
   const hasMuted = useIsChannelMuted(videoPost.hostID);
 
@@ -61,7 +63,7 @@ export const VideoPostMenu = ({
           className="flex flex-col bg-base-300 border-base-400 p-1 gap-1"
           align="end"
         >
-          {(isOwned || isSuperAdmin) && (
+          {(isOwned || isSuperAdmin || isModerator) && (
             <DropdownMenuGroup className="flex flex-col gap-[2px]">
               <DropdownMenuItem
                 onClick={(e) => {

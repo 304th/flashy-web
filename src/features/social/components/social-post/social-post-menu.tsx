@@ -15,6 +15,7 @@ import { useDeleteSocialPost } from "@/features/social/mutations/use-delete-soci
 import { usePinSocialPost } from "@/features/social/mutations/use-pin-social-post";
 import { useIsSocialPostOwned } from "@/features/social/hooks/use-is-social-post-owned";
 import { useIsSuperAdmin } from "@/features/auth/hooks/use-is-super-admin";
+import { useIsModerator } from "@/features/auth/hooks/use-is-moderator";
 import { useIsChannelMuted } from "@/features/auth/hooks/use-is-channel-muted";
 import { useMuteChannel } from "@/features/channels/mutations/use-mute-channel";
 import { useUnmuteChannel } from "@/features/channels/mutations/use-unmute-channel";
@@ -28,6 +29,7 @@ export const SocialPostMenu = ({ socialPost }: { socialPost: SocialPost }) => {
   const muteUser = useMuteChannel();
   const unmuteUser = useUnmuteChannel();
   const isSuperAdmin = useIsSuperAdmin();
+  const isModerator = useIsModerator();
   const isOwned = useIsSocialPostOwned(socialPost);
   const hasMuted = useIsChannelMuted(socialPost.userId);
 
@@ -54,7 +56,7 @@ export const SocialPostMenu = ({ socialPost }: { socialPost: SocialPost }) => {
           className="flex flex-col bg-base-300 border-base-400 p-1 gap-1"
           align="end"
         >
-          {isOwned && (
+          {(isOwned || isSuperAdmin || isModerator) && (
             <DropdownMenuGroup className="flex flex-col gap-[2px]">
               {/*<DropdownMenuItem>Edit</DropdownMenuItem>*/}
               <DropdownMenuItem

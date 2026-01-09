@@ -1,4 +1,4 @@
-import { Radio, Eye } from "lucide-react";
+import { Radio, Eye, Ban } from "lucide-react";
 
 export const StreamCardStatus = ({
   stream,
@@ -33,6 +33,16 @@ export const StreamCardStatus = ({
 
   return (
     <>
+      {/* Banned Badge */}
+      {stream.banned && (
+        <div className="absolute top-1 left-1">
+          <span className="flex items-center gap-1 rounded-full bg-red-700 px-3 py-1 text-xs font-semibold text-white">
+            <Ban className="h-3 w-3" />
+            Banned
+          </span>
+        </div>
+      )}
+
       {/* Status Badge */}
       <div className="absolute bottom-1 left-1">{getStatusBadge()}</div>
 

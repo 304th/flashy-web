@@ -10,10 +10,12 @@ import { Button } from "@/components/ui/button";
 import { MeatballIcon } from "@/components/ui/icons/meatball";
 import { useModals } from "@/hooks/use-modals";
 import { useMe } from "@/features/auth/queries/use-me";
+import { useIsSuperAdmin } from "@/features/auth/hooks/use-is-super-admin";
 import { useIsChannelMuted } from "@/features/auth/hooks/use-is-channel-muted";
 import { useMuteChannel } from "@/features/channels/mutations/use-mute-channel";
 import { useUnmuteChannel } from "@/features/channels/mutations/use-unmute-channel";
 import { useIsStreamOwned } from "@/features/streams/hooks/use-is-stream-owned";
+import { useBanStream } from "@/features/streams/mutations/use-ban-stream";
 
 export const StreamWatchMenu = ({
   stream,
@@ -27,8 +29,11 @@ export const StreamWatchMenu = ({
   const { openModal } = useModals();
   const muteUser = useMuteChannel();
   const unmuteUser = useUnmuteChannel();
+  const banStream = useBanStream();
   const isOwned = useIsStreamOwned(stream);
+  const isSuperAdmin = useIsSuperAdmin();
   const hasMuted = useIsChannelMuted(stream.userId);
+  const isBanned = stream.banned;
 
   if (!me) {
     return null;
@@ -99,6 +104,32 @@ export const StreamWatchMenu = ({
                 </DropdownMenuItem>
               </DropdownMenuGroup>
             </>
+          )}
+          {isSuperAdmin && (
+            <DropdownMenuGroup className="flex flex-col gap-[2px]">
+              <DropdownMenuItem
+                variant={isBanned ? "default" : "destructive"}
+                onClick={(e) => {
+                  setOpen(false);
+                  e.preventDefault();
+                  openModal("ConfirmModal", {
+                    title: isBanned ? "Unban stream" : "Ban stream",
+                    description: isBanned
+                      ? "Are you sure you want to unban this stream?"
+                      : "Are you sure you want to ban this stream?",
+                    destructive: !isBanned,
+                    onConfirm: () => {
+                      banStream.mutate({
+                        streamId: stream._id,
+                        banned: !isBanned,
+                      });
+                    },
+                  });
+                }}
+              >
+                {isBanned ? "Unban" : "Ban"}
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
           )}
         </DropdownMenuContent>
       </DropdownMenu>

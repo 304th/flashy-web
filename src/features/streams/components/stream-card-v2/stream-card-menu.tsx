@@ -10,7 +10,9 @@ import { Button } from "@/components/ui/button";
 import { MeatballIcon } from "@/components/ui/icons/meatball";
 import { useModals } from "@/hooks/use-modals";
 import { useMe } from "@/features/auth/queries/use-me";
+import { useIsSuperAdmin } from "@/features/auth/hooks/use-is-super-admin";
 import { useDeleteStream } from "@/features/streams/mutations/use-delete-stream";
+import { useBanStream } from "@/features/streams/mutations/use-ban-stream";
 
 export const StreamCardMenu = ({
   stream,
@@ -23,12 +25,15 @@ export const StreamCardMenu = ({
   const [open, setOpen] = useState(false);
   const { openModal } = useModals();
   const deleteStream = useDeleteStream();
+  const banStream = useBanStream();
+  const isSuperAdmin = useIsSuperAdmin();
 
   if (!me) {
     return null;
   }
 
   const isOwned = me.fbId === stream.userId;
+  const isBanned = stream.banned;
 
   return (
     <div className="relative flex" onMouseLeave={() => setOpen(false)}>
@@ -93,6 +98,32 @@ export const StreamCardMenu = ({
                 }}
               >
                 Delete
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+          )}
+          {isSuperAdmin && (
+            <DropdownMenuGroup className="flex flex-col gap-[2px]">
+              <DropdownMenuItem
+                variant={isBanned ? "default" : "destructive"}
+                onClick={(e) => {
+                  setOpen(false);
+                  e.preventDefault();
+                  openModal("ConfirmModal", {
+                    title: isBanned ? "Unban stream" : "Ban stream",
+                    description: isBanned
+                      ? "Are you sure you want to unban this stream?"
+                      : "Are you sure you want to ban this stream?",
+                    destructive: !isBanned,
+                    onConfirm: () => {
+                      banStream.mutate({
+                        streamId: stream._id,
+                        banned: !isBanned,
+                      });
+                    },
+                  });
+                }}
+              >
+                {isBanned ? "Unban" : "Ban"}
               </DropdownMenuItem>
             </DropdownMenuGroup>
           )}

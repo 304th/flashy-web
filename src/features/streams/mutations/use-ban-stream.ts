@@ -1,7 +1,7 @@
 import { toast } from "sonner";
 import { api } from "@/services/api";
 import { createMutation, useOptimisticMutation } from "@/lib/query-toolkit-v2";
-import { profileStreamsCollection } from "@/features/profile/entities/profile-streams.collection";
+import { streamEntity } from "@/features/streams/entities/stream.entity";
 
 export interface BanStreamParams {
   streamId: string;
@@ -22,11 +22,11 @@ export const useBanStream = () => {
   return useOptimisticMutation({
     mutation: streamBanMutation,
     onOptimistic: async (ch, params) => {
-      return ch(profileStreamsCollection).update(params.streamId, {
-        banned: params.banned,
+      return ch(streamEntity).update((stream) => {
+        stream.banned = params.banned;
       });
     },
-    onSuccess: (_, params) => {
+    onSuccess: (_, __, params) => {
       toast.success(
         params.banned
           ? "Stream banned successfully!"

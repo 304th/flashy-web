@@ -28,9 +28,12 @@ export const Header = () => {
           <Link
             href="/"
             className="inline-flex items-center p-2 transition
-              hover:bg-base-300"
+              hover:bg-base-300 gap-2"
           >
             <img src="/logo-new.svg" alt="Logo" height={20} width={200} />
+            <span className="relative -top-2 text-sm font-bold text-yellow-400 px-2 py-0.5 rounded border border-yellow-400/50 bg-yellow-400/10">
+              Beta
+            </span>
           </Link>
         </div>
         <div

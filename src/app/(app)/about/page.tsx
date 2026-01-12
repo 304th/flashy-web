@@ -214,7 +214,7 @@ export default function AboutPage() {
           </div>
           <div className="flex items-center gap-4">
             <a
-              href="https://twitter.com/flashysocial"
+              href="https://x.com/socialflashy"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center w-12 h-12 rounded-full
@@ -232,7 +232,7 @@ export default function AboutPage() {
               </svg>
             </a>
             <a
-              href="https://discord.gg/flashysocial"
+              href="https://discord.gg/d9USbg4UuY"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center w-12 h-12 rounded-full

@@ -1,6 +1,7 @@
 import { UserProfile } from "@/components/ui/user-profile";
 import { timeAgo } from "@/lib/utils";
 import { SocialPostDescription } from "@/features/social/components/social-post/social-post-description";
+import { SocialPostImages } from "@/features/social/components/social-post/social-post-images";
 
 export const SocialPostRelighted = ({
   relightedPost,
@@ -28,6 +29,7 @@ export const SocialPostRelighted = ({
           </div>
         </div>
         <SocialPostDescription socialPost={relightedPost} />
+        <SocialPostImages socialPost={relightedPost} />
       </div>
     </div>
   );

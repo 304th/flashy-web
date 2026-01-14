@@ -340,6 +340,7 @@ declare global {
       type: string;
       post_id?: string;
       item_id?: string;
+      item_type?: string;
       // Sponsorship notification fields
       opportunity_id?: string;
       creator_opportunity_id?: string;

@@ -23,6 +23,17 @@ export const SocialPostActions = ({
   const isOwned = useIsSocialPostOwned(socialPost);
   const { requireAuth } = useProtectedAction();
 
+  // Use the original post's data for counts/reactions when this is a relight wrapper
+  // but keep the wrapper's _id for mutations (so optimistic updates find the right post)
+  const effectivePost = socialPost.relightedPost
+    ? {
+        ...socialPost.relightedPost,
+        _id: socialPost._id,
+        // Ensure reactions exists so isReactable() returns true
+        reactions: socialPost.relightedPost.reactions || socialPost.reactions || {},
+      }
+    : socialPost;
+
   if (isLocked) {
     return null;
   }
@@ -32,12 +43,12 @@ export const SocialPostActions = ({
       <div className="flex gap-2">
         {onCommentsOpen && (
           <CommentButton
-            commentsCount={socialPost.commentsCount}
+            commentsCount={effectivePost.commentsCount}
             onComment={() => onCommentsOpen(socialPost._id)}
           />
         )}
-        <LikeButton post={socialPost} />
-        <RelightButton post={socialPost} />
+        <LikeButton post={effectivePost} />
+        <RelightButton post={effectivePost} />
       </div>
       <div className="flex gap-2 items-center">
         {!isOwned && (

@@ -28,6 +28,11 @@ const getNotificationLink = (notification: UserNotification): string | null => {
       return pushData.item_id ? `/social/post?id=${pushData.item_id}` : null;
     case "new master post":
       return pushData.post_id ? `/social/post?id=${pushData.post_id}` : null;
+    case "upvote":
+      if (pushData.item_type === "post") {
+        return pushData.item_id ? `/social/post?id=${pushData.item_id}` : null;
+      }
+      return null;
     // Sponsorship notification types
     case "opportunity_application":
       return pushData.creator_opportunity_id

@@ -13,7 +13,12 @@ import { SocialPostContent } from "@/features/social/components/social-post/soci
 
 //FIXME: do the same as main SocialPost (image click triggers page loading animation)
 export const MiniSocialPost = ({ socialPost }: { socialPost: SocialPost }) => {
-  const reactionsCount = useReactionsCount(socialPost);
+  // Use the original post's data for counts when this is a relight wrapper
+  // but keep the wrapper's _id for any mutations
+  const effectivePost = socialPost.relightedPost
+    ? { ...socialPost.relightedPost, _id: socialPost._id }
+    : socialPost;
+  const reactionsCount = useReactionsCount(effectivePost);
   const isLocked = useIsSocialPostLocked(socialPost);
 
   return (
@@ -48,19 +53,19 @@ export const MiniSocialPost = ({ socialPost }: { socialPost: SocialPost }) => {
           </div>
           {reactionsCount?.toLocaleString?.()}
         </div>
-        {typeof socialPost.commentsCount !== "undefined" && (
+        {typeof effectivePost.commentsCount !== "undefined" && (
           <div className="flex items-center gap-1">
             <div className="flex scale-70">
               <MiniMessageIcon />
             </div>
-            {socialPost.commentsCount.toLocaleString?.()}
+            {effectivePost.commentsCount.toLocaleString?.()}
           </div>
         )}
         <div className="flex items-center gap-1">
           <div className="flex scale-70">
             <MiniRelightIcon />
           </div>
-          {socialPost.relitsCount.toLocaleString?.()}
+          {effectivePost.relitsCount.toLocaleString?.()}
         </div>
       </div>
     </div>

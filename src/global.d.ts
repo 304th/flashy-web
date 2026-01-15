@@ -58,6 +58,7 @@ declare global {
     followingCount?: number;
     receivesMessagesFromAnyone?: boolean;
     isAssociate?: boolean;
+    banned?: boolean;
   }
 
   interface Author {

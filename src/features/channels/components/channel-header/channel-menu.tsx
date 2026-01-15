@@ -15,10 +15,14 @@ import { useUnmuteChannel } from "@/features/channels/mutations/use-unmute-chann
 import { useIsSubscribed } from "@/features/auth/hooks/use-is-subscribed";
 import { useUnsubscribeFromChannel } from "@/features/channels/mutations/use-unsubscribe-from-channel";
 import { useMe } from "@/features/auth/queries/use-me";
+import { useIsSuperAdmin } from "@/features/auth/hooks/use-is-super-admin";
+import { useIsModerator } from "@/features/auth/hooks/use-is-moderator";
+import { useBanUser } from "@/features/channels/mutations/use-ban-user";
+import { useUnbanUser } from "@/features/channels/mutations/use-unban-user";
 
 export const ChannelMenu = () => {
   const { data: me } = useMe();
-  const { channelId } = useChannelContext();
+  const { channelId, channel } = useChannelContext();
   const [open, setOpen] = useState(false);
   const { openModal } = useModals();
   const hasMuted = useIsChannelMuted(channelId);
@@ -26,6 +30,22 @@ export const ChannelMenu = () => {
   const muteUser = useMuteChannel();
   const unmuteUser = useUnmuteChannel();
   const unsubscribe = useUnsubscribeFromChannel();
+  const isSuperAdmin = useIsSuperAdmin();
+  const isModerator = useIsModerator();
+  const banUser = useBanUser();
+  const unbanUser = useUnbanUser();
+
+  const canModerate = isSuperAdmin || isModerator;
+  const isChannelBanned = channel?.banned;
+
+  // Can only ban regular users (not verified, moderator, representative, or superAdmin)
+  // Unless the current user is a superAdmin
+  const canBanThisUser =
+    canModerate &&
+    channel &&
+    !channel.superAdmin &&
+    (isSuperAdmin ||
+      (!channel.verified && !channel.moderator && !channel.representative));
 
   if (!me) {
     return null;
@@ -98,6 +118,35 @@ export const ChannelMenu = () => {
               }}
             >
               Unsubscribe
+            </DropdownMenuItem>
+          )}
+          {canBanThisUser && (
+            <DropdownMenuItem
+              variant="destructive"
+              onClick={(e) => {
+                e.preventDefault();
+                setOpen(false);
+                openModal("ConfirmModal", {
+                  title: isChannelBanned ? "Unban User" : "Ban User",
+                  destructive: !isChannelBanned,
+                  description: isChannelBanned
+                    ? `Are you sure you want to unban ${channel?.username}? Their account will be restored.`
+                    : `Are you sure you want to ban ${channel?.username}? They will be logged out and unable to access the platform. Their content will be hidden but not deleted.`,
+                  actionTitle: isChannelBanned ? "Unban" : "Ban",
+                  onConfirm: () => {
+                    if (!channelId) {
+                      return;
+                    }
+                    if (isChannelBanned) {
+                      unbanUser.mutate({ userId: channelId });
+                    } else {
+                      banUser.mutate({ userId: channelId });
+                    }
+                  },
+                });
+              }}
+            >
+              {isChannelBanned ? "Unban User" : "Ban User"}
             </DropdownMenuItem>
           )}
         </DropdownMenuContent>

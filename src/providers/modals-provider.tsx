@@ -89,6 +89,10 @@ import {
   StreamKeyModalProps,
 } from "@/features/streams/components/stream-key-modal/stream-key-modal";
 import {
+  StreamKeyConfirmModal,
+  StreamKeyConfirmModalProps,
+} from "@/features/streams/components/stream-key-confirm-modal/stream-key-confirm-modal";
+import {
   StreamSettingsModal,
   StreamSettingsModalProps,
 } from "@/features/streams/components/stream-settings-modal/stream-settings-modal";
@@ -153,6 +157,7 @@ const modalsConfig = {
   StreamCreateModal,
   GoLiveModal,
   StreamKeyModal,
+  StreamKeyConfirmModal,
   StreamSettingsModal,
   FollowersModal,
   FollowingModal,
@@ -252,6 +257,10 @@ export type ModalPropsTypes =
   | {
       type: "StreamKeyModal";
       props: StreamKeyModalProps;
+    }
+  | {
+      type: "StreamKeyConfirmModal";
+      props: StreamKeyConfirmModalProps;
     }
   | {
       type: "StreamSettingsModal";

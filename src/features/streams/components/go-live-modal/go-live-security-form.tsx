@@ -1,16 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { toast } from "sonner";
 import { Eye, EyeOff, RefreshCw, Copy } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useRenewStreamKey } from "@/features/streams/mutations/use-renew-stream-key";
 import { useProfileStream } from "@/features/profile/queries/use-profile-stream";
+import { useModals } from "@/hooks/use-modals";
+import { isStreamKeyConfirmed } from "@/features/streams/components/stream-key-confirm-modal/stream-key-confirm-modal";
 
 export const GoLiveSecurityForm = () => {
   const { data: stream } = useProfileStream();
   const [showStreamKey, setShowStreamKey] = useState(false);
   const [showRtmpUrl, setShowRtmpUrl] = useState(false);
+  const pendingActionRef = useRef<"show" | "copy" | null>(null);
   const renewStreamKey = useRenewStreamKey();
+  const { openModal } = useModals();
 
   useEffect(() => {
     if (stream) {
@@ -18,6 +22,38 @@ export const GoLiveSecurityForm = () => {
       setShowRtmpUrl(false);
     }
   }, [stream]);
+
+  const executeAction = (action: "show" | "copy") => {
+    if (action === "show") {
+      setShowStreamKey(true);
+    } else if (action === "copy") {
+      handleCopyStreamKey();
+    }
+  };
+
+  const checkConfirmationAndExecute = (action: "show" | "copy") => {
+    if (!stream?.streamKey) {
+      return;
+    }
+    if (isStreamKeyConfirmed(stream.streamKey)) {
+      executeAction(action);
+    } else {
+      pendingActionRef.current = action;
+      openModal(
+        "StreamKeyConfirmModal",
+        {
+          streamKey: stream.streamKey,
+          onConfirm: () => {
+            if (pendingActionRef.current) {
+              executeAction(pendingActionRef.current);
+              pendingActionRef.current = null;
+            }
+          },
+        },
+        { subModal: true }
+      );
+    }
+  };
 
   const handleCopyStreamKey = async () => {
     if (!stream) {
@@ -85,8 +121,8 @@ export const GoLiveSecurityForm = () => {
               variant="ghost"
               className="absolute right-12 top-1/2 -translate-y-1/2
                 aspect-square p-0"
-              onClick={handleCopyStreamKey}
-              disabled={!stream}
+              onClick={() => checkConfirmationAndExecute("copy")}
+              disabled={!stream?.streamKey}
             >
               <Copy className="w-4 h-4" />
             </Button>
@@ -96,8 +132,14 @@ export const GoLiveSecurityForm = () => {
               variant="ghost"
               className="absolute right-3 top-1/2 -translate-y-1/2 aspect-square
                 p-0"
-              onClick={() => setShowStreamKey((state) => !state)}
-              disabled={!stream}
+              onClick={() => {
+                if (showStreamKey) {
+                  setShowStreamKey(false);
+                } else {
+                  checkConfirmationAndExecute("show");
+                }
+              }}
+              disabled={!stream?.streamKey}
             >
               {showStreamKey ? (
                 <EyeOff className="w-4 h-4" />

@@ -12,6 +12,7 @@ import { ChevronDownIcon } from "@/components/ui/icons/chevron-down";
 import { Separator } from "@/components/ui/separator";
 import { StoreIcon } from "@/components/ui/icons/store";
 import { WarningIcon } from "@/components/ui/icons/warning";
+import { QuestionIcon } from "@/components/ui/icons/question";
 import { useSidebar } from "@/contexts/sidebar-context";
 import { useProfileFollowings } from "@/features/profile/queries/use-profile-followings";
 import { Loadable } from "@/components/ui/loadable";
@@ -230,6 +231,9 @@ const More = ({ expanded }: { expanded: boolean }) => {
         <NavItem route="/privacy" icon={<WarningIcon />} expanded={expanded}>
           Privacy
         </NavItem>
+        <NavItem route="/terms" icon={<WarningIcon />} expanded={expanded}>
+          Terms
+        </NavItem>
       </>
     );
   }
@@ -249,6 +253,9 @@ const More = ({ expanded }: { expanded: boolean }) => {
           </NavItem>
           <NavItem route="/privacy" icon={<WarningIcon />} expanded={expanded}>
             Privacy Policy
+          </NavItem>
+          <NavItem route="/terms" icon={<QuestionIcon />} expanded={expanded}>
+            Terms & Conditions
           </NavItem>
         </div>
       )}

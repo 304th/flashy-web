@@ -55,7 +55,7 @@ export const AccountDropdown = () => {
               backgroundSize: "cover",
               backgroundRepeat: "no-repeat",
               backgroundPosition: "center",
-              backgroundImage: `url('${me?.banner ? me?.banner : "/images/channel-placeholder.png"}')`,
+              backgroundImage: `url('${me?.banner ? me?.banner : "/images/placeholder-banner.png"}')`,
             }}
           >
             <UserProfile

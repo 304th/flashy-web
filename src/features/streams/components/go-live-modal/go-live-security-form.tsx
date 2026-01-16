@@ -91,7 +91,7 @@ export const GoLiveSecurityForm = () => {
           <Button
             type="button"
             variant="secondary"
-            className="w-[130px]"
+            className="w-32.5"
             onClick={async () => {
               if (!stream) {
                 return;

@@ -21,7 +21,7 @@ export const ChannelBanner = ({ className }: { className?: string }) => {
           style={{
             y,
             scale,
-            backgroundImage: `url('${channel?.banner ? channel.banner : "/images/channel-placeholder.png"}')`,
+            backgroundImage: `url('${channel?.banner ? channel.banner : "/images/placeholder-banner.png"}')`,
           }}
         />
       )}

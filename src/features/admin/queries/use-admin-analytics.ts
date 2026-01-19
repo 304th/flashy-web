@@ -5,6 +5,7 @@ export interface AdminAnalytics {
   totalUsers: number;
   totalSocialPosts: number;
   totalVideos: number;
+  totalStreamsToday: number;
 }
 
 export const useAdminAnalytics = () => {

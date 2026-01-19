@@ -10,8 +10,9 @@ export default function AdminAnalyticsLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const { data: me, isLoading } = useMe();
+  const { data: me, query } = useMe();
 
+  const isLoading = query.isLoading || !query.isFetched;
   const hasAccess = me?.manager || me?.superAdmin;
 
   useEffect(() => {

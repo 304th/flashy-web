@@ -6,6 +6,7 @@ export interface AnalyticsSnapshot {
   totalUsers: number;
   totalSocialPosts: number;
   totalVideos: number;
+  totalStreamsStarted: number;
 }
 
 export const useAdminAnalyticsHistory = (days: number = 30) => {

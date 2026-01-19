@@ -103,7 +103,9 @@ export function AnalyticsChart({ days = 30 }: AnalyticsChartProps) {
                   ? "Users"
                   : name === "totalSocialPosts"
                     ? "Social Posts"
-                    : "Videos",
+                    : name === "totalVideos"
+                      ? "Videos"
+                      : "Streams Started",
               ]}
             />
             <Legend
@@ -113,7 +115,9 @@ export function AnalyticsChart({ days = 30 }: AnalyticsChartProps) {
                   ? "Users"
                   : value === "totalSocialPosts"
                     ? "Social Posts"
-                    : "Videos"
+                    : value === "totalVideos"
+                      ? "Videos"
+                      : "Streams Started"
               }
             />
             <Line
@@ -136,6 +140,14 @@ export function AnalyticsChart({ days = 30 }: AnalyticsChartProps) {
               type="monotone"
               dataKey="totalVideos"
               stroke="#a855f7"
+              strokeWidth={2}
+              dot={false}
+              activeDot={{ r: 6 }}
+            />
+            <Line
+              type="monotone"
+              dataKey="totalStreamsStarted"
+              stroke="#f97316"
               strokeWidth={2}
               dot={false}
               activeDot={{ r: 6 }}

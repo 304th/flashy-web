@@ -1,5 +1,7 @@
 import { ReactNode, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import { BarChart3 } from "lucide-react";
 import { Modal as ModalComponent } from "@/packages/modals";
 import { CloseButton } from "@/components/ui/close-button";
 import { AdminIcon } from "@/components/ui/icons/admin";
@@ -21,6 +23,7 @@ export const AdminModal = ({ onClose, ...props }: AdminModalProps) => {
   const [curTab, setCurTab] = useState<AdminTab>(() => "business-accounts");
   const isSuperAdmin = useIsSuperAdmin();
   const isManager = useIsManager();
+  const router = useRouter();
 
   return (
     <Modal onClose={onClose} className="!p-0" {...props}>
@@ -66,6 +69,23 @@ export const AdminModal = ({ onClose, ...props }: AdminModalProps) => {
                 selected={curTab === "home-banners"}
                 onChange={setCurTab}
               />
+            )}
+            {(isSuperAdmin || isManager) && (
+              <div
+                className="grid grid-cols-6 w-full p-3 cursor-pointer transition hover:bg-base-250"
+                onClick={() => {
+                  router.push("/admin/analytics");
+                  onClose();
+                }}
+              >
+                <div className="flex col-span-1 text-white">
+                  <BarChart3 className="w-6 h-6" />
+                </div>
+                <div className="flex flex-col col-span-5">
+                  <p className="text-md text-white font-bold">Analytics</p>
+                  <p className="text-sm">View platform statistics</p>
+                </div>
+              </div>
             )}
           </div>
           <div className="flex flex-col grow w-2/3 overflow-hidden">

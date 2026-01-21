@@ -25,7 +25,7 @@ export const socialFeedCollection = createCollectionV2<
     const response = await api
       .get(
         userId
-          ? `user/kfZy3OXJg8eLtQhgbXOun7IB9AP2/relevant-social-posts?limit=${limit}${cursorParam}`
+          ? `relevant-social-posts?limit=${limit}${cursorParam}`
           : `anonymous/social-posts?limit=${limit}${cursorParam}`,
       )
       .json<SocialFeedResponse>();

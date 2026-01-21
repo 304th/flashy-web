@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { SocialPost } from "@/features/social/components/social-post/social-post";
 import { useSocialPosts } from "@/features/social/queries/use-social-posts";
@@ -8,10 +9,26 @@ import { NotFound } from "@/components/ui/not-found";
 import { SocialPostProvider } from "@/features/social/components/social-post/social-post-context";
 import { InfiniteFeed } from "@/components/ui/infinite-feed";
 import { useModals } from "@/hooks/use-modals";
+import { useScrollToLastPost } from "@/hooks/use-scroll-restoration";
 
 export const SocialFeed = () => {
   const { data, query } = useSocialPosts();
   const { openModal } = useModals();
+  const [isContentReady, setIsContentReady] = useState(false);
+
+  // Mark content as ready after posts are rendered
+  useEffect(() => {
+    if (query.isSuccess && (data?.length ?? 0) > 0) {
+      requestAnimationFrame(() => {
+        setIsContentReady(true);
+      });
+    }
+  }, [query.isSuccess, data?.length]);
+
+  // Scroll to last clicked post when navigating back
+  const { saveLastClickedPost } = useScrollToLastPost({
+    ready: isContentReady,
+  });
 
   return (
     <div className="flex flex-col gap-3">
@@ -36,11 +53,13 @@ export const SocialFeed = () => {
                   {data?.map((socialPost) => (
                     <motion.div
                       key={socialPost._optimisticId || socialPost.orderId}
+                      data-post-id={socialPost._id}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                       layout="position"
                       layoutId={`post-${socialPost._optimisticId || socialPost.orderId}`}
+                      onClick={() => saveLastClickedPost(socialPost._id)}
                     >
                       <SocialPost socialPost={socialPost} isLinkable withMenu />
                     </motion.div>

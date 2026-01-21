@@ -23,8 +23,8 @@ export const SocialPostActions = ({
   const isOwned = useIsSocialPostOwned(socialPost);
   const { requireAuth } = useProtectedAction();
 
-  // Use the original post's data for counts/reactions when this is a relight wrapper
-  // but keep the wrapper's _id for mutations (so optimistic updates find the right post)
+  // For relighted posts, socialPost._id is already the original post's ID (set by the API)
+  // so all actions (likes, comments, reshares) target the original post
   const effectivePost = socialPost.relightedPost
     ? {
         ...socialPost.relightedPost,

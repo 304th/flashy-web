@@ -3,26 +3,47 @@ import { createCollection as createCollectionV2 } from "@/lib/query-toolkit-v2/c
 import { socialPostSchema } from "@/features/social/schemas/social-post.schema";
 import { decodePollResults } from "@/features/social/utils/poll";
 
+// Response type from cursor-based API
+interface SocialFeedResponse {
+  posts: SocialPost[];
+  nextCursor: number | null;
+  hasMore: boolean;
+}
+
+// Extended array type with cursor info
+export type SocialPostPage = SocialPost[] & {
+  nextCursor?: number | null;
+  hasMore?: boolean;
+};
+
 export const socialFeedCollection = createCollectionV2<
   SocialPost,
-  { userId?: string; limit: number; skip: number }
+  { userId?: string; limit: number; cursor: number | null }
 >({
-  async sourceFrom({ userId, limit, skip }) {
+  async sourceFrom({ userId, limit, cursor }) {
+    const cursorParam = cursor ? `&cursor=${cursor}` : "";
     const response = await api
       .get(
         userId
-          ? `relevant-social-posts?limit=${limit}&skip=${skip}`
-          : `anonymous/social-posts?limit=${limit}&skip=${skip}`,
+          ? `user/kfZy3OXJg8eLtQhgbXOun7IB9AP2/relevant-social-posts?limit=${limit}${cursorParam}`
+          : `anonymous/social-posts?limit=${limit}${cursorParam}`,
       )
-      .json<SocialPost[]>();
-    //FIXME: refactor backend
-    return response.map((socialPost) => ({
+      .json<SocialFeedResponse>();
+
+    // Process posts with poll decoding
+    const posts: SocialPostPage = response.posts.map((socialPost) => ({
       ...socialPost,
       poll: {
         ...socialPost.poll,
         results: decodePollResults(socialPost.poll),
       },
     }));
+
+    // Attach cursor info to the array for pagination
+    posts.nextCursor = response.nextCursor;
+    posts.hasMore = response.hasMore;
+
+    return posts;
   },
   schema: socialPostSchema,
   name: "social-posts",

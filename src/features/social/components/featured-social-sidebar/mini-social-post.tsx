@@ -13,8 +13,8 @@ import { SocialPostContent } from "@/features/social/components/social-post/soci
 
 //FIXME: do the same as main SocialPost (image click triggers page loading animation)
 export const MiniSocialPost = ({ socialPost }: { socialPost: SocialPost }) => {
-  // Use the original post's data for counts when this is a relight wrapper
-  // but keep the wrapper's _id for any mutations
+  // For relighted posts, socialPost._id is already the original post's ID (set by the API)
+  // so all counts and actions reference the original post
   const effectivePost = socialPost.relightedPost
     ? { ...socialPost.relightedPost, _id: socialPost._id }
     : socialPost;

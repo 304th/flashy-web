@@ -22,10 +22,13 @@ const notify = () => listeners.forEach((cb) => cb());
 let unsubscribeFirebase: Unsubscribe | null = null;
 
 if (typeof window !== "undefined") {
-  unsubscribeFirebase = onAuthStateChanged(firebaseAuth, (user) => {
-    current = { user, status: "resolved" };
-    notify(); // <-- THIS IS THE MISSING CALL
-  });
+  const auth = firebaseAuth();
+  if (auth) {
+    unsubscribeFirebase = onAuthStateChanged(auth, (user) => {
+      current = { user, status: "resolved" };
+      notify(); // <-- THIS IS THE MISSING CALL
+    });
+  }
 }
 
 /* ------------------------------------------------------------------ */

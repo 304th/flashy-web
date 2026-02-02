@@ -1,5 +1,5 @@
 import config from "@/config";
-import { initializeApp } from "firebase/app";
+import { initializeApp, type FirebaseApp } from "firebase/app";
 import {
   getAuth,
   GoogleAuthProvider,
@@ -15,38 +15,67 @@ import {
   confirmPasswordReset,
   type UserCredential,
   type User,
+  type Auth,
 } from "firebase/auth";
 
-export const firebase = initializeApp({
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-});
+let firebase: FirebaseApp | null = null;
+let firebaseAuth: Auth | null = null;
 
-export const firebaseAuth = getAuth(firebase);
+const getFirebase = () => {
+  if (!firebase && typeof window !== "undefined") {
+    firebase = initializeApp({
+      apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+    });
+  }
+  return firebase;
+};
+
+const getFirebaseAuth = () => {
+  if (!firebaseAuth) {
+    const app = getFirebase();
+    if (app) {
+      firebaseAuth = getAuth(app);
+    }
+  }
+  return firebaseAuth;
+};
+
+export { getFirebase as firebase, getFirebaseAuth as firebaseAuth };
 
 export const signInWithEmail = async (email: string, password: string) => {
-  await signInWithEmailAndPassword(firebaseAuth, email, password);
+  const auth = getFirebaseAuth();
+  if (!auth) throw new Error("Firebase not initialized");
+  await signInWithEmailAndPassword(auth, email, password);
 
-  return firebaseAuth.currentUser?.getIdToken();
+  return auth.currentUser?.getIdToken();
 };
 
 export const signInWithGoogle = async (credential: JwtToken) => {
+  const auth = getFirebaseAuth();
+  if (!auth) throw new Error("Firebase not initialized");
   const GoogleProvider = GoogleAuthProvider.credential(credential);
-  await signInWithCredential(firebaseAuth, GoogleProvider);
+  await signInWithCredential(auth, GoogleProvider);
 
-  return firebaseAuth.currentUser?.getIdToken();
+  return auth.currentUser?.getIdToken();
 };
 
 export const signOut = async () => {
-  await firebaseAuth.signOut();
+  const auth = getFirebaseAuth();
+  if (!auth) throw new Error("Firebase not initialized");
+  await auth.signOut();
 };
 
 export const onAuthStateChanged = async (): Promise<User | null> =>
   new Promise((resolve) => {
-    firebaseAuth.onAuthStateChanged((user) => resolve(user));
+    const auth = getFirebaseAuth();
+    if (!auth) return resolve(null);
+    auth.onAuthStateChanged((user) => resolve(user));
   });
 
 export const signUpUserWithEmail = async (email: string, password: string) => {
-  return createUserWithEmailAndPassword(firebaseAuth, email, password);
+  const auth = getFirebaseAuth();
+  if (!auth) throw new Error("Firebase not initialized");
+  return createUserWithEmailAndPassword(auth, email, password);
 };
 
 export const sendVerificationEmail = async (
@@ -58,8 +87,10 @@ export const sendVerificationEmail = async (
   });
 };
 
-export const sendSignInLink = async (email: string) =>
-  sendSignInLinkToEmail(firebaseAuth, email, {
+export const sendSignInLink = async (email: string) => {
+  const auth = getFirebaseAuth();
+  if (!auth) throw new Error("Firebase not initialized");
+  return sendSignInLinkToEmail(auth, email, {
     url: `${window.location.origin}?magicLink=true&email=${encodeURIComponent(email)}`,
     handleCodeInApp: true,
     iOS: {
@@ -71,22 +102,32 @@ export const sendSignInLink = async (email: string) =>
       minimumVersion: "12",
     },
   });
+};
 
-export const isSignInWithLink = async () =>
-  isSignInWithEmailLink(firebaseAuth, window.location.href);
+export const isSignInWithLink = async () => {
+  const auth = getFirebaseAuth();
+  if (!auth) return false;
+  return isSignInWithEmailLink(auth, window.location.href);
+};
 
 export const signInWithLMagicLink = async (email: string, link: string) => {
-  await signInWithEmailLink(firebaseAuth, email, link);
+  const auth = getFirebaseAuth();
+  if (!auth) throw new Error("Firebase not initialized");
+  await signInWithEmailLink(auth, email, link);
 
-  return firebaseAuth.currentUser?.getIdToken();
+  return auth.currentUser?.getIdToken();
 };
 
 export const signInWithToken = async (token: string) => {
-  await signInWithCustomToken(firebaseAuth, token);
+  const auth = getFirebaseAuth();
+  if (!auth) throw new Error("Firebase not initialized");
+  await signInWithCustomToken(auth, token);
 };
 
 export const sendPasswordReset = (email: string) => {
-  return sendPasswordResetEmail(firebaseAuth, email, {
+  const auth = getFirebaseAuth();
+  if (!auth) throw new Error("Firebase not initialized");
+  return sendPasswordResetEmail(auth, email, {
     url: `${window.location.origin}${config.misc.passwordResetRoute}`,
     handleCodeInApp: true,
   });
@@ -96,5 +137,7 @@ export const confirmNewPassword = (params: {
   oobCode: string;
   newPassword: string;
 }) => {
-  return confirmPasswordReset(firebaseAuth, params.oobCode, params.newPassword);
+  const auth = getFirebaseAuth();
+  if (!auth) throw new Error("Firebase not initialized");
+  return confirmPasswordReset(auth, params.oobCode, params.newPassword);
 };

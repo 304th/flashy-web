@@ -48,10 +48,10 @@ export const ChallengeSection = ({
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold text-white">{title}</h3>
           <div className="flex items-center gap-3 text-sm">
-            <span className="text-base-500">
+            <span className="text-base-800">
               {completedCount}/{totalCount} Completed
             </span>
-            <span className="text-base-500">|</span>
+            <span className="text-base-800">|</span>
             <span className="text-brand-100">
               {totalXpEarned.toLocaleString()}/{totalXpAvailable.toLocaleString()}{" "}
               XP
@@ -73,16 +73,16 @@ export const ChallengeSection = ({
           )}
         >
           <div className="flex items-center gap-3">
-            <span className="text-sm text-base-500">
+            <span className="text-sm text-base-800">
               {completedCount}/{totalCount}
             </span>
             <span className="text-white font-medium">{title}</span>
           </div>
           <div className="flex items-center gap-3">
             {isOpen ? (
-              <RiArrowDownSLine className="w-5 h-5 text-base-500" />
+              <RiArrowDownSLine className="w-5 h-5 text-base-800" />
             ) : (
-              <RiArrowRightSLine className="w-5 h-5 text-base-500" />
+              <RiArrowRightSLine className="w-5 h-5 text-base-800" />
             )}
           </div>
         </div>

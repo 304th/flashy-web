@@ -98,10 +98,10 @@ export const ChallengesOverview = () => {
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold text-white">Challenges</h3>
           <div className="flex items-center gap-3 text-sm">
-            <span className="text-base-500">
+            <span className="text-base-800">
               {totalStats.completed}/{totalStats.total} Completed
             </span>
-            <span className="text-base-500">|</span>
+            <span className="text-base-800">|</span>
             <span className="text-brand-100">
               {totalStats.xpEarned.toLocaleString()}/
               {totalStats.xpAvailable.toLocaleString()} XP
@@ -114,16 +114,16 @@ export const ChallengesOverview = () => {
           <div
             className={cn(
               "flex items-center justify-between p-4 rounded-lg border border-base-400 bg-base-300/50",
-              "transition-all hover:border-base-300 cursor-pointer"
+              "transition-all hover:border-base-600 cursor-pointer"
             )}
           >
-            <div className="flex items-center gap-3">
-              <span className="text-sm text-base-500">
+            <div className="flex items-center gap-4">
+              <span className="text-sm text-base-800">
                 {basicStats.completed}/{basicStats.total}
               </span>
-              <span className="text-white font-medium">Basic Challenges</span>
+              <span className="text-white text-lg">Basic Challenges</span>
             </div>
-            <RiArrowRightSLine className="w-5 h-5 text-base-500" />
+            <RiArrowRightSLine className="w-5 h-5 text-base-800" />
           </div>
         </Link>
 
@@ -132,16 +132,16 @@ export const ChallengesOverview = () => {
           <div
             className={cn(
               "flex items-center justify-between p-4 rounded-lg border border-base-400 bg-base-300/50",
-              "transition-all hover:border-base-300 cursor-pointer"
+              "transition-all hover:border-base-600 cursor-pointer"
             )}
           >
-            <div className="flex items-center gap-3">
-              <span className="text-sm text-base-500">
+            <div className="flex items-center gap-4">
+              <span className="text-sm text-base-800">
                 {advancedStats.completed}/{advancedStats.total}
               </span>
-              <span className="text-white font-medium">Advanced Challenges</span>
+              <span className="text-white text-lg">Advanced Challenges</span>
             </div>
-            <RiArrowRightSLine className="w-5 h-5 text-base-500" />
+            <RiArrowRightSLine className="w-5 h-5 text-base-800" />
           </div>
         </Link>
       </div>

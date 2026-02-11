@@ -24,8 +24,8 @@ export const XpStatusBadge = ({ className }: XpStatusBadgeProps) => {
       <span className="text-sm font-medium text-brand-100">
         Lv.{status.currentLevel}
       </span>
-      <span className="text-xs text-base-500">•</span>
-      <span className="text-xs text-base-500">
+      <span className="text-xs text-base-800">•</span>
+      <span className="text-xs text-base-800">
         {status.xpToNextLevel.toLocaleString()} XP Remaining
       </span>
     </div>

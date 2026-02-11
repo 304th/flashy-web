@@ -2,7 +2,6 @@
 
 import { cn } from "@/lib/utils";
 import type { GamificationStatus } from "../../types";
-import { RiMedalLine } from "@remixicon/react";
 
 interface DailyLoginStreakProps {
   status: GamificationStatus;
@@ -15,23 +14,10 @@ const STREAK_XP = [
   57, 63, 70, 77, 85, 94, 104, 115, 127, 140, // Days 21-30
 ];
 
-const STREAK_MILESTONES = {
-  bronze: { day: 10, xpBonus: 50, name: "Flashy Regular", color: "text-amber-600" },
-  silver: { day: 20, xpBonus: 100, name: "Flashy Consistent", color: "text-gray-400" },
-  gold: { day: 30, xpBonus: 200, name: "Flashy Dedicated", color: "text-yellow-400" },
-};
-
 export const DailyLoginStreak = ({ status }: DailyLoginStreakProps) => {
   const currentStreak = status.dailyStreak || 0;
-  const streakBadges = status.streakBadges || { bronze: false, silver: false, gold: false };
 
-  // Calculate total XP earned from streak
-  const totalStreakXp = STREAK_XP.slice(0, currentStreak).reduce(
-    (sum, xp) => sum + xp,
-    0
-  );
-
-  // Determine which days to show (show current week context)
+  // Always show days 1-10 window context
   const startDay = Math.max(1, Math.floor((currentStreak - 1) / 10) * 10 + 1);
   const endDay = Math.min(30, startDay + 9);
   const daysToShow = Array.from(
@@ -44,92 +30,9 @@ export const DailyLoginStreak = ({ status }: DailyLoginStreakProps) => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-semibold text-white">Daily Login</h3>
-        <div className="flex items-center gap-3 text-sm">
-          <span className="text-brand-100 font-medium">
-            {currentStreak} day streak
-          </span>
-          {currentStreak > 0 && (
-            <>
-              <span className="text-base-500">•</span>
-              <span className="text-base-500">
-                {totalStreakXp.toLocaleString()} XP earned
-              </span>
-            </>
-          )}
-        </div>
-      </div>
-
-      {/* Streak Badges */}
-      <div className="flex items-center gap-4">
-        <div
-          className={cn(
-            "flex items-center gap-2 px-3 py-1.5 rounded-full border",
-            streakBadges.bronze
-              ? "border-amber-600/50 bg-amber-600/10"
-              : "border-base-400 bg-base-300/50 opacity-50"
-          )}
-        >
-          <RiMedalLine
-            className={cn(
-              "w-4 h-4",
-              streakBadges.bronze ? "text-amber-600" : "text-base-500"
-            )}
-          />
-          <span
-            className={cn(
-              "text-xs font-medium",
-              streakBadges.bronze ? "text-amber-600" : "text-base-500"
-            )}
-          >
-            10 Days
-          </span>
-        </div>
-        <div
-          className={cn(
-            "flex items-center gap-2 px-3 py-1.5 rounded-full border",
-            streakBadges.silver
-              ? "border-gray-400/50 bg-gray-400/10"
-              : "border-base-400 bg-base-300/50 opacity-50"
-          )}
-        >
-          <RiMedalLine
-            className={cn(
-              "w-4 h-4",
-              streakBadges.silver ? "text-gray-400" : "text-base-500"
-            )}
-          />
-          <span
-            className={cn(
-              "text-xs font-medium",
-              streakBadges.silver ? "text-gray-400" : "text-base-500"
-            )}
-          >
-            20 Days
-          </span>
-        </div>
-        <div
-          className={cn(
-            "flex items-center gap-2 px-3 py-1.5 rounded-full border",
-            streakBadges.gold
-              ? "border-yellow-400/50 bg-yellow-400/10"
-              : "border-base-400 bg-base-300/50 opacity-50"
-          )}
-        >
-          <RiMedalLine
-            className={cn(
-              "w-4 h-4",
-              streakBadges.gold ? "text-yellow-400" : "text-base-500"
-            )}
-          />
-          <span
-            className={cn(
-              "text-xs font-medium",
-              streakBadges.gold ? "text-yellow-400" : "text-base-500"
-            )}
-          >
-            30 Days
-          </span>
-        </div>
+        <span className="text-sm text-base-800">
+          {currentStreak} day streak
+        </span>
       </div>
 
       {/* Streak Days */}
@@ -147,14 +50,14 @@ export const DailyLoginStreak = ({ status }: DailyLoginStreakProps) => {
                 isClaimed
                   ? "bg-brand-100/20 border-brand-100/50"
                   : isCurrent
-                    ? "bg-base-300 border-brand-100/30 ring-2 ring-brand-100/20"
+                    ? "bg-base-300 border-brand-100"
                     : "bg-base-300/50 border-base-400"
               )}
             >
               <span
                 className={cn(
                   "text-xs font-medium",
-                  isClaimed ? "text-brand-100" : "text-base-500"
+                  isClaimed ? "text-brand-100" : "text-base-800"
                 )}
               >
                 Day {dayNumber}
@@ -162,7 +65,7 @@ export const DailyLoginStreak = ({ status }: DailyLoginStreakProps) => {
               <span
                 className={cn(
                   "text-sm font-bold",
-                  isClaimed ? "text-white" : "text-base-400"
+                  isClaimed ? "text-white" : "text-base-800"
                 )}
               >
                 {xp} XP
@@ -171,13 +74,6 @@ export const DailyLoginStreak = ({ status }: DailyLoginStreakProps) => {
           );
         })}
       </div>
-
-      {/* Navigation hint for more days */}
-      {endDay < 30 && (
-        <p className="text-xs text-base-500 text-center">
-          Keep your streak going to see days {endDay + 1}-30!
-        </p>
-      )}
     </div>
   );
 };

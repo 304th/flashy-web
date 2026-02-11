@@ -1,18 +1,11 @@
 "use client";
 
 import { useMemo } from "react";
-import Link from "next/link";
-import { useSearchParams, usePathname } from "next/navigation";
 import { ChallengeCard } from "../challenge-card";
 import { useChallenges } from "../../queries/use-challenges";
-import { RiArrowLeftLine } from "@remixicon/react";
+import { GoBackButton } from "@/components/ui/go-back-button";
 
 export const AdvancedChallenges = () => {
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const queryString = searchParams.toString();
-  const basePath = pathname.startsWith("/profile") ? "/profile" : "/channel";
-
   const { data: challengesData, query: challengesQuery } = useChallenges();
 
   const advancedChallenges = useMemo(() => {
@@ -48,9 +41,6 @@ export const AdvancedChallenges = () => {
     };
   }, [advancedChallenges]);
 
-  const buildHref = (path: string) =>
-    queryString ? `${path}?${queryString}` : path;
-
   const formatCategoryName = (category: string) => {
     return category.charAt(0).toUpperCase() + category.slice(1);
   };
@@ -71,22 +61,18 @@ export const AdvancedChallenges = () => {
   return (
     <div className="flex flex-col gap-6 w-full">
       {/* Back Link */}
-      <Link
-        href={buildHref(`${basePath}/challenges`)}
-        className="flex items-center gap-2 text-sm text-base-500 hover:text-white transition-colors w-fit"
-      >
-        <RiArrowLeftLine className="w-4 h-4" />
-        <span>Go Back</span>
-      </Link>
+      <div className="flex w-fit">
+        <GoBackButton />
+      </div>
 
       {/* Header */}
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-bold text-white">Advanced Challenges</h2>
         <div className="flex items-center gap-3 text-sm">
-          <span className="text-base-500">
+          <span className="text-base-800">
             {stats.completed}/{stats.total} Completed
           </span>
-          <span className="text-base-500">|</span>
+          <span className="text-base-800">|</span>
           <span className="text-brand-100">
             {stats.xpEarned.toLocaleString()}/{stats.xpAvailable.toLocaleString()}{" "}
             XP

@@ -9,10 +9,11 @@ export const api = ky.create({
     beforeRequest: [
       async (request) => {
         await onAuthStateChanged();
-        const user = firebaseAuth.currentUser;
+        const auth = firebaseAuth();
+        const user = auth?.currentUser;
 
         if (user && user?.emailVerified) {
-          const idToken = await firebaseAuth.currentUser?.getIdToken();
+          const idToken = await auth?.currentUser?.getIdToken();
 
           request.headers.set("Authorization", `Bearer ${idToken}`);
         }

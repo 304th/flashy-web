@@ -37,7 +37,8 @@ export class WebSocketServiceOptionalAuth<T> {
     if (typeof window !== "undefined") {
       // If auth is required, listen to auth state changes
       if (this.config.requireAuth !== false) {
-        firebaseAuth.onAuthStateChanged((user) => {
+        const auth = firebaseAuth();
+        auth?.onAuthStateChanged((user) => {
           if (user && this.messageHandlers.size > 0) {
             this.connect();
           } else {
@@ -116,8 +117,9 @@ export class WebSocketServiceOptionalAuth<T> {
       let token: string | undefined;
 
       // Only require auth if configured
+      const auth = firebaseAuth();
       if (this.config.requireAuth !== false) {
-        const user = firebaseAuth.currentUser;
+        const user = auth?.currentUser;
         if (!user) {
           console.warn(
             `[${this.config.serviceName || "WebSocket"}] No authenticated user`,
@@ -128,7 +130,7 @@ export class WebSocketServiceOptionalAuth<T> {
         token = await user.getIdToken();
       } else {
         // Try to get token if user is logged in, but don't require it
-        const user = firebaseAuth.currentUser;
+        const user = auth?.currentUser;
         if (user) {
           token = await user.getIdToken();
         }
@@ -244,7 +246,7 @@ export class WebSocketServiceOptionalAuth<T> {
       void this.connect();
     } else {
       // Otherwise, wait for auth
-      const user = firebaseAuth.currentUser;
+      const user = firebaseAuth()?.currentUser;
       if (user) {
         void this.connect();
       }

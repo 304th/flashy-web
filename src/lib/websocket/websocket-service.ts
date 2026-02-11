@@ -28,7 +28,8 @@ export class WebSocketService<T> {
     this.config = config;
 
     if (typeof window !== "undefined") {
-      firebaseAuth.onAuthStateChanged((user) => {
+      const auth = firebaseAuth();
+      auth?.onAuthStateChanged((user) => {
         if (user && this.messageHandlers.size > 0) {
           this.connect();
         } else {
@@ -103,7 +104,8 @@ export class WebSocketService<T> {
     this.shouldConnect = true;
 
     try {
-      const user = firebaseAuth.currentUser;
+      const auth = firebaseAuth();
+      const user = auth?.currentUser;
       if (!user) {
         console.warn(
           `[${this.config.serviceName || "WebSocket"}] No authenticated user`,
@@ -211,7 +213,7 @@ export class WebSocketService<T> {
 
     this.shouldConnect = true;
 
-    const user = firebaseAuth.currentUser;
+    const user = firebaseAuth()?.currentUser;
     if (user) {
       void this.connect();
     }

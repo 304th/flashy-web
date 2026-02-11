@@ -18,8 +18,8 @@ export const HomeBannerSection = () => {
         <motion.div
           initial={{ opacity: 0, y: 5 }}
           animate={{ opacity: 1, y: 0 }}
-          className="relative flex w-full h-[240px] rounded-lg overflow-hidden
-            group"
+          className="relative flex w-full max-w-[1200px] mx-auto aspect-[5/1]
+            rounded-lg overflow-hidden group"
         >
           {/* Background Image */}
           <img

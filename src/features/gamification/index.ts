@@ -7,6 +7,8 @@ export { useChallenges, useDailyChallenges } from "./queries/use-challenges";
 
 // Mutations
 export { useClaimChallenge } from "./mutations/use-claim-challenge";
+export { useClaimStreak } from "./mutations/use-claim-streak";
+export { useTrackLogin } from "./mutations/use-track-login";
 
 // Components
 export { ChallengeCard } from "./components/challenge-card";

@@ -28,9 +28,9 @@ export const ProfileHeaderUserBar = ({ className }: { className?: string }) => {
               isLinkable={false}
               showImage={true}
               avatarClassname="size-20"
+              nameExtra={<XpStatusBadge />}
             >
               <div className="flex items-center gap-2">
-                <XpStatusBadge />
                 <Button
                   variant="secondary"
                   className="w-fit"

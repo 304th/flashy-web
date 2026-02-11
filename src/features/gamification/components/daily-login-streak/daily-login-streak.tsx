@@ -1,6 +1,8 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { useClaimStreak } from "../../mutations/use-claim-streak";
 import type { GamificationStatus } from "../../types";
 
 interface DailyLoginStreakProps {
@@ -16,6 +18,8 @@ const STREAK_XP = [
 
 export const DailyLoginStreak = ({ status }: DailyLoginStreakProps) => {
   const currentStreak = status.dailyStreak || 0;
+  const unclaimedXp = status.unclaimedStreakXp || 0;
+  const claimMutation = useClaimStreak();
 
   // Always show days 1-10 window context
   const startDay = Math.max(1, Math.floor((currentStreak - 1) / 10) * 10 + 1);
@@ -30,9 +34,20 @@ export const DailyLoginStreak = ({ status }: DailyLoginStreakProps) => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-semibold text-white">Daily Login</h3>
-        <span className="text-sm text-base-800">
-          {currentStreak} day streak
-        </span>
+        <div className="flex items-center gap-3">
+          <span className="text-sm text-base-800">
+            {currentStreak} day streak
+          </span>
+          {unclaimedXp > 0 && (
+            <Button
+              size="sm"
+              onClick={() => claimMutation.mutate()}
+              pending={claimMutation.isPending}
+            >
+              Claim {unclaimedXp} XP
+            </Button>
+          )}
+        </div>
       </div>
 
       {/* Streak Days */}

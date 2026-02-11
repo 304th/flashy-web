@@ -10,6 +10,8 @@ export interface GamificationStatus {
   currentLevel: number;
   currentRank: string;
   dailyStreak: number;
+  unclaimedStreakXp: number;
+  lastLoginDate?: string;
   streakMultiplier: number;
   xpToNextLevel: number;
   levelProgress: number;

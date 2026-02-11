@@ -24,7 +24,7 @@ export const BasicChallenges = () => {
     };
   }, [basicChallenges]);
 
-  if (challengesQuery.isLoading) {
+  if (challengesQuery.isPending) {
     return (
       <div className="flex flex-col gap-6 w-full animate-pulse">
         <div className="h-8 w-32 bg-base-300 rounded" />

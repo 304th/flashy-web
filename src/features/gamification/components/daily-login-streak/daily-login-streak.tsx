@@ -43,6 +43,7 @@ export const DailyLoginStreak = ({ status }: DailyLoginStreakProps) => {
               size="sm"
               onClick={() => claimMutation.mutate()}
               pending={claimMutation.isPending}
+              className="min-w-[100px]"
             >
               Claim {unclaimedXp} XP
             </Button>

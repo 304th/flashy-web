@@ -34,7 +34,7 @@ export const ChallengeCard = ({
       className={cn(
         "flex items-center gap-4 p-4 rounded-lg border border-base-400 bg-base-300/50",
         "transition-all hover:border-base-600",
-        isClaimed && "opacity-60"
+        isClaimed && "pointer-events-none"
       )}
     >
       {/* Icon */}
@@ -56,7 +56,7 @@ export const ChallengeCard = ({
       )}
 
       {/* Progress counter */}
-      <span className="text-sm text-base-800 flex-shrink-0">
+      <span className={cn("text-sm text-base-800 flex-shrink-0", isClaimed && "text-brand-200")}>
         {challenge.currentValue ?? 0}/{challenge.targetValue ?? 1}
       </span>
 
@@ -89,18 +89,16 @@ export const ChallengeCard = ({
             pending={claimMutation.isPending}
             className="min-w-[70px]"
           >
-            Claim
+            Claim {challenge.xpReward} XP
           </Button>
         ) : (
           <span
             className={cn(
               "text-sm font-medium px-3 py-1 rounded-md",
-              isClaimed
-                ? "text-brand-100 bg-brand-100/10"
-                : "text-brand-100 bg-brand-100/10"
+              "text-brand-100 bg-brand-100/10"
             )}
           >
-            {challenge.xpReward} XP
+            {isClaimed ? "Claimed" : `${challenge.xpReward} XP`}
           </span>
         )}
       </div>

@@ -82,7 +82,7 @@ export default function ProfileLayout({
         </div>
         <AnimatePresence initial={false}>
           <motion.div
-            key={pathname}
+            key={pathname.split("/")[2] || pathname}
             className="flex w-full"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

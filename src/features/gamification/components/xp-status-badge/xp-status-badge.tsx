@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { useGamificationStatus } from "../../queries/use-gamification-status";
 
 const RANK_ICONS: Record<string, string> = {
@@ -34,16 +35,21 @@ export const XpStatusBadge = ({ className }: XpStatusBadgeProps) => {
   return (
     <div className={cn("flex items-center gap-2", className)}>
       {rankIcon && (
-        <Image
-          src={rankIcon}
-          alt={status.currentRank}
-          width={28}
-          height={28}
-          className="flex-shrink-0"
-        />
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Image
+              src={rankIcon}
+              alt={status.currentRank}
+              width={28}
+              height={28}
+              className="flex-shrink-0 cursor-pointer"
+            />
+          </TooltipTrigger>
+          <TooltipContent>{status.currentRank}</TooltipContent>
+        </Tooltip>
       )}
       <span className="text-sm font-semibold text-brand-100">
-        {status.currentLevel}
+        Lv. {status.currentLevel}
       </span>
       <div className="flex items-center gap-2">
         <div className="w-24 h-1.5 bg-base-400 rounded-full overflow-hidden">

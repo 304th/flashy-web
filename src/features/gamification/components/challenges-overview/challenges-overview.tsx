@@ -22,9 +22,9 @@ export const ChallengesOverview = () => {
     useDailyChallenges();
 
   const isLoading =
-    statusQuery.isLoading ||
-    challengesQuery.isLoading ||
-    dailyChallengesQuery.isLoading;
+    statusQuery.isPending ||
+    challengesQuery.isPending ||
+    dailyChallengesQuery.isPending;
 
   // Group challenges by type
   const groupedChallenges = useMemo(() => {

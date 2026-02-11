@@ -45,7 +45,7 @@ export const AdvancedChallenges = () => {
     return category.charAt(0).toUpperCase() + category.slice(1);
   };
 
-  if (challengesQuery.isLoading) {
+  if (challengesQuery.isPending) {
     return (
       <div className="flex flex-col gap-6 w-full animate-pulse">
         <div className="h-8 w-32 bg-base-300 rounded" />

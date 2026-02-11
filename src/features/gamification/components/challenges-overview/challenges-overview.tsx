@@ -89,7 +89,7 @@ export const ChallengesOverview = () => {
     queryString ? `${path}?${queryString}` : path;
 
   return (
-    <div className="flex flex-col gap-6 w-full">
+    <div className="flex flex-col gap-6 w-full pb-8">
       {/* Daily Login Streak */}
       <DailyLoginStreak status={status} />
 

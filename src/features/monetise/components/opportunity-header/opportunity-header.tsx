@@ -15,6 +15,7 @@ interface OpportunityHeaderProps {
   type: string;
   description: string;
   isEligible?: boolean;
+  isCreator?: boolean;
   isFavourited?: boolean;
   hasApplied?: boolean;
   status?: string;
@@ -30,6 +31,7 @@ export function OpportunityHeader({
   type,
   description,
   isEligible = false,
+  isCreator = false,
   isFavourited = false,
   hasApplied = false,
   status,
@@ -93,10 +95,21 @@ export function OpportunityHeader({
         );
     }
 
+    if (isCreator) {
+      return (
+        <div className="flex items-center gap-2 text-base-700">
+          <AlertCircle className="w-4 h-4" />
+          <span className="text-sm">
+            You cannot apply to your own opportunity
+          </span>
+        </div>
+      );
+    }
+
     if (!isEligible) {
       return (
         <div className="flex items-center gap-2 text-red-500">
-          <Check className="w-4 h-4" />
+          <XCircle className="w-4 h-4" />
           <span className="text-sm">
             You are not eligible for this opportunity
           </span>

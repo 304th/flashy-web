@@ -162,9 +162,13 @@ function OpportunityPageContent() {
   const opportunityStatus = getOpportunityStatus();
 
   // Check eligibility based on user stats
+  const isStatsLoading = !myStats;
   const checkEligibility = () => {
-    if (!myStats || !opportunity) {
-      return { isEligible: false, reasons: [] };
+    if (!opportunity) {
+      return { isEligible: true, reasons: [] };
+    }
+    if (!myStats) {
+      return { isEligible: true, reasons: [] };
     }
 
     const reasons: string[] = [];
@@ -234,6 +238,7 @@ function OpportunityPageContent() {
             }
             description={opportunity.description}
             isEligible={!isCreator && eligibility.isEligible}
+            isCreator={!!isCreator}
             isFavourited={isWishlisted(opportunity._id)}
             hasApplied={myStatus?.hasApplied}
             status={myStatus?.status ?? undefined}
@@ -260,27 +265,21 @@ function OpportunityPageContent() {
               payoutMethod="Direct Bank Transfer (via Flashy Social's payment portal)"
               eligibility={[
                 ...(opportunity.ccv && opportunity.ccv > 0
-                  ? [`Minimum CCV: ${opportunity.ccv}`]
+                  ? [{ text: `Minimum CCV: ${opportunity.ccv}`, failed: !isStatsLoading && myStats ? myStats.peakViewers < opportunity.ccv : false }]
                   : []),
                 ...(opportunity.avgViews && opportunity.avgViews > 0
-                  ? [
-                      `Minimum Average Views: ${opportunity.avgViews.toLocaleString()}`,
-                    ]
+                  ? [{ text: `Minimum Average Views: ${opportunity.avgViews.toLocaleString()}`, failed: !isStatsLoading && myStats ? myStats.avgViews < opportunity.avgViews : false }]
                   : []),
                 ...(opportunity.eligibility?.niches?.length
-                  ? [`Niches: ${opportunity.eligibility.niches.join(", ")}`]
+                  ? [{ text: `Niches: ${opportunity.eligibility.niches.join(", ")}` }]
                   : []),
                 ...(opportunity.eligibility?.platforms?.length
-                  ? [
-                      `Platforms: ${opportunity.eligibility.platforms.join(", ")}`,
-                    ]
+                  ? [{ text: `Platforms: ${opportunity.eligibility.platforms.join(", ")}` }]
                   : []),
                 ...(opportunity.eligibility?.countries?.length
-                  ? [
-                      `Countries: ${opportunity.eligibility.countries.join(", ")}`,
-                    ]
+                  ? [{ text: `Countries: ${opportunity.eligibility.countries.join(", ")}` }]
                   : []),
-                "Content must be 18+ friendly and in accordance with local legal guidelines",
+                { text: "Content must be 18+ friendly and in accordance with local legal guidelines" },
               ]}
             />
           )}
@@ -311,8 +310,16 @@ function OpportunityPageContent() {
           )}
         </div>
 
-        {!isCreator &&
-          (myStatus?.hasApplied ? (
+        {isCreator ? (
+          <div className="space-y-4 pt-4 border-t border-base-600">
+            <div className="flex items-center gap-2 text-base-700">
+              <Ban className="w-5 h-5" />
+              <span className="text-sm font-medium">
+                You cannot apply to your own opportunity
+              </span>
+            </div>
+          </div>
+        ) : (myStatus?.hasApplied ? (
             <div className="space-y-4 pt-4 border-t border-base-600">
               {myStatus.status === "rejected" ? (
                 <>
@@ -393,6 +400,15 @@ function OpportunityPageContent() {
                 </span>
               </div>
             </div>
+          ) : isStatsLoading ? (
+            <div className="space-y-4 pt-4 border-t border-base-600">
+              <div className="flex items-center gap-2 text-base-700">
+                <div className="w-5 h-5 bg-base-400 rounded animate-pulse" />
+                <span className="text-sm font-medium">
+                  Checking eligibility...
+                </span>
+              </div>
+            </div>
           ) : !eligibility.isEligible ? (
             <div className="space-y-4 pt-4 border-t border-base-600">
               <div className="flex items-center gap-2 text-red-500">
@@ -401,7 +417,7 @@ function OpportunityPageContent() {
                   You are not eligible for this opportunity
                 </span>
               </div>
-              <div className="bg-base-300 rounded-lg p-4 space-y-2">
+              <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 space-y-2">
                 {eligibility.reasons.map((reason, index) => (
                   <p key={index} className="text-sm text-red-400">
                     {reason}

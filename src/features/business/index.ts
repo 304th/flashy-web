@@ -21,6 +21,7 @@ export {
 export { useBusinessAccountStats } from "./queries/use-business-account-stats";
 export { useSponsorOpportunities } from "./queries/use-sponsor-opportunities";
 export { useOpportunitySubmissions } from "./queries/use-opportunity-submissions";
+export { useSponsorPayments } from "./queries/use-sponsor-payments";
 
 // User Mutations
 export { useCreateBusinessAccount } from "./mutations/use-create-business-account";
@@ -47,3 +48,6 @@ export {
   useDeleteSponsorOpportunity,
   type DeleteSponsorOpportunityParams,
 } from "./mutations/use-delete-sponsor-opportunity";
+
+// Payment Mutations
+export { useMarkPaymentPaid } from "./mutations/use-mark-payment-paid";

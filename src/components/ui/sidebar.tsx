@@ -79,34 +79,34 @@ export const Sidebar = () => {
         </NavItem>
       </div>
       <Separator />
-      {/*<div className="flex flex-col w-full items-center gap-2">*/}
-      {/*  <NavItem*/}
-      {/*    route="/monetise"*/}
-      {/*    icon={<MonetiseIcon />}*/}
-      {/*    className="text-xs"*/}
-      {/*    expanded={expanded}*/}
-      {/*  >*/}
-      {/*    Monetise*/}
-      {/*  </NavItem>*/}
-      {/*  {businessAccounts && (*/}
-      {/*    <NavItem*/}
-      {/*      route="/business/dashboard"*/}
-      {/*      icon={<StoreIcon />}*/}
-      {/*      className="text-xs"*/}
-      {/*      expanded={expanded}*/}
-      {/*      onClick={*/}
-      {/*        businessAccounts?.[0]?.status === "approved"*/}
-      {/*          ? undefined*/}
-      {/*          : () => {*/}
-      {/*              openModal("CreateBusinessModal");*/}
-      {/*            }*/}
-      {/*      }*/}
-      {/*    >*/}
-      {/*      Business*/}
-      {/*    </NavItem>*/}
-      {/*  )}*/}
-      {/*</div>*/}
-      {/*<Separator />*/}
+      <div className="flex flex-col w-full items-center gap-2">
+        <NavItem
+          route="/monetise"
+          icon={<MonetiseIcon />}
+          className="text-xs"
+          expanded={expanded}
+        >
+          Monetise
+        </NavItem>
+        {businessAccounts && (
+          <NavItem
+            route="/business/dashboard"
+            icon={<StoreIcon />}
+            className="text-xs"
+            expanded={expanded}
+            onClick={
+              businessAccounts?.[0]?.status === "approved"
+                ? undefined
+                : () => {
+                    openModal("CreateBusinessModal");
+                  }
+            }
+          >
+            Business
+          </NavItem>
+        )}
+      </div>
+      <Separator />
       {expanded && (
         <>
           <Subscriptions />
@@ -137,7 +137,7 @@ const NavItem = ({
           ? "grid grid-cols-[40px_1fr] items-center gap-3 px-4 h-[44px]"
           : "flex flex-col items-center justify-center gap-2 p-4 h-[60px]"
         }
-        ${pathname === route ? "bg-base-300 text-white" : "hover:bg-base-300"}`}
+        ${route && (pathname === route || (route !== "/" && pathname.startsWith(route))) ? "bg-base-300 text-white" : "hover:bg-base-300"}`}
       onClick={onClick}
     >
       <div className="flex items-center justify-center">{icon}</div>

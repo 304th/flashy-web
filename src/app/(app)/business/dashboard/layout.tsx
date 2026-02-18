@@ -7,13 +7,13 @@ import { Button } from "@/components/ui/button";
 import { CreatorDashboardMenuButton } from "@/features/monetise/components/creator-dashboard-menu-button/creator-dashboard-menu-button";
 import { ContentTabs } from "@/components/ui/content-tabs";
 import { useProtectedRedirect } from "@/features/auth/hooks/use-protected-redirect";
+import { toast } from "sonner";
 
-type TabValue = "opportunities" | "payments" | "analytics";
+type TabValue = "opportunities" | "payments";
 
 const creatorDashboardTabs: { value: TabValue; label: string }[] = [
   { value: "opportunities", label: "Opportunities" },
   { value: "payments", label: "Payments" },
-  { value: "analytics", label: "Analytics" },
 ];
 
 export default function BusinessDashboardLayout({
@@ -47,8 +47,12 @@ export default function BusinessDashboardLayout({
               Business Dashboard
             </h1>
             <div className="flex gap-3 items-center">
-              <Button>Withdraw Funds</Button>
-              <Button>Add Funds</Button>
+              <Button onClick={() => toast.info("Coming soon")}>
+                Withdraw Funds
+              </Button>
+              <Button onClick={() => toast.info("Coming soon")}>
+                Add Funds
+              </Button>
               <CreatorDashboardMenuButton />
             </div>
           </div>

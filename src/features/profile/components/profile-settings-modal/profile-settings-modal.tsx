@@ -313,7 +313,7 @@ const NavLink = ({
 }) => {
   return (
     <div
-      className={`flex w-full p-3 items-start justify-between gap-3
+      className={`flex w-full p-3 items-git st justify-between gap-3
         cursor-pointer transition
         ${selected ? "bg-base-300" : "hover:bg-base-250"}`}
       onClick={() => onChange(value)}

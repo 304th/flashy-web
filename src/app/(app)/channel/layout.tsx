@@ -48,6 +48,11 @@ const channelTabs = [
     label: "About",
     path: "/channel/about",
   },
+  {
+    key: "challenges",
+    label: "Challenges",
+    path: "/channel/challenges",
+  },
 ];
 
 export default function ChannelLayout({

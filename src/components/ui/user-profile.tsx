@@ -1,4 +1,4 @@
-import type { MouseEvent, PropsWithChildren } from "react";
+import type { MouseEvent, PropsWithChildren, ReactNode } from "react";
 import Link from "next/link";
 import { LiveTag } from "@/components/ui/live-tag";
 import { UserAvatar } from "@/components/ui/user-avatar";
@@ -16,6 +16,7 @@ export interface UserProfileProps {
   truncateUsername?: boolean;
   className?: string;
   avatarClassname?: string;
+  nameExtra?: ReactNode;
 }
 //FIXME: Fix isLinkable styles container and non-linkable
 export const UserProfile = ({
@@ -28,6 +29,7 @@ export const UserProfile = ({
   truncateUsername = false,
   className,
   avatarClassname,
+  nameExtra,
   children,
 }: PropsWithChildren<UserProfileProps>) => {
   const { data: me } = useMe();
@@ -57,6 +59,7 @@ export const UserProfile = ({
           withoutUsername={withoutUsername}
           avatarClassname={avatarClassname}
           showImage={showImage}
+          nameExtra={nameExtra}
           children={children}
         />
       </Link>
@@ -73,6 +76,7 @@ export const UserProfile = ({
       className={className}
       avatarClassname={avatarClassname}
       showImage={showImage}
+      nameExtra={nameExtra}
       children={children}
     />
   );
@@ -86,6 +90,7 @@ const BaseUserProfile = ({
   showImage,
   className,
   avatarClassname,
+  nameExtra,
   children,
 }: PropsWithChildren<UserProfileProps>) => {
   const { openModal } = useModals();
@@ -123,7 +128,7 @@ const BaseUserProfile = ({
       </div>
       {withoutUsername ? null : (
         <div className="flex flex-col gap-1">
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-2">
             <p
               className={`text-white font-bold text-base
                 ${truncateUsername ? "max-w-[220px] ellipsis" : ""}`}
@@ -131,6 +136,7 @@ const BaseUserProfile = ({
               {user.username}
             </p>
             <UserBadge user={user} />
+            {nameExtra}
           </div>
           {children}
         </div>

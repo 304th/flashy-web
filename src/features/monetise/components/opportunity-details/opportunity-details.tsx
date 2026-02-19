@@ -1,12 +1,17 @@
 "use client";
 
+interface EligibilityItem {
+  text: string;
+  failed?: boolean;
+}
+
 interface OpportunityDetailsProps {
   featureDescription: string;
   deliverables: string[];
   postingDeadline: string;
   compensation: string;
   payoutMethod: string;
-  eligibility: string[];
+  eligibility: EligibilityItem[];
 }
 
 export function OpportunityDetails({
@@ -59,10 +64,10 @@ export function OpportunityDetails({
           {eligibility.map((item, index) => (
             <li
               key={index}
-              className="text-sm text-brand-100 flex items-start gap-2"
+              className={`text-sm flex items-start gap-2 ${item.failed ? "text-red-400" : "text-brand-100"}`}
             >
-              <span className="text-base-600">•</span>
-              <span>{item}</span>
+              <span className={item.failed ? "text-red-400" : "text-base-600"}>•</span>
+              <span>{item.text}</span>
             </li>
           ))}
         </ul>

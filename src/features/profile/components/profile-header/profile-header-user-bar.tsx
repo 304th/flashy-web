@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ShareIcon } from "@/components/ui/icons/share2";
 import { UserProfile } from "@/components/ui/user-profile";
 import { ChannelSubscriptions } from "@/features/channels/components/channel-subscriptions/channel-subscriptions";
+import { XpStatusBadge } from "@/features/gamification";
 import { useModals } from "@/hooks/use-modals";
 import { useChannelContext } from "@/features/profile/components/channel-context/channel-context";
 
@@ -27,20 +28,23 @@ export const ProfileHeaderUserBar = ({ className }: { className?: string }) => {
               isLinkable={false}
               showImage={true}
               avatarClassname="size-20"
+              nameExtra={<XpStatusBadge />}
             >
-              <Button
-                variant="secondary"
-                className="w-fit"
-                onClick={() =>
-                  openModal("ShareModal", {
-                    id: channel?.fbId,
-                    type: "channel",
-                  })
-                }
-              >
-                <ShareIcon />
-                Share
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="secondary"
+                  className="w-fit"
+                  onClick={() =>
+                    openModal("ShareModal", {
+                      id: channel?.fbId,
+                      type: "channel",
+                    })
+                  }
+                >
+                  <ShareIcon />
+                  Share
+                </Button>
+              </div>
             </UserProfile>
           ) : null
         }

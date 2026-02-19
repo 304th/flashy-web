@@ -385,6 +385,8 @@ declare global {
     | "rejected"
     | "expired"
     | "completed";
+  type PaymentStatus = "unpaid" | "paid";
+  type PaymentCurrency = "usd" | "blaze";
 
   interface OpportunityEligibility {
     niches: string[];
@@ -451,6 +453,11 @@ declare global {
     tcVersion?: string;
     reminder5DaySent?: boolean;
     reminder1DaySent?: boolean;
+    paymentStatus?: PaymentStatus;
+    paymentAmount?: number | null;
+    paymentCurrency?: PaymentCurrency;
+    paidAt?: string;
+    paymentNote?: string;
     createdAt: string;
     updatedAt: string;
   }
@@ -537,6 +544,45 @@ declare global {
   interface ApproveRejectResponse {
     success: boolean;
     creatorOpportunity: CreatorOpportunity;
+    message: string;
+  }
+
+  interface PaymentWithDetails extends CreatorOpportunity {
+    creator?: {
+      fbId: string;
+      username: string;
+      userimage: string;
+      email?: string;
+    } | null;
+    opportunity?: {
+      _id: string;
+      title: string;
+      brandName: string;
+      compensation: string;
+      compensationType: CompensationType;
+    } | null;
+  }
+
+  interface SponsorPaymentsSummary {
+    pendingCount: number;
+    paidCount: number;
+    totalPaid: number;
+  }
+
+  interface SponsorPaymentsResponse {
+    payments: PaymentWithDetails[];
+    pagination: {
+      page: number;
+      limit: number;
+      total: number;
+      pages: number;
+    };
+    summary: SponsorPaymentsSummary;
+  }
+
+  interface MarkPaymentPaidResponse {
+    success: boolean;
+    payment: CreatorOpportunity;
     message: string;
   }
 

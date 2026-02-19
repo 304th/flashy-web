@@ -41,8 +41,8 @@ const config = {
     },
   },
   monetise: {
-    ccv: Number(process.env.NEXT_PUBLIC_MONETISE_MIN_CCV) ?? 50,
-    avgViews: Number(process.env.NEXT_PUBLIC_MONETISE_MIN_AVG_VIEWS) ?? 5,
+    ccv: Number(process.env.NEXT_PUBLIC_MONETISE_MIN_CCV) || 0,
+    avgViews: Number(process.env.NEXT_PUBLIC_MONETISE_MIN_AVG_VIEWS) || 0,
   },
 } as const;
 

@@ -79,7 +79,7 @@ export const useCreateSponsorOpportunity = () => {
   return useOptimisticMutation<CreateSponsorOpportunityParams, Opportunity>({
     mutation: createSponsorOpportunityMutation,
     onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: ["me", "business"] });
+      void queryClient.invalidateQueries({ queryKey: ["me", "business", "sponsor-opportunities"] });
     },
     // onOptimistic: (ch, params) => {
     //   return ch(opportunitiesCollection).prepend(

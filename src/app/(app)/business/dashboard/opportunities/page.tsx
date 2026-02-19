@@ -11,7 +11,6 @@ import { PlusIcon } from "lucide-react";
 import Link from "next/link";
 import { Loadable } from "@/components/ui/loadable";
 import { NotFound } from "@/components/ui/not-found";
-import { useQueryClient } from "@tanstack/react-query";
 
 const formatEndDate = (endDate: string) => {
   const date = new Date(endDate);

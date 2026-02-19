@@ -20,7 +20,7 @@ export const useGetPresignedUrl = () => {
       contentType,
     }: GetPresignedUrlParams) => {
       return api
-        .post(`opportunities/${opportunityId}/presigned-url`, {
+        .post(`opportunities/${opportunityId}/presigned-urls`, {
           json: { filename, contentType },
         })
         .json<GetPresignedUrlResponse>();

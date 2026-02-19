@@ -38,7 +38,12 @@ export const StreamList = () => {
         {/*  Past*/}
         {/*</Button>*/}
       </div>
-      <Loadable queries={[query as any]} fullScreenForDefaults>
+      <Loadable queries={[query as any]} fullScreenForDefaults error={
+          <div className="flex justify-center items-center p-2 gap-2 rounded bg-orange-500/10 text-orange-400">
+            <Radio className="h-4 w-4" />
+            <p>Streaming will be back soon</p>
+          </div>
+        }>
         {() =>
           stream?.isLive ? (
             <StreamCardV2

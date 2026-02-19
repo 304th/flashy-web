@@ -1,12 +1,13 @@
 "use client";
 
-import { Suspense } from "react";
-import { ChallengesOverview } from "@/features/gamification";
+// import { Suspense } from "react";
+// import { ChallengesOverview } from "@/features/gamification";
 
 export default function ChannelChallengesPage() {
-  return (
-    <Suspense>
-      <ChallengesOverview />
-    </Suspense>
-  );
+  return null;
+  // return (
+  //   <Suspense>
+  //     <ChallengesOverview />
+  //   </Suspense>
+  // );
 }

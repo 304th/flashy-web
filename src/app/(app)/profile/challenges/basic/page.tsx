@@ -1,7 +1,8 @@
 "use client";
 
-import { BasicChallenges } from "@/features/gamification";
+// import { BasicChallenges } from "@/features/gamification";
 
 export default function ProfileBasicChallengesPage() {
-  return <BasicChallenges />;
+  return null;
+  // return <BasicChallenges />;
 }

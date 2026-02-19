@@ -1,7 +1,8 @@
 "use client";
 
-import { AdvancedChallenges } from "@/features/gamification";
+// import { AdvancedChallenges } from "@/features/gamification";
 
 export default function ProfileAdvancedChallengesPage() {
-  return <AdvancedChallenges />;
+  return null;
+  // return <AdvancedChallenges />;
 }

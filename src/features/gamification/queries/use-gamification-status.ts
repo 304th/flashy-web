@@ -4,13 +4,13 @@ import { useAuthed } from "@/features/auth/hooks/use-authed";
 import type { GamificationStatus } from "../types";
 
 export const useGamificationStatus = () => {
-  const authed = useAuthed();
+  // const authed = useAuthed();
 
   return useLiveEntity<GamificationStatus>({
     entity: gamificationStatusEntity,
     queryKey: ["gamification", "status"],
     options: {
-      enabled: Boolean(authed.user?.uid),
+      enabled: false, // temporarily disabled
     },
   });
 };

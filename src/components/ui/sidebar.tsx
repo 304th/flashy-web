@@ -7,10 +7,8 @@ import { HomeIcon } from "@/components/ui/icons/home";
 import { PlayIcon } from "@/components/ui/icons/play";
 import { SocialIcon } from "@/components/ui/icons/social";
 import { StreamsIcon } from "@/components/ui/icons/streams";
-import { MonetiseIcon } from "@/components/ui/icons/monetise";
 import { ChevronDownIcon } from "@/components/ui/icons/chevron-down";
 import { Separator } from "@/components/ui/separator";
-import { StoreIcon } from "@/components/ui/icons/store";
 import { WarningIcon } from "@/components/ui/icons/warning";
 import { QuestionIcon } from "@/components/ui/icons/question";
 import { useSidebar } from "@/contexts/sidebar-context";
@@ -19,10 +17,7 @@ import { Loadable } from "@/components/ui/loadable";
 import { UserProfile } from "@/components/ui/user-profile";
 import { NotFound } from "@/components/ui/not-found";
 import { Spinner } from "@/components/ui/spinner/spinner";
-import { useModals } from "@/hooks/use-modals";
 import { useMe } from "@/features/auth/queries/use-me";
-import { useMyBusinessAccount } from "@/features/business";
-import { HelpIcon } from "@/components/ui/icons/help";
 import { RepsIcon } from "@/components/ui/icons/reps";
 
 interface NavItemProps {
@@ -36,8 +31,6 @@ interface NavItemProps {
 
 export const Sidebar = () => {
   const { expanded } = useSidebar();
-  const { openModal } = useModals();
-  const { data: businessAccounts } = useMyBusinessAccount();
 
   return (
     <div
@@ -77,34 +70,6 @@ export const Sidebar = () => {
         >
           Social
         </NavItem>
-      </div>
-      <Separator />
-      <div className="flex flex-col w-full items-center gap-2">
-        <NavItem
-          route="/monetise"
-          icon={<MonetiseIcon />}
-          className="text-xs"
-          expanded={expanded}
-        >
-          Monetise
-        </NavItem>
-        {businessAccounts && (
-          <NavItem
-            route="/business/dashboard"
-            icon={<StoreIcon />}
-            className="text-xs"
-            expanded={expanded}
-            onClick={
-              businessAccounts?.[0]?.status === "approved"
-                ? undefined
-                : () => {
-                    openModal("CreateBusinessModal");
-                  }
-            }
-          >
-            Business
-          </NavItem>
-        )}
       </div>
       <Separator />
       {expanded && (

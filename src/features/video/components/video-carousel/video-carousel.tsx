@@ -62,7 +62,7 @@ export const VideoCarousel = ({
       </div>
       <div
         ref={scrollContainerRef}
-        className="flex items-center gap-4 w-full overflow-x-auto
+        className="flex items-start gap-4 w-full overflow-x-auto
           scrollbar-hide"
       >
         <Loadable

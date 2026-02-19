@@ -23,7 +23,10 @@ export default function AdminAnalyticsPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+        <div
+          className="animate-spin rounded-full h-8 w-8 border-b-2
+            border-primary"
+        />
       </div>
     );
   }
@@ -72,16 +75,17 @@ export default function AdminAnalyticsPage() {
       <div className="mb-8 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white">Platform Analytics</h1>
-          <p className="text-base-800 mt-1">
-            Overview of platform statistics
-          </p>
+          <p className="text-base-800 mt-1">Overview of platform statistics</p>
         </div>
         <Button
           variant="outline"
           onClick={() => captureSnapshot.mutate()}
           disabled={captureSnapshot.isPending}
         >
-          <RefreshCw className={`w-4 h-4 mr-2 ${captureSnapshot.isPending ? "animate-spin" : ""}`} />
+          <RefreshCw
+            className={`w-4 h-4 mr-2
+              ${captureSnapshot.isPending ? "animate-spin" : ""}`}
+          />
           Update today's data
         </Button>
       </div>
@@ -90,7 +94,8 @@ export default function AdminAnalyticsPage() {
         {stats.map((stat) => (
           <div
             key={stat.title}
-            className="flex flex-col gap-4 rounded-xl bg-base-200 p-6 border border-base-400"
+            className="flex flex-col gap-4 rounded-xl bg-base-200 p-6 border
+              border-base-400"
           >
             <div className="flex items-center justify-between">
               <span className="text-base-800 text-sm font-medium">

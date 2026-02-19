@@ -30,9 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="overscroll-y-none">
-      <body
-        className={`${figtree.variable} antialiased`}
-      >
+      <body className={`${figtree.variable} antialiased`}>
         <GoogleOAuthProvider
           clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}
         >

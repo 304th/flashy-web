@@ -2,7 +2,11 @@
 
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip";
 import { useGamificationStatus } from "../../queries/use-gamification-status";
 
 const RANK_ICONS: Record<string, string> = {

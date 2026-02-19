@@ -50,7 +50,7 @@ export const GoLiveSecurityForm = () => {
             }
           },
         },
-        { subModal: true }
+        { subModal: true },
       );
     }
   };

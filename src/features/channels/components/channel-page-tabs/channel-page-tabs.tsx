@@ -26,7 +26,8 @@ export const ChannelPageTabs = ({
           <TabMenu.Trigger
             key={key}
             value={label}
-            className="cursor-pointer z-1 hover:text-white hover:-translate-y-[0.5px]"
+            className="cursor-pointer z-1 hover:text-white
+              hover:-translate-y-[0.5px]"
           >
             <Link
               href={queryString ? [path, queryString].join("?") : path}

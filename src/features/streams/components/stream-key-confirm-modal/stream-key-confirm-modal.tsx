@@ -60,12 +60,16 @@ export const StreamKeyConfirmModal = ({
               Content Rights Confirmation
             </p>
             <p className="text-sm text-muted-foreground mt-1">
-              Before accessing your stream credentials, please review and confirm the following terms.
+              Before accessing your stream credentials, please review and
+              confirm the following terms.
             </p>
           </div>
         </div>
 
-        <div className="rounded-lg border border-yellow-500/30 bg-yellow-500/10 p-4">
+        <div
+          className="rounded-lg border border-yellow-500/30 bg-yellow-500/10
+            p-4"
+        >
           <p className="text-sm font-medium text-yellow-200 mb-3">
             From our{" "}
             <Link href="/terms" className="underline hover:text-yellow-100">
@@ -75,7 +79,8 @@ export const StreamKeyConfirmModal = ({
           </p>
           <div className="text-xs text-yellow-100/90 space-y-3">
             <p>
-              You may not upload, stream, broadcast, or share any content unless you have the legal right to do so.
+              You may not upload, stream, broadcast, or share any content unless
+              you have the legal right to do so.
             </p>
             <p>This includes, but is not limited to:</p>
             <ul className="list-disc list-inside ml-2 space-y-1">
@@ -86,20 +91,35 @@ export const StreamKeyConfirmModal = ({
               <li>Written works</li>
               <li>Any third-party intellectual property</li>
             </ul>
-            <p>By posting or broadcasting content, you represent and warrant that:</p>
+            <p>
+              By posting or broadcasting content, you represent and warrant
+              that:
+            </p>
             <ul className="list-disc list-inside ml-2 space-y-1">
               <li>You own the content, or</li>
-              <li>You have obtained all necessary rights, licenses, permissions, and consents required to broadcast, distribute, and monetize the content on Flashy Social</li>
+              <li>
+                You have obtained all necessary rights, licenses, permissions,
+                and consents required to broadcast, distribute, and monetize the
+                content on Flashy Social
+              </li>
             </ul>
             <p>Flashy Social does not permit:</p>
             <ul className="list-disc list-inside ml-2 space-y-1">
               <li>Pirated content</li>
               <li>Unauthorized live streams</li>
-              <li>Content that infringes copyrights, trademarks, or other intellectual property rights</li>
-              <li>Content taken from third-party platforms where redistribution is prohibited</li>
+              <li>
+                Content that infringes copyrights, trademarks, or other
+                intellectual property rights
+              </li>
+              <li>
+                Content taken from third-party platforms where redistribution is
+                prohibited
+              </li>
             </ul>
             <p className="font-medium">
-              Flashy reserves the right to remove content, suspend accounts, or terminate access if we believe content violates these requirements.
+              Flashy reserves the right to remove content, suspend accounts, or
+              terminate access if we believe content violates these
+              requirements.
             </p>
           </div>
         </div>
@@ -111,7 +131,8 @@ export const StreamKeyConfirmModal = ({
             className="mt-0.5"
           />
           <span className="text-sm">
-            I confirm that I own the rights to broadcast my content or have obtained all necessary permissions to do so.
+            I confirm that I own the rights to broadcast my content or have
+            obtained all necessary permissions to do so.
           </span>
         </label>
 
@@ -132,6 +153,7 @@ const Modal = (props: any) => (
   <ModalComponent
     {...props}
     className={`max-sm:min-w-unset max-w-[550px] min-w-[500px] !bg-base-300
-      !rounded-md max-sm:w-full shadow-2xl overflow-hidden !p-0 ${props.className || ""}`}
+      !rounded-md max-sm:w-full shadow-2xl overflow-hidden !p-0
+      ${props.className || ""}`}
   />
 );

@@ -36,7 +36,10 @@ export const StreamCardStatus = ({
       {/* Banned Badge */}
       {stream.banned && (
         <div className="absolute top-1 left-1">
-          <span className="flex items-center gap-1 rounded-full bg-red-700 px-3 py-1 text-xs font-semibold text-white">
+          <span
+            className="flex items-center gap-1 rounded-full bg-red-700 px-3 py-1
+              text-xs font-semibold text-white"
+          >
             <Ban className="h-3 w-3" />
             Banned
           </span>

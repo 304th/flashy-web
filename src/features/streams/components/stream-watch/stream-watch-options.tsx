@@ -7,7 +7,7 @@ import { useProtectedAction } from "@/features/auth/hooks/use-protected-action";
 import { useIsStreamOwned } from "@/features/streams/hooks/use-is-stream-owned";
 import { UserProfile } from "@/components/ui/user-profile";
 import { ChannelSubscribeButton } from "@/features/channels/components/channel-subscribe-button/channel-subscribe-button";
-import {BoltTipIcon} from "@/components/ui/icons/bolt-tip";
+import { BoltTipIcon } from "@/components/ui/icons/bolt-tip";
 
 export const StreamWatchOptions = ({ stream }: { stream: Stream }) => {
   const { openModal } = useModals();

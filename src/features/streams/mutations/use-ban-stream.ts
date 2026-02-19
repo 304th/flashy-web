@@ -30,7 +30,7 @@ export const useBanStream = () => {
       toast.success(
         params.banned
           ? "Stream banned successfully!"
-          : "Stream unbanned successfully!"
+          : "Stream unbanned successfully!",
       );
     },
   });

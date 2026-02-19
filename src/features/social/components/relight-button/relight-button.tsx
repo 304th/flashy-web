@@ -36,7 +36,9 @@ export const RelightButton = ({ post }: { post: Relightable }) => {
           <RelightIcon />
         </div>
       )}
-      <p className={`transition ${isRelighted ? 'text-brand-100' : ''}`}>{relitsCount}</p>
+      <p className={`transition ${isRelighted ? "text-brand-100" : ""}`}>
+        {relitsCount}
+      </p>
     </div>
   );
 };

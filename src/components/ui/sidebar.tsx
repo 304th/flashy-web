@@ -101,8 +101,12 @@ const NavItem = ({
         expanded
           ? "grid grid-cols-[40px_1fr] items-center gap-3 px-4 h-[44px]"
           : "flex flex-col items-center justify-center gap-2 p-4 h-[60px]"
-        }
-        ${route && (pathname === route || (route !== "/" && pathname.startsWith(route))) ? "bg-base-300 text-white" : "hover:bg-base-300"}`}
+        } ${
+          route &&
+          (pathname === route || (route !== "/" && pathname.startsWith(route)))
+            ? "bg-base-300 text-white"
+            : "hover:bg-base-300"
+        }`}
       onClick={onClick}
     >
       <div className="flex items-center justify-center">{icon}</div>
@@ -205,11 +209,8 @@ const More = ({ expanded }: { expanded: boolean }) => {
 
   return (
     <div className="flex w-full flex-col gap-2">
-      <div
-        className="flex items-center justify-between !h-[40px] px-4"
-      >
+      <div className="flex items-center justify-between !h-[40px] px-4">
         <p>More</p>
-
       </div>
       {!isCollapsed && (
         <div className="flex flex-col w-full">

@@ -13,9 +13,7 @@ export interface UnbanUserResponse {
 
 const unbanUserMutation = createMutation<UnbanUserParams, UnbanUserResponse>({
   write: async (params) => {
-    return api
-      .post(`user/unban/${params.userId}`)
-      .json<UnbanUserResponse>();
+    return api.post(`user/unban/${params.userId}`).json<UnbanUserResponse>();
   },
 });
 

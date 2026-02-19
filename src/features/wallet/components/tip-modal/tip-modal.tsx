@@ -12,8 +12,8 @@ import { UserProfile } from "@/components/ui/user-profile";
 import { useModals } from "@/hooks/use-modals";
 import { useWalletBalance } from "@/features/wallet/queries/use-wallet-balance";
 import { useTipChannel } from "@/features/wallet/mutations/use-tip-channel";
-import {BoltTipIcon} from "@/components/ui/icons/bolt-tip";
-import {BoltIcon} from "@/components/ui/icons/bolt";
+import { BoltTipIcon } from "@/components/ui/icons/bolt-tip";
+import { BoltIcon } from "@/components/ui/icons/bolt";
 
 const PREDEFINED_AMOUNTS = ["1", "5", "10", "25", "50", "100"];
 

@@ -172,15 +172,22 @@ export default function TermsPage() {
       </div>
       <div className="flex flex-col max-w-page mx-auto px-4 py-12 gap-8">
         <div>
-          <p className="text-lg font-semibold text-white">Last updated: January 14, 2026</p>
-          <p className="mt-4">
-            Welcome to Flashy Social (&quot;Flashy,&quot; &quot;Flashy Social,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;).
+          <p className="text-lg font-semibold text-white">
+            Last updated: January 14, 2026
           </p>
           <p className="mt-4">
-            These Terms and Conditions (&quot;Terms&quot;) govern your access to and use of the Flashy Social platform, including any websites, applications, content, features, or services offered by Flashy (collectively, the &quot;Platform&quot;).
+            Welcome to Flashy Social (&quot;Flashy,&quot; &quot;Flashy
+            Social,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;).
           </p>
           <p className="mt-4">
-            By accessing or using Flashy Social, you agree to be bound by these Terms. If you do not agree, you may not access or use the Platform.
+            These Terms and Conditions (&quot;Terms&quot;) govern your access to
+            and use of the Flashy Social platform, including any websites,
+            applications, content, features, or services offered by Flashy
+            (collectively, the &quot;Platform&quot;).
+          </p>
+          <p className="mt-4">
+            By accessing or using Flashy Social, you agree to be bound by these
+            Terms. If you do not agree, you may not access or use the Platform.
           </p>
         </div>
         {sections.map((section) => (
@@ -188,9 +195,7 @@ export default function TermsPage() {
             <h2 className="text-xl md:text-2xl font-bold text-white">
               {section.title}
             </h2>
-            <div className="whitespace-pre-line">
-              {section.content}
-            </div>
+            <div className="whitespace-pre-line">{section.content}</div>
           </section>
         ))}
       </div>

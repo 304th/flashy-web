@@ -43,7 +43,10 @@ const formSchema = z
     // minFollowers: z.number().min(0, "Must be at least 0"),
     avgViews: z
       .number()
-      .min(config.monetise.avgViews, `Must be at least ${config.monetise.avgViews}`),
+      .min(
+        config.monetise.avgViews,
+        `Must be at least ${config.monetise.avgViews}`,
+      ),
     compensationType: z.enum(["fixed", "commission", "product"] as const),
     compensation: z.string().optional(),
   })

@@ -3,7 +3,10 @@ import { createMutation, useOptimisticMutation } from "@/lib/query-toolkit-v2";
 import { useQueryClient } from "@tanstack/react-query";
 import { AnalyticsSnapshot } from "../queries/use-admin-analytics-history";
 
-const captureAnalyticsSnapshotMutation = createMutation<void, AnalyticsSnapshot>({
+const captureAnalyticsSnapshotMutation = createMutation<
+  void,
+  AnalyticsSnapshot
+>({
   write: async () => {
     return api.post("admin/analytics/snapshot").json<AnalyticsSnapshot>();
   },

@@ -1,5 +1,4 @@
-const toKebab = (name: string) =>
-  name.toLowerCase().replace(/\s+/g, "-");
+const toKebab = (name: string) => name.toLowerCase().replace(/\s+/g, "-");
 
 const BASIC_NAMES = [
   "First Upload Flex",

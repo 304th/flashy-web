@@ -53,8 +53,8 @@ export const ChallengeSection = ({
             </span>
             <span className="text-base-800">|</span>
             <span className="text-brand-100">
-              {totalXpEarned.toLocaleString()}/{totalXpAvailable.toLocaleString()}{" "}
-              XP
+              {totalXpEarned.toLocaleString()}/
+              {totalXpAvailable.toLocaleString()} XP
             </span>
           </div>
         </div>
@@ -68,8 +68,9 @@ export const ChallengeSection = ({
       <CollapsibleTrigger className="w-full">
         <div
           className={cn(
-            "flex items-center justify-between p-4 rounded-lg border border-base-400 bg-base-300/50",
-            "transition-all hover:border-base-300 cursor-pointer"
+            `flex items-center justify-between p-4 rounded-lg border
+            border-base-400 bg-base-300/50`,
+            "transition-all hover:border-base-300 cursor-pointer",
           )}
         >
           <div className="flex items-center gap-3">

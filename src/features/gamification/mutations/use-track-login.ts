@@ -14,9 +14,7 @@ export const useTrackLogin = () => {
 
   return useMutation({
     mutationFn: async () => {
-      return await api
-        .post("gamification/login")
-        .json<TrackLoginResponse>();
+      return await api.post("gamification/login").json<TrackLoginResponse>();
     },
     onSuccess: (data) => {
       if (!data.alreadyLoggedInToday) {

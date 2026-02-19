@@ -35,7 +35,8 @@ export const DeleteAccountModal = ({
           <div className="flex flex-col w-full justify-center gap-2">
             <p className="text-2xl font-extrabold text-white">Delete Account</p>
             <p className="text-sm text-base-800">
-              This action is <span className="text-red-400 font-semibold">permanent</span> and
+              This action is{" "}
+              <span className="text-red-400 font-semibold">permanent</span> and
               cannot be undone. All your data, posts, and content will be
               removed.
             </p>

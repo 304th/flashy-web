@@ -40,7 +40,7 @@ export const BasicChallenges = () => {
   return (
     <div className="flex flex-col gap-6 w-full">
       <div className="flex w-fit">
-        <GoBackButton/>
+        <GoBackButton />
       </div>
 
       {/* Header */}
@@ -52,8 +52,8 @@ export const BasicChallenges = () => {
           </span>
           <span className="text-base-800">|</span>
           <span className="text-brand-100">
-            {stats.xpEarned.toLocaleString()}/{stats.xpAvailable.toLocaleString()}{" "}
-            XP
+            {stats.xpEarned.toLocaleString()}/
+            {stats.xpAvailable.toLocaleString()} XP
           </span>
         </div>
       </div>
@@ -61,7 +61,7 @@ export const BasicChallenges = () => {
       {/* Challenges Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {basicChallenges.map((challenge) => (
-          <ChallengeCard key={challenge._id} challenge={challenge}/>
+          <ChallengeCard key={challenge._id} challenge={challenge} />
         ))}
       </div>
     </div>

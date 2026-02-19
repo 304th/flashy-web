@@ -36,15 +36,24 @@ export function AnalyticsChart({ days = 30 }: AnalyticsChartProps) {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-[400px] rounded-xl bg-base-200 border border-base-400">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+      <div
+        className="flex items-center justify-center h-[400px] rounded-xl
+          bg-base-200 border border-base-400"
+      >
+        <div
+          className="animate-spin rounded-full h-8 w-8 border-b-2
+            border-primary"
+        />
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="flex items-center justify-center h-[400px] rounded-xl bg-base-200 border border-base-400">
+      <div
+        className="flex items-center justify-center h-[400px] rounded-xl
+          bg-base-200 border border-base-400"
+      >
         <p className="text-red-500">Failed to load analytics history</p>
       </div>
     );
@@ -52,7 +61,10 @@ export function AnalyticsChart({ days = 30 }: AnalyticsChartProps) {
 
   if (!history || history.length === 0) {
     return (
-      <div className="flex items-center justify-center h-[400px] rounded-xl bg-base-200 border border-base-400">
+      <div
+        className="flex items-center justify-center h-[400px] rounded-xl
+          bg-base-200 border border-base-400"
+      >
         <p className="text-base-800">
           No historical data available yet. Data will appear after the daily
           snapshot runs.

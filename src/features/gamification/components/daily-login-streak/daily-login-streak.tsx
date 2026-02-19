@@ -11,9 +11,36 @@ interface DailyLoginStreakProps {
 
 // 30-Day Streak XP (10% inflation, rounded up)
 const STREAK_XP = [
-  5, 6, 7, 8, 9, 10, 11, 13, 15, 17, // Days 1-10
-  19, 21, 24, 27, 30, 33, 37, 41, 46, 51, // Days 11-20
-  57, 63, 70, 77, 85, 94, 104, 115, 127, 140, // Days 21-30
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  13,
+  15,
+  17, // Days 1-10
+  19,
+  21,
+  24,
+  27,
+  30,
+  33,
+  37,
+  41,
+  46,
+  51, // Days 11-20
+  57,
+  63,
+  70,
+  77,
+  85,
+  94,
+  104,
+  115,
+  127,
+  140, // Days 21-30
 ];
 
 export const DailyLoginStreak = ({ status }: DailyLoginStreakProps) => {
@@ -26,7 +53,7 @@ export const DailyLoginStreak = ({ status }: DailyLoginStreakProps) => {
   const endDay = Math.min(30, startDay + 9);
   const daysToShow = Array.from(
     { length: endDay - startDay + 1 },
-    (_, i) => startDay + i
+    (_, i) => startDay + i,
   );
 
   return (
@@ -62,18 +89,19 @@ export const DailyLoginStreak = ({ status }: DailyLoginStreakProps) => {
             <div
               key={dayNumber}
               className={cn(
-                "flex flex-col items-center justify-center min-w-[72px] h-[72px] rounded-lg border transition-all",
+                `flex flex-col items-center justify-center min-w-[72px] h-[72px]
+                rounded-lg border transition-all`,
                 isClaimed
                   ? "bg-brand-100/20 border-brand-100/50"
                   : isCurrent
                     ? "bg-base-300 border-brand-100"
-                    : "bg-base-300/50 border-base-400"
+                    : "bg-base-300/50 border-base-400",
               )}
             >
               <span
                 className={cn(
                   "text-xs font-medium",
-                  isClaimed ? "text-brand-100" : "text-base-800"
+                  isClaimed ? "text-brand-100" : "text-base-800",
                 )}
               >
                 Day {dayNumber}
@@ -81,7 +109,7 @@ export const DailyLoginStreak = ({ status }: DailyLoginStreakProps) => {
               <span
                 className={cn(
                   "text-sm font-bold",
-                  isClaimed ? "text-white" : "text-base-800"
+                  isClaimed ? "text-white" : "text-base-800",
                 )}
               >
                 {xp} XP

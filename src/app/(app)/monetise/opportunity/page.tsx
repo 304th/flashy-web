@@ -269,21 +269,51 @@ function OpportunityPageContent() {
               payoutMethod="Direct Bank Transfer (via Flashy Social's payment portal)"
               eligibility={[
                 ...(opportunity.ccv && opportunity.ccv > 0
-                  ? [{ text: `Minimum CCV: ${opportunity.ccv}`, failed: !isStatsLoading && myStats ? myStats.peakViewers < opportunity.ccv : false }]
+                  ? [
+                      {
+                        text: `Minimum CCV: ${opportunity.ccv}`,
+                        failed:
+                          !isStatsLoading && myStats
+                            ? myStats.peakViewers < opportunity.ccv
+                            : false,
+                      },
+                    ]
                   : []),
                 ...(opportunity.avgViews && opportunity.avgViews > 0
-                  ? [{ text: `Minimum Average Views: ${opportunity.avgViews.toLocaleString()}`, failed: !isStatsLoading && myStats ? myStats.avgViews < opportunity.avgViews : false }]
+                  ? [
+                      {
+                        text: `Minimum Average Views: ${opportunity.avgViews.toLocaleString()}`,
+                        failed:
+                          !isStatsLoading && myStats
+                            ? myStats.avgViews < opportunity.avgViews
+                            : false,
+                      },
+                    ]
                   : []),
                 ...(opportunity.eligibility?.niches?.length
-                  ? [{ text: `Niches: ${opportunity.eligibility.niches.join(", ")}` }]
+                  ? [
+                      {
+                        text: `Niches: ${opportunity.eligibility.niches.join(", ")}`,
+                      },
+                    ]
                   : []),
                 ...(opportunity.eligibility?.platforms?.length
-                  ? [{ text: `Platforms: ${opportunity.eligibility.platforms.join(", ")}` }]
+                  ? [
+                      {
+                        text: `Platforms: ${opportunity.eligibility.platforms.join(", ")}`,
+                      },
+                    ]
                   : []),
                 ...(opportunity.eligibility?.countries?.length
-                  ? [{ text: `Countries: ${opportunity.eligibility.countries.join(", ")}` }]
+                  ? [
+                      {
+                        text: `Countries: ${opportunity.eligibility.countries.join(", ")}`,
+                      },
+                    ]
                   : []),
-                { text: "Content must be 18+ friendly and in accordance with local legal guidelines" },
+                {
+                  text: "Content must be 18+ friendly and in accordance with local legal guidelines",
+                },
               ]}
             />
           )}
@@ -323,127 +353,130 @@ function OpportunityPageContent() {
               </span>
             </div>
           </div>
-        ) : (myStatus?.hasApplied ? (
-            <div className="space-y-4 pt-4 border-t border-base-600">
-              {myStatus.status === "rejected" ? (
-                <>
-                  <div className="flex items-center gap-2 text-red-500">
-                    <XCircle className="w-5 h-5" />
-                    <span className="text-sm font-medium">
-                      Your submission was rejected
-                    </span>
+        ) : myStatus?.hasApplied ? (
+          <div className="space-y-4 pt-4 border-t border-base-600">
+            {myStatus.status === "rejected" ? (
+              <>
+                <div className="flex items-center gap-2 text-red-500">
+                  <XCircle className="w-5 h-5" />
+                  <span className="text-sm font-medium">
+                    Your submission was rejected
+                  </span>
+                </div>
+                {myStatus.creatorOpportunity?.feedback && (
+                  <div className="bg-base-300 rounded-lg p-4">
+                    <p className="text-xs text-base-700 mb-1">
+                      Reason for rejection:
+                    </p>
+                    <p className="text-sm text-white">
+                      {myStatus.creatorOpportunity.feedback}
+                    </p>
                   </div>
-                  {myStatus.creatorOpportunity?.feedback && (
-                    <div className="bg-base-300 rounded-lg p-4">
-                      <p className="text-xs text-base-700 mb-1">
-                        Reason for rejection:
-                      </p>
-                      <p className="text-sm text-white">
-                        {myStatus.creatorOpportunity.feedback}
-                      </p>
-                    </div>
-                  )}
-                </>
-              ) : myStatus.status === "approved" ? (
-                <div className="flex items-center gap-2 text-green-500">
-                  <Check className="w-5 h-5" />
-                  <span className="text-sm font-medium">
-                    Your submission has been approved!
-                  </span>
-                </div>
-              ) : myStatus.status === "accepted" ? (
-                <div className="flex items-center gap-2 text-brand-100">
-                  <AlertCircle className="w-5 h-5" />
-                  <span className="text-sm font-medium">
-                    Accepted - Pending deliverables submission
-                  </span>
-                </div>
-              ) : myStatus.status === "submitted" ? (
-                <div className="flex items-center gap-2 text-yellow-500">
-                  <AlertCircle className="w-5 h-5" />
-                  <span className="text-sm font-medium">
-                    Deliverables submitted - Awaiting review
-                  </span>
-                </div>
-              ) : (
-                <>
-                  <div className="flex items-center gap-2 text-brand-100">
-                    <Check className="w-5 h-5" />
-                    <span className="text-sm font-medium">
-                      You have already applied to this opportunity
-                    </span>
-                  </div>
-                  <p className="text-xs text-base-800">
-                    Status:{" "}
-                    <span className="text-white capitalize">
-                      {myStatus.status?.replace(/-/g, " ")}
-                    </span>
-                  </p>
-                </>
-              )}
-              <Button
-                variant="outline"
-                onClick={() => router.push("/monetise/creator-dashboard")}
-              >
-                View My Opportunities
-              </Button>
-            </div>
-          ) : !opportunityStatus.isActive ? (
-            <div className="space-y-4 pt-4 border-t border-base-600">
-              <div
-                className={`flex items-center gap-2
-                  ${opportunityStatus.status === "upcoming" ? "text-base-700" : "text-red-500"}`}
-              >
-                {opportunityStatus.status === "upcoming" ? (
-                  <Clock className="w-5 h-5" />
-                ) : (
-                  <Ban className="w-5 h-5" />
                 )}
-                <span className="text-sm font-medium">
-                  {opportunityStatus.message}
-                </span>
-              </div>
-            </div>
-          ) : isStatsLoading ? (
-            <div className="space-y-4 pt-4 border-t border-base-600">
-              <div className="flex items-center gap-2 text-base-700">
-                <div className="w-5 h-5 bg-base-400 rounded animate-pulse" />
-                <span className="text-sm font-medium">
-                  Checking eligibility...
-                </span>
-              </div>
-            </div>
-          ) : !eligibility.isEligible ? (
-            <div className="space-y-4 pt-4 border-t border-base-600">
-              <div className="flex items-center gap-2 text-red-500">
-                <Ban className="w-5 h-5" />
-                <span className="text-sm font-medium">
-                  You are not eligible for this opportunity
-                </span>
-              </div>
-              <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 space-y-2">
-                {eligibility.reasons.map((reason, index) => (
-                  <p key={index} className="text-sm text-red-400">
-                    {reason}
-                  </p>
-                ))}
-              </div>
-            </div>
-          ) : (
-            <div className="space-y-4">
+              </>
+            ) : myStatus.status === "approved" ? (
               <div className="flex items-center gap-2 text-green-500">
                 <Check className="w-5 h-5" />
                 <span className="text-sm font-medium">
-                  You are eligible for this opportunity
+                  Your submission has been approved!
                 </span>
               </div>
-              <OpportunityApplySection
-                brandName={opportunity.brandName}
-                onApply={handleApply}
-                isApplying={acceptOpportunity.isPending}
-              />
+            ) : myStatus.status === "accepted" ? (
+              <div className="flex items-center gap-2 text-brand-100">
+                <AlertCircle className="w-5 h-5" />
+                <span className="text-sm font-medium">
+                  Accepted - Pending deliverables submission
+                </span>
+              </div>
+            ) : myStatus.status === "submitted" ? (
+              <div className="flex items-center gap-2 text-yellow-500">
+                <AlertCircle className="w-5 h-5" />
+                <span className="text-sm font-medium">
+                  Deliverables submitted - Awaiting review
+                </span>
+              </div>
+            ) : (
+              <>
+                <div className="flex items-center gap-2 text-brand-100">
+                  <Check className="w-5 h-5" />
+                  <span className="text-sm font-medium">
+                    You have already applied to this opportunity
+                  </span>
+                </div>
+                <p className="text-xs text-base-800">
+                  Status:{" "}
+                  <span className="text-white capitalize">
+                    {myStatus.status?.replace(/-/g, " ")}
+                  </span>
+                </p>
+              </>
+            )}
+            <Button
+              variant="outline"
+              onClick={() => router.push("/monetise/creator-dashboard")}
+            >
+              View My Opportunities
+            </Button>
+          </div>
+        ) : !opportunityStatus.isActive ? (
+          <div className="space-y-4 pt-4 border-t border-base-600">
+            <div
+              className={`flex items-center gap-2
+                ${opportunityStatus.status === "upcoming" ? "text-base-700" : "text-red-500"}`}
+            >
+              {opportunityStatus.status === "upcoming" ? (
+                <Clock className="w-5 h-5" />
+              ) : (
+                <Ban className="w-5 h-5" />
+              )}
+              <span className="text-sm font-medium">
+                {opportunityStatus.message}
+              </span>
             </div>
-          ))}
+          </div>
+        ) : isStatsLoading ? (
+          <div className="space-y-4 pt-4 border-t border-base-600">
+            <div className="flex items-center gap-2 text-base-700">
+              <div className="w-5 h-5 bg-base-400 rounded animate-pulse" />
+              <span className="text-sm font-medium">
+                Checking eligibility...
+              </span>
+            </div>
+          </div>
+        ) : !eligibility.isEligible ? (
+          <div className="space-y-4 pt-4 border-t border-base-600">
+            <div className="flex items-center gap-2 text-red-500">
+              <Ban className="w-5 h-5" />
+              <span className="text-sm font-medium">
+                You are not eligible for this opportunity
+              </span>
+            </div>
+            <div
+              className="bg-red-500/10 border border-red-500/20 rounded-lg p-4
+                space-y-2"
+            >
+              {eligibility.reasons.map((reason, index) => (
+                <p key={index} className="text-sm text-red-400">
+                  {reason}
+                </p>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 text-green-500">
+              <Check className="w-5 h-5" />
+              <span className="text-sm font-medium">
+                You are eligible for this opportunity
+              </span>
+            </div>
+            <OpportunityApplySection
+              brandName={opportunity.brandName}
+              onApply={handleApply}
+              isApplying={acceptOpportunity.isPending}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

@@ -64,9 +64,12 @@ export function OpportunityDetails({
           {eligibility.map((item, index) => (
             <li
               key={index}
-              className={`text-sm flex items-start gap-2 ${item.failed ? "text-red-400" : "text-brand-100"}`}
+              className={`text-sm flex items-start gap-2
+              ${item.failed ? "text-red-400" : "text-brand-100"}`}
             >
-              <span className={item.failed ? "text-red-400" : "text-base-600"}>•</span>
+              <span className={item.failed ? "text-red-400" : "text-base-600"}>
+                •
+              </span>
               <span>{item.text}</span>
             </li>
           ))}

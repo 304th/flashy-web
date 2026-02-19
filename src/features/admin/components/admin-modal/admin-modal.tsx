@@ -72,7 +72,8 @@ export const AdminModal = ({ onClose, ...props }: AdminModalProps) => {
             )}
             {(isSuperAdmin || isManager) && (
               <div
-                className="grid grid-cols-6 w-full p-3 cursor-pointer transition hover:bg-base-250"
+                className="grid grid-cols-6 w-full p-3 cursor-pointer transition
+                  hover:bg-base-250"
                 onClick={() => {
                   router.push("/admin/analytics");
                   onClose();

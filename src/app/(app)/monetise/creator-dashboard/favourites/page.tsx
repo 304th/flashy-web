@@ -63,7 +63,9 @@ export default function FavouritesPage() {
           <>
             {[1, 2, 3, 4].map((i) => (
               <div key={i} className="flex flex-col gap-3">
-                <div className="aspect-video bg-base-400 rounded-lg animate-pulse" />
+                <div
+                  className="aspect-video bg-base-400 rounded-lg animate-pulse"
+                />
                 <div className="h-5 bg-base-400 rounded w-3/4 animate-pulse" />
                 <div className="h-4 bg-base-400 rounded w-1/2 animate-pulse" />
               </div>
@@ -81,8 +83,8 @@ export default function FavouritesPage() {
           ))
         ) : (
           <div
-            className="col-span-4 flex flex-col items-center justify-center py-12
-              text-base-700"
+            className="col-span-4 flex flex-col items-center justify-center
+              py-12 text-base-700"
           >
             <p>No favourites yet</p>
             <Button

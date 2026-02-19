@@ -8,7 +8,7 @@ import { useIsSocialPostLocked } from "@/features/social/hooks/use-is-social-pos
 import { useIsSocialPostOwned } from "@/features/social/hooks/use-is-social-post-owned";
 import { useModals } from "@/hooks/use-modals";
 import { useProtectedAction } from "@/features/auth/hooks/use-protected-action";
-import {BoltTipIcon} from "@/components/ui/icons/bolt-tip";
+import { BoltTipIcon } from "@/components/ui/icons/bolt-tip";
 
 export const SocialPostActions = ({
   socialPost,
@@ -30,7 +30,8 @@ export const SocialPostActions = ({
         ...socialPost.relightedPost,
         _id: socialPost._id,
         // Ensure reactions exists so isReactable() returns true
-        reactions: socialPost.relightedPost.reactions || socialPost.reactions || {},
+        reactions:
+          socialPost.relightedPost.reactions || socialPost.reactions || {},
       }
     : socialPost;
 

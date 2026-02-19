@@ -24,13 +24,17 @@ import { createSignedUploadUrlMutation } from "@/features/common/mutations/use-c
 import { useUpdateBanner } from "@/features/profile/mutations/use-update-banner";
 import { useUpdateAvatar } from "@/features/profile/mutations/use-update-avatar";
 import { prune } from "@/lib/utils";
-import {WarningIcon} from "@/components/ui/icons/warning";
+import { WarningIcon } from "@/components/ui/icons/warning";
 
 export interface ProfileSettingsModalProps {
   onClose(): void;
 }
 
-export type ProfileSettingsTab = "profile" | "social-links" | "messaging" | "security";
+export type ProfileSettingsTab =
+  | "profile"
+  | "social-links"
+  | "messaging"
+  | "security";
 
 const formSchema = z.object({
   username: z
@@ -259,10 +263,12 @@ export const ProfileSettingsModal = ({
                 </AnimatePresence>
                 {curTab !== "security" && (
                   <div
-                    className="flex w-full justify-between items-center gap-2 p-4
-                      border-t"
+                    className="flex w-full justify-between items-center gap-2
+                      p-4 border-t"
                   >
-                    <div className="flex w-full items-center gap-1 text-base-800">
+                    <div
+                      className="flex w-full items-center gap-1 text-base-800"
+                    >
                       <HelpIcon />
                       <p className="text-xs">
                         Change will take place immediately

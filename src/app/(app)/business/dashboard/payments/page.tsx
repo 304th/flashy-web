@@ -22,10 +22,7 @@ const formatDate = (dateStr?: string) => {
   });
 };
 
-const formatAmount = (
-  amount?: number | null,
-  currency?: PaymentCurrency,
-) => {
+const formatAmount = (amount?: number | null, currency?: PaymentCurrency) => {
   if (amount === null || amount === undefined) return "-";
   if (currency === "blaze") {
     return `${amount.toLocaleString()} BLAZE`;
@@ -34,8 +31,7 @@ const formatAmount = (
 };
 
 export default function BusinessDashboardPaymentsPage() {
-  const [statusFilter, setStatusFilter] =
-    useState<PaymentStatusFilter>("all");
+  const [statusFilter, setStatusFilter] = useState<PaymentStatusFilter>("all");
 
   const query = useSponsorPayments({
     paymentStatus: statusFilter === "all" ? undefined : statusFilter,
@@ -121,22 +117,40 @@ export default function BusinessDashboardPaymentsPage() {
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-base-600">
-                      <th className="text-left py-3 px-4 text-sm font-medium text-base-800">
+                      <th
+                        className="text-left py-3 px-4 text-sm font-medium
+                          text-base-800"
+                      >
                         Creator
                       </th>
-                      <th className="text-left py-3 px-4 text-sm font-medium text-base-800">
+                      <th
+                        className="text-left py-3 px-4 text-sm font-medium
+                          text-base-800"
+                      >
                         Opportunity
                       </th>
-                      <th className="text-left py-3 px-4 text-sm font-medium text-base-800">
+                      <th
+                        className="text-left py-3 px-4 text-sm font-medium
+                          text-base-800"
+                      >
                         Amount
                       </th>
-                      <th className="text-left py-3 px-4 text-sm font-medium text-base-800">
+                      <th
+                        className="text-left py-3 px-4 text-sm font-medium
+                          text-base-800"
+                      >
                         Approved
                       </th>
-                      <th className="text-left py-3 px-4 text-sm font-medium text-base-800">
+                      <th
+                        className="text-left py-3 px-4 text-sm font-medium
+                          text-base-800"
+                      >
                         Status
                       </th>
-                      <th className="text-left py-3 px-4 text-sm font-medium text-base-800">
+                      <th
+                        className="text-left py-3 px-4 text-sm font-medium
+                          text-base-800"
+                      >
                         Action
                       </th>
                     </tr>
@@ -179,7 +193,8 @@ export default function BusinessDashboardPaymentsPage() {
                                 payment.paymentCurrency,
                               )
                             : payment.opportunity?.compensation
-                              ? payment.opportunity?.compensationType === "commission"
+                              ? payment.opportunity?.compensationType ===
+                                "commission"
                                 ? `${payment.opportunity.compensation}%`
                                 : `$${payment.opportunity.compensation}`
                               : "-"}

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { LikeButton } from "@/features/reactions/components/like-button/like-button";
-import {BoltTipIcon} from "@/components/ui/icons/bolt-tip";
+import { BoltTipIcon } from "@/components/ui/icons/bolt-tip";
 import { ShareIcon } from "@/components/ui/icons/share2";
 import { VideoPostMenu } from "@/features/video/components/video-post/video-post-menu";
 import { useModals } from "@/hooks/use-modals";

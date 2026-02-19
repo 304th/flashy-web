@@ -6,7 +6,10 @@ import { useSearchParams, usePathname } from "next/navigation";
 import { DailyLoginStreak } from "../daily-login-streak";
 import { ChallengeSection } from "../challenge-section";
 import { useGamificationStatus } from "../../queries/use-gamification-status";
-import { useChallenges, useDailyChallenges } from "../../queries/use-challenges";
+import {
+  useChallenges,
+  useDailyChallenges,
+} from "../../queries/use-challenges";
 import { RiArrowRightSLine } from "@remixicon/react";
 import { cn } from "@/lib/utils";
 
@@ -113,8 +116,9 @@ export const ChallengesOverview = () => {
         <Link href={buildHref(`${basePath}/challenges/basic`)}>
           <div
             className={cn(
-              "flex items-center justify-between p-4 rounded-lg border border-base-400 bg-base-300/50",
-              "transition-all hover:border-base-600 cursor-pointer"
+              `flex items-center justify-between p-4 rounded-lg border
+              border-base-400 bg-base-300/50`,
+              "transition-all hover:border-base-600 cursor-pointer",
             )}
           >
             <div className="flex items-center gap-4">
@@ -131,8 +135,9 @@ export const ChallengesOverview = () => {
         <Link href={buildHref(`${basePath}/challenges/advanced`)}>
           <div
             className={cn(
-              "flex items-center justify-between p-4 rounded-lg border border-base-400 bg-base-300/50",
-              "transition-all hover:border-base-600 cursor-pointer"
+              `flex items-center justify-between p-4 rounded-lg border
+              border-base-400 bg-base-300/50`,
+              "transition-all hover:border-base-600 cursor-pointer",
             )}
           >
             <div className="flex items-center gap-4">

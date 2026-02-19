@@ -154,15 +154,24 @@ export default function PrivacyPage() {
       </div>
       <div className="flex flex-col max-w-page mx-auto px-4 py-12 gap-8">
         <div>
-          <p className="text-lg font-semibold text-white">Effective Date: January 3, 2026</p>
-          <p className="mt-4">
-            Flashy Labs, Inc (&quot;Flashy Group&quot;, &quot;Flashy,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;) operates the website flashy.social and related products, services, and platforms (collectively, the &quot;Services&quot;).
+          <p className="text-lg font-semibold text-white">
+            Effective Date: January 3, 2026
           </p>
           <p className="mt-4">
-            This Privacy Policy explains what information we collect, why we collect it, how we use it, and the choices you have. It is designed to help you understand how Flashy handles information when you use our Services.
+            Flashy Labs, Inc (&quot;Flashy Group&quot;, &quot;Flashy,&quot;
+            &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;) operates the
+            website flashy.social and related products, services, and platforms
+            (collectively, the &quot;Services&quot;).
           </p>
           <p className="mt-4">
-            By using flashy.social, you agree to the collection and use of information in accordance with this Privacy Policy.
+            This Privacy Policy explains what information we collect, why we
+            collect it, how we use it, and the choices you have. It is designed
+            to help you understand how Flashy handles information when you use
+            our Services.
+          </p>
+          <p className="mt-4">
+            By using flashy.social, you agree to the collection and use of
+            information in accordance with this Privacy Policy.
           </p>
         </div>
         {sections.map((section) => (
@@ -170,9 +179,7 @@ export default function PrivacyPage() {
             <h2 className="text-xl md:text-2xl font-bold text-white">
               {section.title}
             </h2>
-            <div className="whitespace-pre-line">
-              {section.content}
-            </div>
+            <div className="whitespace-pre-line">{section.content}</div>
           </section>
         ))}
       </div>

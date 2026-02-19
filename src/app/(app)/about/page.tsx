@@ -99,11 +99,12 @@ export default function AboutPage() {
               Flashy ecosystem.
             </p>
           </div>
-          <div className="flex-1 relative w-full aspect-video rounded-full bg-radial from-brand-200/20 to-70% to-transparent">
+          <div
+            className="flex-1 relative w-full aspect-video rounded-full
+              bg-radial from-brand-200/20 to-70% to-transparent"
+          >
             <div className="absolute inset-0" />
-            <motion.div
-              className="absolute left-0 bottom-0 w-[55%] h-[110%]"
-            >
+            <motion.div className="absolute left-0 bottom-0 w-[55%] h-[110%]">
               <Image
                 src="/images/about-person-1.png"
                 alt="Creator 1"
@@ -112,9 +113,7 @@ export default function AboutPage() {
                 priority
               />
             </motion.div>
-            <motion.div
-              className="absolute right-0 -bottom-8 w-[55%] h-[110%]"
-            >
+            <motion.div className="absolute right-0 -bottom-8 w-[55%] h-[110%]">
               <Image
                 src="/images/about-person-2.png"
                 alt="Creator 2"
@@ -169,10 +168,14 @@ export default function AboutPage() {
                   <CollapsibleContent
                     className="overflow-hidden data-[state=open]:animate-in
                       data-[state=closed]:animate-out
-                      data-[state=closed]:fade-out-0
-                      data-[state=open]:fade-in-0 bg-linear-to-b from-transparent to-brand-200/10 py-8 rounded-b-lg"
+                      data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0
+                      bg-linear-to-b from-transparent to-brand-200/10 py-8
+                      rounded-b-lg"
                   >
-                    <div className="px-4 py-3 flex flex-col md:flex-row gap-6 items-start">
+                    <div
+                      className="px-4 py-3 flex flex-col md:flex-row gap-6
+                        items-start"
+                    >
                       <div className="text-white flex-1">
                         {service.description}
                       </div>
@@ -180,7 +183,8 @@ export default function AboutPage() {
                         {service.icons.map((icon, iconIndex) => (
                           <div
                             key={iconIndex}
-                            className="w-40 h-40 relative bg-base-200 border rounded-lg"
+                            className="w-40 h-40 relative bg-base-200 border
+                              rounded-lg"
                           >
                             <Image
                               src={icon}
@@ -199,16 +203,18 @@ export default function AboutPage() {
           </div>
         </section>
         <section
-          className="relative flex flex-col items-center gap-6 py-8 bg-base-200 rounded-lg"
+          className="relative flex flex-col items-center gap-6 py-8 bg-base-200
+            rounded-lg"
         >
-          <div className="absolute h-[150%] w-[70%] top-1/2 -translate-y-1/2 bg-radial from-brand-200/20 to-70% to-transparent z-[-1]" />
+          <div
+            className="absolute h-[150%] w-[70%] top-1/2 -translate-y-1/2
+              bg-radial from-brand-200/20 to-70% to-transparent z-[-1]"
+          />
           <div className="text-center relative z-1">
             <h2 className="text-xl md:text-3xl font-bold text-white">
               Become A Part Of The
             </h2>
-            <span
-              className="text-xl md:text-3xl font-bold text-brand-200"
-            >
+            <span className="text-xl md:text-3xl font-bold text-brand-200">
               Flashy Universe
             </span>
           </div>

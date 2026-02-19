@@ -5,9 +5,7 @@ interface UseSponsorPaymentsParams {
   paymentStatus?: PaymentStatus;
 }
 
-export const useSponsorPayments = (
-  params: UseSponsorPaymentsParams = {},
-) => {
+export const useSponsorPayments = (params: UseSponsorPaymentsParams = {}) => {
   return useQuery({
     queryKey: ["business", "sponsor-payments", params.paymentStatus],
     queryFn: async () => {

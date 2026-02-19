@@ -66,7 +66,12 @@ export function CreatorOpportunityCard({
       <div className="flex w-full items-center justify-between">
         <div>
           <span className="text-xs text-white/90 font-medium">
-            Campaign Value | {opportunity.compensation}
+            Campaign Value |{" "}
+            {opportunity.compensationType === "commission"
+              ? `${opportunity.compensation}%`
+              : opportunity.compensationType === "fixed"
+                ? `$${opportunity.compensation}`
+                : opportunity.compensation}
           </span>
         </div>
         <div className="flex items-center gap-2">

@@ -35,7 +35,7 @@ export function BusinessOpportunityDetails({
 
   const compensationDisplay =
     compensationType === "commission"
-      ? `${compensation} Commission`
+      ? `${compensation}% Commission`
       : compensationType === "fixed"
         ? `$${compensation} Flat Fee`
         : compensation;

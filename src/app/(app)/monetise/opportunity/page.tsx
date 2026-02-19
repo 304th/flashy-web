@@ -118,7 +118,11 @@ function OpportunityPageContent() {
 
   // Format compensation display
   const compensationDisplay = opportunity.compensation
-    ? `$${opportunity.compensation} ${opportunity.compensationType === "fixed" ? "Flat Fee" : opportunity.compensationType}`
+    ? opportunity.compensationType === "commission"
+      ? `${opportunity.compensation}% Commission`
+      : opportunity.compensationType === "fixed"
+        ? `$${opportunity.compensation} Flat Fee`
+        : opportunity.compensation
     : "Negotiable";
 
   // Format end date

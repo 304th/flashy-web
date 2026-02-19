@@ -179,7 +179,9 @@ export default function BusinessDashboardPaymentsPage() {
                                 payment.paymentCurrency,
                               )
                             : payment.opportunity?.compensation
-                              ? `$${payment.opportunity.compensation}`
+                              ? payment.opportunity?.compensationType === "commission"
+                                ? `${payment.opportunity.compensation}%`
+                                : `$${payment.opportunity.compensation}`
                               : "-"}
                         </td>
                         <td className="py-4 px-4 text-sm text-white">

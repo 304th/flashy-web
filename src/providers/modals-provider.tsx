@@ -132,6 +132,10 @@ import {
   RejectSubmissionModal,
   RejectSubmissionModalProps,
 } from "@/features/business/components/reject-submission-modal/reject-submission-modal";
+import {
+  DeleteAccountModal,
+  DeleteAccountModalProps,
+} from "@/features/profile/components/delete-account-modal/delete-account-modal";
 
 const modalsConfig = {
   LoginModal,
@@ -167,6 +171,7 @@ const modalsConfig = {
   CreateHomeBannerModal,
   SubmitDeliverablesModal,
   RejectSubmissionModal,
+  DeleteAccountModal,
 };
 
 export type ModalPropsTypes =
@@ -301,6 +306,10 @@ export type ModalPropsTypes =
   | {
       type: "RejectSubmissionModal";
       props: RejectSubmissionModalProps;
+    }
+  | {
+      type: "DeleteAccountModal";
+      props: DeleteAccountModalProps;
     };
 
 export const ModalsProvider = ({ children }: PropsWithChildren<object>) => (

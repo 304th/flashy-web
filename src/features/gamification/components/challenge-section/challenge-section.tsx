@@ -53,8 +53,8 @@ export const ChallengeSection = ({
             </span>
             <span className="text-base-800">|</span>
             <span className="text-brand-100">
-              {totalXpEarned.toLocaleString()}/
-              {totalXpAvailable.toLocaleString()} XP
+              {totalXpEarned.toLocaleString?.()}/
+              {totalXpAvailable.toLocaleString?.()} XP
             </span>
           </div>
         </div>

@@ -57,7 +57,7 @@ export const StreamCardStatus = ({
             text-white"
         >
           <Eye className="h-3 w-3" />
-          {stream.viewerCount.toLocaleString()}
+          {stream.viewerCount?.toLocaleString?.()}
         </div>
       )}
     </>

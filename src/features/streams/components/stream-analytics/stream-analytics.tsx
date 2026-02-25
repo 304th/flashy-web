@@ -58,7 +58,7 @@ export const StreamAnalytics = ({ streamId }: StreamAnalyticsProps) => {
     {
       icon: MessageSquare,
       label: "Chat Messages",
-      value: analytics.chatMessagesCount.toLocaleString(),
+      value: analytics.chatMessagesCount?.toLocaleString?.(),
       color: "text-orange-500",
     },
   ];
@@ -86,7 +86,7 @@ export const StreamAnalytics = ({ streamId }: StreamAnalyticsProps) => {
             <div>
               <p className="text-sm text-muted-foreground">Peak Viewers</p>
               <p className="text-xl font-bold">
-                {analytics.peakViewers.toLocaleString()}
+                {analytics.peakViewers?.toLocaleString?.()}
               </p>
             </div>
           </div>

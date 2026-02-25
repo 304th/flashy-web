@@ -40,7 +40,7 @@ const GridTable = () => {
             <UserProfile user={boughtKeyDetails.user!} />
           </div>
           <div className="flex gap-1 items-center py-2 justify-end">
-            <p>{boughtKeyDetails.holders.toLocaleString()}</p>
+            <p>{boughtKeyDetails.holders.toLocaleString?.()}</p>
           </div>
           <div className="flex gap-1 items-center py-2 justify-end">
             <p>{boughtKeyDetails.buyPrice.toLocaleString()}</p>

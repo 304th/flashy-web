@@ -103,7 +103,7 @@ export function AgreementHeader({
         >
           <div className="flex items-center gap-1">
             <span className="text-2xl font-bold text-white">
-              {creator?.followersCount?.toLocaleString() || 0}
+              {creator?.followersCount?.toLocaleString?.() || 0}
             </span>
             <span className="text-sm text-base-700 ml-1">Subscribers</span>
           </div>

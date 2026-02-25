@@ -74,7 +74,7 @@ export const PlaylistViewModal = ({
             >
               <p className="text-sm text-white/70">Views</p>
               <p className="text-3xl font-semibold text-white">
-                {stats.totalViews.toLocaleString()}
+                {stats.totalViews?.toLocaleString?.()}
               </p>
               <div className="absolute top-3 right-3">
                 <EyeIcon size={18} />
@@ -86,7 +86,7 @@ export const PlaylistViewModal = ({
             >
               <p className="text-sm text-white/70">Videos</p>
               <p className="text-3xl font-semibold text-white">
-                {stats.videosCount.toLocaleString()}
+                {stats.videosCount?.toLocaleString?.()}
               </p>
               <div className="absolute top-3 right-3">
                 <PlayIcon size={18} />

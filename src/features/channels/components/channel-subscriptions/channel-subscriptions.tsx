@@ -33,7 +33,7 @@ export const ChannelSubscriptions = () => {
                 followers?.length ??
                 channel?.followersCount ??
                 0
-              ).toLocaleString()}
+              ).toLocaleString?.()}
             </p>
             <p className="text-white">Followers</p>
           </>
@@ -56,7 +56,7 @@ export const ChannelSubscriptions = () => {
                 following?.length ??
                 channel?.followingCount ??
                 0
-              ).toLocaleString()}
+              ).toLocaleString?.()}
             </p>
             <p className="text-white">Following</p>
           </>

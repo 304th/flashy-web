@@ -52,8 +52,8 @@ export const BasicChallenges = () => {
           </span>
           <span className="text-base-800">|</span>
           <span className="text-brand-100">
-            {stats.xpEarned.toLocaleString()}/
-            {stats.xpAvailable.toLocaleString()} XP
+            {stats.xpEarned?.toLocaleString?.()}/
+            {stats.xpAvailable?.toLocaleString?.()} XP
           </span>
         </div>
       </div>

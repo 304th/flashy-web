@@ -261,6 +261,24 @@
   scrollbar-width: none;
 }
 
+@utility scrollbar-thin-dark {
+  scrollbar-width: thin;
+  scrollbar-color: #333 transparent;
+
+  &::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 2px;
+  }
+}
+
 /*@utility scrollbar-hide::-webkit-scrollbar {*/
 /*  display: none;*/
 /*}*/

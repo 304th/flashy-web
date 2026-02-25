@@ -39,11 +39,11 @@ const profileTabs = [
     label: "About",
     path: "/profile/about",
   },
-  // {
-  //   key: "challenges",
-  //   label: "Challenges",
-  //   path: "/profile/challenges",
-  // },
+  {
+    key: "challenges",
+    label: "Challenges",
+    path: "/profile/challenges",
+  },
   {
     key: "wallet",
     label: "Wallet",

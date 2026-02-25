@@ -1,6 +1,6 @@
 "use client";
 
-// import { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { AccountLogin } from "@/features/auth/components/account-login/account-login";
 import { HeaderUserSearch } from "@/components/ui/header-user-search";
@@ -8,20 +8,20 @@ import { HamburgerIcon } from "@/components/ui/icons/hamburger";
 import { CreateDropdown } from "@/features/auth/components/account-login/create-dropdown";
 import { useSidebar } from "@/contexts/sidebar-context";
 import { useMe } from "@/features/auth/queries/use-me";
-// import { useTrackLogin } from "@/features/gamification/mutations/use-track-login";
+import { useTrackLogin } from "@/features/gamification/mutations/use-track-login";
 
 export const Header = () => {
   const { toggleSidebar } = useSidebar();
   const { data: me } = useMe();
-  // const trackLoginMutation = useTrackLogin();
-  // const hasTrackedLogin = useRef(false);
+  const trackLoginMutation = useTrackLogin();
+  const hasTrackedLogin = useRef(false);
 
-  // useEffect(() => {
-  //   if (me && !hasTrackedLogin.current) {
-  //     hasTrackedLogin.current = true;
-  //     trackLoginMutation.mutate();
-  //   }
-  // }, [me]);
+  useEffect(() => {
+    if (me && !hasTrackedLogin.current) {
+      hasTrackedLogin.current = true;
+      trackLoginMutation.mutate();
+    }
+  }, [me]);
 
   return (
     <div className="relative bg-base-200 border-b border-b-base-300 z-3">

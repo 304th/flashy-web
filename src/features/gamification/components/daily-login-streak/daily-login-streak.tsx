@@ -48,13 +48,8 @@ export const DailyLoginStreak = ({ status }: DailyLoginStreakProps) => {
   const unclaimedXp = status.unclaimedStreakXp || 0;
   const claimMutation = useClaimStreak();
 
-  // Always show days 1-10 window context
-  const startDay = Math.max(1, Math.floor((currentStreak - 1) / 10) * 10 + 1);
-  const endDay = Math.min(30, startDay + 9);
-  const daysToShow = Array.from(
-    { length: endDay - startDay + 1 },
-    (_, i) => startDay + i,
-  );
+  // Show all 30 days
+  const daysToShow = Array.from({ length: 30 }, (_, i) => i + 1);
 
   return (
     <div className="flex flex-col gap-4">
@@ -79,7 +74,7 @@ export const DailyLoginStreak = ({ status }: DailyLoginStreakProps) => {
       </div>
 
       {/* Streak Days */}
-      <div className="flex gap-2 overflow-x-auto pb-2">
+      <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin-dark">
         {daysToShow.map((dayNumber) => {
           const isClaimed = dayNumber <= currentStreak;
           const isCurrent = dayNumber === currentStreak + 1;

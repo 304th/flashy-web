@@ -12,6 +12,7 @@ import { useVideosInPlaylist } from "@/features/video/queries/use-videos-in-play
 import { useQueryParams } from "@/hooks/use-query-params";
 import { useWatchVideo } from "@/features/video/mutations/use-watch-video";
 import { useVideoPostOwned } from "@/features/video/hooks/use-video-post-owned";
+import { useVideoWatchTime } from "@/features/video/hooks/use-video-watch-time";
 import { VideoWatchDescription } from "@/features/video/components/video-watch/video-watch-description";
 
 export const VideoWatch = ({ videoPost }: { videoPost: VideoPost }) => {
@@ -24,6 +25,7 @@ export const VideoWatch = ({ videoPost }: { videoPost: VideoPost }) => {
     currentPlaylistId || videoPost.playlist?.fbId,
   );
   const watchVideo = useWatchVideo();
+  const watchTime = useVideoWatchTime();
 
   const handleEnded = () => {
     if (autoplay && playlistVideos) {
@@ -53,8 +55,13 @@ export const VideoWatch = ({ videoPost }: { videoPost: VideoPost }) => {
         <VideoPlayer
           key={videoPost._id}
           videoPost={videoPost}
-          onEnded={handleEnded}
+          onEnded={() => {
+            handleEnded();
+            watchTime.onEnded();
+          }}
           onFirstPlay={handleFirstPlay}
+          onPlay={watchTime.onPlay}
+          onPause={watchTime.onPause}
         />
         <VideoWatchNextButton ref={nextVideoButton} onNext={handleNext} />
       </div>
